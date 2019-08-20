@@ -1,0 +1,14 @@
+{
+    "typeName": "Datadog::IAM::User",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "com.datadog.iam.user.HandlerWrapper::handleRequest",
+    "settings": {
+        "namespace": [
+            "com",
+            "datadog",
+            "iam",
+            "user"
+        ]
+    }
+}

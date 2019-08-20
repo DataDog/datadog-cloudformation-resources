@@ -1,0 +1,27 @@
+# macOS
+.DS_Store
+._*
+
+# Maven outputs
+*/.classpath
+
+# Eclipse
+*/.factorypath
+
+# IntelliJ
+*/*.iml
+*/.idea
+*/out.java
+*/out/
+*/.settings
+*/.project
+
+# auto-generated files
+*/bin/target/
+*/target/
+
+# .class files
+**/*.class
+
+# our logs
+*/rpdk.log

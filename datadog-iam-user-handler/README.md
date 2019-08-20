@@ -1,17 +1,16 @@
 # Datadog::Users::User
 
-Congratulations on starting development! Next steps:
+To get started:
 
-1. Write the JSON schema describing your resource, `datadog-iam-user.json`
-2. The RPDK will automatically generate the correct resource model from the
-   schema whenever the project is built via Maven. You can also do this manually
-   with the following command: `cfn-cli generate`
-3. Implement your resource handlers
+* Build [datadog-api-client-java](https://github.com/DataDog/datadog-api-client-java):
 
+    ```
+    git clone git@github.com:DataDog/datadog-api-client-java.git
+    cd datadog-api-client-java
+    # this will install the client into ~/.m2/repository
+    mvn install -Dmaven.test.skip=true
+    ```
 
-Please don't modify files under `target/generated-sources/rpdk`, as they will be
-automatically overwritten.
-
-The code use [Lombok](https://projectlombok.org/), and [you may have to install
-IDE integrations](https://projectlombok.org/) to enable auto-complete for
-Lombok-annotated classes.
+* Install cfn-cli
+* Do note that for now, the resource uses `DATADOG_API_KEY` and `DATADOG_APP_KEY` from environment variables.
+* Run `mvn test` inside this directory to invoke tests locally.

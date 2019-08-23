@@ -1,10 +1,12 @@
-package com.datadog.cloudformation.utils;
+package com.datadog.cloudformation.common.clients;
 
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.Configuration;
 import com.datadog.api.client.v1.auth.ApiKeyAuth;
 
 import java.util.Map;
+
+import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 public class ApiClients {
     public static ApiClient V1Client(String apiKey, String applicationKey){

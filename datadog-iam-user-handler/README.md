@@ -11,10 +11,10 @@ To get started:
     mvn install -Dmaven.test.skip=true
     ```
 
-* Build `datadog-cloudformation-utils` from this repository:
+* Build `datadog-cloudformation-common` from this repository:
 
     ```
-    mvn -f ../datadog-cloudformation-utils/pom.xml -Dmaven.test.skip=true install
+    mvn -f ../datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
     ```
 
 * Install cfn-cli

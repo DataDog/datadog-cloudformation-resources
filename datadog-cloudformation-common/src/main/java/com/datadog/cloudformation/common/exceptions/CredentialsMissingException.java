@@ -1,4 +1,4 @@
-package com.datadog.cloudformation.utils;
+package com.datadog.cloudformation.common.exceptions;
 
 public class CredentialsMissingException extends Exception {
     public CredentialsMissingException() { super(); }

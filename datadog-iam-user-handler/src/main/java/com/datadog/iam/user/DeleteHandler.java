@@ -6,10 +6,12 @@ import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
+import com.datadog.cloudformation.utils.ApiClients;
+import com.datadog.cloudformation.utils.CredentialsMissingException;
+
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
 import com.datadog.api.client.v1.api.UsersApi;
-import com.datadog.cloudformation.ApiClients;
 
 public class DeleteHandler extends BaseHandler<CallbackContext> {
 
@@ -22,9 +24,10 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
 
         final ResourceModel model = request.getDesiredResourceState();
 
-        // TODO: how to add the client to BaseHandler, verify that credentials are ok, etc?
-        // basically we're looking for something like provider setup method in TF
-        ApiClient apiClient = ApiClients.V1Client();
+        ApiClient apiClient = ApiClients.V1Client(
+            model.getDatadogCredentials().getApiKey(),
+            model.getDatadogCredentials().getApplicationKey()
+        );
         UsersApi usersApi = new UsersApi(apiClient);
 
         OperationStatus status = OperationStatus.SUCCESS;

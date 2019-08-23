@@ -19,6 +19,7 @@ import static org.mockito.Mockito.mock;
 public class CreateHandlerTest {
 
     private final String handle = "nobody@datadoghq.com";
+    private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
 
     @Mock
     private AmazonWebServicesClientProxy proxy;
@@ -37,6 +38,7 @@ public class CreateHandlerTest {
         final DeleteHandler handler = new DeleteHandler();
         final ResourceModel model = ResourceModel.builder().build();
         model.setHandle(handle);
+        model.setDatadogCredentials(datadogCredentials);
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
             .desiredResourceState(model)
             .build();
@@ -52,6 +54,8 @@ public class CreateHandlerTest {
         model.setAccessRole("st");
         model.setHandle(handle);
         model.setName("Nobody");
+        model.setEmail(handle);
+        model.setDatadogCredentials(datadogCredentials);
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
             .desiredResourceState(model)

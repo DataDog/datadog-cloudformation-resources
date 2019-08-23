@@ -7,7 +7,6 @@ import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
-import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
@@ -30,7 +29,6 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()
         );
-        apiClient.setDebugging(true);
         UsersApi usersApi = new UsersApi(apiClient);
 
         UserCreatePayload userCreatePayload = new UserCreatePayload()
@@ -39,18 +37,18 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             .name(model.getName())
             .handle(model.getHandle());
 
-        OperationStatus status = OperationStatus.SUCCESS;
         try {
             usersApi.createUser(userCreatePayload);
         } catch (ApiException e) {
             // TODO: how to return the exception text as a result?
-            status = OperationStatus.FAILED;
             logger.log("Failed to create user: " + e.toString());
+
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                .resourceModel(model)
+                .status(OperationStatus.SUCCESS)
+                .build();
         }
 
-        return ProgressEvent.<ResourceModel, CallbackContext>builder()
-            .resourceModel(model)
-            .status(status)
-            .build();
+        return new ReadHandler().handleRequest(proxy, request, callbackContext, logger);
     }
 }

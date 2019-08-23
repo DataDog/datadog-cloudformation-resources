@@ -18,7 +18,9 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 public class CreateHandlerTest {
 
-    private final String handle = "nobody@datadoghq.com";
+    private final String testingAccessRole = "st";
+    private final String testingHandle = "nobody@datadoghq.com";
+    private final String testingName = "Nobody";
     private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
 
     @Mock
@@ -37,7 +39,7 @@ public class CreateHandlerTest {
     public void deleteUser() {
         final DeleteHandler handler = new DeleteHandler();
         final ResourceModel model = ResourceModel.builder().build();
-        model.setHandle(handle);
+        model.setHandle(testingHandle);
         model.setDatadogCredentials(datadogCredentials);
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
             .desiredResourceState(model)
@@ -51,10 +53,10 @@ public class CreateHandlerTest {
         final CreateHandler handler = new CreateHandler();
 
         final ResourceModel model = ResourceModel.builder().build();
-        model.setAccessRole("st");
-        model.setHandle(handle);
-        model.setName("Nobody");
-        model.setEmail(handle);
+        model.setAccessRole(testingAccessRole);
+        model.setHandle(testingHandle);
+        model.setName(testingName);
+        model.setEmail(testingHandle);
         model.setDatadogCredentials(datadogCredentials);
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
@@ -72,5 +74,13 @@ public class CreateHandlerTest {
         assertThat(response.getResourceModels()).isNull();
         assertThat(response.getMessage()).isNull();
         assertThat(response.getErrorCode()).isNull();
+
+        ResourceModel read = response.getResourceModel();
+        assertThat(read.getAccessRole()).isEqualTo(testingAccessRole);
+        assertThat(read.getDisabled()).isEqualTo(true);
+        assertThat(read.getEmail()).isEqualTo(testingHandle);
+        assertThat(read.getHandle()).isEqualTo(testingHandle);
+        assertThat(read.getName()).isEqualTo(testingName);
+        assertThat(read.getVerified()).isEqualTo(false);
     }
 }

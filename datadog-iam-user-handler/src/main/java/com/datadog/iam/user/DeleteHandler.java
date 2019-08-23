@@ -7,7 +7,6 @@ import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
-import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;

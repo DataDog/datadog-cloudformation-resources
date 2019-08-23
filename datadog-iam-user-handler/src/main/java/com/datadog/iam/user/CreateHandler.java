@@ -6,7 +6,8 @@ import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
-import com.datadog.cloudformation.ApiClients;
+import com.datadog.cloudformation.common.clients.ApiClients;
+import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
@@ -25,14 +26,16 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final Logger logger) {
         final ResourceModel model = request.getDesiredResourceState();
 
-        // TODO: how to add the client to BaseHandler, verify that credentials are ok, etc?
-        // basically we're looking for something like provider setup method in TF
-        ApiClient apiClient = ApiClients.V1Client();
+        ApiClient apiClient = ApiClients.V1Client(
+            model.getDatadogCredentials().getApiKey(),
+            model.getDatadogCredentials().getApplicationKey()
+        );
+        apiClient.setDebugging(true);
         UsersApi usersApi = new UsersApi(apiClient);
 
         UserCreatePayload userCreatePayload = new UserCreatePayload()
             .accessRole(UserCreatePayload.AccessRoleEnum.fromValue(model.getAccessRole()))
-            // TODO: not possible to set email when creating? .email(model.getEmail())
+            .email(model.getEmail())
             .name(model.getName())
             .handle(model.getHandle());
 

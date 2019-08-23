@@ -11,6 +11,12 @@ To get started:
     mvn install -Dmaven.test.skip=true
     ```
 
+* Build `datadog-cloudformation-common` from this repository:
+
+    ```
+    mvn -f ../datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
+    ```
+
 * Install cfn-cli
-* Do note that for now, the resource uses `DATADOG_API_KEY` and `DATADOG_APP_KEY` from environment variables.
+* Do note that for now, the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
 * Run `mvn test` inside this directory to invoke tests locally.

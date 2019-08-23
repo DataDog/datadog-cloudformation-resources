@@ -2,6 +2,21 @@
     "typeName": "Datadog::IAM::User",
     "description": "Datadog Application User",
     "properties": {
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                    "description": "Datadog API key",
+                    "type": "string"
+                },
+                "ApplicationKey": {
+                    "description": "Datadog application key",
+                    "type": "string"
+                }
+            },
+            "required": ["ApiKey", "ApplicationKey"],
+            "type": "object"
+        },
         "AccessRole": {
             "description": "The role of the user",
             "enum": [
@@ -37,6 +52,9 @@
     ],
     "readOnlyProperties": [
         "/properties/Disabled", "/properties/Verified"
+    ],
+    "required": [
+        "DatadogCredentials"
     ],
     "additionalProperties": false
 }

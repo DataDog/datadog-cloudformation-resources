@@ -30,13 +30,15 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         );
         UsersApi usersApi = new UsersApi(apiClient);
 
-        OperationStatus status = OperationStatus.SUCCESS;
         User user = null;
         try {
             user = usersApi.getUser(model.getHandle()).getUser();
         } catch (ApiException e) {
-            status = OperationStatus.FAILED;
             logger.log("Failed to read user: " + e.toString());
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                .resourceModel(model)
+                .status(OperationStatus.FAILED)
+                .build();
         }
 
         model.setAccessRole(user.getAccessRole().getValue());
@@ -48,7 +50,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)
-            .status(status)
+            .status(OperationStatus.SUCCESS)
             .build();
     }
 }

@@ -29,17 +29,22 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         );
         UsersApi usersApi = new UsersApi(apiClient);
 
-        OperationStatus status = OperationStatus.SUCCESS;
         try {
             usersApi.disableUser(model.getHandle());
         } catch (ApiException e) {
-            // TODO: how to return the exception text as a result?
-            status = OperationStatus.FAILED;
+            String err = "Failed to disable user: " + e.toString();
+            logger.log(err);
+
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                .resourceModel(model)
+                .status(OperationStatus.FAILED)
+                .message(err)
+                .build();
         }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)
-            .status(status)
+            .status(OperationStatus.SUCCESS)
             .build();
     }
 }

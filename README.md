@@ -33,3 +33,12 @@ To build and run tests for a given resource:
 ## Development Tips
 
 * Create and Update handlers of your resource should call the Read handler (when the create/update is successful) to return a fully populated model.
+* On failure, a handler should return an error message (messages are not displayed on success). For example:
+
+    ```
+    return ProgressEvent.<ResourceModel, CallbackContext>builder()
+        .resourceModel(model)
+        .status(OperationStatus.FAILED)
+        .message("Failed to read monitor 12345")
+        .build();
+    ```

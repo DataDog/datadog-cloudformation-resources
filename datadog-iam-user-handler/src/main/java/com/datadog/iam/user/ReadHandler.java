@@ -34,10 +34,13 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         try {
             user = usersApi.getUser(model.getHandle()).getUser();
         } catch (ApiException e) {
-            logger.log("Failed to read user: " + e.toString());
+            String err = "Failed to read user: " + e.toString();
+            logger.log(err);
+
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
                 .resourceModel(model)
                 .status(OperationStatus.FAILED)
+                .message(err)
                 .build();
         }
 

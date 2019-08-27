@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 
 @ExtendWith(MockitoExtension.class)
-public class CreateHandlerTest {
+public class UserCRUDTest {
 
     private final String testingAccessRole = "st";
     private final String testingHandle = "nobody@datadoghq.com";
@@ -49,8 +49,9 @@ public class CreateHandlerTest {
     }
 
     @Test
-    public void handleRequest_SimpleSuccess() {
-        final CreateHandler handler = new CreateHandler();
+    public void testUserCRUD() {
+        final CreateHandler createHandler = new CreateHandler();
+        final UpdateHandler updateHandler = new UpdateHandler();
 
         final ResourceModel model = ResourceModel.builder().build();
         model.setAccessRole(testingAccessRole);
@@ -64,7 +65,7 @@ public class CreateHandlerTest {
             .build();
 
         final ProgressEvent<ResourceModel, CallbackContext> response
-            = handler.handleRequest(proxy, request, null, logger);
+            = createHandler.handleRequest(proxy, request, null, logger);
 
         assertThat(response).isNotNull();
         assertThat(response.getStatus()).isEqualTo(OperationStatus.SUCCESS);
@@ -81,6 +82,24 @@ public class CreateHandlerTest {
         assertThat(read.getEmail()).isEqualTo(testingHandle);
         assertThat(read.getHandle()).isEqualTo(testingHandle);
         assertThat(read.getName()).isEqualTo(testingName);
+        assertThat(read.getVerified()).isEqualTo(false);
+
+        model.setDisabled(false);
+        model.setName("New name");
+
+        final ResourceHandlerRequest<ResourceModel> updateRequest = ResourceHandlerRequest.<ResourceModel>builder()
+            .desiredResourceState(model)
+            .build();
+
+        final ProgressEvent<ResourceModel, CallbackContext> updateResponse
+            = updateHandler.handleRequest(proxy, updateRequest, null, logger);
+
+        ResourceModel updateRead = updateResponse.getResourceModel();
+        assertThat(read.getAccessRole()).isEqualTo(testingAccessRole);
+        assertThat(read.getDisabled()).isEqualTo(false);
+        assertThat(read.getEmail()).isEqualTo(testingHandle);
+        assertThat(read.getHandle()).isEqualTo(testingHandle);
+        assertThat(read.getName()).isEqualTo("New name");
         assertThat(read.getVerified()).isEqualTo(false);
     }
 }

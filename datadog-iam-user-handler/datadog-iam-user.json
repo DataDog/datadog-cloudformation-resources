@@ -47,6 +47,9 @@
             "type": "boolean"
         }
     },
+    "createOnlyProperties": [
+        "/properties/Handle"
+    ],
     "primaryIdentifier": [
         "/properties/Handle"
     ],

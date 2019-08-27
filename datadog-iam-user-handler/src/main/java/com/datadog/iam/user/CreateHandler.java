@@ -40,12 +40,13 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         try {
             usersApi.createUser(userCreatePayload);
         } catch (ApiException e) {
-            // TODO: how to return the exception text as a result?
-            logger.log("Failed to create user: " + e.toString());
+            String err = "Failed to create user: " + e.toString();
+            logger.log(err);
 
             return ProgressEvent.<ResourceModel, CallbackContext>builder()
                 .resourceModel(model)
                 .status(OperationStatus.FAILED)
+                .message(err)
                 .build();
         }
 

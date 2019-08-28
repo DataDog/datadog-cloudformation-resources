@@ -1,0 +1,304 @@
+{
+    "typeName": "Datadog::Monitors::Monitor",
+    "description": "Datadog Monitor",
+    "definitions": {
+        "Creator": {
+            "type": "object",
+            "properties":{
+                "Name": {
+                    "type": "string"
+                },
+                "Handle": {
+                    "type": "string"
+                },
+                "Email": {
+                    "type": "string"
+                }
+            }
+        },
+        "MonitorStateGroupValue": {
+            "type": "object",
+            "properties": {
+                "Value": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "FromTS": {
+                    "type": "number"
+                },
+                "ToTS": {
+                    "type": "number"
+                },
+                "Left": {
+                    "type": "number",
+                    "format": "float"
+                },
+                "Right": {
+                    "type": "number",
+                    "format": "float"
+                }
+            }
+        },
+        "MonitorStateGroup": {
+            "type": "object",
+            "properties": {
+                "Name": {
+                    "type": "string"
+                },
+                "LastTriggeredTS": {
+                    "type": "number"
+                },
+                "LastNotifiedTS": {
+                    "type": "number"
+                },
+                "Status": {
+                    "$ref": "#/definitions/MonitorOverallStates"
+                },
+                "TriggeringValue": {
+                    "$ref": "#/definitions/MonitorStateGroupValue"
+                },
+                "Message": {
+                    "type": "string"
+                },
+                "LastResolvedTS": {
+                    "type": "number"
+                },
+                "LastNodataTS": {
+                    "type": "number"
+                },
+                "LastDataTS": {
+                    "type": "number"
+                }
+            }
+        },
+        "MonitorOverallStates": {
+            "type": "string",
+            "enum": [
+                "OK",
+                "Warn",
+                "Alert",
+                "No Data",
+                "Ignored",
+                "Skipped",
+                "Unknown"
+            ]
+        },
+        "MonitorState": {
+            "type": "object",
+            "properties": {
+                "MonitorID": {
+                    "type": "number"
+                },
+                "OverallState": {
+                    "$ref": "#/definitions/MonitorOverallStates"
+                },
+                "Groups": {
+                    "type": "object",
+                    "patternProperties": {
+                        ".*": {
+                            "$ref": "#/definitions/MonitorStateGroup"
+                        }
+                    }
+                }
+            }
+        },
+        "MonitorThresholds": {
+            "type": "object",
+            "properties": {
+                "Critical": {
+                    "type": "number"
+                },
+                "CriticalRecovery": {
+                    "type": "number"
+                },
+                "OK": {
+                    "type": "number"
+                },
+                "Warning": {
+                    "type": "number"
+                },
+                "WarningRecovery": {
+                    "type": "number"
+                }
+            }
+        },
+        "MonitorThresholdWindows": {
+            "type": "object",
+            "properties": {
+                "TriggerWindow": {
+                    "type": "string"
+                },
+                "RecoveryWindow": {
+                    "type": "string"
+                }
+            }
+        },
+        "MonitorOptions": {
+            "type": "object",
+            "properties": {
+                "Aggregation": {
+                    "type": "string"
+                },
+                "DeviceIDs": {
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "laptop_large",
+                            "table",
+                            "mobile_small"
+                        ]
+                    }
+                },
+                "EnableLogsSample": {
+                    "type": "boolean"
+                },
+                "EscalationMessage": {
+                    "type": "string"
+                },
+                "EvaluationDelay": {
+                    "type": "number"
+                },
+                "IncludeTags": {
+                    "type": "boolean"
+                },
+                "Locked": {
+                    "type": "boolean"
+                },
+                "MinLocationFailed": {
+                    "type": "number"
+                },
+                "NewHostDelay": {
+                    "type": "number"
+                },
+                "NoDataTimeframe": {
+                    "type": "number"
+                },
+                "NotifyAudit": {
+                    "type": "boolean"
+                },
+                "NotifyNoData": {
+                    "type": "boolean"
+                },
+                "RenotifyInterval": {
+                    "type": "number"
+                },
+                "RequireFullWindow": {
+                    "type": "boolean"
+                },
+                "SyntheticsCheckID": {
+                    "type": "number"
+                },
+                "Thresholds": {
+                    "$ref": "#/definitions/MonitorThresholds"
+                },
+                "ThresholdWindows": {
+                    "$ref": "#/definitions/MonitorThresholdWindows"
+                },
+                "TimeoutH": {
+                    "type": "integer"
+                }
+            }
+        }
+    },
+    "properties": {
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                    "description": "Datadog API key",
+                    "type": "string"
+                },
+                "ApplicationKey": {
+                    "description": "Datadog application key",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ApiKey",
+                "ApplicationKey"
+            ],
+            "type": "object"
+        },
+        "Creator":{
+            "$ref": "#/definitions/Creator"
+        },
+        "ID":{
+            "description": "ID of the monitor",
+            "type": "number"
+        },
+        "Message": {
+            "description": "A message to include with notifications for the monitor",
+            "type": "string"
+        },
+        "Name": {
+            "type": "string"
+        },
+        "Tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "Options":{
+            "$ref": "#/definitions/MonitorOptions"
+        },
+        "OverallState": {
+            "$ref": "#/definitions/MonitorOverallStates"
+        },
+        "Query": {
+            "type": "string"
+        },
+        "Type": {
+            "type": "string",
+            "description": "The type of the monitor",
+            "enum": [
+                "query alert",
+                "composite",
+                "service check",
+                "event alert",
+                "process alert",
+                "log alert",
+                "metric alert",
+                "synthetics alert"
+            ]
+        },
+        "Multi": {
+            "type": "boolean"
+        },
+        "Created": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "Deleted": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "Modified": {
+            "type": "string",
+            "format": "date-time"
+        },
+        "State": {
+            "$ref": "#/definitions/MonitorState"
+        }
+    },
+    "required": [
+        "/properties/DatadogCredentials"
+    ],
+    "writeOnlyProperties": [
+        "/properties/DatadogCredentials"
+    ],
+    "primaryIdentifier": [
+        "/properties/ID"
+    ],
+    "readOnlyProperties": [
+        "/properties/Modified",
+        "/properties/ID",
+        "/properties/Deleted",
+        "/properties/State",
+        "/properties/OverallState",
+        "/properties/Creator",
+        "/properties/Created"
+    ],
+    "additionalProperties": false
+}

@@ -95,11 +95,11 @@ public class UserCRUDTest {
             = updateHandler.handleRequest(proxy, updateRequest, null, logger);
 
         ResourceModel updateRead = updateResponse.getResourceModel();
-        assertThat(read.getAccessRole()).isEqualTo(testingAccessRole);
-        assertThat(read.getDisabled()).isEqualTo(false);
-        assertThat(read.getEmail()).isEqualTo(testingHandle);
-        assertThat(read.getHandle()).isEqualTo(testingHandle);
-        assertThat(read.getName()).isEqualTo("New name");
-        assertThat(read.getVerified()).isEqualTo(false);
+        assertThat(updateRead.getAccessRole()).isEqualTo(testingAccessRole);
+        assertThat(updateRead.getDisabled()).isEqualTo(false);
+        assertThat(updateRead.getEmail()).isEqualTo(testingHandle);
+        assertThat(updateRead.getHandle()).isEqualTo(testingHandle);
+        assertThat(updateRead.getName()).isEqualTo("New name");
+        assertThat(updateRead.getVerified()).isEqualTo(false);
     }
 }

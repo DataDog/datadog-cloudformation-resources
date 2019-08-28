@@ -1,4 +1,4 @@
-package com.datadog.integration.aws;
+package com.datadog.integrations.aws;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,29 +33,26 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         );
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
-        // Convert the model's accountSpecificNameSpaceRules to expected object type
-        Map<String, Boolean> accountSpecificNamespaceRules = new HashMap<String, Boolean>((Map)model.getAccountSpecificNamespaceRules());
-
         AWSAccount awsCreatePayload = new AWSAccount()
             .accountId(model.getAccountID())
             .roleName(model.getRoleName())
             .accessKeyId(model.getAccessKeyID())
             .hostTags(model.getHostTags())
             .filterTags(model.getFilterTags())
-            .accountSpecificNamespaceRules(accountSpecificNamespaceRules);
+            .accountSpecificNamespaceRules(model.getAccountSpecificNamespaceRules());
 
-            try {
-                awsApi.updateAWSAccount(awsCreatePayload, model.getAccountID(), model.getRoleName(), model.getAccessKeyID());
-            } catch (ApiException e) {
-                String err = "Failed to update AWS Integration: " + e.toString();
-                logger.log(err);
+        try {
+            awsApi.updateAWSAccount(awsCreatePayload, model.getAccountID(), model.getRoleName(), model.getAccessKeyID());
+        } catch (ApiException e) {
+            String err = "Failed to update AWS Integration: " + e.toString();
+            logger.log(err);
 
-                return ProgressEvent.<ResourceModel, CallbackContext>builder()
-                    .resourceModel(model)
-                    .status(OperationStatus.FAILED)
-                    .message(err)
-                    .build();
-            }
+            return ProgressEvent.<ResourceModel, CallbackContext>builder()
+                .resourceModel(model)
+                .status(OperationStatus.FAILED)
+                .message(err)
+                .build();
+        }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

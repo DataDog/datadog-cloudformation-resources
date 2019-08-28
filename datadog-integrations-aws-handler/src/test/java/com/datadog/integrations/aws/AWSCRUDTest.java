@@ -1,4 +1,4 @@
-package com.datadog.integration.aws;
+package com.datadog.integrations.aws;
 
 import com.amazonaws.cloudformation.proxy.AmazonWebServicesClientProxy;
 import com.amazonaws.cloudformation.proxy.Logger;
@@ -79,10 +79,7 @@ public class AWSCRUDTest {
         model.setRoleName(testRoleName);
         model.setHostTags(testHostTags);
         model.setFilterTags(testFilterTags);
-        // Convert the model's accountSpecificNameSpaceRules to expected object type
-        Map<String, Object> accountSpecificNamespaceRules = new HashMap<String, Object>((Map)testAccountSpecificNamespaceRules);
-
-        model.setAccountSpecificNamespaceRules(accountSpecificNamespaceRules);
+        model.setAccountSpecificNamespaceRules(testAccountSpecificNamespaceRules);
 
         model.setDatadogCredentials(datadogCredentials);
 

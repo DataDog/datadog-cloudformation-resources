@@ -1,4 +1,4 @@
-package com.datadog.integration.aws;
+package com.datadog.integrations.aws;
 
 import java.io.InputStream;
 import org.json.JSONObject;
@@ -7,7 +7,7 @@ import org.json.JSONTokener;
 class Configuration extends BaseConfiguration {
 
     public Configuration() {
-        super("datadog-integration-aws.json");
+        super("datadog-integrations-aws.json");
     }
 
     public JSONObject resourceSchemaJSONObject() {

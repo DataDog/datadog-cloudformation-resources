@@ -1,4 +1,4 @@
-package com.datadog.integration.aws;
+package com.datadog.integrations.aws;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -53,10 +53,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         model.setAccessKeyID(awsAccount.getAccessKeyId());
         model.setHostTags(awsAccount.getHostTags());
         model.setFilterTags(awsAccount.getFilterTags());
-
-        // Convert the model's accountSpecificNameSpaceRules to expected object type
-        Map<String, Object> accountSpecificNamespaceRules = new HashMap<String, Object>((Map)awsAccount.getAccountSpecificNamespaceRules());
-        model.setAccountSpecificNamespaceRules(accountSpecificNamespaceRules);
+        model.setAccountSpecificNamespaceRules(awsAccount.getAccountSpecificNamespaceRules());
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

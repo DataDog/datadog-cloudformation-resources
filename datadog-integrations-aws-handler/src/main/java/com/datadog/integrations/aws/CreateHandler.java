@@ -1,4 +1,4 @@
-package com.datadog.integration.aws;
+package com.datadog.integrations.aws;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -33,16 +33,13 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         );
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
-        // Convert the model's accountSpecificNameSpaceRules to expected object type
-        Map<String, Boolean> accountSpecificNamespaceRules = new HashMap<String, Boolean>((Map)model.getAccountSpecificNamespaceRules());
-
         AWSAccount awsCreatePayload = new AWSAccount()
             .accountId(model.getAccountID())
             .roleName(model.getRoleName())
             .accessKeyId(model.getAccessKeyID())
             .hostTags(model.getHostTags())
             .filterTags(model.getFilterTags())
-            .accountSpecificNamespaceRules(accountSpecificNamespaceRules);
+            .accountSpecificNamespaceRules(model.getAccountSpecificNamespaceRules());
 
         try {
             awsApi.createAWSAccount(awsCreatePayload);

@@ -1,13 +1,13 @@
 {
-    "typeName": "Datadog::Integration::AWS",
+    "typeName": "Datadog::Integrations::AWS",
     "language": "java",
     "runtime": "java8",
-    "entrypoint": "com.datadog.integration.aws.HandlerWrapper::handleRequest",
+    "entrypoint": "com.datadog.integrations.aws.HandlerWrapper::handleRequest",
     "settings": {
         "namespace": [
             "com",
             "datadog",
-            "integration",
+            "integrations",
             "aws"
         ]
     }

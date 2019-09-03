@@ -67,7 +67,7 @@ public class AWSCRUDTest {
     }
 
     @Test
-    public void testUserCRUD() {
+    public void testAWSIntegrationCRUD() {
         final CreateHandler createHandler = new CreateHandler();
         final UpdateHandler updateHandler = new UpdateHandler();
 

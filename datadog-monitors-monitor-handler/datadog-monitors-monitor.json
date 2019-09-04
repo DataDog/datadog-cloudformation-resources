@@ -74,13 +74,13 @@
         "MonitorOverallStates": {
             "type": "string",
             "enum": [
-                "OK",
-                "Warn",
                 "Alert",
-                "No Data",
                 "Ignored",
+                "No Data",
+                "OK",
                 "Skipped",
                 "Unknown"
+                "Warn",
             ]
         },
         "MonitorState": {
@@ -253,14 +253,15 @@
             "type": "string",
             "description": "The type of the monitor",
             "enum": [
-                "query alert",
                 "composite",
-                "service check",
                 "event alert",
-                "process alert",
                 "log alert",
                 "metric alert",
-                "synthetics alert"
+                "process alert",
+                "query alert",
+                "service check",
+                "synthetics alert",
+                "trace-analytics alert"
             ]
         },
         "Multi": {

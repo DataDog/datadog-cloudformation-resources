@@ -1,0 +1,14 @@
+{
+    "typeName": "Datadog::Monitors::Monitor",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "com.datadog.monitors.monitor.HandlerWrapper::handleRequest",
+    "settings": {
+        "namespace": [
+            "com",
+            "datadog",
+            "monitors",
+            "monitor"
+        ]
+    }
+}

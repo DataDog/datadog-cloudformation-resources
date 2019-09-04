@@ -5,6 +5,9 @@
 # Maven outputs
 */.classpath
 
+# VS Code
+**/.vscode
+
 # Eclipse
 */.factorypath
 

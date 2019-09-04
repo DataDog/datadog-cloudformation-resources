@@ -1,0 +1,23 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SAM template for the Datadog::Monitors::Monitor resource type
+
+Globals:
+  Function:
+    Timeout: 60  # docker start-up times can be long for SAM CLI
+
+Resources:
+  TypeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.datadog.monitors.monitor.HandlerWrapper::handleRequest
+      Runtime: java8
+      CodeUri: ./target/datadog-monitors-monitor-handler-1.0-SNAPSHOT.jar
+
+  TestEntrypoint:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.datadog.monitors.monitor.HandlerWrapper::testEntrypoint
+      Runtime: java8
+      CodeUri: ./target/datadog-monitors-monitor-handler-1.0-SNAPSHOT.jar
+

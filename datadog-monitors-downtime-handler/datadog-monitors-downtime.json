@@ -117,7 +117,7 @@
             "type": "string"
         },
         "UpdaterId": {
-            "description": "Id of the user who created this downtime",
+            "description": "Id of the user who updated this downtime",
             "type": "integer"
         }
     },
@@ -130,6 +130,7 @@
         "/properties/CreatorId",
         "/properties/DowntimeType",
         "/properties/Id",
+        "/properties/ParentId",
         "/properties/UpdaterId"
     ],
     "required": [

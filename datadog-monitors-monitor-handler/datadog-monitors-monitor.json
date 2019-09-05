@@ -79,8 +79,8 @@
                 "No Data",
                 "OK",
                 "Skipped",
-                "Unknown"
-                "Warn",
+                "Unknown",
+                "Warn"
             ]
         },
         "MonitorState": {
@@ -284,7 +284,7 @@
         }
     },
     "required": [
-        "/properties/DatadogCredentials"
+        "DatadogCredentials"
     ],
     "writeOnlyProperties": [
         "/properties/DatadogCredentials"

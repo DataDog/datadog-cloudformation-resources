@@ -14,14 +14,6 @@
                     "description": "Type of recurrence, choose from: days, weeks, months, years",
                     "type": "string"
                 },
-                "UntilDate": {
-                    "description": "The date at which the recurrence should end as a POSIX timestmap",
-                    "type": "integer"
-                },
-                "UntilOccurrences": {
-                    "description": "TODO: mutually exclusive with UntilDate; How many times the downtime is rescheduled",
-                    "type": "integer"
-                },
                 "WeekDays": {
                     "description": "A list of week days to repeat on; first letter must be capitalized",
                     "items": {
@@ -30,6 +22,24 @@
                     "type": "array"
                 }
             },
+            "oneOf": [
+                {
+                    "properties": {
+                        "UntilDate": {
+                            "description": "The date at which the recurrence should end as a POSIX timestmap; mutually exclusive with UntilOccurrences",
+                            "type": "integer"
+                        }
+                    }
+                },
+                {
+                    "properties": {
+                        "UntilOccurrences": {
+                            "description": "The number of times the downtime is rescheduled; mutually exclusive with UntilDate",
+                            "type": "integer"
+                        }
+                    }
+                }
+            ],
             "type": "object"
         }
     },
@@ -93,7 +103,7 @@
             "type": "array"
         },
         "ParentId": {
-            "description": "TODO",
+            "description": "The ID of the parent downtime to this one",
             "type": "integer"
         },
         "Recurrence": {
@@ -134,6 +144,7 @@
         "/properties/UpdaterId"
     ],
     "required": [
-        "Scope"
+        "Scope",
+        "DatadogCredentials"
     ]
 }

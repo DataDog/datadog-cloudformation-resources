@@ -284,7 +284,9 @@
         }
     },
     "required": [
-        "DatadogCredentials"
+        "DatadogCredentials",
+        "Query",
+        "Type"
     ],
     "writeOnlyProperties": [
         "/properties/DatadogCredentials"

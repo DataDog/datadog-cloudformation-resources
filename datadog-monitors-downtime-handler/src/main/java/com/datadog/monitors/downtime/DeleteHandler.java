@@ -7,7 +7,6 @@ import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.api.DowntimesApi;
-import com.datadog.api.client.v1.api.UsersApi;
 import com.datadog.cloudformation.common.clients.ApiClients;
 import com.datadog.api.client.v1.ApiException;
 

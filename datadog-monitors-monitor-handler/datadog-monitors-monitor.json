@@ -4,14 +4,17 @@
     "definitions": {
         "Creator": {
             "type": "object",
-            "properties":{
+            "properties": {
                 "Name": {
+                    "description": "Name of the creator of the monitor",
                     "type": "string"
                 },
                 "Handle": {
+                    "description": "Handle of the creator of the monitor",
                     "type": "string"
                 },
                 "Email": {
+                    "description": "Email of the creator of the monitor",
                     "type": "string"
                 }
             }
@@ -20,20 +23,25 @@
             "type": "object",
             "properties": {
                 "Value": {
+                    "description": "Value of the metric when the monitor triggered",
                     "type": "number",
                     "format": "float"
                 },
                 "FromTS": {
+                    "description": "",
                     "type": "number"
                 },
                 "ToTS": {
+                    "description": "",
                     "type": "number"
                 },
                 "Left": {
+                    "description": "",
                     "type": "number",
                     "format": "float"
                 },
                 "Right": {
+                    "description": "",
                     "type": "number",
                     "format": "float"
                 }
@@ -43,30 +51,39 @@
             "type": "object",
             "properties": {
                 "Name": {
+                    "description": "Name of the group",
                     "type": "string"
                 },
                 "LastTriggeredTS": {
+                    "description": "Timestamp when the group was last triggered",
                     "type": "number"
                 },
                 "LastNotifiedTS": {
+                    "description": "Timestamp when the group last notified",
                     "type": "number"
                 },
                 "Status": {
+                    "description": "Status of the group",
                     "$ref": "#/definitions/MonitorOverallStates"
                 },
                 "TriggeringValue": {
+                    "description": "",
                     "$ref": "#/definitions/MonitorStateGroupValue"
                 },
                 "Message": {
+                    "description": "",
                     "type": "string"
                 },
                 "LastResolvedTS": {
+                    "description": "Timestamp when the group was last resolved",
                     "type": "number"
                 },
                 "LastNodataTS": {
+                    "description": "Timestamp when the group was last getting no data",
                     "type": "number"
                 },
                 "LastDataTS": {
+                    "description": "Timestamp when the group was last getting data",
                     "type": "number"
                 }
             }
@@ -87,12 +104,15 @@
             "type": "object",
             "properties": {
                 "MonitorID": {
+                    "description": "ID of the monitor",
                     "type": "number"
                 },
                 "OverallState": {
+                    "description": "Overall state of the monitor",
                     "$ref": "#/definitions/MonitorOverallStates"
                 },
                 "Groups": {
+                    "description": "State of each monitor group",
                     "type": "object",
                     "patternProperties": {
                         ".*": {
@@ -106,18 +126,23 @@
             "type": "object",
             "properties": {
                 "Critical": {
+                    "description": "Threshold value for triggering an alert or number of consecutive `Critical` states for a service check monitor before triggering an alert",
                     "type": "number"
                 },
                 "CriticalRecovery": {
+                    "description": "Threshold value for recovering from an alert state",
                     "type": "number"
                 },
                 "OK": {
+                    "description": "Number of consecutive `OK` states for a service check monitor before recovering from an alert state",
                     "type": "number"
                 },
                 "Warning": {
+                    "description": "Threshold value for triggering a warning",
                     "type": "number"
                 },
                 "WarningRecovery": {
+                    "description": "Threshold value for recovering from a warning state",
                     "type": "number"
                 }
             }
@@ -126,9 +151,11 @@
             "type": "object",
             "properties": {
                 "TriggerWindow": {
+                    "description": "How long a metric must be anomalous before triggering an alert",
                     "type": "string"
                 },
                 "RecoveryWindow": {
+                    "description": "How long an anomalous metric must be normal before recovering from an alert state",
                     "type": "string"
                 }
             }
@@ -137,9 +164,11 @@
             "type": "object",
             "properties": {
                 "Aggregation": {
+                    "description": "",
                     "type": "string"
                 },
                 "DeviceIDs": {
+                    "description": "",
                     "type": "array",
                     "items": {
                         "type": "string",
@@ -151,51 +180,67 @@
                     }
                 },
                 "EnableLogsSample": {
+                    "description": "",
                     "type": "boolean"
                 },
                 "EscalationMessage": {
+                    "description": "Message to include with a re-notification when renotify_interval is set",
                     "type": "string"
                 },
                 "EvaluationDelay": {
+                    "description": "Time in seconds to delay evaluation",
                     "type": "number"
                 },
                 "IncludeTags": {
+                    "description": "Whether or not to include triggering tags into notification title",
                     "type": "boolean"
                 },
                 "Locked": {
+                    "description": "Whether or not changes to this monitor should be restricted to the creator or admins",
                     "type": "boolean"
                 },
                 "MinLocationFailed": {
+                    "description": "",
                     "type": "number"
                 },
                 "NewHostDelay": {
+                    "description": "Time in seconds to allow a host to boot before starting the evaluation of monitor results",
                     "type": "number"
                 },
                 "NoDataTimeframe": {
+                    "description": "Number of minutes data stopped reporting before notifying",
                     "type": "number"
                 },
                 "NotifyAudit": {
+                    "description": "Whether or not to notify tagged users when changes are made to the monitor",
                     "type": "boolean"
                 },
                 "NotifyNoData": {
+                    "description": "Whether or not to notify when data stops reporting",
                     "type": "boolean"
                 },
                 "RenotifyInterval": {
+                    "description": "Number of minutes after the last notification before the monitor re-notifies on the current status",
                     "type": "number"
                 },
                 "RequireFullWindow": {
+                    "description": "Whether or not the monitor requires a full window of data before it is evaluated",
                     "type": "boolean"
                 },
                 "SyntheticsCheckID": {
+                    "description": "",
                     "type": "number"
                 },
                 "Thresholds": {
+                    "description": "The threshold definitions",
                     "$ref": "#/definitions/MonitorThresholds"
                 },
                 "ThresholdWindows": {
+                    "description": "The threshold window definitions",
                     "$ref": "#/definitions/MonitorThresholdWindows"
                 },
                 "TimeoutH": {
+                    "description": "Number of hours of the monitor not reporting data before it automatically resolves",
                     "type": "integer"
                 }
             }
@@ -220,10 +265,10 @@
             ],
             "type": "object"
         },
-        "Creator":{
+        "Creator": {
             "$ref": "#/definitions/Creator"
         },
-        "Id":{
+        "Id": {
             "description": "ID of the monitor",
             "type": "number"
         },
@@ -232,21 +277,26 @@
             "type": "string"
         },
         "Name": {
+            "description": "Name of the monitor",
             "type": "string"
         },
         "Tags": {
+            "description": "Tags associated with the monitor",
             "type": "array",
             "items": {
                 "type": "string"
             }
         },
-        "Options":{
+        "Options": {
+            "description": "The monitor options",
             "$ref": "#/definitions/MonitorOptions"
         },
         "OverallState": {
+            "description": "The overall state of the monitor",
             "$ref": "#/definitions/MonitorOverallStates"
         },
         "Query": {
+            "description": "The monitor query",
             "type": "string"
         },
         "Type": {
@@ -265,21 +315,26 @@
             ]
         },
         "Multi": {
+            "description": "Whether or not the monitor is multi alert",
             "type": "boolean"
         },
         "Created": {
+            "description": "Date of creation of the monitor",
             "type": "string",
             "format": "date-time"
         },
         "Deleted": {
+            "description": "Date of deletion of the monitor",
             "type": "string",
             "format": "date-time"
         },
         "Modified": {
+            "description": "Date of edition of the monitor",
             "type": "string",
             "format": "date-time"
         },
         "State": {
+            "description": "State of the monitor",
             "$ref": "#/definitions/MonitorState"
         }
     },

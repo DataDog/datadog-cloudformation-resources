@@ -32,7 +32,6 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()
         );
-
         MonitorOptions options = null;
         if (model.getOptions() != null) {
             options = new MonitorOptions()
@@ -116,8 +115,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         }
 
         // Set ID of the returned monitor, so that the read handler can request it
-        model.setID(createdMonitor.getId().doubleValue());
-
+        model.setId(createdMonitor.getId().doubleValue());
         return new ReadHandler().handleRequest(proxy, request, callbackContext, logger);
     }
 }

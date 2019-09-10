@@ -51,7 +51,7 @@ public class MonitorCRUDTest {
     public void deleteMonitor() {
         final DeleteHandler deleteHandler = new DeleteHandler();
         final ResourceModel model = ResourceModel.builder().build();
-        model.setID(id);
+        model.setId(id);
         model.setDatadogCredentials(datadogCredentials);
 
         final ResourceHandlerRequest<ResourceModel> request = ResourceHandlerRequest.<ResourceModel>builder()
@@ -100,7 +100,7 @@ public class MonitorCRUDTest {
         assertThat(read.getTags()).isEqualTo(testTags);
         assertThat(read.getOptions().getThresholds().getCritical()).isEqualTo(3.);
         assertThat(read.getOptions().getThresholds().getOK()).isEqualTo(2.);
-        id = read.getID();
+        id = read.getId();
 
         // Update the resource
         options = new MonitorOptions();

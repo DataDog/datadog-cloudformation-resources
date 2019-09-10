@@ -223,7 +223,7 @@
         "Creator":{
             "$ref": "#/definitions/Creator"
         },
-        "ID":{
+        "Id":{
             "description": "ID of the monitor",
             "type": "number"
         },
@@ -290,11 +290,11 @@
         "/properties/DatadogCredentials"
     ],
     "primaryIdentifier": [
-        "/properties/ID"
+        "/properties/Id"
     ],
     "readOnlyProperties": [
         "/properties/Modified",
-        "/properties/ID",
+        "/properties/Id",
         "/properties/Deleted",
         "/properties/State",
         "/properties/OverallState",

@@ -23,7 +23,7 @@
             "type": "object",
             "properties": {
                 "Value": {
-                    "description": "Value of the metric when the monitor triggered",
+                    "description": "Value that triggered the monitor",
                     "type": "number",
                     "format": "float"
                 },
@@ -36,12 +36,10 @@
                     "type": "number"
                 },
                 "Left": {
-                    "description": "",
                     "type": "number",
                     "format": "float"
                 },
                 "Right": {
-                    "description": "",
                     "type": "number",
                     "format": "float"
                 }
@@ -51,7 +49,7 @@
             "type": "object",
             "properties": {
                 "Name": {
-                    "description": "Name of the group",
+                    "description": "Name of the group. This is a CSV of tags and filters",
                     "type": "string"
                 },
                 "LastTriggeredTS": {
@@ -126,7 +124,7 @@
             "type": "object",
             "properties": {
                 "Critical": {
-                    "description": "Threshold value for triggering an alert or number of consecutive `Critical` states for a service check monitor before triggering an alert",
+                    "description": "Threshold value for triggering an alert",
                     "type": "number"
                 },
                 "CriticalRecovery": {
@@ -134,7 +132,7 @@
                     "type": "number"
                 },
                 "OK": {
-                    "description": "Number of consecutive `OK` states for a service check monitor before recovering from an alert state",
+                    "description": "Threshold value for recovering from an alert state",
                     "type": "number"
                 },
                 "Warning": {
@@ -180,7 +178,7 @@
                     }
                 },
                 "EnableLogsSample": {
-                    "description": "",
+                    "description": "Whether or not to include a sample of the logs",
                     "type": "boolean"
                 },
                 "EscalationMessage": {
@@ -204,7 +202,7 @@
                     "type": "number"
                 },
                 "NewHostDelay": {
-                    "description": "Time in seconds to allow a host to boot before starting the evaluation of monitor results",
+                    "description": "Time in seconds to allow a host to start reporting data before starting the evaluation of monitor results",
                     "type": "number"
                 },
                 "NoDataTimeframe": {
@@ -329,7 +327,7 @@
             "format": "date-time"
         },
         "Modified": {
-            "description": "Date of edition of the monitor",
+            "description": "Date of modification of the monitor",
             "type": "string",
             "format": "date-time"
         },

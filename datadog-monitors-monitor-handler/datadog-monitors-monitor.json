@@ -65,7 +65,7 @@
                     "$ref": "#/definitions/MonitorOverallStates"
                 },
                 "TriggeringValue": {
-                    "description": "",
+                    "description": "Information on the value that triggered the monitor",
                     "$ref": "#/definitions/MonitorStateGroupValue"
                 },
                 "Message": {

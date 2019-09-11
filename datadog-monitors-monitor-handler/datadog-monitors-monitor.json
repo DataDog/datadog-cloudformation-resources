@@ -166,13 +166,13 @@
                     "type": "string"
                 },
                 "DeviceIDs": {
-                    "description": "",
+                    "description": "Types of devices to test",
                     "type": "array",
                     "items": {
                         "type": "string",
                         "enum": [
                             "laptop_large",
-                            "table",
+                            "tablet",
                             "mobile_small"
                         ]
                     }
@@ -198,7 +198,7 @@
                     "type": "boolean"
                 },
                 "MinLocationFailed": {
-                    "description": "",
+                    "description": "Number of locations allowed to fail before triggering alert",
                     "type": "number"
                 },
                 "NewHostDelay": {
@@ -226,7 +226,7 @@
                     "type": "boolean"
                 },
                 "SyntheticsCheckID": {
-                    "description": "",
+                    "description": "ID of the corresponding synthetics check",
                     "type": "number"
                 },
                 "Thresholds": {

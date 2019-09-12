@@ -28,11 +28,11 @@
                     "format": "float"
                 },
                 "FromTS": {
-                    "description": "",
+                    "description": "Start timestamp of the windowed query",
                     "type": "number"
                 },
                 "ToTS": {
-                    "description": "",
+                    "description": "End timestamp of the windowed query",
                     "type": "number"
                 },
                 "Left": {
@@ -69,7 +69,7 @@
                     "$ref": "#/definitions/MonitorStateGroupValue"
                 },
                 "Message": {
-                    "description": "",
+                    "description": "Text to display when the group changes state",
                     "type": "string"
                 },
                 "LastResolvedTS": {
@@ -162,7 +162,7 @@
             "type": "object",
             "properties": {
                 "Aggregation": {
-                    "description": "",
+                    "description": "DEPRECATED, do not use",
                     "type": "string"
                 },
                 "DeviceIDs": {

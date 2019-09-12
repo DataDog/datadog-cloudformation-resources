@@ -1,7 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
     "description": "An example resource schema demonstrating some basic constructs and validation rules.",
-    "sourceUrl": "git@github.com:aws-cloudformation/aws-cloudformation-rpdk.git",
     "definitions": {
         "DowntimeRecurrence": {
             "additionalProperties": false,

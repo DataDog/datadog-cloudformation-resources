@@ -42,13 +42,15 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
-        model.setId((int) (long) downtime.getId());
-        model.setEnd((int) (long) downtime.getEnd());
+        model.setId(downtime.getId().intValue());
+        if(downtime.getEnd() != null)
+            model.setEnd(downtime.getEnd().intValue());
         model.setMessage(downtime.getMessage());
         model.setMonitorId(downtime.getMonitorId());
         model.setMonitorTags(downtime.getMonitorTags());
         model.setScope(downtime.getScope());
-        model.setStart((int) (long) downtime.getStart());
+        if(downtime.getStart() != null)
+            model.setStart(downtime.getStart().intValue());
         model.setTimezone(downtime.getTimezone());
 
         if (downtime.getRecurrence() != null) {
@@ -58,7 +60,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             downtimeRecurrenceModel.setPeriod(downtimeRecurrenceApi.getPeriod());
             downtimeRecurrenceModel.setType(downtimeRecurrenceApi.getType());
             if (downtimeRecurrenceApi.getUntilDate() != null) {
-                downtimeRecurrenceModel.setUntilDate((int) (long) downtimeRecurrenceApi.getUntilDate());
+                downtimeRecurrenceModel.setUntilDate(downtimeRecurrenceApi.getUntilDate().intValue());
             }
             downtimeRecurrenceModel.setUntilOccurrences(downtimeRecurrenceApi.getUntilOccurrences());
             downtimeRecurrenceModel.setWeekDays(downtimeRecurrenceApi.getWeekDays());

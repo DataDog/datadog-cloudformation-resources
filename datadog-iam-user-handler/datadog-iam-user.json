@@ -57,7 +57,8 @@
         "/properties/Disabled", "/properties/Verified"
     ],
     "required": [
-        "DatadogCredentials"
+        "DatadogCredentials",
+        "Handle"
     ],
     "additionalProperties": false
 }

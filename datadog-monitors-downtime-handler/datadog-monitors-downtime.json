@@ -3,27 +3,26 @@
     "description": "An example resource schema demonstrating some basic constructs and validation rules.",
     "definitions": {
         "DowntimeRecurrence": {
-            "additionalProperties": false,
-            "properties": {
-                "Period": {
-                    "description": "How often to repeat",
-                    "type": "integer"
-                },
-                "Type": {
-                    "description": "Type of recurrence, choose from: days, weeks, months, years",
-                    "type": "string"
-                },
-                "WeekDays": {
-                    "description": "A list of week days to repeat on; first letter must be capitalized",
-                    "items": {
-                        "type": "string"
-                    },
-                    "type": "array"
-                }
-            },
             "oneOf": [
                 {
+                    "additionalProperties": false,
+                    "type": "object",
                     "properties": {
+                        "Period": {
+                            "description": "How often to repeat",
+                            "type": "integer"
+                        },
+                        "Type": {
+                            "description": "Type of recurrence, choose from: days, weeks, months, years",
+                            "type": "string"
+                        },
+                        "WeekDays": {
+                            "description": "A list of week days to repeat on; first letter must be capitalized",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
                         "UntilDate": {
                             "description": "The date at which the recurrence should end as a POSIX timestmap; mutually exclusive with UntilOccurrences",
                             "type": "integer"
@@ -31,15 +30,31 @@
                     }
                 },
                 {
+                    "additionalProperties": false,
+                    "type": "object",
                     "properties": {
+                        "Period": {
+                            "description": "How often to repeat",
+                            "type": "integer"
+                        },
+                        "Type": {
+                            "description": "Type of recurrence, choose from: days, weeks, months, years",
+                            "type": "string"
+                        },
+                        "WeekDays": {
+                            "description": "A list of week days to repeat on; first letter must be capitalized",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
                         "UntilOccurrences": {
                             "description": "The number of times the downtime is rescheduled; mutually exclusive with UntilDate",
                             "type": "integer"
                         }
                     }
                 }
-            ],
-            "type": "object"
+            ]
         }
     },
     "properties": {

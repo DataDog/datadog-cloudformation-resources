@@ -1,6 +1,5 @@
 package com.datadog.monitors.downtime;
 
-import java.io.InputStream;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 

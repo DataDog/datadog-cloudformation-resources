@@ -1,0 +1,164 @@
+{
+    "typeName": "Datadog::Monitors::Downtime",
+    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
+    "definitions": {
+        "DowntimeRecurrence": {
+            "oneOf": [
+                {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                        "Period": {
+                            "description": "How often to repeat",
+                            "type": "integer"
+                        },
+                        "Type": {
+                            "description": "Type of recurrence, choose from: days, weeks, months, years",
+                            "type": "string"
+                        },
+                        "WeekDays": {
+                            "description": "A list of week days to repeat on; first letter must be capitalized",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "UntilDate": {
+                            "description": "The date at which the recurrence should end as a POSIX timestmap; mutually exclusive with UntilOccurrences",
+                            "type": "integer"
+                        }
+                    }
+                },
+                {
+                    "additionalProperties": false,
+                    "type": "object",
+                    "properties": {
+                        "Period": {
+                            "description": "How often to repeat",
+                            "type": "integer"
+                        },
+                        "Type": {
+                            "description": "Type of recurrence, choose from: days, weeks, months, years",
+                            "type": "string"
+                        },
+                        "WeekDays": {
+                            "description": "A list of week days to repeat on; first letter must be capitalized",
+                            "items": {
+                                "type": "string"
+                            },
+                            "type": "array"
+                        },
+                        "UntilOccurrences": {
+                            "description": "The number of times the downtime is rescheduled; mutually exclusive with UntilDate",
+                            "type": "integer"
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "properties": {
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                    "description": "Datadog API key",
+                    "type": "string"
+                },
+                "ApplicationKey": {
+                    "description": "Datadog application key",
+                    "type": "string"
+                }
+            },
+            "required": ["ApiKey", "ApplicationKey"],
+            "type": "object"
+        },
+        "Active": {
+            "description": "Whether or not this downtime is currently active",
+            "type": "boolean"
+        },
+        "Canceled": {
+            "description": "POSIX Timestamp of cancellation of this downtime (null if not canceled)",
+            "type": "integer"
+        },
+        "CreatorId": {
+            "description": "Id of the user who created this downtime",
+            "type": "integer"
+        },
+        "Disabled": {
+            "description": "Whether or not this downtime is disabled",
+            "type": "boolean"
+        },
+        "DowntimeType": {
+            "description": "Type of this downtime",
+            "type": "integer"
+        },
+        "End": {
+            "description": "POSIX timestamp to end the downtime. If not provided, the downtime is in effect indefinitely (i.e. until you cancel it).",
+            "type": "integer"
+        },
+        "Id": {
+            "description": "Id of this downtime",
+            "type": "integer"
+        },
+        "Message": {
+            "description": "Message on the downtime",
+            "type": "string"
+        },
+        "MonitorId": {
+            "description": "A single monitor to which the downtime applies. If not provided, the downtime applies to all monitors.",
+            "type": "integer"
+        },
+        "MonitorTags": {
+            "description": "A comma-separated list of monitor tags, to which the downtime applies. The resulting downtime applies to monitors that match ALL provided monitor tags.",
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "ParentId": {
+            "description": "The ID of the parent downtime to this one",
+            "type": "integer"
+        },
+        "Recurrence": {
+            "description": "An object defining the recurrence of the downtime with a variety of parameters",
+            "type": "object",
+            "$ref": "#/definitions/DowntimeRecurrence"
+        },
+        "Scope": {
+            "description": "The scope(s) to which the downtime applies",
+            "items": {
+                "type": "string"
+            },
+            "type": "array"
+        },
+        "Start": {
+            "description": "POSIX timestamp to start the downtime. If not provided, the downtime starts the moment it is created.",
+            "type": "integer"
+        },
+        "Timezone": {
+            "description": "The timezone for the downtime",
+            "type": "string"
+        },
+        "UpdaterId": {
+            "description": "Id of the user who updated this downtime",
+            "type": "integer"
+        }
+    },
+    "primaryIdentifier": [
+        "/properties/Id"
+    ],
+    "readOnlyProperties": [
+        "/properties/Active",
+        "/properties/Canceled",
+        "/properties/CreatorId",
+        "/properties/DowntimeType",
+        "/properties/Id",
+        "/properties/ParentId",
+        "/properties/UpdaterId"
+    ],
+    "required": [
+        "Scope",
+        "DatadogCredentials"
+    ]
+}

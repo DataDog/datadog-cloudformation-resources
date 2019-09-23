@@ -1,0 +1,14 @@
+{
+    "typeName": "Datadog::Monitors::Downtime",
+    "language": "java",
+    "runtime": "java8",
+    "entrypoint": "com.datadog.monitors.downtime.HandlerWrapper::handleRequest",
+    "settings": {
+        "namespace": [
+            "com",
+            "datadog",
+            "monitors",
+            "downtime"
+        ]
+    }
+}

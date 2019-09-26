@@ -1,17 +1,26 @@
 # Datadog::Integrations::AWS
 
-Congratulations on starting development! Next steps:
+# Datadog::Users::User
 
-1. Write the JSON schema describing your resource, `datadog-integrations-aws.json`
-2. The RPDK will automatically generate the correct resource model from the
-   schema whenever the project is built via Maven. You can also do this manually
-   with the following command: `cfn-cli generate`
-3. Implement your resource handlers
+This resource represents the Datadog AWS Integration, and is used to create and manage this integration.
 
+## Example Usage
 
-Please don't modify files under `target/generated-sources/rpdk`, as they will be
-automatically overwritten.
+```
+Resources:
+  DatadogTestAWSAccount:
+    Type: 'Datadog::Integrations::AWS'
+    Properties:
+      AccountID: 123456
+      RoleName: DatadogAWSAcctRoleName
+      FilterTags: ["filter:thisTag"]
+      HostTags: ["env:staging", "account:123456"]
+      AccountSpecificNamespaceRules: {"api_gateway": true, "route53": false}
+      DatadogCredentials:
+        ApiKey: <DD_API_KEY>
+        ApplicationKey: <DD_APP_KEY>
+```
 
-The code use [Lombok](https://projectlombok.org/), and [you may have to install
-IDE integrations](https://projectlombok.org/) to enable auto-complete for
-Lombok-annotated classes.
+## Property Reference:
+
+For a list of available properties and their descriptions and examples, see the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-aws-handler/datadog-integrations-aws.json).

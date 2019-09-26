@@ -1,6 +1,6 @@
 # Datadog::Users::User
 
-This resource represents a Datadog App User. This can be used to create and manage Datadog Users
+This resource represents a Datadog application user, and is used to create and manage Datadog users.
 
 ## Example Usage
 
@@ -19,4 +19,5 @@ Resources:
 ```
 
 ## Property Reference:
-Please reference the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/datadog-iam-user.json) for a list of available properties and their descriptions/examples.
+
+For a list of available properties and their descriptions and examples, see the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/datadog-iam-user.json).

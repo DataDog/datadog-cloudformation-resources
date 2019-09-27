@@ -356,5 +356,22 @@
         "/properties/Creator",
         "/properties/Created"
     ],
-    "additionalProperties": false
+    "additionalProperties": false,
+    "handlers": {
+        "create": {
+            "permissions": [""]
+        },
+        "read": {
+            "permissions": [""]
+        },
+        "update": {
+            "permissions": [""]
+        },
+        "delete": {
+            "permissions": [""]
+        },
+        "list": {
+            "permissions": [""]
+        }
+    }
 }

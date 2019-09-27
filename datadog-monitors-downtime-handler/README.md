@@ -26,7 +26,7 @@ Resources:
         ApplicationKey: <DD_APP_KEY>
 ```
 
-This example stack creates a downtime on monitors with the tag `maintanence:scheduled` over all groups every `3 days` until. Each day the downtime is active from 4-8pm UTC.
+This example stack creates a downtime on monitors with the tag `maintenance:scheduled` over all groups every `3 days`. Each day the downtime is active from 4-8pm UTC.
 
 ```
 Resources:

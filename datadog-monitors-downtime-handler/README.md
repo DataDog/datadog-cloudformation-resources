@@ -1,6 +1,6 @@
 # Datadog::Monitors::Downtime
 
-This resource represents a Datadog Monitor Downtime and is used to create and manage these downtimes. More information about Downtimes can be found in the [Dowintime documentation](https://docs.datadoghq.com/monitors/downtimes/).
+This resource represents a Datadog Monitor Downtime and is used to create and manage these downtimes. More information about Downtimes can be found in the [Downtime documentation](https://docs.datadoghq.com/monitors/downtimes/).
 
 ## Example Usage
 

@@ -10,5 +10,6 @@
             "monitors",
             "downtime"
         ]
-    }
+    },
+    "testEntrypoint": "com.datadog.monitors.downtime.HandlerWrapper::testEntrypoint"
 }

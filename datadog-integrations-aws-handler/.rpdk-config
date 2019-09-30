@@ -10,5 +10,6 @@
             "integrations",
             "aws"
         ]
-    }
+    },
+    "testEntrypoint": "com.datadog.integrations.aws.HandlerWrapper::testEntrypoint"
 }

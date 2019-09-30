@@ -10,5 +10,6 @@
             "monitors",
             "monitor"
         ]
-    }
+    },
+    "testEntrypoint": "com.datadog.monitors.monitor.HandlerWrapper::testEntrypoint"
 }

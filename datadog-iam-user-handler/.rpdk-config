@@ -10,5 +10,6 @@
             "iam",
             "user"
         ]
-    }
+    },
+    "testEntrypoint": "com.datadog.iam.user.HandlerWrapper::testEntrypoint"
 }

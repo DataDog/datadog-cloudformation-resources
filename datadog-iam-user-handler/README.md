@@ -1,6 +1,6 @@
 # Datadog::Users::User
 
-This resource represents a Datadog application user, and is used to create and manage Datadog users.
+This resource represents a Datadog application user, and is used to create and manage Datadog users. More information about Datadog Users can be found in the [Users documentation](https://docs.datadoghq.com/api/?lang=python#users).
 
 ## Example Usage
 

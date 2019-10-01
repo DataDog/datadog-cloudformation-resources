@@ -30,10 +30,12 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
         Downtime downtime = new Downtime()
             .message(model.getMessage())
-            .monitorId(model.getMonitorId())
             .monitorTags(model.getMonitorTags())
             .scope(model.getScope())
             .timezone(model.getTimezone());
+
+        if (model.getMonitorId() != null)
+            downtime.monitorId(model.getMonitorId().longValue());
 
         if (model.getEnd() != null) {
             downtime.setEnd(model.getEnd().longValue());

@@ -107,7 +107,7 @@
         },
         "MonitorId": {
             "description": "A single monitor to which the downtime applies. If not provided, the downtime applies to all monitors.",
-            "type": "integer"
+            "type": "number"
         },
         "MonitorTags": {
             "description": "A comma-separated list of monitor tags, to which the downtime applies. The resulting downtime applies to monitors that match ALL provided monitor tags.",

@@ -46,7 +46,8 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         if(downtime.getEnd() != null)
             model.setEnd(downtime.getEnd().intValue());
         model.setMessage(downtime.getMessage());
-        model.setMonitorId(downtime.getMonitorId());
+        if (downtime.getMonitorId() != null)
+            model.setMonitorId(downtime.getMonitorId().doubleValue());
         model.setMonitorTags(downtime.getMonitorTags());
         model.setScope(downtime.getScope());
         if(downtime.getStart() != null)

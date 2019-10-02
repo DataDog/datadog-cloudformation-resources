@@ -120,11 +120,6 @@
             "description": "The ID of the parent downtime to this one",
             "type": "integer"
         },
-        "Recurrence": {
-            "description": "An object defining the recurrence of the downtime with a variety of parameters",
-            "type": "object",
-            "$ref": "#/definitions/DowntimeRecurrence"
-        },
         "Scope": {
             "description": "The scope(s) to which the downtime applies",
             "items": {

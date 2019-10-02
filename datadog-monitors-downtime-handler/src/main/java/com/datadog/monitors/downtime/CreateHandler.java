@@ -48,19 +48,20 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             downtime.setEnd(model.getEnd().longValue());
         }
 
-        //Convert to proper type.recurrence(model.getRecurrence())
-        if (model.getRecurrence() != null) {
-            DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
-            com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.client.v1.model.DowntimeRecurrence();
-            downtimeRecurrenceApi.setPeriod(downtimeRecurrenceModel.getPeriod());
-            downtimeRecurrenceApi.setType(downtimeRecurrenceModel.getType());
-            if (downtimeRecurrenceModel.getUntilDate() != null) {
-                downtimeRecurrenceApi.setUntilDate(downtimeRecurrenceModel.getUntilDate().longValue());
-            }
-            downtimeRecurrenceApi.setUntilOccurrences(downtimeRecurrenceModel.getUntilOccurrences());
-            downtimeRecurrenceApi.setWeekDays(downtimeRecurrenceModel.getWeekDays());
-            downtime.recurrence(downtimeRecurrenceApi);
-        }
+        // Not currently supported properly
+        // Convert to proper type.recurrence(model.getRecurrence())
+        // if (model.getRecurrence() != null) {
+        //     DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
+        //     com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.client.v1.model.DowntimeRecurrence();
+        //     downtimeRecurrenceApi.setPeriod(downtimeRecurrenceModel.getPeriod());
+        //     downtimeRecurrenceApi.setType(downtimeRecurrenceModel.getType());
+        //     if (downtimeRecurrenceModel.getUntilDate() != null) {
+        //         downtimeRecurrenceApi.setUntilDate(downtimeRecurrenceModel.getUntilDate().longValue());
+        //     }
+        //     downtimeRecurrenceApi.setUntilOccurrences(downtimeRecurrenceModel.getUntilOccurrences());
+        //     downtimeRecurrenceApi.setWeekDays(downtimeRecurrenceModel.getWeekDays());
+        //     downtime.recurrence(downtimeRecurrenceApi);
+        // }
 
         Downtime createdDowntime;
         try {

@@ -44,20 +44,20 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             downtime.setStart(model.getStart().longValue());
         }
 
-        //Convert to proper type.recurrence(model.getRecurrence())
-        if (model.getRecurrence() != null) {
-            DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
-            com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.client.v1.model.DowntimeRecurrence();
-            downtimeRecurrenceApi.setPeriod(downtimeRecurrenceModel.getPeriod());
-            downtimeRecurrenceApi.setType(downtimeRecurrenceModel.getType());
-            if (downtimeRecurrenceModel.getUntilDate() != null) {
-                downtimeRecurrenceApi.setUntilDate(downtimeRecurrenceModel.getUntilDate().longValue());
-            }
-            downtimeRecurrenceApi.setUntilOccurrences(downtimeRecurrenceModel.getUntilOccurrences());
-            downtimeRecurrenceApi.setWeekDays(downtimeRecurrenceModel.getWeekDays());
-            downtime.recurrence(downtimeRecurrenceApi);
-
-        }
+        // Not currently supported properly
+        // //Convert to proper type.recurrence(model.getRecurrence())
+        // if (model.getRecurrence() != null) {
+        //     DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
+        //     com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.client.v1.model.DowntimeRecurrence();
+        //     downtimeRecurrenceApi.setPeriod(downtimeRecurrenceModel.getPeriod());
+        //     downtimeRecurrenceApi.setType(downtimeRecurrenceModel.getType());
+        //     if (downtimeRecurrenceModel.getUntilDate() != null) {
+        //         downtimeRecurrenceApi.setUntilDate(downtimeRecurrenceModel.getUntilDate().longValue());
+        //     }
+        //     downtimeRecurrenceApi.setUntilOccurrences(downtimeRecurrenceModel.getUntilOccurrences());
+        //     downtimeRecurrenceApi.setWeekDays(downtimeRecurrenceModel.getWeekDays());
+        //     downtime.recurrence(downtimeRecurrenceApi);
+        // }
 
         try {
             downtimesApi.updateDowntime(model.getId().longValue(), downtime);

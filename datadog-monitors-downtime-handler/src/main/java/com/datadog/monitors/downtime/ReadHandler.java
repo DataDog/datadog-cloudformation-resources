@@ -54,19 +54,20 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             model.setStart(downtime.getStart().intValue());
         model.setTimezone(downtime.getTimezone());
 
-        if (downtime.getRecurrence() != null) {
-            //Convert to proper type.recurrence(model.getRecurrence())
-            DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
-            com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = downtime.getRecurrence();
-            downtimeRecurrenceModel.setPeriod(downtimeRecurrenceApi.getPeriod());
-            downtimeRecurrenceModel.setType(downtimeRecurrenceApi.getType());
-            if (downtimeRecurrenceApi.getUntilDate() != null) {
-                downtimeRecurrenceModel.setUntilDate(downtimeRecurrenceApi.getUntilDate().intValue());
-            }
-            downtimeRecurrenceModel.setUntilOccurrences(downtimeRecurrenceApi.getUntilOccurrences());
-            downtimeRecurrenceModel.setWeekDays(downtimeRecurrenceApi.getWeekDays());
-            model.setRecurrence(downtimeRecurrenceModel);
-        }
+        // Not currently supported properly
+        // if (downtime.getRecurrence() != null) {
+        //     // Convert to proper type.recurrence(model.getRecurrence())
+        //     DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
+        //     com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = downtime.getRecurrence();
+        //     downtimeRecurrenceModel.setPeriod(downtimeRecurrenceApi.getPeriod());
+        //     downtimeRecurrenceModel.setType(downtimeRecurrenceApi.getType());
+        //     if (downtimeRecurrenceApi.getUntilDate() != null) {
+        //         downtimeRecurrenceModel.setUntilDate(downtimeRecurrenceApi.getUntilDate().intValue());
+        //     }
+        //     downtimeRecurrenceModel.setUntilOccurrences(downtimeRecurrenceApi.getUntilOccurrences());
+        //     downtimeRecurrenceModel.setWeekDays(downtimeRecurrenceApi.getWeekDays());
+        //     model.setRecurrence(downtimeRecurrenceModel);
+        // }
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()
             .resourceModel(model)

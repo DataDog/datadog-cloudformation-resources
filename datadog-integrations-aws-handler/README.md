@@ -19,6 +19,8 @@ Resources:
         ApplicationKey: <DD_APP_KEY>
 ```
 
+**Note** The AccountID, RoleName, and AccessKeyID cannot be updated. To update these fields, you must delete and recreate the stack.
+
 ## Property Reference:
 
 For a list of available properties and their descriptions and examples, see the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-aws-handler/datadog-integrations-aws.json).

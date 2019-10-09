@@ -56,15 +56,25 @@
                     "type": "boolean"
                 }
             }
+        },
+        "IntegrationID": {
+            "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
+            "type": "string"
         }
     },
     "required": [
         "DatadogCredentials"
     ],
     "primaryIdentifier": [
-        "/properties/AccountID",
-        "/properties/AccessKeyID",
-        "/properties/RoleName"
+        "/properties/IntegrationID"
+    ],
+    "createOnlyProperties": [
+        "/properties/accountID",
+        "/properties/RoleName",
+        "/properties/AccessKeyID"
+    ],
+    "readOnlyProperties": [
+        "/properties/IntegrationID"
     ],
     "additionalProperties": false,
     "handlers": {

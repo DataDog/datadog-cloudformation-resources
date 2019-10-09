@@ -1,14 +1,10 @@
 package com.datadog.integrations.aws;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import com.amazonaws.cloudformation.proxy.AmazonWebServicesClientProxy;
 import com.amazonaws.cloudformation.proxy.Logger;
-import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.OperationStatus;
+import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
-
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
 import com.datadog.api.client.v1.api.AwsIntegrationApi;
@@ -53,6 +49,9 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
                 .message(err)
                 .build();
         }
+
+        String integrationID = model.getAccountID() + ":" + model.getRoleName() + ":" + model.getAccessKeyID();
+        model.setIntegrationID(integrationID);
 
         return new ReadHandler().handleRequest(proxy, request, callbackContext, logger);
     }

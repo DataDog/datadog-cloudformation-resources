@@ -25,6 +25,8 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         final Logger logger) {
         final ResourceModel model = request.getDesiredResourceState();
 
+        logger.log("Starting the User Resource Create Handler");
+
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()

@@ -28,7 +28,7 @@ To build and run tests for a given resource:
 * Install cfn-cli
 * Do note that for now, the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
 * `cd` into the directory of the resource you want to work with
-* Run `mvn test` inside the directory to 
+* Run `mvn test` inside the directory to run the test suite for that resource
 
 ## Development Tips
 
@@ -42,3 +42,5 @@ To build and run tests for a given resource:
         .message("Failed to read monitor 12345")
         .build();
     ```
+* Primary Identifiers should all be based on required fields. Having optional fields make up this property will cause errors on stack creation. These will also be displayed when Fn:Ref is called on this resource.
+* Using the build in `logger` in the resource will display logs in CloudWatch to be used to help debug any issues.

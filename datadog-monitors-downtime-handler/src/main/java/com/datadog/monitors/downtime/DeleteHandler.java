@@ -21,6 +21,8 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
 
         final ResourceModel model = request.getDesiredResourceState();
 
+        logger.log("Starting the Downtime Resource Delete Handler");
+
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()

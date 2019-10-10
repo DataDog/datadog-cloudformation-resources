@@ -20,6 +20,8 @@ public class ListHandler extends BaseHandler<CallbackContext> {
 
         final List<ResourceModel> models = new ArrayList<>();
 
+        logger.log("Starting the Monitor Resource List Handler");
+
         // TODO : put your code here
 
         return ProgressEvent.<ResourceModel, CallbackContext>builder()

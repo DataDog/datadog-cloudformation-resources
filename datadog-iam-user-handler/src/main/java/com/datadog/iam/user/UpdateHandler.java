@@ -26,6 +26,8 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
         final ResourceModel model = request.getDesiredResourceState();
 
+        logger.log("Starting the User Resource Update Handler");
+
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()

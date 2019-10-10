@@ -24,6 +24,8 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         final ResourceModel model = request.getDesiredResourceState();
 
+        logger.log("Starting the User Resource Read Handler");
+
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey()

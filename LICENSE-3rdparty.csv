@@ -1,0 +1,10 @@
+Component,Origin,License,Copyright
+
+import,org.projectlombok,MIT,Copyright 2009-2019 The Project Lombok Authors
+import,assertj-core,Apache-2.0,Copyright © 2014–2019 AssertJ
+import,junit-jupiter,EPL-2.0
+import,org.mockito,MIT
+import,mockito-junit-jupiter,MIT
+import,aws-cloudformation-rpdk-java-plugin
+import,datadog-v1,BSD-3-Clause
+import,junit,EPL-1.0

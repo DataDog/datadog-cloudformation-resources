@@ -25,7 +25,7 @@ when submitting your PR:
 * Make sure that all tests pass locally.
 * Summarize your PR with a meaningful title, [see later on this doc](#pull-request-title).
 
-Your pull request must pass all CI tests before we will merge it. If you're seeing
+Your pull request must pass all CI tests. If you're seeing
 an error and don't think it's your fault, it may not be! [Join us on Slack][3]
 or send us an email, and together we'll get it sorted out.
 

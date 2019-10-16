@@ -56,15 +56,15 @@ To set up the Datadog-AWS CloudFormation provider, follow the instructions below
     # This installs the common package into ~/.m2/repository
     mvn -f datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
     ```
-3. Install [cfn-cli](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/)
-
-    **Note**: the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
+3. Install `cfn-cli`.
 
 ### Run tests
 
 1. Follow the steps in [Setup](#setup).
 2. `cd` into the directory of the resource to be tested.
 3.  Run `mvn test` inside the directory to run the test suite for that resource.
+
+**Note**: the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
 
 ### Development Tips
 

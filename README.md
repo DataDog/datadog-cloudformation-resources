@@ -19,7 +19,7 @@
 
 2. In your AWS account, [create your AWS stack](https://console.aws.amazon.com/cloudformation/home) that includes any of the registered Datadog resources.
 
-## Resource available
+## Resources available
 
 The following Datadog resources can be register within your AWS account, refer to their specific documentation to see how to configure them:
 

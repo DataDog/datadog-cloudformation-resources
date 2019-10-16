@@ -1,6 +1,6 @@
 # Datadog-AWS CloudFormation
 ​
-[AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation provider allows you to interact with the supported Datadog ressources. In order to get started:
+[AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation provider allows you to interact with the supported Datadog resources. In order to get started:
 
 1. In your terminal, use the [AWS-cli tool](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/) to register a Datadog resource.
 
@@ -14,14 +14,14 @@
 
     With the following placeholders:
     * `<REGION>`: Your AWS region.
-    * `<DATADOG_RESOURCE_NAME>`: The name of the ressource to register, refer to the table below to see the supported resources.
+    * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the table below to see the supported resources.
     * `<LINK_TO_S3_OR_GITHUB_RELEASE>`: Link to the S3 or Github release for the resource.
 
-2. In your AWS account, [create your AWS stack](https://console.aws.amazon.com/cloudformation/home) that includes any of the registered Datadog ressources.
+2. In your AWS account, [create your AWS stack](https://console.aws.amazon.com/cloudformation/home) that includes any of the registered Datadog resources.
 
 ## Resource available
 
-The following Datadog resources can be regiser within your AWS account, refer to their specific documentation to see how to configure them.:
+The following Datadog resources can be register within your AWS account, refer to their specific documentation to see how to configure them:
 
 | Resource                | Name                          | Description                                                                                                                                                    |
 |-------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -37,9 +37,9 @@ The `Datadog/datadog-cloudformation-resources` repository contains:
 * All resources currently implemented for AWS CloudFormation.
 * A package with common functionality shared among the Resources - `datadog-cloudformation-common`
 
-## Setup
+### Setup
 
-To setup the Datadog-AWS CloudFormation provider, follow the instructions below:
+To set up the Datadog-AWS CloudFormation provider, follow the instructions below:
 
 1. Build [datadog-api-client-java](https://github.com/DataDog/datadog-api-client-java):
 

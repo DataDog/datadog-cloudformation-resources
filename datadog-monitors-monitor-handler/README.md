@@ -1,6 +1,6 @@
 # Datadog::Monitors::Monitor
 
-This resource represents a Datadog Monitor, and is used to create and manage Datadog Monitors. More information about Datadog Monitors can be found in the [Monitors documentation](https://docs.datadoghq.com/monitors/monitor_types/#pagetitle).
+This resource represents a Datadog Monitor, and is used to create and manage Datadog Monitors. More information about Datadog Monitors can be found in the [Monitors documentation](https://docs.datadoghq.com/monitors/monitor_types/).
 
 ## Example Usage
 

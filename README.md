@@ -1,4 +1,5 @@
-# Datadog-Amazon CloudFormation
+# Datadog-AWS CloudFormation
+
 ## Overview
 ​
 [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you a template to describe, configure, and provision all of the AWS resources in your environment at once. Datadog provides a way for you to monitor these resources.
@@ -12,26 +13,23 @@ To build a CloudFormation resource and connect it to Datadog:
     ```
     git clone git@github.com:DataDog/datadog-api-client-java.git
     cd datadog-api-client-java
-    # this will install the client into ~/.m2/repository
+
+    # This installs the client into ~/.m2/repository
     mvn install -Dmaven.test.skip=true
     ```
 2. Build `datadog-cloudformation-common`:
 ​
     ```
-    # This will install the common package into ~/.m2/repository
+    # This installs the common package into ~/.m2/repository
     mvn -f datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
     ```
-3. Install [cfn-cli](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/)
+3. Install [cfn-cli]()
 
     **Note**: the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
-​
-4. Give Datadog access to your AWS account by [adding an IAM user](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-iam-user-handler).
-​
-5. Next, create an AWS integration with Datadog to monitor by [creating an AWS Integration Handler](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-integrations-aws-handler).
 
 ## Resources Available
 
-Now that you have the Datadog-CloudFormation integration set up, use it to manipulate Datadog resources:
+Now that Datadog-AWS Cloudformation is set up, use it to manipulate Datadog resources:
 
 | Resource                | Description                                                                                                                                                    |
 |-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|

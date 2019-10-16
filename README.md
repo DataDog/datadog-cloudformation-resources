@@ -21,7 +21,7 @@
 
 ## Resources available
 
-The following Datadog resources can be register within your AWS account, refer to their specific documentation to see how to configure them:
+The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
 
 | Resource                | Name                          | Description                                                                                                                                                    |
 |-------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|

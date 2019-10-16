@@ -8,7 +8,7 @@
     <groupId>com.datadog.integrations.aws</groupId>
     <artifactId>datadog-integrations-aws-handler</artifactId>
     <name>datadog-integrations-aws-handler</name>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <packaging>jar</packaging>
 
     <properties>
@@ -16,8 +16,8 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <datadog-v1-client-version>1.0.0</datadog-v1-client-version>
-        <datadog-cloudformation-common-version>1.0-SNAPSHOT</datadog-cloudformation-common-version>
+        <datadog-api-v1-client-version>1.0.0</datadog-api-v1-client-version>
+        <datadog-cloudformation-common-version>1.0.0</datadog-cloudformation-common-version>
     </properties>
 
     <repositories>
@@ -48,9 +48,9 @@
         </dependency>
 
         <dependency>
-            <groupId>com.datadog.api.client</groupId>
-            <artifactId>datadog-v1</artifactId>
-            <version>${datadog-v1-client-version}</version>
+            <groupId>com.datadoghq</groupId>
+            <artifactId>datadog-api-v1-client</artifactId>
+            <version>${datadog-api-v1-client-version}</version>
         </dependency>
 
         <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->

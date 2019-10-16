@@ -1,12 +1,45 @@
 # Datadog-AWS CloudFormation
-
-## Overview
 ​
-[AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you a template to describe, configure, and provision all of the AWS resources in your environment at once. Datadog provides a way for you to monitor these resources.
+[AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation provider allows you to interact with the supported Datadog ressources. In order to get started:
+
+1. In your terminal, use the [AWS-cli tool](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/) to register a Datadog resource.
+
+    ```shell
+    aws cloudformation register-type \
+        --region <REGION> \
+        --type RESOURCE \
+        --type-name “<DATADOG_RESOURCE_NAME>” \
+        --schema-handler-package <LINK_TO_S3_OR_GITHUB_RELEASE>
+    ```
+
+    With the following placeholders:
+    * `<REGION>`: Your AWS region.
+    * `<DATADOG_RESOURCE_NAME>`: The name of the ressource to register, refer to the table below to see the supported resources.
+    * `<LINK_TO_S3_OR_GITHUB_RELEASE>`: Link to the S3 or Github release for the resource.
+
+2. In your AWS account, [create your AWS stack](https://console.aws.amazon.com/cloudformation/home) that includes any of the registered Datadog ressources.
+
+## Resource available
+
+The following Datadog resources can be regiser within your AWS account, refer to their specific documentation to see how to configure them.:
+
+| Resource                | Name                          | Description                                                                                                                                                    |
+|-------------------------|-------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-integrations-aws-handler) |
+| Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-monitor-handler).       |
+| ​Downtimes                | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-downtime-handler).    |
+| User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/ddatadog-iam-user-handler).                         |
+
+## Development
+
+The `Datadog/datadog-cloudformation-resources` repository contains:
+
+* All resources currently implemented for AWS CloudFormation.
+* A package with common functionality shared among the Resources - `datadog-cloudformation-common`
 
 ## Setup
 
-To build a CloudFormation resource and connect it to Datadog:
+To setup the Datadog-AWS CloudFormation provider, follow the instructions below:
 
 1. Build [datadog-api-client-java](https://github.com/DataDog/datadog-api-client-java):
 
@@ -23,27 +56,9 @@ To build a CloudFormation resource and connect it to Datadog:
     # This installs the common package into ~/.m2/repository
     mvn -f datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
     ```
-3. Install [cfn-cli]()
+3. Install [cfn-cli](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/)
 
     **Note**: the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
-
-## Resources Available
-
-Now that Datadog-AWS Cloudformation is set up, use it to manipulate Datadog resources:
-
-| Resource                | Description                                                                                                                                                    |
-|-------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Datadog-AWS integration | [Manage your Datadog-Amazon Web Service integration](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-integrations-aws-handler) |
-| Monitors                | [Create a general Datadog monitor](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-monitor-handler).                  |
-| ​Downtimes                | [Set downtimes for your monitor](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-downtime-handler).                   |
-| User                    | [ Create and manage Datadog users](https://github.com/DataDog/datadog-cloudformation-resources/tree/master/ddatadog-iam-user-handler).                         |
-
-## Development
-​
-This repository contains:
-
-* All resources currently implemented for AWS CloudFormation.
-* A package with common functionality shared among the Resources - `datadog-cloudformation-common`
 
 ### Run tests
 

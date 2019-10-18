@@ -4,44 +4,19 @@ This resource represents a Datadog Monitor Downtime and is used to create and ma
 
 ## Example Usage
 
-This example stack creates a downtime on the monitor `12345` over all groups every `Monday` and `Friday` until `1448387217`. Each day the downtime is active from 4-8pm EST.
+This example stack creates a downtime on the monitor `12345` until `1569628800`.
 
 ```
 Resources:
   DatadogTestDowntimeUntilDate:
     Type: 'Datadog::Monitors::Downtime'
     Properties:
-      Recurrence:
-        Type: "weeks"
-        WeekDays: ["Monday", "Friday]
-        UntilDate: 1448387217
       Message: "Setting downtime on this monitor during regular maintenance"
       MonitorId: 12345
       Scope: ["*"]
       Start: 1569614400
       End: 1569628800
       Timezone: "EST"
-      DatadogCredentials:
-        ApiKey: <DD_API_KEY>
-        ApplicationKey: <DD_APP_KEY>
-```
-
-This example stack creates a downtime on monitors with the tag `maintenance:scheduled` over all groups every `3 days`. Each day the downtime is active from 4-8pm UTC.
-
-```
-Resources:
-  DatadogTestDowntimeUntilOccurrences:
-    Type: 'Datadog::Monitors::Downtime'
-    Properties:
-      Recurrence:
-        Period: 3
-        Type: days
-      Message: Muting monitors periodically for maintenance
-      MonitorTags: ["maintanence:scheduled"]
-      Scope: ["*"]
-      Start: 1569614400
-      End: 1569628800
-      Timezone: UTC
       DatadogCredentials:
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>

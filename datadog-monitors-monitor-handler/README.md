@@ -12,12 +12,13 @@ Resources:
       Type: query alert
       Query: 'avg(last_1h):sum:system.cpu.system{host:host0} > 100'
       Name: Test Monitor
-      Thresholds:
-        Critical: 100
-        Warning: 80
-        Ok: 90
-      NotifyNoData: true
-      EvaluationDelay: 60
+      Options:
+        Thresholds:
+          Critical: 100
+          Warning: 80
+          Ok: 90
+        NotifyNoData: true
+        EvaluationDelay: 60
       DatadogCredentials:
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>

@@ -12,7 +12,7 @@ import com.datadog.cloudformation.common.clients.ApiClients;
 
 import com.datadog.api.client.v1.model.MonitorOptions;
 import com.datadog.api.client.v1.model.MonitorThresholds;
-import com.datadog.api.client.v1.model.MonitorThresholdWindows;
+import com.datadog.api.client.v1.model.MonitorThresholdWindowOptions;
 
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
@@ -75,9 +75,9 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             }
             options.thresholds(thresholds);
 
-            MonitorThresholdWindows thresholdWindows = null;
+            MonitorThresholdWindowOptions thresholdWindows = null;
             if (model.getOptions().getThresholdWindows() != null) {
-                thresholdWindows = new MonitorThresholdWindows()
+                thresholdWindows = new MonitorThresholdWindowOptions()
                     .recoveryWindow(model.getOptions().getThresholdWindows().getRecoveryWindow())
                     .triggerWindow(model.getOptions().getThresholdWindows().getTriggerWindow());
             }

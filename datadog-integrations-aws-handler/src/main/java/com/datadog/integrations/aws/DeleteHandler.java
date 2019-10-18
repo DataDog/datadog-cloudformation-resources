@@ -11,7 +11,7 @@ import com.datadog.cloudformation.common.clients.ApiClients;
 import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
 import com.datadog.api.client.v1.api.AwsIntegrationApi;
-import com.datadog.api.client.v1.model.DeleteAWSByIdentifier;
+import com.datadog.api.client.v1.model.AWSAccount;
 
 public class DeleteHandler extends BaseHandler<CallbackContext> {
 
@@ -32,12 +32,12 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         );
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
-        DeleteAWSByIdentifier deleteAWSByIdentifier = new DeleteAWSByIdentifier()
+        AWSAccount account = new AWSAccount()
             .accountId(model.getAccountID())
             .roleName(model.getRoleName());
 
         try {
-            awsApi.deleteAWSAccount(deleteAWSByIdentifier);
+            awsApi.deleteAWSAccount(account);
         } catch (ApiException e) {
             String err = "Failed to delete AWS Integration for this account: " + e.toString();
             logger.log(err);

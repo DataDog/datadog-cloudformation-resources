@@ -1,6 +1,6 @@
 # Releases
 
-## 2019-10-18
+## 2019-10-22
 
 - Release version [1.0.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-cloudformation-common-1.0.0) of the common package for Datadog AWS CloudFormation resources. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-cloudformation-common/CHANGELOG.md#100).
 - Release version [1.0.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-integrations-aws-1.0.0) of the Datadog AWS integration AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-aws-handler/CHANGELOG.md#100).

@@ -9,13 +9,13 @@
         --region <REGION> \
         --type RESOURCE \
         --type-name "<DATADOG_RESOURCE_NAME>" \
-        --schema-handler-package <LINK_TO_S3_OR_GITHUB_RELEASE>
+        --schema-handler-package <LINK_TO_S3>
     ```
 
     With the following placeholders:
     * `<REGION>`: Your AWS region.
     * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the table below to see the supported resources.
-    * `<LINK_TO_S3_OR_GITHUB_RELEASE>`: Link to the S3 or Github release for the resource.
+    * `<LINK_TO_S3>`: S3 link to the resource.
       * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_FOLDER>/<RESOURCE_FOLDER>-1.0.0.zip`
 
 2. In your AWS account, [create your AWS stack](https://console.aws.amazon.com/cloudformation/home) that includes any of the registered Datadog resources.

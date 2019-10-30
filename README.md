@@ -2,7 +2,7 @@
 ​
 [AWS CloudFormation](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/GettingStarted.html) gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation provider allows you to interact with the supported Datadog resources. To get started:
 
-1. In your terminal, use the [aws-cli tool](https://docs.aws.amazon.com/cli/latest/reference/cloudformation/) to register a Datadog resource.
+1. In your terminal, use the [aws-cli tool](https://aws.amazon.com/cli/) to register a Datadog resource.
 
     ```shell
     aws cloudformation register-type \

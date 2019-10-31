@@ -38,7 +38,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         AWSAccount awsAccount = null;
         try {
-            awsAccount = awsApi.getAllAWSAccounts(model.getAccountID(), model.getRoleName(), model.getAccessKeyID()).get("accounts").get(0);
+            awsAccount = awsApi.getAllAWSAccounts(model.getAccountID(), model.getRoleName(), model.getAccessKeyID()).getAccounts().get(0);
         } catch (ApiException e) {
             String err = "Failed to read AWS Integration Account: " + e.toString();
             logger.log(err);

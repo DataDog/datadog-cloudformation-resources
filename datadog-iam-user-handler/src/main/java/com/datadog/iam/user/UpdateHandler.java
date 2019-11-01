@@ -12,8 +12,6 @@ import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
 import com.datadog.api.client.v1.api.UsersApi;
 import com.datadog.api.client.v1.model.User;
-import com.datadog.api.client.v1.model.UserUpdatePayload;
-import com.datadog.api.client.v1.model.UserUpdateResponse;
 
 public class UpdateHandler extends BaseHandler<CallbackContext> {
 
@@ -34,8 +32,8 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         );
         UsersApi usersApi = new UsersApi(apiClient);
 
-        UserUpdatePayload userUpdatePayload = new UserUpdatePayload()
-            .accessRole(UserUpdatePayload.AccessRoleEnum.fromValue(model.getAccessRole()))
+        User userUpdatePayload = new User()
+            .accessRole(User.AccessRoleEnum.fromValue(model.getAccessRole()))
             .disabled(model.getDisabled())
             .email(model.getEmail())
             .name(model.getName());

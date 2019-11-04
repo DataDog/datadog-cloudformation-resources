@@ -12,8 +12,6 @@ import com.datadog.api.client.v1.ApiClient;
 import com.datadog.api.client.v1.ApiException;
 import com.datadog.api.client.v1.api.UsersApi;
 import com.datadog.api.client.v1.model.User;
-import com.datadog.api.client.v1.model.UserCreatePayload;
-import com.datadog.api.client.v1.model.UserCreateResponse;
 
 public class CreateHandler extends BaseHandler<CallbackContext> {
 
@@ -33,8 +31,8 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         );
         UsersApi usersApi = new UsersApi(apiClient);
 
-        UserCreatePayload userCreatePayload = new UserCreatePayload()
-            .accessRole(UserCreatePayload.AccessRoleEnum.fromValue(model.getAccessRole()))
+        User userCreatePayload = new User()
+            .accessRole(User.AccessRoleEnum.fromValue(model.getAccessRole()))
             .email(model.getEmail())
             .name(model.getName())
             .handle(model.getHandle());

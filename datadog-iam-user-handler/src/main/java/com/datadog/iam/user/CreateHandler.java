@@ -8,10 +8,10 @@ import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
 
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.ApiException;
-import com.datadog.api.client.v1.api.UsersApi;
-import com.datadog.api.client.v1.model.User;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.ApiException;
+import com.datadog.api.v1.client.api.UsersApi;
+import com.datadog.api.v1.client.model.User;
 
 public class CreateHandler extends BaseHandler<CallbackContext> {
 

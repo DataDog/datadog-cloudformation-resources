@@ -12,10 +12,10 @@ import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
 
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.ApiException;
-import com.datadog.api.client.v1.api.MonitorsApi;
-import com.datadog.api.client.v1.model.Monitor;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.ApiException;
+import com.datadog.api.v1.client.api.MonitorsApi;
+import com.datadog.api.v1.client.model.Monitor;
 
 public class ReadHandler extends BaseHandler<CallbackContext> {
 
@@ -137,7 +137,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 state.setOverallState(monitor.getState().getOverallState().getValue());
             if(monitor.getState().getGroups() != null) {
                 HashMap<String, MonitorStateGroup> groups = new HashMap<>();
-                for(Entry<String, com.datadog.api.client.v1.model.MonitorStateGroup> entry: monitor.getState().getGroups().entrySet()) {
+                for(Entry<String, com.datadog.api.v1.client.model.MonitorStateGroup> entry: monitor.getState().getGroups().entrySet()) {
                     MonitorStateGroup group = new MonitorStateGroup();
                     group.setName(entry.getValue().getName());
                     if(entry.getValue().getLastTriggeredTs() != null)

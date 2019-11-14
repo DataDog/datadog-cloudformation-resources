@@ -5,10 +5,10 @@ import com.amazonaws.cloudformation.proxy.Logger;
 import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.api.DowntimesApi;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.api.DowntimesApi;
 import com.datadog.cloudformation.common.clients.ApiClients;
-import com.datadog.api.client.v1.ApiException;
+import com.datadog.api.v1.client.ApiException;
 
 public class DeleteHandler extends BaseHandler<CallbackContext> {
 

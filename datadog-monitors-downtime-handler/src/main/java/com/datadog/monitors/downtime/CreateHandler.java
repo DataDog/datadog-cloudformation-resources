@@ -5,10 +5,10 @@ import com.amazonaws.cloudformation.proxy.Logger;
 import com.amazonaws.cloudformation.proxy.OperationStatus;
 import com.amazonaws.cloudformation.proxy.ProgressEvent;
 import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.ApiException;
-import com.datadog.api.client.v1.api.DowntimesApi;
-import com.datadog.api.client.v1.model.Downtime;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.ApiException;
+import com.datadog.api.v1.client.api.DowntimesApi;
+import com.datadog.api.v1.client.model.Downtime;
 import com.datadog.cloudformation.common.clients.ApiClients;
 
 public class CreateHandler extends BaseHandler<CallbackContext> {
@@ -54,7 +54,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         // Convert to proper type.recurrence(model.getRecurrence())
         // if (model.getRecurrence() != null) {
         //     DowntimeRecurrence downtimeRecurrenceModel = model.getRecurrence();
-        //     com.datadog.api.client.v1.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.client.v1.model.DowntimeRecurrence();
+        //     com.datadog.api.v1.client.model.DowntimeRecurrence downtimeRecurrenceApi = new com.datadog.api.v1.client.model.DowntimeRecurrence();
         //     downtimeRecurrenceApi.setPeriod(downtimeRecurrenceModel.getPeriod());
         //     downtimeRecurrenceApi.setType(downtimeRecurrenceModel.getType());
         //     if (downtimeRecurrenceModel.getUntilDate() != null) {

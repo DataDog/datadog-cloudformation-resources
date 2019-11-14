@@ -1,8 +1,8 @@
 package com.datadog.cloudformation.common.clients;
 
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.Configuration;
-import com.datadog.api.client.v1.auth.ApiKeyAuth;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.Configuration;
+import com.datadog.api.v1.client.auth.ApiKeyAuth;
 
 import java.util.Map;
 

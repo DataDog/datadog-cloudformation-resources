@@ -11,10 +11,10 @@ import com.amazonaws.cloudformation.proxy.ResourceHandlerRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
 
-import com.datadog.api.client.v1.ApiClient;
-import com.datadog.api.client.v1.ApiException;
-import com.datadog.api.client.v1.api.AwsIntegrationApi;
-import com.datadog.api.client.v1.model.AWSAccount;
+import com.datadog.api.v1.client.ApiClient;
+import com.datadog.api.v1.client.ApiException;
+import com.datadog.api.v1.client.api.AwsIntegrationApi;
+import com.datadog.api.v1.client.model.AWSAccount;
 
 public class UpdateHandler extends BaseHandler<CallbackContext> {
 

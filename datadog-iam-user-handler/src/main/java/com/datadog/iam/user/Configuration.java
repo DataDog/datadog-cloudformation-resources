@@ -1,6 +1,5 @@
 package com.datadog.iam.user;
 
-import java.io.InputStream;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 

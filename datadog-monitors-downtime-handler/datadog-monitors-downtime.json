@@ -152,6 +152,7 @@
         "/properties/ParentId",
         "/properties/UpdaterId"
     ],
+    "additionalProperties": false,
     "required": [
         "Scope",
         "DatadogCredentials"

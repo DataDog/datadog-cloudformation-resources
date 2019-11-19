@@ -16,7 +16,7 @@
     * `<REGION>`: Your AWS region.
     * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the table below to see the supported resources.
     * `<LINK_TO_S3>`: S3 link to the resource.
-      * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_FOLDER>/<RESOURCE_FOLDER>-1.0.0.zip`
+      * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_FOLDER>/<RESOURCE_FOLDER>-<VERSION>.zip`
 
 2. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
 
@@ -24,12 +24,12 @@
 
 The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
 
-| Resource                | Name                          | Description                                             | S3 Link              |
-|-------------------------|-------------------------------|---------------------------------------------------------|----------------------|
-| Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][4] | [`<LINK_TO_S3>`][5]  |
-| Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][6].       | [`<LINK_TO_S3>`][7]  |
-| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors][8].     | [`<LINK_TO_S3>`][9]  |
-| User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][10].                 | [`<LINK_TO_S3>`][11] |
+| Resource                | Name                          | Description                                             | Folder                      | Version     |
+|-------------------------|-------------------------------|---------------------------------------------------------|-----------------------------|-------------|
+| Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][4] | `datadog-integrations-aws`  | [1.0.0][5]  |
+| Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][6].       | `datadog-monitors-monitor`  | [1.0.0][7]  |
+| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors][8].     | `datadog-monitors-downtime` | [1.0.0][9]  |
+| User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][10].                 | `datadog-iam-user`          | [1.0.0][11] |
 
 ## Development
 

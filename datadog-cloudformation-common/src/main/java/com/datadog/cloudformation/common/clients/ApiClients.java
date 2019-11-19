@@ -1,30 +1,27 @@
 package com.datadog.cloudformation.common.clients;
 
 import com.datadog.api.v1.client.ApiClient;
-import com.datadog.api.v1.client.Configuration;
 import com.datadog.api.v1.client.auth.ApiKeyAuth;
-
-import java.util.Map;
 
 import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 public class ApiClients {
-    public static ApiClient V1Client(String apiKey, String applicationKey, String apiURL){
-        ApiClient defaultClient = Configuration.getDefaultApiClient();
+    public static ApiClient V1Client(String apiKey, String applicationKey, String apiURL) {
+        ApiClient client = new ApiClient();
 
         if (apiURL != null && !apiURL.equals("")) {
-            defaultClient.setBasePath(apiURL);
+            client.setBasePath(apiURL);
         }
 
         // Configure API key authorization: apiKeyAuth
-        ApiKeyAuth apiKeyAuth = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyAuth");
+        ApiKeyAuth apiKeyAuth = (ApiKeyAuth) client.getAuthentication("apiKeyAuth");
         apiKeyAuth.setApiKey(apiKey);
 
         // Configure API key authorization: appKeyAuth
-        ApiKeyAuth appKeyAuth = (ApiKeyAuth) defaultClient.getAuthentication("appKeyAuth");
+        ApiKeyAuth appKeyAuth = (ApiKeyAuth) client.getAuthentication("appKeyAuth");
         appKeyAuth.setApiKey(applicationKey);
 
-        return defaultClient;
+        return client;
     }
 
     public static ApiClient V1ClientFromEnv() throws CredentialsMissingException {

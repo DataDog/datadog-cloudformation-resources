@@ -9,6 +9,7 @@ Resources:
   DatadogTestAWSAccount:
     Type: 'Datadog::Integrations::AWS'
     Properties:
+      ApiURL: https://api.datadoghq.com
       AccountID: 123456
       RoleName: DatadogAWSAcctRoleName
       FilterTags: ["filter:thisTag"]

@@ -9,6 +9,7 @@ Resources:
   DatadogTestUser:
     Type: 'Datadog::IAM::User'
     Properties:
+      ApiURL: https://api.datadoghq.com
       AccessRole: st
       Email: test@example.com
       Handle: test@example.com

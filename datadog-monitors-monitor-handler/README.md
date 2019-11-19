@@ -9,6 +9,7 @@ Resources:
   DatadogTestMonitor:
     Type: 'Datadog::Monitors::Monitor'
     Properties:
+      ApiURL: https://api.datadoghq.com
       Type: query alert
       Query: 'avg(last_1h):sum:system.cpu.system{host:host0} > 100'
       Name: Test Monitor
@@ -16,7 +17,7 @@ Resources:
         Thresholds:
           Critical: 100
           Warning: 80
-          Ok: 90
+          OK: 90
         NotifyNoData: true
         EvaluationDelay: 60
       DatadogCredentials:

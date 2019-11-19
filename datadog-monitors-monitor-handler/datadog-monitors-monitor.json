@@ -257,7 +257,7 @@
                     "type": "string"
                 },
                 "ApiURL": {
-                    "description": "Datadog API URL (defaults to https://api.datadoghq.com)",
+                    "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
                     "type": "string"
                 }
             },

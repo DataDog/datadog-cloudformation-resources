@@ -11,6 +11,7 @@ Resources:
   DatadogTestDowntimeUntilDate:
     Type: 'Datadog::Monitors::Downtime'
     Properties:
+      ApiURL: https://api.datadoghq.com
       Message: "Setting downtime on this monitor during regular maintenance"
       MonitorId: 12345
       Scope: ["*"]

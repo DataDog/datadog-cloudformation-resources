@@ -31,7 +31,11 @@ public class MonitorCRUDTest {
     private final List<String> testTags = new ArrayList<String>(
         Arrays.asList("app:CF", "key2:val2")
     );
-    private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
+    private final DatadogCredentials datadogCredentials = new DatadogCredentials(
+        System.getenv("DD_TEST_CF_API_KEY"),
+        System.getenv("DD_TEST_CF_APP_KEY"),
+        System.getenv("DD_TEST_CF_API_URL")
+    );
 
     private double id;
 

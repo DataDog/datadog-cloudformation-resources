@@ -26,7 +26,8 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
-            model.getDatadogCredentials().getApplicationKey()
+            model.getDatadogCredentials().getApplicationKey(),
+            model.getDatadogCredentials().getApiURL()
         );
         DowntimesApi downtimesApi = new DowntimesApi(apiClient);
 

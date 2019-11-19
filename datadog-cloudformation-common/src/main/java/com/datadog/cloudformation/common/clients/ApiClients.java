@@ -9,8 +9,12 @@ import java.util.Map;
 import com.datadog.cloudformation.common.exceptions.CredentialsMissingException;
 
 public class ApiClients {
-    public static ApiClient V1Client(String apiKey, String applicationKey){
+    public static ApiClient V1Client(String apiKey, String applicationKey, String apiURL){
         ApiClient defaultClient = Configuration.getDefaultApiClient();
+
+        if (apiURL != null && apiURL != "") {
+            defaultClient.setBasePath(apiURL);
+        }
 
         // Configure API key authorization: apiKeyAuth
         ApiKeyAuth apiKeyAuth = (ApiKeyAuth) defaultClient.getAuthentication("apiKeyAuth");
@@ -26,6 +30,7 @@ public class ApiClients {
     public static ApiClient V1ClientFromEnv() throws CredentialsMissingException {
         String apiKey = System.getenv("DATADOG_API_KEY");
         String applicationKey = System.getenv("DATADOG_APP_KEY");
+        String apiURL = System.getenv("DATADOG_API_URL");
 
         if (apiKey == null) {
             throw new CredentialsMissingException("DATADOG_API_KEY not present in environment");
@@ -34,6 +39,6 @@ public class ApiClients {
             throw new CredentialsMissingException("DATADOG_APP_KEY not present in environment");
         }
 
-        return V1Client(apiKey, applicationKey);
+        return V1Client(apiKey, applicationKey, apiURL);
     }
 }

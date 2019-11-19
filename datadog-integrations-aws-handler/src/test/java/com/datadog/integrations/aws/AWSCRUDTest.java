@@ -37,7 +37,11 @@ public class AWSCRUDTest {
         Arrays.asList("key:val", "key2:val2")
     );
     private Map<String, Boolean> testAccountSpecificNamespaceRules = new HashMap<String, Boolean>();
-    private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
+    private final DatadogCredentials datadogCredentials = new DatadogCredentials(
+        System.getenv("DD_TEST_CF_API_KEY"),
+        System.getenv("DD_TEST_CF_APP_KEY"),
+        System.getenv("DD_TEST_CF_API_URL")
+    );
 
 
     @Mock

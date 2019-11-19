@@ -65,7 +65,7 @@ To set up the Datadog-AWS CloudFormation provider, follow the instructions below
 2. `cd` into the directory of the resource to be tested.
 3.  Run `mvn test` inside the directory to run the test suite for that resource.
 
-**Note**: the tests use `DD_TEST_CF_API_KEY` and `DD_TEST_CF_APP_KEY` from environment variables.
+**Note**: the tests use `DD_TEST_CF_API_KEY`, `DD_TEST_CF_APP_KEY` and optionally also `DD_TEST_CF_API_URL` from environment variables.
 
 ### Development Tips
 

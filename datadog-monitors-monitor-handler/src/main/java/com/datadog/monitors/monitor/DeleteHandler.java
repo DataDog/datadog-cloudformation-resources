@@ -27,7 +27,8 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
 
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
-            model.getDatadogCredentials().getApplicationKey()
+            model.getDatadogCredentials().getApplicationKey(),
+            model.getDatadogCredentials().getApiURL()
         );
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
 

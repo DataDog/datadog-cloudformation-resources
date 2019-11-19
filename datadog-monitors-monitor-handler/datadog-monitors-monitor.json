@@ -255,6 +255,10 @@
                 "ApplicationKey": {
                     "description": "Datadog application key",
                     "type": "string"
+                },
+                "ApiURL": {
+                    "description": "Datadog API URL (defaults to https://api.datadoghq.com)",
+                    "type": "string"
                 }
             },
             "required": [

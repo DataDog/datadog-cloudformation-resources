@@ -26,7 +26,11 @@ import static org.mockito.Mockito.mock;
 @ExtendWith(MockitoExtension.class)
 public class DowntimeCRUDTest {
 
-    private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
+    private final DatadogCredentials datadogCredentials = new DatadogCredentials(
+        System.getenv("DD_TEST_CF_API_KEY"),
+        System.getenv("DD_TEST_CF_APP_KEY"),
+        System.getenv("DD_TEST_CF_API_URL")
+    );
 
     private Integer downtimeID;
     @Mock

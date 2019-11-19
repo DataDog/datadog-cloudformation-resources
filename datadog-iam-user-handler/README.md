@@ -14,6 +14,7 @@ Resources:
       Handle: test@example.com
       Name: Test LastName
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

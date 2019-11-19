@@ -16,10 +16,11 @@ Resources:
         Thresholds:
           Critical: 100
           Warning: 80
-          Ok: 90
+          OK: 90
         NotifyNoData: true
         EvaluationDelay: 60
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

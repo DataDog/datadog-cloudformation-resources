@@ -18,6 +18,7 @@ Resources:
       End: 1569628800
       Timezone: "EST"
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

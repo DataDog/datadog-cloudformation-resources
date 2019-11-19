@@ -15,6 +15,7 @@ Resources:
       HostTags: ["env:staging", "account:123456"]
       AccountSpecificNamespaceRules: {"api_gateway": true, "route53": false}
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

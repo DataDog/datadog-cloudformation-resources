@@ -9,13 +9,13 @@ Resources:
   DatadogTestAWSAccount:
     Type: 'Datadog::Integrations::AWS'
     Properties:
-      ApiURL: https://api.datadoghq.com
       AccountID: 123456
       RoleName: DatadogAWSAcctRoleName
       FilterTags: ["filter:thisTag"]
       HostTags: ["env:staging", "account:123456"]
       AccountSpecificNamespaceRules: {"api_gateway": true, "route53": false}
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

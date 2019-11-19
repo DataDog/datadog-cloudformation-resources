@@ -9,12 +9,12 @@ Resources:
   DatadogTestUser:
     Type: 'Datadog::IAM::User'
     Properties:
-      ApiURL: https://api.datadoghq.com
       AccessRole: st
       Email: test@example.com
       Handle: test@example.com
       Name: Test LastName
       DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
 ```

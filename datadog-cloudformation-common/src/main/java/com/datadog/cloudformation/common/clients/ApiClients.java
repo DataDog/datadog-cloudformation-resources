@@ -12,7 +12,7 @@ public class ApiClients {
     public static ApiClient V1Client(String apiKey, String applicationKey, String apiURL){
         ApiClient defaultClient = Configuration.getDefaultApiClient();
 
-        if (apiURL != null && apiURL != "") {
+        if (apiURL != null && !apiURL.equals("")) {
             defaultClient.setBasePath(apiURL);
         }
 

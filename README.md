@@ -36,7 +36,7 @@
     * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the [table below](#resources-available) to see the Datadog supported resources.
     * `<LINK_TO_S3>`: S3 link to the resource.
       * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_NAME>/<RESOURCE_NAME>-<VERSION>.zip`
-      * See the `Resources available` section for example links.
+      * See the [Resources Available section](#resources-available), which links to examples of the latest supported S3 links.
     * `VERSION`: The underlying version of the resource as returned by the command in step `2`.
 
 4. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.

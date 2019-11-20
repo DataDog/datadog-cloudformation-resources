@@ -31,9 +31,9 @@
         --type-name "<DATADOG_RESOURCE_NAME>" \
     ```
 
-    With the following placeholders:
+    With the following required placeholders:
     * `<REGION>`: Your AWS region.
-    * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the table below to see the supported resources.
+    * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the [table below](#resources-available) to see the Datadog supported resources.
     * `<LINK_TO_S3>`: S3 link to the resource.
       * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_NAME>/<RESOURCE_NAME>-<VERSION>.zip`
       * See the `Resources available` section for example links.
@@ -41,7 +41,7 @@
 
 4. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
 
-More information about the available commands and workflows can be found at the official [AWS documentation][14].
+For more information about the available commands and workflows, see the the official [AWS documentation][14].
 
 ## Resources available
 

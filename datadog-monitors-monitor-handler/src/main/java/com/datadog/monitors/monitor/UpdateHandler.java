@@ -66,15 +66,15 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             if (model.getOptions().getThresholds() != null) {
                 thresholds = new MonitorThresholds();
                 if(model.getOptions().getThresholds().getCritical() != null)
-                    thresholds.setCritical(model.getOptions().getThresholds().getCritical().floatValue());
+                    thresholds.setCritical(model.getOptions().getThresholds().getCritical());
                 if(model.getOptions().getThresholds().getCriticalRecovery() != null)
-                    thresholds.setCriticalRecovery(model.getOptions().getThresholds().getCriticalRecovery().floatValue());
+                    thresholds.setCriticalRecovery(model.getOptions().getThresholds().getCriticalRecovery());
                 if(model.getOptions().getThresholds().getWarning() != null)
-                    thresholds.setWarning(model.getOptions().getThresholds().getWarning().floatValue());
+                    thresholds.setWarning(model.getOptions().getThresholds().getWarning());
                 if(model.getOptions().getThresholds().getWarningRecovery() != null)
-                    thresholds.setWarningRecovery(model.getOptions().getThresholds().getWarningRecovery().floatValue());
+                    thresholds.setWarningRecovery(model.getOptions().getThresholds().getWarningRecovery());
                 if(model.getOptions().getThresholds().getOK() != null)
-                    thresholds.setOk(model.getOptions().getThresholds().getOK().floatValue());
+                    thresholds.setOk(model.getOptions().getThresholds().getOK());
             }
             options.thresholds(thresholds);
 

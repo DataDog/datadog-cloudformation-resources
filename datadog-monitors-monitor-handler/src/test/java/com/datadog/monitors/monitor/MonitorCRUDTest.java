@@ -73,12 +73,12 @@ public class MonitorCRUDTest {
         final ResourceModel model = ResourceModel.builder().build();
         model.setTags(testTags);
         model.setDatadogCredentials(datadogCredentials);
-        model.setType("service check");
-        model.setQuery("\"ntp.in_sync\".over(\"*\").last(2).count_by_status()");
+        model.setType("query alert");
+        model.setQuery("avg(last_5m):sum:system.net.bytes_rcvd{host:host0} > 100");
         MonitorOptions options = new MonitorOptions();
         MonitorThresholds thresholds = new MonitorThresholds();
-        thresholds.setCritical(3.);
-        thresholds.setOK(2.);
+        thresholds.setCritical(100.);
+        thresholds.setOK(50.);
         options.setThresholds(thresholds);
         model.setOptions(options);
 
@@ -102,8 +102,8 @@ public class MonitorCRUDTest {
 
         ResourceModel read = response.getResourceModel();
         assertThat(read.getTags()).isEqualTo(testTags);
-        assertThat(read.getOptions().getThresholds().getCritical()).isEqualTo(3.);
-        assertThat(read.getOptions().getThresholds().getOK()).isEqualTo(2.);
+        assertThat(read.getOptions().getThresholds().getCritical()).isEqualTo(100.);
+        assertThat(read.getOptions().getThresholds().getOK()).isEqualTo(50.);
         id = read.getId();
 
         // Update the resource
@@ -124,11 +124,11 @@ public class MonitorCRUDTest {
         options.setRenotifyInterval(10.);
 
         thresholds = new MonitorThresholds();
-        thresholds.setCritical(.1);
-        thresholds.setCriticalRecovery(.09);
-        thresholds.setOK(.02);
-        thresholds.setWarning(.05);
-        thresholds.setWarningRecovery(.04);
+        thresholds.setCritical(1.);
+        thresholds.setCriticalRecovery(0.5);
+        thresholds.setOK(0.25);
+        thresholds.setWarning(0.45);
+        thresholds.setWarningRecovery(0.4);
         options.setThresholds(thresholds);
 
         MonitorThresholdWindows thresholdWindows = new MonitorThresholdWindows();
@@ -138,9 +138,8 @@ public class MonitorCRUDTest {
 
         model.setOptions(options);
         model.setTags(testTagsUpdated);
-        String updatedQuery = "avg(last_4h):anomalies(avg:datadog.estimated_usage.containers{*}, 'basic', 2, direction='both', alert_window='last_30m', interval=60, count_default_zero='true') >= 0.1";
+        String updatedQuery = "avg(last_1h):anomalies(avg:system.net.bytes_rcvd{host:host0}, 'basic', 2, direction='both', alert_window='last_30m', interval=120, count_default_zero='true') >= 1";
         model.setQuery(updatedQuery);
-        model.setType("metric alert");
         model.setMessage("updated message");
         model.setName("updated name");
 
@@ -157,7 +156,7 @@ public class MonitorCRUDTest {
         assertThat(updateRead.getQuery()).isEqualTo(updatedQuery);
         assertThat(updateRead.getMessage()).isEqualTo("updated message");
         assertThat(updateRead.getName()).isEqualTo("updated name");
-        assertThat(updateRead.getType()).isEqualTo("metric alert");
+        assertThat(updateRead.getType()).isEqualTo("query alert");
         assertThat(updateRead.getOptions().getAggregation()).isEqualTo("in total");
         assertThat(updateRead.getOptions().getEnableLogsSample()).isTrue();
         assertThat(updateRead.getOptions().getEscalationMessage()).isEqualTo("escalation message");
@@ -172,11 +171,11 @@ public class MonitorCRUDTest {
         assertThat(updateRead.getOptions().getNewHostDelay()).isEqualTo(10.);
         assertThat(updateRead.getOptions().getNoDataTimeframe()).isEqualTo(20.);
         assertThat(updateRead.getOptions().getRenotifyInterval()).isEqualTo(10.);
-        assertThat(updateRead.getOptions().getThresholds().getCritical()).isEqualTo(.1, within(.00001));
-        assertThat(updateRead.getOptions().getThresholds().getCriticalRecovery()).isEqualTo(.09, within(.00001));
-        assertThat(updateRead.getOptions().getThresholds().getOK()).isEqualTo(.02, within(.00001));
-        assertThat(updateRead.getOptions().getThresholds().getWarning()).isEqualTo(.05, within(.00001));
-        assertThat(updateRead.getOptions().getThresholds().getWarningRecovery()).isEqualTo(.04, within(.00001));
+        assertThat(updateRead.getOptions().getThresholds().getCritical()).isEqualTo(1., within(.00001));
+        assertThat(updateRead.getOptions().getThresholds().getCriticalRecovery()).isEqualTo(0.5, within(.00001));
+        assertThat(updateRead.getOptions().getThresholds().getOK()).isEqualTo(.25, within(.00001));
+        assertThat(updateRead.getOptions().getThresholds().getWarning()).isEqualTo(.45, within(.00001));
+        assertThat(updateRead.getOptions().getThresholds().getWarningRecovery()).isEqualTo(.4, within(.00001));
         assertThat(updateRead.getOptions().getThresholdWindows().getTriggerWindow()).isEqualTo("last_30m");
         assertThat(updateRead.getOptions().getThresholdWindows().getRecoveryWindow()).isEqualTo("last_30m");
     }

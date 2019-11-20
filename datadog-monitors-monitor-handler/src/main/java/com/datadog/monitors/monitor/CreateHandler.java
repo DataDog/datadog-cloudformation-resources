@@ -64,15 +64,15 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             if (model.getOptions().getThresholds() != null) {
                 thresholds = new MonitorThresholds();
                 if(model.getOptions().getThresholds().getCritical() != null)
-                    thresholds.critical(model.getOptions().getThresholds().getCritical().floatValue());
+                    thresholds.critical(model.getOptions().getThresholds().getCritical());
                 if(model.getOptions().getThresholds().getCriticalRecovery() != null)
-                    thresholds.criticalRecovery(model.getOptions().getThresholds().getCriticalRecovery().floatValue());
+                    thresholds.criticalRecovery(model.getOptions().getThresholds().getCriticalRecovery());
                 if(model.getOptions().getThresholds().getOK() != null)
-                    thresholds.ok(model.getOptions().getThresholds().getOK().floatValue());
+                    thresholds.ok(model.getOptions().getThresholds().getOK());
                 if(model.getOptions().getThresholds().getWarning() != null)
-                    thresholds.warning(model.getOptions().getThresholds().getWarning().floatValue());
+                    thresholds.warning(model.getOptions().getThresholds().getWarning());
                 if(model.getOptions().getThresholds().getWarningRecovery() != null)
-                    thresholds.warningRecovery(model.getOptions().getThresholds().getWarningRecovery().floatValue());
+                    thresholds.warningRecovery(model.getOptions().getThresholds().getWarningRecovery());
             }
             options.thresholds(thresholds);
 

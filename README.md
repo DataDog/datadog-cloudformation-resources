@@ -1,6 +1,6 @@
 # Datadog-AWS CloudFormation
 
-[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation provider allows you to interact with the supported Datadog resources. To get started:
+[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources. To get started:
 
 1. In your terminal, use the [aws-cli tool][2] to register a Datadog resource.
 
@@ -12,24 +12,47 @@
         --schema-handler-package "<LINK_TO_S3>"
     ```
 
+2. View the version of the newly registered resource by running the following in your terminal:
+
+    ```shell
+    aws cloudformation list-type-versions \
+    --region "<REGION>" \
+    --type RESOURCE \
+    --type-name "<DATADOG_RESOURCE_NAME>"
+    ```
+
+3. Set this newly registered version as the `default` by running the following in your terminal:
+
+    ```shell
+    aws cloudformation set-type-default-version \
+        --region "<REGION>" \
+        --type RESOURCE \
+        --version-id <VERSION> \
+        --type-name "<DATADOG_RESOURCE_NAME>" \
+    ```
+
     With the following placeholders:
     * `<REGION>`: Your AWS region.
     * `<DATADOG_RESOURCE_NAME>`: The name of the resource to register, refer to the table below to see the supported resources.
     * `<LINK_TO_S3>`: S3 link to the resource.
-      * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_FOLDER>/<RESOURCE_FOLDER>-<VERSION>.zip`
+      * S3 link: `s3://datadog-cloudformation-resources/<RESOURCE_NAME>/<RESOURCE_NAME>-<VERSION>.zip`
+      * See the `Resources available` section for example links.
+    * `VERSION`: The underlying version of the resource as returned by the command in step `2`.
 
-2. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+4. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+
+More information about the available commands and workflows can be found at the official [AWS documentation][14].
 
 ## Resources available
 
 The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
 
-| Resource                | Name                          | Description                                             | Folder                      | Version     |
+| Resource                | Name                          | Description                                             | Folder                      | Resource Link     |
 |-------------------------|-------------------------------|---------------------------------------------------------|-----------------------------|-------------|
-| Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][4] | `datadog-integrations-aws`  | [1.0.1][5]  |
-| Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][6].       | `datadog-monitors-monitor`  | [1.0.1][7]  |
-| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors][8].     | `datadog-monitors-downtime` | [1.0.1][9]  |
-| User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][10].                 | `datadog-iam-user`          | [1.0.1][11] |
+| Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][4] | `datadog-integrations-aws`  | [Download][5]  |
+| Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][6].       | `datadog-monitors-monitor`  | [Download][7]  |
+| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors][8].     | `datadog-monitors-downtime` | [Download][9]  |
+| User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][10].                 | `datadog-iam-user`          | [Download][11] |
 
 ## Development
 
@@ -100,3 +123,4 @@ Need help? Contact [Datadog support][13].
 [11]: s3://datadog-cloudformation-resources/datadog-iam-user/datadog-iam-user-1.0.1.zip
 [12]: https://github.com/DataDog/datadog-api-client-java
 [13]: https://docs.datadoghq.com/help/
+[14]: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry.html

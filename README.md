@@ -28,7 +28,7 @@
         --region "<REGION>" \
         --type RESOURCE \
         --version-id <VERSION_ID> \
-        --type-name "<DATADOG_RESOURCE_NAME>" \
+        --type-name "<DATADOG_RESOURCE_NAME>"
     ```
 
     With the following required placeholders:

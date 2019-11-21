@@ -2,6 +2,10 @@
 
 * See individual Resource Changelogs for links to download their artifacts.
 
+## 2019-11-21
+
+- Release version [1.0.2](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-monitor-1.0.2) of the Datadog monitor AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md#102).
+
 ## 2019-11-19
 
 - Release version [1.0.1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-cloudformation-common-1.0.1) of the common package for Datadog AWS CloudFormation resources. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-cloudformation-common/CHANGELOG.md#101).

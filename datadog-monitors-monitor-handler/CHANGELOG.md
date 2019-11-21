@@ -4,8 +4,8 @@
 
 Released on 2019-11-21
 
-[Link to Resource] s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-1.0.2.zip
-[BUGFIX] Use `Double` for all previously `Float` values to get sufficient precision for high thresholds.
+* [Link to Resource] s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-1.0.2.zip
+* [BUGFIX] Use `Double` for all previously `Float` values to get sufficient precision for high thresholds.
 
 # 1.0.1
 

@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 public class UserCRUDTest {
 
     private final String testingAccessRole = "st";
-    private final String testingHandle = "nobody@datadoghq.com";
+    private final String testingHandle = "dd-cf-" + System.currentTimeMillis() + "@datadoghq.com";
     private final String testingName = "Nobody";
     private final DatadogCredentials datadogCredentials = new DatadogCredentials(
         System.getenv("DD_TEST_CF_API_KEY"),
@@ -82,13 +82,13 @@ public class UserCRUDTest {
 
         ResourceModel read = response.getResourceModel();
         assertThat(read.getAccessRole()).isEqualTo(testingAccessRole);
-        assertThat(read.getDisabled()).isEqualTo(true);
+        assertThat(read.getDisabled()).isEqualTo(false);
         assertThat(read.getEmail()).isEqualTo(testingHandle);
         assertThat(read.getHandle()).isEqualTo(testingHandle);
         assertThat(read.getName()).isEqualTo(testingName);
         assertThat(read.getVerified()).isEqualTo(false);
 
-        model.setDisabled(false);
+        model.setDisabled(true);
         model.setName("New name");
 
         final ResourceHandlerRequest<ResourceModel> updateRequest = ResourceHandlerRequest.<ResourceModel>builder()
@@ -100,7 +100,7 @@ public class UserCRUDTest {
 
         ResourceModel updateRead = updateResponse.getResourceModel();
         assertThat(updateRead.getAccessRole()).isEqualTo(testingAccessRole);
-        assertThat(updateRead.getDisabled()).isEqualTo(false);
+        assertThat(updateRead.getDisabled()).isEqualTo(true);
         assertThat(updateRead.getEmail()).isEqualTo(testingHandle);
         assertThat(updateRead.getHandle()).isEqualTo(testingHandle);
         assertThat(updateRead.getName()).isEqualTo("New name");

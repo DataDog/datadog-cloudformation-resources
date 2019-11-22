@@ -19,7 +19,7 @@ import static org.mockito.Mockito.mock;
 public class UserCRUDTest {
 
     private final String testingAccessRole = "st";
-    private final String testingHandle = System.currentTimeMillis() + "nobody@datadoghq.com";
+    private final String testingHandle = "dd-cf-" + System.currentTimeMillis() + "@datadoghq.com";
     private final String testingName = "Nobody";
     private final DatadogCredentials datadogCredentials = new DatadogCredentials(System.getenv("DD_TEST_CF_API_KEY"), System.getenv("DD_TEST_CF_APP_KEY"));
 

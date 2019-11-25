@@ -38,7 +38,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
             .roleName(model.getRoleName());
 
         try {
-            awsApi.deleteAWSAccount(account);
+            awsApi.deleteAWSAccount(account, null);
         } catch (ApiException e) {
             String err = "Failed to delete AWS Integration for this account: " + e.toString();
             logger.log(err);

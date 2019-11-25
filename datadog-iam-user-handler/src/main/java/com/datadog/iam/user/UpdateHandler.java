@@ -40,7 +40,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             .name(model.getName());
 
         try {
-            usersApi.updateUser(model.getHandle(), userUpdatePayload);
+            usersApi.updateUser(model.getHandle(), userUpdatePayload, null);
         } catch (ApiException e) {
             String err = "Failed to update user: " + e.toString();
             logger.log(err);

@@ -33,7 +33,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         UsersApi usersApi = new UsersApi(apiClient);
 
         try {
-            usersApi.disableUser(model.getHandle());
+            usersApi.disableUser(model.getHandle(), null);
         } catch (ApiException e) {
             String err = "Failed to disable user: " + e.toString();
             logger.log(err);

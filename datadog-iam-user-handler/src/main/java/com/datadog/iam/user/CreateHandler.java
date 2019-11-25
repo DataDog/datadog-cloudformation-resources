@@ -39,7 +39,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             .handle(model.getHandle());
 
         try {
-            usersApi.createUser(userCreatePayload);
+            usersApi.createUser(userCreatePayload, null);
         } catch (ApiException e) {
             String err = "Failed to create user: " + e.toString();
             logger.log(err);

@@ -105,7 +105,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
         Monitor createdMonitor = null;
         try {
-            createdMonitor = monitorsApi.createMonitor(monitor);
+            createdMonitor = monitorsApi.createMonitor(monitor, null);
         } catch (ApiException e) {
             String err = "Failed to create monitor: " + e.toString();
             logger.log(err);

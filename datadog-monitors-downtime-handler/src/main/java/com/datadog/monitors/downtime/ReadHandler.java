@@ -33,7 +33,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         Downtime downtime = null;
         try {
-            downtime = downtimesApi.getDowntime(model.getId().longValue());
+            downtime = downtimesApi.getDowntime(model.getId().longValue(), null);
         } catch (ApiException e) {
             String err = "Failed to read downtime: " + e.toString();
             logger.log(err);

@@ -106,7 +106,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             .multi(model.getMulti());
 
         try {
-            monitorsApi.editMonitor(model.getId().longValue(), monitor);
+            monitorsApi.editMonitor(model.getId().longValue(), monitor, null);
         } catch(ApiException e) {
             String err = "Failed to update monitor: " + e.toString();
             logger.log(err);

@@ -35,7 +35,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         User user = null;
         try {
-            user = usersApi.getUser(model.getHandle()).getUser();
+            user = usersApi.getUser(model.getHandle(), null).getUser();
         } catch (ApiException e) {
             String err = "Failed to read user: " + e.toString();
             logger.log(err);

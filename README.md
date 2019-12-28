@@ -51,7 +51,7 @@ The following Datadog resources can be registered within your AWS account, refer
 |-------------------------|-------------------------------|---------------------------------------------------------|-----------------------------|----------------|
 | Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][5] | `datadog-integrations-aws`  | [Schema Handler Versions][6]  |
 | Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][7].       | `datadog-monitors-monitor`  | [Schema Handler Versions][8]  |
-| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or Disable downtimes for your monitors][9].     | `datadog-monitors-downtime` | [Schema Handler Versions][10]  |
+| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or disable downtimes for your monitors][9].     | `datadog-monitors-downtime` | [Schema Handler Versions][10]  |
 | User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][11].                 | `datadog-iam-user`          | [Schema Handler Versions][12] |
 
 ## Troubleshooting

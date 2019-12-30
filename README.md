@@ -47,11 +47,11 @@ For more information about the available commands and workflows, see the the off
 
 The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
 
-| Resource                | Name                          | Description                                             | Folder                      | S3 Package Links  |
-|-------------------------|-------------------------------|---------------------------------------------------------|-----------------------------|----------------|
+| Resource                | Name                          | Description                                             | Folder                      | S3 Package Links              |
+|-------------------------|-------------------------------|---------------------------------------------------------|-----------------------------|-------------------------------|
 | Datadog-AWS integration | `Datadog::Integrations::AWS`  | [Manage your Datadog-Amazon Web Service integration][5] | `datadog-integrations-aws`  | [Schema Handler Versions][6]  |
 | Monitors                | `Datadog::Monitors::Monitor`  | [Create, update, and delete Datadog monitors][7].       | `datadog-monitors-monitor`  | [Schema Handler Versions][8]  |
-| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or disable downtimes for your monitors][9].     | `datadog-monitors-downtime` | [Schema Handler Versions][10]  |
+| Downtimes               | `Datadog::Monitors::Downtime` | [Enable or disable downtimes for your monitors][9].     | `datadog-monitors-downtime` | [Schema Handler Versions][10] |
 | User                    | `Datadog::IAM::User`          | [ Create and manage Datadog users][11].                 | `datadog-iam-user`          | [Schema Handler Versions][12] |
 
 ## Troubleshooting
@@ -63,11 +63,11 @@ Need help? Contact [Datadog support][13].
 [3]: https://console.aws.amazon.com/cloudformation/home
 [4]: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/registry.html
 [5]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-integrations-aws-handler
-[6]: datadog-integrations-aws-handler/CHANGELOG.md
+[6]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-aws-handler/CHANGELOG.md
 [7]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-monitor-handler
-[8]: datadog-monitors-monitor-handler/CHANGELOG.md
+[8]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md
 [9]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-downtime-handler
-[10]: datadog-monitors-downtime-handler/CHANGELOG.md
+[10]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-downtime-handler/CHANGELOG.md
 [11]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/ddatadog-iam-user-handler
-[12]: datadog-iam-user-handler/CHANGELOG.md
+[12]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md
 [13]: https://docs.datadoghq.com/help/

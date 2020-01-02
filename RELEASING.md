@@ -37,7 +37,7 @@ Note that once the release process is started, nobody should be merging/pushing 
 Our team will trigger the release pipeline.
 
 * Bump the versions in the pom.xml, e.g. User resource pom.xml
-  * If you bumped the datadog-cloudformation-common version, update the       dependency in the resource you are releasing.
+* If you bumped the datadog-cloudformation-common version, update the dependency in the resource you are releasing.
 * Go into the resource folder and build the JAR: `mvn package` (this will also execute tests)
 * Generate the zip file `cfn-cli submit --dry-run --no-role` (or use the one created during testing) and upload it to the s3 bucket.
 * Create a github release for this version, and attach the generated zip file.

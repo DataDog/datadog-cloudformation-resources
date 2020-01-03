@@ -1,0 +1,13 @@
+name: "Pull Request Labeler"
+on:
+- pull_request
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: DataDog/labeler@glob-all
+      env:
+        ACTIONS_RUNNER_DEBUG: true
+      with:
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"

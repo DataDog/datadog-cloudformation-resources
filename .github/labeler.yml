@@ -1,3 +1,6 @@
 # Configuration for labeler - https://github.com/actions/labeler
 
 documentation: "**/*.md"
+
+resource/$1:
+    - ^(?!\.github)datadog-\w+-(\w+).*

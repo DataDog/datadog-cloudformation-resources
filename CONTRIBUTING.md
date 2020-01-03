@@ -105,8 +105,8 @@ This section lists the labels we use to help us track and manage issues and pull
 | `stale`                       | Issues and Pull Requests | Stale - Bot reminder.
 | `stale/exempt`                | Issues and Pull Requests | Exempt from being marked as stale.
 | `resource/common`             | Issues and Pull Requests | Impacts the datadog-cloudformation-common package
-| `resource/user`               | Issues and Pull Requests | Exempt Impacts the datadog-iam-user-handler package
-| `resource/aws`                | Issues and Pull Requests | Exempt Impacts the datadog-aws-integration-handler package
+| `resource/user`               | Issues and Pull Requests | Impacts the datadog-iam-user-handler package
+| `resource/aws`                | Issues and Pull Requests | Impacts the datadog-aws-integration-handler package
 | `resource/downtime`           | Issues and Pull Requests | Impacts the datadog-monitors-downtime-handler package
 | `resource/monitor`            | Issues and Pull Requests | Impacts the datadog-monitors-monitor-handler package
 

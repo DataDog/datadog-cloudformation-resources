@@ -36,7 +36,7 @@ public class ApiClients {
             throw new CredentialsMissingException("DATADOG_API_KEY not present in environment");
         }
         if (applicationKey == null) {
-            throw new CredentialsMissingException("DATADOG_APP_KEY is not present in environment");
+            throw new CredentialsMissingException("DATADOG_APP_KEY not present in environment");
         }
 
         return V1Client(apiKey, applicationKey, apiURL);

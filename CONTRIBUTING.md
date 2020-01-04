@@ -24,7 +24,7 @@ In order to ease/speed up our review, here are some items you can check/improve 
 * **Ensure an [Issue has been created](#reporting)**.
 * Avoid changing too many things at once.
   - Make sure that your Pull Requests only fixes one Issue at the time.
-  - **TODO: FOR PROJECT WITH RESOURCE LABELS, SPECIFY TO ONLY WORK ON ONE RESOURCE AT THE TIME**
+  - Make sure that your Pull Request is limited to one handler per PR.
 * **Write tests** for the code you wrote.
 * Make sure that **all tests pass locally**.
 * Summarize your PR with a **meaningful title** and **fill out the pull request description template completely!**

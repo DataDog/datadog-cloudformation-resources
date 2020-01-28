@@ -23,7 +23,7 @@ To set up the Datadog-AWS CloudFormation provider, follow the instructions below
     # This installs the common package into ~/.m2/repository
     mvn -f datadog-cloudformation-common/pom.xml -Dmaven.test.skip=true install
     ```
-3. Install `cfn-cli`.
+3. Install [`cfn-cli`](https://github.com/aws-cloudformation/cloudformation-cli).
 
 ## Testing
 

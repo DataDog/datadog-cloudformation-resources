@@ -54,7 +54,10 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
+        final String monitorURL = model.getDatadogCredentials().getApiURL() + "/api/v1/monitor/" + model.getId().toString();
+
         model.setId(monitor.getId().doubleValue());
+        model.setURL(monitorURL);
         model.setCreated(monitor.getCreated().toString());
         model.setModified(monitor.getCreated().toString());
         if(monitor.getDeleted() != null)

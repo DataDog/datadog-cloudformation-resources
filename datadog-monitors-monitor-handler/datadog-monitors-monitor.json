@@ -274,6 +274,10 @@
             "description": "ID of the monitor",
             "type": "number"
         },
+        "URL": {
+            "description": "URL of the monitor",
+            "type": "string"
+        },
         "Message": {
             "description": "A message to include with notifications for the monitor",
             "type": "string"

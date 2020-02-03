@@ -104,6 +104,7 @@ public class MonitorCRUDTest {
         assertThat(response.getErrorCode()).isNull();
 
         ResourceModel read = response.getResourceModel();
+        assertThat(read.getURL()).isNotNull();
         assertThat(read.getTags()).isEqualTo(testTags);
         assertThat(read.getOptions().getThresholds().getCritical()).isEqualTo(100.);
         assertThat(read.getOptions().getThresholds().getOK()).isEqualTo(50.);
@@ -155,6 +156,7 @@ public class MonitorCRUDTest {
         assertThat(updateResponse.getStatus()).isEqualTo(OperationStatus.SUCCESS);
 
         ResourceModel updateRead = updateResponse.getResourceModel();
+        assertThat(updateRead.getURL()).isEqualTo(read.getURL());
         assertThat(updateRead.getTags()).isEqualTo(testTagsUpdated);
         assertThat(updateRead.getQuery()).isEqualTo(updatedQuery);
         assertThat(updateRead.getMessage()).isEqualTo("updated message");

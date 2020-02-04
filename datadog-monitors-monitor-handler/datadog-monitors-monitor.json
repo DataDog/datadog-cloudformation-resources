@@ -358,6 +358,7 @@
     "readOnlyProperties": [
         "/properties/Modified",
         "/properties/Id",
+        "/properties/URL",
         "/properties/Deleted",
         "/properties/State",
         "/properties/OverallState",

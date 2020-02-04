@@ -23,6 +23,9 @@ Resources:
         ApiURL: https://api.datadoghq.com
         ApiKey: <DD_API_KEY>
         ApplicationKey: <DD_APP_KEY>
+Outputs:
+  DatadogTestMonitor:
+    Value: !GetAtt DatadogTestMonitor.URL
 ```
 
 ## Property Reference:

@@ -32,13 +32,17 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         final ResourceModel model = request.getDesiredResourceState();
 
         logger.log("Starting the Monitor Resource Read Handler");
+        logger.log(model.getPrimaryIdentifier().toString());
+        logger.log(model.getDatadogCredentials().toString());
 
         ApiClient apiClient = ApiClients.V1Client(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
         );
+        logger.log("api client");
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
+        logger.log("monitor api");
 
         Monitor monitor = null;
         try {
@@ -53,10 +57,15 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .message(err)
                 .build();
         }
-
-        final String monitorURL = model.getDatadogCredentials().getApiURL() + "/api/v1/monitor/" + model.getId().toString();
+        logger.log("got monitor");
 
         model.setId(monitor.getId().doubleValue());
+
+        logger.log(apiClient.getBasePath());
+        logger.log(monitor.getId().toString());
+        final String monitorURL = apiClient.getBasePath() + "/api/v1/monitor/" + monitor.getId().toString();
+        logger.log(monitorURL);
+
         model.setURL(monitorURL);
         model.setCreated(monitor.getCreated().toString());
         model.setModified(monitor.getCreated().toString());

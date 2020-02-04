@@ -54,8 +54,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
-        // link to the frontend application
-        final String monitorURL = model.getDatadogCredentials().getApiURL() + "/monitors/" + model.getId().toString();
+        final String monitorURL = model.getDatadogCredentials().getApiURL() + "/api/v1/monitor/" + model.getId().toString();
 
         model.setId(monitor.getId().doubleValue());
         model.setURL(monitorURL);

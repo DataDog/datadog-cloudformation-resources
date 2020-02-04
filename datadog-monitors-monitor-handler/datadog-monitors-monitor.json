@@ -275,7 +275,7 @@
             "type": "number"
         },
         "URL": {
-            "description": "URL of the monitor in the frontend application",
+            "description": "URL of the monitor",
             "type": "string"
         },
         "Message": {

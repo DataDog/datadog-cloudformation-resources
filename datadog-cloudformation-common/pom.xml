@@ -6,6 +6,13 @@
     <packaging>jar</packaging>
     <version>1.0.1</version>
     <name>datadog-cloudformation-common</name>
+    <repositories>
+        <repository>
+            <id>bintray-datadog-datadog-maven</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/datadog/datadog-maven</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.datadoghq</groupId>
@@ -20,6 +27,6 @@
         </dependency>
     </dependencies>
     <properties>
-        <datadog-api-client-version>1.0.0</datadog-api-client-version>
+        <datadog-api-client-version>1.0.0-beta.4-SNAPSHOT</datadog-api-client-version>
     </properties>
 </project>

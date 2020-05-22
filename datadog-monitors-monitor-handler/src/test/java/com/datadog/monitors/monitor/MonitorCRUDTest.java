@@ -111,7 +111,6 @@ public class MonitorCRUDTest {
 
         // Update the resource
         options = new MonitorOptions();
-        options.setAggregation("in total");
         options.setEnableLogsSample(true);
         options.setEscalationMessage("escalation message");
         options.setIncludeTags(false);
@@ -160,7 +159,6 @@ public class MonitorCRUDTest {
         assertThat(updateRead.getMessage()).isEqualTo("updated message");
         assertThat(updateRead.getName()).isEqualTo("updated name");
         assertThat(updateRead.getType()).isEqualTo("query alert");
-        assertThat(updateRead.getOptions().getAggregation()).isEqualTo("in total");
         assertThat(updateRead.getOptions().getEnableLogsSample()).isTrue();
         assertThat(updateRead.getOptions().getEscalationMessage()).isEqualTo("escalation message");
         assertThat(updateRead.getOptions().getIncludeTags()).isFalse();

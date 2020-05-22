@@ -34,7 +34,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         DowntimesApi downtimesApi = new DowntimesApi(apiClient);
 
         try {
-            downtimesApi.cancelDowntime(model.getId().longValue());
+            downtimesApi.cancelDowntime(model.getId().longValue()).execute();
         } catch (ApiException e) {
             String err = "Failed to disable downtime: " + e.toString();
             logger.log(err);

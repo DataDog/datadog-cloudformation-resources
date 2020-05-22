@@ -71,7 +71,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
         Downtime createdDowntime;
         try {
-            createdDowntime = downtimesApi.createDowntime(downtime);
+            createdDowntime = downtimesApi.createDowntime().body(downtime).execute();
         } catch (ApiException e) {
             String err = "Failed to create downtime: " + e.toString();
             logger.log(err);

@@ -5,84 +5,17 @@
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.datadoghq</groupId>
+    <parent>
+        <groupId>com.datadoghq</groupId>
+        <artifactId>cloudformation-resources</artifactId>
+        <version>1.0.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
     <artifactId>datadog-iam-user-cloudformation-handler</artifactId>
     <name>datadog-iam-user-cloudformation-handler</name>
     <version>1.0.1</version>
     <packaging>jar</packaging>
-
-    <properties>
-        <maven.compiler.source>1.8</maven.compiler.source>
-        <maven.compiler.target>1.8</maven.compiler.target>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aws-cloudformation-plugin-version>1.0.5</aws-cloudformation-plugin-version>
-        <datadog-api-client-version>1.0.0-beta.4-SNAPSHOT</datadog-api-client-version>
-        <datadog-cloudformation-common-version>1.0.1</datadog-cloudformation-common-version>
-    </properties>
-
-    <repositories>
-        <repository>
-            <id>bintray-datadog-datadog-maven</id>
-            <name>bintray</name>
-            <url>https://dl.bintray.com/datadog/datadog-maven</url>
-        </repository>
-    </repositories>
-
-    <dependencies>
-        <dependency>
-            <groupId>com.datadoghq</groupId>
-            <artifactId>datadog-cloudformation-common</artifactId>
-            <version>${datadog-cloudformation-common-version}</version>
-        </dependency>
-        <!-- https://github.com/awslabs/aws-cloudformation-rpdk-java-plugin/ -->
-        <dependency>
-            <groupId>software.amazon.cloudformation</groupId>
-            <artifactId>aws-cloudformation-rpdk-java-plugin</artifactId>
-            <version>${aws-cloudformation-plugin-version}</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>1.18.4</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.datadoghq</groupId>
-            <artifactId>datadog-api-client</artifactId>
-            <version>${datadog-api-client-version}</version>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/org.assertj/assertj-core -->
-        <dependency>
-            <groupId>org.assertj</groupId>
-            <artifactId>assertj-core</artifactId>
-            <version>3.12.2</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.junit.jupiter/junit-jupiter -->
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>5.5.0-M1</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-core -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-core</artifactId>
-            <version>2.26.0</version>
-            <scope>test</scope>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/org.mockito/mockito-junit-jupiter -->
-        <dependency>
-            <groupId>org.mockito</groupId>
-            <artifactId>mockito-junit-jupiter</artifactId>
-            <version>2.26.0</version>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
 
     <build>
         <plugins>

@@ -28,3 +28,6 @@
 
 # our logs
 */rpdk.log
+
+# unnecessary resource-role.yaml
+*/resource-role.yaml

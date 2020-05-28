@@ -19,32 +19,6 @@
                 }
             }
         },
-        "MonitorStateGroupValue": {
-            "type": "object",
-            "properties": {
-                "Value": {
-                    "description": "Value that triggered the monitor",
-                    "type": "number",
-                    "format": "float"
-                },
-                "FromTS": {
-                    "description": "Start timestamp of the windowed query",
-                    "type": "number"
-                },
-                "ToTS": {
-                    "description": "End timestamp of the windowed query",
-                    "type": "number"
-                },
-                "Left": {
-                    "type": "number",
-                    "format": "float"
-                },
-                "Right": {
-                    "type": "number",
-                    "format": "float"
-                }
-            }
-        },
         "MonitorStateGroup": {
             "type": "object",
             "properties": {
@@ -64,24 +38,12 @@
                     "description": "Status of the group",
                     "$ref": "#/definitions/MonitorOverallStates"
                 },
-                "TriggeringValue": {
-                    "description": "Information on the value that triggered the monitor",
-                    "$ref": "#/definitions/MonitorStateGroupValue"
-                },
-                "Message": {
-                    "description": "Text to display when the group changes state",
-                    "type": "string"
-                },
                 "LastResolvedTS": {
                     "description": "Timestamp when the group was last resolved",
                     "type": "number"
                 },
                 "LastNodataTS": {
                     "description": "Timestamp when the group was last getting no data",
-                    "type": "number"
-                },
-                "LastDataTS": {
-                    "description": "Timestamp when the group was last getting data",
                     "type": "number"
                 }
             }
@@ -161,22 +123,6 @@
         "MonitorOptions": {
             "type": "object",
             "properties": {
-                "Aggregation": {
-                    "description": "DEPRECATED, do not use",
-                    "type": "string"
-                },
-                "DeviceIDs": {
-                    "description": "Types of devices to test",
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "enum": [
-                            "laptop_large",
-                            "tablet",
-                            "mobile_small"
-                        ]
-                    }
-                },
                 "EnableLogsSample": {
                     "description": "Whether or not to include a sample of the logs",
                     "type": "boolean"

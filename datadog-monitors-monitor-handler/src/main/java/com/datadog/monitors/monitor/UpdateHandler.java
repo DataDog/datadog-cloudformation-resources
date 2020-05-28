@@ -14,10 +14,11 @@ import software.amazon.cloudformation.proxy.ResourceHandlerRequest;
 import com.datadog.api.v1.client.ApiClient;
 import com.datadog.api.v1.client.ApiException;
 import com.datadog.api.v1.client.api.MonitorsApi;
-import com.datadog.api.v1.client.model.Monitor;
 import com.datadog.api.v1.client.model.MonitorOptions;
 import com.datadog.api.v1.client.model.MonitorThresholds;
 import com.datadog.api.v1.client.model.MonitorThresholdWindowOptions;
+import com.datadog.api.v1.client.model.MonitorType;
+import com.datadog.api.v1.client.model.MonitorUpdateRequest;
 
 import com.datadog.cloudformation.common.clients.ApiClients;
 
@@ -43,15 +44,16 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         MonitorOptions options = null;
         if (model.getOptions() != null) {
             options = new MonitorOptions()
-                .aggregation(model.getOptions().getAggregation())
                 .enableLogsSample(model.getOptions().getEnableLogsSample())
                 .escalationMessage(model.getOptions().getEscalationMessage())
                 .includeTags(model.getOptions().getIncludeTags())
                 .locked(model.getOptions().getLocked())
                 .notifyAudit(model.getOptions().getNotifyAudit())
                 .notifyNoData(model.getOptions().getNotifyNoData())
-                .requireFullWindow(model.getOptions().getRequireFullWindow())
-                .timeoutH(model.getOptions().getTimeoutH());
+                .requireFullWindow(model.getOptions().getRequireFullWindow());
+            if (model.getOptions().getTimeoutH() != null) {
+                options.setTimeoutH(model.getOptions().getTimeoutH().longValue());
+            }
             if(model.getOptions().getSyntheticsCheckID() != null)
                 options.syntheticsCheckId(model.getOptions().getSyntheticsCheckID().longValue());
             if(model.getOptions().getEvaluationDelay() != null)
@@ -88,28 +90,19 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
                     .triggerWindow(model.getOptions().getThresholdWindows().getTriggerWindow());
             }
             options.thresholdWindows(thresholdWindows);
-
-            if (model.getOptions().getDeviceIDs() != null) {
-                options.deviceIds(
-                    model.getOptions().getDeviceIDs().stream()
-                        .map(d -> MonitorOptions.DeviceIdsEnum.fromValue(d))
-                        .collect(Collectors.toList())
-                );
-            }
         }
 
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
-        Monitor monitor = new Monitor()
+        MonitorUpdateRequest monitor = new MonitorUpdateRequest()
             .message(model.getMessage())
             .name(model.getName())
             .tags(model.getTags())
             .options(options)
             .query(model.getQuery())
-            .type(Monitor.TypeEnum.fromValue(model.getType()))
-            .multi(model.getMulti());
+            .type(MonitorType.fromValue(model.getType()));
 
         try {
-            monitorsApi.editMonitor(model.getId().longValue(), monitor);
+            monitorsApi.updateMonitor(model.getId().longValue()).body(monitor).execute();
         } catch(ApiException e) {
             String err = "Failed to update monitor: " + e.toString();
             logger.log(err);

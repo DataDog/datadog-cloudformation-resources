@@ -36,7 +36,7 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
 
         try {
-            monitorsApi.deleteMonitor(model.getId().longValue());
+            monitorsApi.deleteMonitor(model.getId().longValue()).execute();
         } catch (ApiException e) {
             String err = "Failed to delete monitor: " + e.toString();
             logger.log(err);

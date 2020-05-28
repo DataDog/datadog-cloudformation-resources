@@ -42,7 +42,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         Monitor monitor = null;
         try {
-            monitor = monitorsApi.getMonitor(model.getId().longValue(), null);
+            monitor = monitorsApi.getMonitor(model.getId().longValue()).execute();
         } catch(ApiException e) {
             String err = "Failed to get monitor: " + e.toString();
             logger.log(err);
@@ -81,13 +81,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         if(monitor.getOptions() != null) {
             MonitorOptions monitorOptions = new MonitorOptions();
-            monitorOptions.setAggregation(monitor.getOptions().getAggregation());
-            if(monitor.getOptions().getDeviceIds() != null)
-                monitorOptions.setDeviceIDs(
-                    monitor.getOptions().getDeviceIds().stream()
-                        .map(d -> d.getValue())
-                        .collect(Collectors.toList())
-                );
             monitorOptions.setEnableLogsSample(monitor.getOptions().getEnableLogsSample());
             monitorOptions.setEscalationMessage(monitor.getOptions().getEscalationMessage());
             if(monitor.getOptions().getEvaluationDelay() != null)
@@ -127,7 +120,9 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 monitorThresholdWindows.setRecoveryWindow(monitor.getOptions().getThresholdWindows().getRecoveryWindow());
                 monitorOptions.setThresholdWindows(monitorThresholdWindows);
             }
-            monitorOptions.setTimeoutH(monitor.getOptions().getTimeoutH());
+            if (monitor.getOptions().getTimeoutH() != null) {
+                monitorOptions.setTimeoutH(monitor.getOptions().getTimeoutH().intValue());
+            }
             model.setOptions(monitorOptions);
         }
 
@@ -137,8 +132,8 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         if(monitor.getState() != null) {
             MonitorState state = new MonitorState();
             state.setMonitorID(monitor.getId().doubleValue());
-            if(monitor.getState().getOverallState() != null)
-                state.setOverallState(monitor.getState().getOverallState().getValue());
+            if(monitor.getOverallState() != null)
+                state.setOverallState(monitor.getOverallState().getValue());
             if(monitor.getState().getGroups() != null) {
                 HashMap<String, MonitorStateGroup> groups = new HashMap<>();
                 for(Entry<String, com.datadog.api.v1.client.model.MonitorStateGroup> entry: monitor.getState().getGroups().entrySet()) {
@@ -152,28 +147,9 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                         group.setLastResolvedTS(entry.getValue().getLastResolvedTs().doubleValue());
                     if(entry.getValue().getLastNodataTs() != null)
                         group.setLastNodataTS(entry.getValue().getLastNodataTs().doubleValue());
-                    if(entry.getValue().getLastDataTs() != null)
-                        group.setLastDataTS(entry.getValue().getLastDataTs().doubleValue());
-                    group.setMessage(entry.getValue().getMessage());
 
                     if(entry.getValue().getStatus() != null)
                         group.setStatus(entry.getValue().getStatus().getValue());
-
-                    if(entry.getValue().getTriggeringValue() != null) {
-                        MonitorStateGroupValue groupValue = new MonitorStateGroupValue();
-                        if(entry.getValue().getTriggeringValue().getValue() != null)
-                            groupValue.setValue(entry.getValue().getTriggeringValue().getValue().doubleValue());
-                        if(entry.getValue().getTriggeringValue().getFromTs() != null)
-                            groupValue.setFromTS(entry.getValue().getTriggeringValue().getFromTs().doubleValue());
-                        if(entry.getValue().getTriggeringValue().getToTs() != null)
-                            groupValue.setToTS(entry.getValue().getTriggeringValue().getToTs().doubleValue());
-                        if(entry.getValue().getTriggeringValue().getLeft() != null)
-                            groupValue.setLeft(entry.getValue().getTriggeringValue().getLeft().doubleValue());
-                        if(entry.getValue().getTriggeringValue().getRight() != null)
-                            groupValue.setRight(entry.getValue().getTriggeringValue().getRight().doubleValue());
-                        group.setTriggeringValue(groupValue);
-
-                    }
 
                     groups.put(entry.getKey(), group);
                 }

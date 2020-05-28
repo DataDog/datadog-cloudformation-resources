@@ -6,6 +6,13 @@
     <packaging>jar</packaging>
     <version>1.0.1</version>
     <name>datadog-cloudformation-common</name>
+    <repositories>
+        <repository>
+            <id>bintray-datadog-datadog-maven</id>
+            <name>bintray</name>
+            <url>https://dl.bintray.com/datadog/datadog-maven</url>
+        </repository>
+    </repositories>
     <dependencies>
         <dependency>
             <groupId>com.datadoghq</groupId>
@@ -20,6 +27,16 @@
         </dependency>
     </dependencies>
     <properties>
-        <datadog-api-client-version>1.0.0</datadog-api-client-version>
+        <!-- NOTE: When updating this, you also need to update version in ../pom.xml.
+
+             We can't inherit from the parent ../pom.xml, as that already has a dependency
+             on datadog-cloudformation-common (which would mean circular dependency here)
+             and the top-level dependency from parent pom can't be excluded.
+
+             The other option would be to not specify datadog-cloudformation-common in parent pom,
+             but then we'd have to specify it in all the resources as a dependency, which would
+             require updates in many places (while this approach only requires updates here
+             and in the parent pom. -->
+        <datadog-api-client-version>1.0.0-beta.3</datadog-api-client-version>
     </properties>
 </project>

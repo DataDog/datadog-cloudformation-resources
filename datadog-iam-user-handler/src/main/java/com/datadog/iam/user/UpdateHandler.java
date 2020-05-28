@@ -14,6 +14,7 @@ import com.datadog.cloudformation.common.clients.ApiClients;
 import com.datadog.api.v1.client.ApiClient;
 import com.datadog.api.v1.client.ApiException;
 import com.datadog.api.v1.client.api.UsersApi;
+import com.datadog.api.v1.client.model.AccessRole;
 import com.datadog.api.v1.client.model.User;
 
 public class UpdateHandler extends BaseHandler<CallbackContext> {
@@ -37,13 +38,13 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         UsersApi usersApi = new UsersApi(apiClient);
 
         User userUpdatePayload = new User()
-            .accessRole(User.AccessRoleEnum.fromValue(model.getAccessRole()))
+            .accessRole(AccessRole.fromValue(model.getAccessRole()))
             .disabled(model.getDisabled())
             .email(model.getEmail())
             .name(model.getName());
 
         try {
-            usersApi.updateUser(model.getHandle(), userUpdatePayload);
+            usersApi.updateUser(model.getHandle()).body(userUpdatePayload).execute();
         } catch (ApiException e) {
             String err = "Failed to update user: " + e.toString();
             logger.log(err);

@@ -44,7 +44,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
             .accountSpecificNamespaceRules(model.getAccountSpecificNamespaceRules());
 
         try {
-            awsApi.createAWSAccount(awsCreatePayload);
+            awsApi.createAWSAccount().body(awsCreatePayload).execute();
         } catch (ApiException e) {
             String err = "Failed to create AWS Account Integration: " + e.toString();
             logger.log(err);

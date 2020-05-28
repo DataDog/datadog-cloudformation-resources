@@ -14,6 +14,7 @@ import com.datadog.cloudformation.common.clients.ApiClients;
 import com.datadog.api.v1.client.ApiClient;
 import com.datadog.api.v1.client.ApiException;
 import com.datadog.api.v1.client.api.UsersApi;
+import com.datadog.api.v1.client.model.AccessRole;
 import com.datadog.api.v1.client.model.User;
 
 public class CreateHandler extends BaseHandler<CallbackContext> {
@@ -36,13 +37,13 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         UsersApi usersApi = new UsersApi(apiClient);
 
         User userCreatePayload = new User()
-            .accessRole(User.AccessRoleEnum.fromValue(model.getAccessRole()))
+            .accessRole(AccessRole.fromValue(model.getAccessRole()))
             .email(model.getEmail())
             .name(model.getName())
             .handle(model.getHandle());
 
         try {
-            usersApi.createUser(userCreatePayload);
+            usersApi.createUser().body(userCreatePayload).execute();
         } catch (ApiException e) {
             String err = "Failed to create user: " + e.toString();
             logger.log(err);

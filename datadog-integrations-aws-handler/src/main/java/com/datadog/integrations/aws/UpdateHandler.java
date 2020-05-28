@@ -48,7 +48,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             .accountSpecificNamespaceRules(model.getAccountSpecificNamespaceRules());
 
         try {
-            awsApi.updateAWSAccount(awsCreatePayload, model.getAccountID(), model.getRoleName(), model.getAccessKeyID());
+            awsApi.updateAWSAccount().body(awsCreatePayload).accountId(model.getAccountID()).roleName(model.getRoleName()).accessKeyId(model.getAccessKeyID()).execute();
         } catch (ApiException e) {
             String err = "Failed to update AWS Integration: " + e.toString();
             logger.log(err);

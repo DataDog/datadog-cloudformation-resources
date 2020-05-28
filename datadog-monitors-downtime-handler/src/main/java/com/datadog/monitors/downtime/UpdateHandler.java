@@ -66,7 +66,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
         // }
 
         try {
-            downtimesApi.updateDowntime(model.getId().longValue(), downtime);
+            downtimesApi.updateDowntime(model.getId().longValue()).body(downtime).execute();
         } catch (ApiException e) {
             String err = "Failed to update downtime: " + e.toString();
             logger.log(err);

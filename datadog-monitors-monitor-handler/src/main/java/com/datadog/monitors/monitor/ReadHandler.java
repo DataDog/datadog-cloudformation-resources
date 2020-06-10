@@ -54,7 +54,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
-        model.setId(monitor.getId().doubleValue());
         model.setCreated(monitor.getCreated().toString());
         model.setModified(monitor.getCreated().toString());
         if(monitor.getDeleted() != null)

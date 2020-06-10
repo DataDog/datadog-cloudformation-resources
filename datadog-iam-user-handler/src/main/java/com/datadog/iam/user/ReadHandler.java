@@ -53,7 +53,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
         model.setAccessRole(user.getAccessRole().getValue());
         model.setDisabled(user.getDisabled());
         model.setEmail(user.getEmail());
-        model.setHandle(user.getHandle());
         model.setName(user.getName());
         model.setVerified(user.getVerified());
 

@@ -59,9 +59,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
-        model.setAccountID(awsAccount.getAccountId());
-        model.setRoleName(awsAccount.getRoleName());
-        model.setAccessKeyID(awsAccount.getAccessKeyId());
         model.setHostTags(awsAccount.getHostTags());
         model.setFilterTags(awsAccount.getFilterTags());
         model.setAccountSpecificNamespaceRules(awsAccount.getAccountSpecificNamespaceRules());

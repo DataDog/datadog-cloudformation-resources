@@ -48,7 +48,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
                 .build();
         }
 
-        model.setId(downtime.getId().intValue());
         if(downtime.getEnd() != null)
             model.setEnd(downtime.getEnd().intValue());
         model.setMessage(downtime.getMessage());

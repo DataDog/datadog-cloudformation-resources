@@ -1,5 +1,18 @@
 # Changelog
 
+# 2.0.0
+
+Released on TBD
+
+* Link to Resource: TBD
+* [BUGFIX] Don't try to set monitor id in the ReadHandler.
+* [CHANGED] Removed attributes considered unused/unstable on the API side:
+  * `MonitorOptions.Aggregation`
+  * `MonitorOptions.DeviceIDs`
+  * `MonitorStageGroup.LastDataTS`
+  * `MonitorStateGroup.Message`
+  * `MonitorStateGroup.TriggeringValue` (which was a reference to an also removed type `MonitorStateGroupValue`)
+
 # 1.0.2
 
 Released on 2019-11-21

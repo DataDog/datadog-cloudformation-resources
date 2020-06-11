@@ -2,9 +2,9 @@
 
 # 2.0.0
 
-Released on TBD
+Released on 2020-06-11
 
-* Link to Resource: TBD
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-2.0.0.zip`
 * [BUGFIX] Don't try to set monitor id in the ReadHandler.
 * [CHANGED] Removed attributes considered unused/unstable on the API side:
   * `MonitorOptions.Aggregation`

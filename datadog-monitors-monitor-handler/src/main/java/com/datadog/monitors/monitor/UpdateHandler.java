@@ -35,11 +35,11 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the Monitor Resource Update Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
 
         MonitorOptions options = null;
         if (model.getOptions() != null) {

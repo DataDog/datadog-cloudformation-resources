@@ -28,11 +28,11 @@ public class DeleteHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the Monitor Resource Delete Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
 
         try {

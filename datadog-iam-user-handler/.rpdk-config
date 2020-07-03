@@ -3,13 +3,14 @@
     "language": "java",
     "runtime": "java8",
     "entrypoint": "com.datadog.iam.user.HandlerWrapper::handleRequest",
+    "testEntrypoint": "com.datadog.iam.user.HandlerWrapper::testEntrypoint",
     "settings": {
         "namespace": [
             "com",
             "datadog",
             "iam",
             "user"
-        ]
-    },
-    "testEntrypoint": "com.datadog.iam.user.HandlerWrapper::testEntrypoint"
+        ],
+        "protocolVersion": "2.0.0"
+    }
 }

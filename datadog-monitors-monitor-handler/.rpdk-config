@@ -3,13 +3,14 @@
     "language": "java",
     "runtime": "java8",
     "entrypoint": "com.datadog.monitors.monitor.HandlerWrapper::handleRequest",
+    "testEntrypoint": "com.datadog.monitors.monitor.HandlerWrapper::testEntrypoint",
     "settings": {
         "namespace": [
             "com",
             "datadog",
             "monitors",
             "monitor"
-        ]
-    },
-    "testEntrypoint": "com.datadog.monitors.monitor.HandlerWrapper::testEntrypoint"
+        ],
+        "protocolVersion": "2.0.0"
+    }
 }

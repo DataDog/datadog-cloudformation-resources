@@ -29,11 +29,11 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the User Resource Read Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
         UsersApi usersApi = new UsersApi(apiClient);
 
         User user = null;

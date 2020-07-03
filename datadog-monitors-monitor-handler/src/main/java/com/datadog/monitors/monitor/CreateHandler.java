@@ -33,11 +33,11 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the Monitor Resource Create Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
         MonitorOptions options = null;
         if (model.getOptions() != null) {
             options = new MonitorOptions()

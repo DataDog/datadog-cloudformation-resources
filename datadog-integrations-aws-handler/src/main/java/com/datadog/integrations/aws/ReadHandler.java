@@ -37,7 +37,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
         ).createV1Client();
-        apiClient.setDebugging(true);
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
 

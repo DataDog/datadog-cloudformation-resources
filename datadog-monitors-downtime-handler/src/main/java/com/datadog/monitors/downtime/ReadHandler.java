@@ -32,7 +32,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
         ).createV1Client();
-        apiClient.setDebugging(true);
         DowntimesApi downtimesApi = new DowntimesApi(apiClient);
 
         Downtime downtime = null;

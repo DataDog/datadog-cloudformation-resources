@@ -38,7 +38,6 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
         ).createV1Client();
-        apiClient.setDebugging(true);
         MonitorsApi monitorsApi = new MonitorsApi(apiClient);
 
         Monitor monitor = null;

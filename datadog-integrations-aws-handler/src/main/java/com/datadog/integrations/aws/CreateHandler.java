@@ -28,11 +28,11 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the AWS Integration Resource Create Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
         AWSAccount awsCreatePayload = new AWSAccount()

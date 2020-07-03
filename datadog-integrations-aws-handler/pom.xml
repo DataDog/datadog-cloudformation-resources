@@ -153,6 +153,10 @@
                     <include>datadog-integrations-aws.json</include>
                 </includes>
             </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
         </resources>
     </build>
 </project>

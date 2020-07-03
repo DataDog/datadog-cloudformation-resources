@@ -32,11 +32,12 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         logger.log("Starting the AWS Integration Resource Read Handler");
 
-        ApiClient apiClient = ApiClients.V1Client(
+        ApiClient apiClient = new ClientFactory(
             model.getDatadogCredentials().getApiKey(),
             model.getDatadogCredentials().getApplicationKey(),
             model.getDatadogCredentials().getApiURL()
-        );
+        ).createV1Client();
+        apiClient.setDebugging(true);
         AwsIntegrationApi awsApi = new AwsIntegrationApi(apiClient);
 
 

@@ -3,13 +3,14 @@
     "language": "java",
     "runtime": "java8",
     "entrypoint": "com.datadog.integrations.aws.HandlerWrapper::handleRequest",
+    "testEntrypoint": "com.datadog.integrations.aws.HandlerWrapper::testEntrypoint",
     "settings": {
         "namespace": [
             "com",
             "datadog",
             "integrations",
             "aws"
-        ]
-    },
-    "testEntrypoint": "com.datadog.integrations.aws.HandlerWrapper::testEntrypoint"
+        ],
+        "protocolVersion": "2.0.0"
+    }
 }

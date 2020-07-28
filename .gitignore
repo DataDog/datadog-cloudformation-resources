@@ -34,3 +34,6 @@
 
 # IntelliJ IDEA project files
 .idea
+
+# IntelliJ modules config files
+*.iml

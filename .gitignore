@@ -37,3 +37,6 @@
 
 # IntelliJ modules config files
 *.iml
+
+# AWS Resource Provider Development Kit logs
+rpdk.log

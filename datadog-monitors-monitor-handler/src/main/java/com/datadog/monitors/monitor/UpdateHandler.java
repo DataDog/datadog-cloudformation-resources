@@ -102,7 +102,7 @@ public class UpdateHandler extends BaseHandler<CallbackContext> {
             .type(MonitorType.fromValue(model.getType()));
 
         try {
-            monitorsApi.updateMonitor(model.getId().longValue()).body(monitor).execute();
+            monitorsApi.updateMonitor(new Long(model.getId())).body(monitor).execute();
         } catch(ApiException e) {
             String err = "Failed to update monitor: " + e.toString();
             logger.log(err);

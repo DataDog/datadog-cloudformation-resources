@@ -42,7 +42,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         Monitor monitor = null;
         try {
-            monitor = monitorsApi.getMonitor(model.getId().longValue()).execute();
+            monitor = monitorsApi.getMonitor(new Long(model.getId())).execute();
         } catch(ApiException e) {
             String err = "Failed to get monitor: " + e.toString();
             logger.log(err);
@@ -130,7 +130,7 @@ public class ReadHandler extends BaseHandler<CallbackContext> {
 
         if(monitor.getState() != null) {
             MonitorState state = new MonitorState();
-            state.setMonitorID(monitor.getId().doubleValue());
+            state.setMonitorID(String.valueOf(monitor.getId()));
             if(monitor.getOverallState() != null)
                 state.setOverallState(monitor.getOverallState().getValue());
             if(monitor.getState().getGroups() != null) {

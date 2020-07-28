@@ -31,3 +31,6 @@
 
 # unnecessary resource-role.yaml
 */resource-role.yaml
+
+# IntelliJ IDEA project files
+.idea

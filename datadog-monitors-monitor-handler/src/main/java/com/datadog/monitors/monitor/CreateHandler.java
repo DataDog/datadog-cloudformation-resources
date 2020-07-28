@@ -113,7 +113,7 @@ public class CreateHandler extends BaseHandler<CallbackContext> {
         }
 
         // Set ID of the returned monitor, so that the read handler can request it
-        model.setId(createdMonitor.getId().doubleValue());
+        model.setId(String.valueOf(createdMonitor.getId()));
         return new ReadHandler().handleRequest(proxy, request, callbackContext, logger);
     }
 }

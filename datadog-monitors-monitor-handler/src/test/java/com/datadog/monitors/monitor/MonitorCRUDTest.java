@@ -40,7 +40,7 @@ public class MonitorCRUDTest {
         System.getenv("DD_TEST_CF_API_URL")
     );
 
-    private double id;
+    private String id;
 
     @Mock
     private AmazonWebServicesClientProxy proxy;

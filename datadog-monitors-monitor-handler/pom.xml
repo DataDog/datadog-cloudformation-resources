@@ -159,4 +159,11 @@
             </resource>
         </resources>
     </build>
+    <dependencies>
+        <dependency>
+            <groupId>software.amazon.cloudformation</groupId>
+            <artifactId>aws-cloudformation-rpdk-java-plugin</artifactId>
+            <version>2.0.0</version>
+        </dependency>
+    </dependencies>
 </project>

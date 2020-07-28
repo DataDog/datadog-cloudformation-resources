@@ -65,7 +65,7 @@
             "properties": {
                 "MonitorID": {
                     "description": "ID of the monitor",
-                    "type": "number"
+                    "type": "string"
                 },
                 "OverallState": {
                     "description": "Overall state of the monitor",
@@ -218,7 +218,7 @@
         },
         "Id": {
             "description": "ID of the monitor",
-            "type": "number"
+            "type": "string"
         },
         "Message": {
             "description": "A message to include with notifications for the monitor",

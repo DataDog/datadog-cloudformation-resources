@@ -1,4 +1,4 @@
-# Datadog::Monitors::Monitor Options ThresholdWindows
+# Datadog::Monitors::Monitor MonitorThresholdWindows
 
 ## Syntax
 

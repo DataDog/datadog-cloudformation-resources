@@ -1,4 +1,4 @@
-# Datadog::Monitors::Monitor State Groups
+# Datadog::Monitors::Monitor MonitorState Groups
 
 State of each monitor group
 
@@ -10,14 +10,14 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "<a href="#.*" title=".*">.*</a>" : <i><a href="state-groups-.*.md">.*</a></i>
+    "<a href="#.*" title=".*">.*</a>" : <i><a href="monitorstategroup.md">MonitorStateGroup</a></i>
 }
 </pre>
 
 ### YAML
 
 <pre>
-<a href="#.*" title=".*">.*</a>: <i><a href="state-groups-.*.md">.*</a></i>
+<a href="#.*" title=".*">.*</a>: <i><a href="monitorstategroup.md">MonitorStateGroup</a></i>
 </pre>
 
 ## Properties
@@ -26,7 +26,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 _Required_: No
 
-_Type_: <a href="state-groups-.*.md">.*</a>
+_Type_: <a href="monitorstategroup.md">MonitorStateGroup</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

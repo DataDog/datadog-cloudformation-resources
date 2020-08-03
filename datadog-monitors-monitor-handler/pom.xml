@@ -17,6 +17,15 @@
     <version>2.0.0</version>
     <packaging>jar</packaging>
 
+    <dependencies>
+        <!-- NOTE: this dependency needs to be here until https://github.com/aws-cloudformation/cloudformation-cli-java-plugin/issues/282 is fixed -->
+        <dependency>
+            <groupId>software.amazon.cloudformation</groupId>
+            <artifactId>aws-cloudformation-rpdk-java-plugin</artifactId>
+            <version>2.0.1</version>
+        </dependency>
+    </dependencies>
+
     <build>
         <plugins>
             <plugin>

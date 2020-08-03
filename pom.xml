@@ -15,7 +15,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <aws-cloudformation-plugin-version>2.0.0</aws-cloudformation-plugin-version>
+        <aws-cloudformation-plugin-version>2.0.1</aws-cloudformation-plugin-version>
         <!-- NOTE: When updating this, also update version in datadog-cloudformation-common/pom.xml
              Also see a note in that file for a reason why it's necessary to do in two places. -->
         <datadog-api-client-version>1.0.0-beta.7</datadog-api-client-version>

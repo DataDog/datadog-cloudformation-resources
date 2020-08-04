@@ -2,6 +2,13 @@
 
 * See individual Resource Changelogs for links to download their artifacts.
 
+## 2020-08-04
+
+- Release version [1.1.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-integrations-aws-1.1.0) of the Datadog AWS integration AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-aws-handler/CHANGELOG.md#110--2020-08-04).
+- Release version [1.1.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-iam-user-1.1.0) of the Datadog user AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md#110--2020-08-04).
+- Release version [1.1.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-downtime-1.1.0) of the Datadog downtime AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-downtime-handler/CHANGELOG.md#110--2020-08-04).
+- Release version [2.1.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-monitor-2.1.0) of the Datadog monitor AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md#210--2020-08-04).
+
 ## 2020-06-11
 
 - Release version [2.0.0](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-monitor-2.0.0) of the Datadog monitor AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md#200).

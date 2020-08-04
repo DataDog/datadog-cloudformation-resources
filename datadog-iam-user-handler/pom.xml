@@ -14,7 +14,7 @@
 
     <artifactId>datadog-iam-user-cloudformation-handler</artifactId>
     <name>datadog-iam-user-cloudformation-handler</name>
-    <version>1.0.1</version>
+    <version>1.1.0</version>
     <packaging>jar</packaging>
 
     <dependencies>

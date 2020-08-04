@@ -23,9 +23,9 @@ This project does not have a strict release schedule. However, we would make a r
 
 ### Commands
 
-- See changes ready for release by running `ddev release show changes .` at the root of this project. Add any missing labels to PRs if needed.
-- Run `ddev release changelog . <NEW_VERSION>` to update the `CHANGELOG.md` file at the root of this repository
-- Manually move each changelog item to the resource folder's CHANGELOG.md file to which it belongs and update the root CHANGELOG.md following the existing format.
+- See changes ready for release by running `ddev release show changes . --tag-prefix <RESOURCE_TAG_PREFIX>` (where `<RESOURCE_TAG_PREFIX>` is e.g. `datadog-iam-user-`) at the root of this project. Add any missing labels to PRs if needed.
+- Run `ddev release changelog . <NEW_VERSION> --tag-prefix <RESOURCE_TAG_PREFIX> -o <RESOURCE_DIRECTORY>/CHANGELOG.md` to update the `CHANGELOG.md` file at the directory belonging to the specific resource.
+- Ensure that the resource changelog contains only relevant entries (currently the tooling generates changelog entries from all PRs merged for all resources) and update the root CHANGELOG.md following the existing format.
 - Commit the changes to the repository in a release branch and get it approved/merged.
 
 ## Release

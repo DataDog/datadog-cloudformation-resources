@@ -2,6 +2,7 @@
 
 ## 2.1.0 / 2020-08-04
 
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-2.1.0.zip`
 * Rebuilt with aws-cloudformation-rpdk-java-plugin 2.0.1.
 
 ## 2.0.0

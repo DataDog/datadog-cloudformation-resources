@@ -82,7 +82,18 @@ def delete_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
+
+    configuration = setup_api_configuration(request)
+
+    with ApiClient(configuration) as api_client:
+        api_instance = users_api.UsersApi(api_client)
+        user_handle = model.Handle
+        try:
+            api_instance.disable_user(user_handle)
+        except ApiException as e:
+            LOG.error("Exception when calling UsersApi->disable_user: %s\n" % e)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model)
+
     return progress
 
 

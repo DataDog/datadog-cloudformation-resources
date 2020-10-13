@@ -1,0 +1,2 @@
+cloudformation-cli-python-lib==2.1.2
+/project/datadog-api-client-python

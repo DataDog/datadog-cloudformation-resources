@@ -1,16 +1,11 @@
 {
     "typeName": "Datadog::IAM::User",
-    "language": "java",
-    "runtime": "java8",
-    "entrypoint": "com.datadog.iam.user.HandlerWrapper::handleRequest",
-    "testEntrypoint": "com.datadog.iam.user.HandlerWrapper::testEntrypoint",
+    "language": "python37",
+    "runtime": "python3.7",
+    "entrypoint": "datadog_iam_user.handlers.resource",
+    "testEntrypoint": "datadog_iam_user.handlers.test_entrypoint",
     "settings": {
-        "namespace": [
-            "com",
-            "datadog",
-            "iam",
-            "user"
-        ],
+        "use_docker": true,
         "protocolVersion": "2.0.0"
     }
 }

@@ -12,11 +12,12 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.monitors_api import MonitorsApi
 from datadog_api_client.v1.model.monitor import Monitor as ApiMonitor
-from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
-from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_options import MonitorOptions as ApiMonitorOptions
+from datadog_api_client.v1.model.monitor_threshold_window_options import \
+    MonitorThresholdWindowOptions as ApiMonitorThresholdWindows
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
-from datadog_api_client.v1.model.monitor_threshold_window_options import MonitorThresholdWindowOptions as ApiMonitorThresholdWindows
+from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
+from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
 from datadog_cloudformation_common.api_clients import v1_client
 
 from .models import Creator, MonitorOptions, MonitorState, MonitorStateGroup, MonitorThresholdWindows, \
@@ -41,11 +42,11 @@ def read_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
     with v1_client(
-        model.DatadogCredentials.ApiKey,
-        model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-        TYPE_NAME,
-        __version__,
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         monitor_id = model.Id
@@ -138,21 +139,25 @@ def update_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
 
-    monitor = ApiMonitorUpdateRequest(
-        message=model.Message,
-        name=model.Name,
-        tags=model.Tags,
-        options=build_monitor_options_from_model(model),
-        query=model.Query,
-        type=ApiMonitorType(model.Type)
-    )
+    monitor = ApiMonitorUpdateRequest()
+    if model.Message is not None:
+        monitor.message = model.Message
+    if model.Name is not None:
+        monitor.name = model.Name
+    if model.Tags is not None:
+        monitor.tags = model.Tags
+    options = build_monitor_options_from_model(model)
+    if options:
+        monitor.options = options
+    monitor.query = model.Query
+    monitor.type = ApiMonitorType(model.Type)
 
     with v1_client(
-        model.DatadogCredentials.ApiKey,
-        model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-        TYPE_NAME,
-        __version__,
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
@@ -203,21 +208,25 @@ def create_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
 
-    monitor = ApiMonitor(
-        message=model.Message,
-        name=model.Name,
-        tags=model.Tags,
-        options=build_monitor_options_from_model(model),
-        query=model.Query,
-        type=ApiMonitorType(model.Type)
-    )
+    monitor = ApiMonitor()
+    if model.Message is not None:
+        monitor.message = model.Message
+    if model.Name is not None:
+        monitor.name = model.Name
+    if model.Tags is not None:
+        monitor.tags = model.Tags
+    options = build_monitor_options_from_model(model)
+    if options:
+        monitor.options = options
+    monitor.query = model.Query
+    monitor.type = ApiMonitorType(model.Type)
 
     with v1_client(
-        model.DatadogCredentials.ApiKey,
-        model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-        TYPE_NAME,
-        __version__,
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
@@ -248,36 +257,48 @@ def list_handler(
 def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
     options = None
     if model.Options:
-        options = ApiMonitorOptions(
-            enable_logs_sample=model.Options.EnableLogsSample,
-            escalation_message=model.Options.EscalationMessage,
-            include_tags=model.Options.IncludeTags,
-            locked=model.Options.Locked,
-            notify_audit=model.Options.NotifyAudit,
-            notify_no_data=model.Options.NotifyNoData,
-            require_full_window=model.Options.RequireFullWindow,
-            timeout_h=model.Options.TimeoutH,
-            synthetics_check_id=model.Options.SyntheticsCheckID,
-            evaluation_delay=model.Options.EvaluationDelay,
-            min_location_failed=model.Options.MinLocationFailed,
-            new_host_delay=model.Options.NewHostDelay,
-            no_data_timeframe=model.Options.NoDataTimeframe,
-            renotify_interval=model.Options.RenotifyInterval,
-            thresholds=None,
-            threshold_windows=None,
-        )
-        if model.Options.Thresholds:
-            options.thresholds = ApiMonitorThresholds(
-                critical=model.Options.Thresholds.Critical,
-                critical_recovery=model.Options.Thresholds.CriticalRecovery,
-                warning=model.Options.Thresholds.Warning,
-                warning_recovery=model.Options.Thresholds.WarningRecovery,
-                ok=model.Options.Thresholds.OK,
-            )
-        if model.Options.ThresholdWindows:
-            options.threshold_windows = ApiMonitorThresholdWindows(
-                trigger_window=model.Options.ThresholdWindows.TriggerWindow,
-                recovery_window=model.Options.ThresholdWindows.RecoveryWindow,
-            )
+        options = ApiMonitorOptions()
+
+        # Nullable attributes
+        options.evaluation_delay = model.Options.EvaluationDelay
+        options.min_location_failed = model.Options.MinLocationFailed
+        options.new_host_delay = model.Options.NewHostDelay
+        options.no_data_timeframe = model.Options.NoDataTimeframe
+        options.synthetics_check_id = model.Options.SyntheticsCheckID
+        options.timeout_h = model.Options.TimeoutH
+        options.renotify_interval = model.Options.RenotifyInterval
+
+        # Non nullable
+        if model.Options.EnableLogsSample is not None:
+            options.enable_logs_sample = model.Options.EnableLogsSample
+        if model.Options.EscalationMessage is not None:
+            options.escalation_message = model.Options.EscalationMessage
+        if model.Options.IncludeTags is not None:
+            options.include_tags = model.Options.IncludeTags
+        if model.Options.Locked is not None:
+            options.locked = model.Options.Locked
+        if model.Options.NotifyAudit is not None:
+            options.notify_audit = model.Options.NotifyAudit
+        if model.Options.NotifyNoData is not None:
+            options.notify_no_data = model.Options.NotifyNoData
+        if model.Options.RequireFullWindow is not None:
+            options.require_full_window = model.Options.RequireFullWindow
+        if model.Options.Thresholds is not None:
+            options.thresholds = ApiMonitorThresholds()
+            if model.Options.Thresholds.Critical is not None:
+                options.thresholds.critical = model.Options.Thresholds.Critical
+            if model.Options.Thresholds.CriticalRecovery is not None:
+                options.thresholds.critical_recovery = model.Options.Thresholds.CriticalRecovery
+            if model.Options.Thresholds.Warning is not None:
+                options.thresholds.warning = model.Options.Thresholds.Warning
+            if model.Options.Thresholds.WarningRecovery is not None:
+                options.thresholds.warning_recovery = model.Options.Thresholds.WarningRecovery
+            if model.Options.Thresholds.OK is not None:
+                options.thresholds.ok = model.Options.Thresholds.OK
+
+        if model.Options.ThresholdWindows is not None:
+            options.threshold_windows = ApiMonitorThresholdWindows()
+            options.threshold_windows.trigger_window = model.Options.ThresholdWindows.TriggerWindow
+            options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
     return options

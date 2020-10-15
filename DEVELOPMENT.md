@@ -48,3 +48,49 @@ To set up the Datadog-AWS CloudFormation provider, follow the instructions below
 
 * Primary Identifiers should all be based on required fields. Having optional fields make up this property causes errors on stack creation. These will also be displayed when `Fn:Ref` is called on this resource.
 * Using the built in `logger` in the resource displays logs in CloudWatch to help debug any issues.
+
+### Local testing
+Before submitting the resource to an AWS account for final testing, you can simulate lifecycle events of a resource locally. 
+This allows for quickly iterating and manually testing out changes during development.
+A more complete tutorial can be found here - https://docs.aws.amazon.com/cloudformation-cli/latest/userguide/resource-type-walkthrough.html
+
+To simulate local events, create a `sam-tests` directory at the root of the resource. Then create a json file for each lifecycle event. 
+
+Ex:
+`datadog-iam-user-handler/sam-tests/create.json`
+
+```json
+{
+    "credentials": {
+      "accessKeyId": "",
+      "secretAccessKey": "",
+      "sessionToken": ""
+    },
+    "action": "CREATE",
+    "request": {
+        "clientRequestToken": "4b90a7e4-b790-456b-a937-0cfdfa211dfe",
+        "desiredResourceState": {
+          "AccessRole": "st",
+          "Email": "cf-test@datadoghq.com",
+          "Handle": "cf-test@datadoghq.com",
+          "Name": "Test LastName",
+          "DatadogCredentials": {
+            "ApiURL": "https:api.datadoghq.com",
+            "ApiKey": "<API_KEY_FOR_ORG>",
+            "ApplicationKey": "<APP_KEY_FOR_ORG>"
+          }
+        },
+        "logicalResourceIdentifier": "Datadog::IAM::User"
+    },
+    "callbackContext": null
+}
+```
+
+where:
+
+* `action`: is the lifecycle event; CREATE/UPDATE/DELETE/READ
+* `request/clientRequestToken`: is any guid, this can be left as the example
+* `request/desiredResourceState`: is the object of the schema you're looking to create
+
+Once done, you can run: `sam local invoke TestEntrypoint --event sam-tests/create.json` from within the resource directory to trigger this event. 
+This will make a real request to the Datadog API by running through your handler code.

@@ -94,3 +94,6 @@ where:
 
 Once done, you can run: `sam local invoke TestEntrypoint --event sam-tests/create.json` from within the resource directory to trigger this event. 
 This will make a real request to the Datadog API by running through your handler code.
+
+
+**NOTE** Any code changes to the resource will require a re-building of the resource before running the `sam` command again. You can re-build with `cfn submit --dry-run`

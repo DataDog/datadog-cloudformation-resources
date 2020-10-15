@@ -28,11 +28,11 @@
                 },
                 "LastTriggeredTS": {
                     "description": "Timestamp when the group was last triggered",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "LastNotifiedTS": {
                     "description": "Timestamp when the group last notified",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "Status": {
                     "description": "Status of the group",
@@ -40,11 +40,11 @@
                 },
                 "LastResolvedTS": {
                     "description": "Timestamp when the group was last resolved",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "LastNodataTS": {
                     "description": "Timestamp when the group was last getting no data",
-                    "type": "number"
+                    "type": "integer"
                 }
             }
         },
@@ -65,7 +65,7 @@
             "properties": {
                 "MonitorID": {
                     "description": "ID of the monitor",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "OverallState": {
                     "description": "Overall state of the monitor",
@@ -133,7 +133,7 @@
                 },
                 "EvaluationDelay": {
                     "description": "Time in seconds to delay evaluation",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
@@ -145,15 +145,15 @@
                 },
                 "MinLocationFailed": {
                     "description": "Number of locations allowed to fail before triggering alert",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NewHostDelay": {
                     "description": "Time in seconds to allow a host to start reporting data before starting the evaluation of monitor results",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NoDataTimeframe": {
                     "description": "Number of minutes data stopped reporting before notifying",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NotifyAudit": {
                     "description": "Whether or not to notify tagged users when changes are made to the monitor",
@@ -165,7 +165,7 @@
                 },
                 "RenotifyInterval": {
                     "description": "Number of minutes after the last notification before the monitor re-notifies on the current status",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "RequireFullWindow": {
                     "description": "Whether or not the monitor requires a full window of data before it is evaluated",
@@ -173,7 +173,7 @@
                 },
                 "SyntheticsCheckID": {
                     "description": "ID of the corresponding synthetics check",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "Thresholds": {
                     "description": "The threshold definitions",
@@ -218,7 +218,7 @@
         },
         "Id": {
             "description": "ID of the monitor",
-            "type": "number"
+            "type": "integer"
         },
         "Message": {
             "description": "A message to include with notifications for the monitor",

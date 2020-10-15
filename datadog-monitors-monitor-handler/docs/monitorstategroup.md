@@ -1,4 +1,4 @@
-# Datadog::Monitors::Monitor State Groups .*
+# Datadog::Monitors::Monitor MonitorStateGroup
 
 ## Syntax
 
@@ -9,10 +9,11 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 {
     "<a href="#name" title="Name">Name</a>" : <i>String</i>,
-    "<a href="#lasttriggeredts" title="LastTriggeredTS">LastTriggeredTS</a>" : <i>Double</i>,
-    "<a href="#lastnotifiedts" title="LastNotifiedTS">LastNotifiedTS</a>" : <i>Double</i>,
-    "<a href="#lastresolvedts" title="LastResolvedTS">LastResolvedTS</a>" : <i>Double</i>,
-    "<a href="#lastnodatats" title="LastNodataTS">LastNodataTS</a>" : <i>Double</i>
+    "<a href="#lasttriggeredts" title="LastTriggeredTS">LastTriggeredTS</a>" : <i>Integer</i>,
+    "<a href="#lastnotifiedts" title="LastNotifiedTS">LastNotifiedTS</a>" : <i>Integer</i>,
+    "<a href="#status" title="Status">Status</a>" : <i>String</i>,
+    "<a href="#lastresolvedts" title="LastResolvedTS">LastResolvedTS</a>" : <i>Integer</i>,
+    "<a href="#lastnodatats" title="LastNodataTS">LastNodataTS</a>" : <i>Integer</i>
 }
 </pre>
 
@@ -20,10 +21,11 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 <a href="#name" title="Name">Name</a>: <i>String</i>
-<a href="#lasttriggeredts" title="LastTriggeredTS">LastTriggeredTS</a>: <i>Double</i>
-<a href="#lastnotifiedts" title="LastNotifiedTS">LastNotifiedTS</a>: <i>Double</i>
-<a href="#lastresolvedts" title="LastResolvedTS">LastResolvedTS</a>: <i>Double</i>
-<a href="#lastnodatats" title="LastNodataTS">LastNodataTS</a>: <i>Double</i>
+<a href="#lasttriggeredts" title="LastTriggeredTS">LastTriggeredTS</a>: <i>Integer</i>
+<a href="#lastnotifiedts" title="LastNotifiedTS">LastNotifiedTS</a>: <i>Integer</i>
+<a href="#status" title="Status">Status</a>: <i>String</i>
+<a href="#lastresolvedts" title="LastResolvedTS">LastResolvedTS</a>: <i>Integer</i>
+<a href="#lastnodatats" title="LastNodataTS">LastNodataTS</a>: <i>Integer</i>
 </pre>
 
 ## Properties
@@ -44,7 +46,7 @@ Timestamp when the group was last triggered
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -54,7 +56,17 @@ Timestamp when the group last notified
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Status
+
+_Required_: No
+
+_Type_: String
+
+_Allowed Values_: <code>Alert</code> | <code>Ignored</code> | <code>No Data</code> | <code>OK</code> | <code>Skipped</code> | <code>Unknown</code> | <code>Warn</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -64,7 +76,7 @@ Timestamp when the group was last resolved
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -74,7 +86,7 @@ Timestamp when the group was last getting no data
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

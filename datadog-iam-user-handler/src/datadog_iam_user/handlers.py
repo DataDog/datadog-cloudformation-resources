@@ -9,12 +9,14 @@ from cloudformation_cli_python_lib import (
     Resource,
     SessionProxy,
 )
-from datadog_api_client.v1 import Configuration, ApiClient, ApiException
+from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api import users_api
 from datadog_api_client.v1.model.access_role import AccessRole
 from datadog_api_client.v1.model.user import User
+from datadog_cloudformation_common.api_clients import v1_client
 
 from .models import ResourceHandlerRequest, ResourceModel
+from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
@@ -36,9 +38,15 @@ def create_handler(
         resourceModel=model,
     )
 
-    configuration = setup_api_configuration(request)
+    LOG.info("Starting the User Resource Create Handler")
 
-    with ApiClient(configuration) as api_client:
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
+    ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         body = User(
             access_role=AccessRole(model.AccessRole),
@@ -50,10 +58,9 @@ def create_handler(
             api_instance.create_user(body)
         except ApiException as e:
             LOG.error("Exception when calling UsersApi->create_user: %s\n" % e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when creating user {e}")
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
 
-    progress.status = OperationStatus.SUCCESS
-    return progress
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.UPDATE)
@@ -67,8 +74,30 @@ def update_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
-    return progress
+
+    LOG.info("Starting the User Resource Update Handler")
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
+    ) as api_client:
+        api_instance = users_api.UsersApi(api_client)
+        body = User(
+            access_role=AccessRole(model.AccessRole),
+            email=model.Email,
+            disabled=model.Disabled or False,
+            name=model.Name,
+        )
+        try:
+            api_instance.update_user(model.Handle, body)
+        except ApiException as e:
+            LOG.error("Exception when calling UsersApi->update_user: %s\n" % e)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
+
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.DELETE)
@@ -83,18 +112,27 @@ def delete_handler(
         resourceModel=model,
     )
 
-    configuration = setup_api_configuration(request)
+    LOG.info("Starting the User Resource Delete Handler")
 
-    with ApiClient(configuration) as api_client:
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
+    ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         user_handle = model.Handle
         try:
             api_instance.disable_user(user_handle)
         except ApiException as e:
             LOG.error("Exception when calling UsersApi->disable_user: %s\n" % e)
-            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
 
-    return progress
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=None,
+    )
 
 
 @resource.handler(Action.READ)
@@ -104,24 +142,28 @@ def read_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
+    LOG.info("Starting the User Resource Delete Handler")
 
-    configuration = setup_api_configuration(request)
-
-    with ApiClient(configuration) as api_client:
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TYPE_NAME,
+            __version__,
+    ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         user_handle = model.Handle
         try:
             api_response = api_instance.get_user(user_handle)
         except ApiException as e:
             LOG.error("Exception when calling UsersApi->get_user: %s\n" % e)
-            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
 
-    model.AccessRole = api_response.user.access_role
+    model.AccessRole = api_response.user.access_role.value
     model.Name = api_response.user.name
     model.Disabled = api_response.user.disabled
     model.Verified = api_response.user.verified
     model.Email = api_response.user.email
-
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
@@ -139,13 +181,3 @@ def list_handler(
         status=OperationStatus.SUCCESS,
         resourceModels=[],
     )
-
-
-def setup_api_configuration(request: ResourceHandlerRequest) -> Configuration:
-    model = request.desiredResourceState
-    configuration = Configuration(
-        host="https://api.datadoghq.com"
-    )
-    configuration.api_key['apiKeyAuth'] = model.DatadogCredentials.ApiKey
-    configuration.api_key['appKeyAuth'] = model.DatadogCredentials.ApplicationKey
-    return configuration

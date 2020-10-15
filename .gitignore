@@ -34,3 +34,6 @@
 
 # resource zip files
 */*.zip
+
+# SAM test files
+*/sam-tests/*

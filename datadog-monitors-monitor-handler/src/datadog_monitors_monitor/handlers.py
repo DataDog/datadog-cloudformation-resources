@@ -68,7 +68,7 @@ def read_handler(
             (model.Type == "query alert" and monitor.type.value == "metric alert") or
             (model.Type == "metric alert" and monitor.type.value == "query alert")
     ):
-        # metric alert and query alert are interchangeable, so don 't update when is from one to the other
+        # metric alert and query alert are interchangeable, so don't update from one to the other
         model.Type = monitor.type
     model.Multi = monitor.multi
     if monitor.creator:

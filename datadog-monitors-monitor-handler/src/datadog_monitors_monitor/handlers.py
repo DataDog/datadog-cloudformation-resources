@@ -166,10 +166,7 @@ def update_handler(
             LOG.error("Exception when calling MonitorsApi->update_monitor: %s\n", e)
             return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when updating monitor {e}")
 
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModel=model,
-    )
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.DELETE)
@@ -235,10 +232,7 @@ def create_handler(
             LOG.error("Exception when calling MonitorsApi->create_monitor: %s\n", e)
             return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when creating monitor {e}")
 
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModel=model,
-    )
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.LIST)

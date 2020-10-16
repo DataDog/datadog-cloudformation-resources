@@ -29,6 +29,7 @@ from .version import __version__
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::Monitor"
+TELEMETRY_TYPE_NAME = "monitors-monitor"
 
 resource = Resource(TYPE_NAME, ResourceModel)
 test_entrypoint = resource.test_entrypoint
@@ -40,12 +41,13 @@ def read_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
@@ -137,6 +139,7 @@ def update_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     monitor = ApiMonitorUpdateRequest()
@@ -156,7 +159,7 @@ def update_handler(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
@@ -175,13 +178,14 @@ def delete_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
@@ -203,6 +207,7 @@ def create_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     monitor = ApiMonitor()
@@ -222,7 +227,7 @@ def create_handler(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)

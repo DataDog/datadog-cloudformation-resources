@@ -75,55 +75,61 @@ def read_handler(
     model.Multi = monitor.multi
     if monitor.creator:
         model.Creator = Creator(Name=monitor.creator.name, Email=monitor.creator.email, Handle=monitor.creator.handle)
-    if monitor.options:
+
+    # Add hasattr checks for options since not all of them are applicable to all monitor types, so some attributes
+    # might not always be present
+    options = monitor.options if hasattr(monitor, "options") else None
+    if options:
         model.Options = MonitorOptions(
-            EnableLogsSample=monitor.options.enable_logs_sample,
-            EscalationMessage=monitor.options.escalation_message,
-            EvaluationDelay=monitor.options.evalutation_delay,
-            IncludeTags=monitor.options.include_tags,
-            Locked=monitor.options.locked,
-            MinLocationFailed=monitor.options.min_location_failed,
-            NewHostDelay=monitor.options.new_host_delay,
-            NoDataTimeframe=monitor.options.no_data_timeframe,
-            NotifyAudit=monitor.options.notify_audit,
-            NotifyNoData=monitor.options.notify_no_data,
-            RenotifyInterval=monitor.options.renotify_interval,
-            RequireFullWindow=monitor.options.require_full_window,
-            SyntheticsCheckID=monitor.options.synthetics_check_id,
+            EnableLogsSample=options.enable_logs_sample if hasattr(options, "enable_logs_sample") else None,
+            EscalationMessage=options.escalation_message if hasattr(options, "escalation_message") else None,
+            EvaluationDelay=options.evaluation_delay if hasattr(options, "evaluation_delay") else None,
+            IncludeTags=options.include_tags if hasattr(options, "include_tags") else None,
+            Locked=options.locked if hasattr(options, "locked") else None,
+            MinLocationFailed=options.min_location_failed if hasattr(options, "min_location_failed") else None,
+            NewHostDelay=options.new_host_delay if hasattr(options, "new_host_delay") else None,
+            NoDataTimeframe=options.no_data_timeframe if hasattr(options, "no_data_timeframe") else None,
+            NotifyAudit=options.notify_audit if hasattr(options, "notify_audit") else None,
+            NotifyNoData=options.notify_no_data if hasattr(options, "notify_no_data") else None,
+            RenotifyInterval=options.renotify_interval if hasattr(options, "renotify_interval") else None,
+            RequireFullWindow=options.require_full_window if hasattr(options, "require_full_window") else None,
+            SyntheticsCheckID=options.synthetics_check_id if hasattr(options, "synthetics_check_id") else None,
             Thresholds=None,
             ThresholdWindows=None,
-            TimeoutH=monitor.options.timeout_h,
+            TimeoutH=options.timeout_h if hasattr(options, "timeout_h") else None,
         )
-        if monitor.options.thresholds:
+        thresholds = options.thresholds if hasattr(options, "thresholds") else None
+        if thresholds:
             model.Options.Thresholds = MonitorThresholds(
-                Critical=monitor.options.thresholds.critical,
-                CriticalRecovery=monitor.options.thresholds.critical_recovery,
-                Warning=monitor.options.thresholds.warning,
-                WarningRecovery=monitor.options.thresholds.warning_recovery,
-                OK=monitor.options.thresholds.ok,
+                Critical=thresholds.critical if hasattr(thresholds, "critical") else None,
+                CriticalRecovery=thresholds.critical_recovery if hasattr(thresholds, "critical_recovery") else None,
+                Warning=thresholds.warning if hasattr(thresholds, "warning") else None,
+                WarningRecovery=thresholds.warning_recovery if hasattr(thresholds, "warning_recovery") else None,
+                OK=thresholds.ok if hasattr(thresholds, "ok") else None,
             )
-        if monitor.options.threshold_windows:
+        tw = options.threshold_windows if hasattr(options, "threshold_windows") else None
+        if tw:
             model.Options.ThresholdWindows = MonitorThresholdWindows(
-                TriggerWindow=monitor.options.threshold_windows.trigger_window,
-                RecoveryWindow=monitor.options.threshold_windows.recovery_window,
+                TriggerWindow=tw.trigger_window if hasattr(tw, "trigger_window") else None,
+                RecoveryWindow=tw.recovery_window if hasattr(tw, "recovery_window") else None,
             )
-    model.OverallState = monitor.overall_state.value if monitor.overall_state else None
-    if monitor.state:
+    model.OverallState = monitor.overall_state.value if hasattr(monitor, "overall_state") else None
+    if hasattr(monitor, "state"):
         model.State = MonitorState(
             MonitorID=monitor.id,
-            OverallState=monitor.state.overall_state.value if monitor.state.overall_state else None,
+            OverallState=model.OverallState,
             Groups=None,
         )
         if monitor.state.groups:
             model.State.Groups = {}
             for k, v in monitor.state.groups:
                 model.State.Groups[k] = MonitorStateGroup(
-                    Name=v.name,
-                    LastTriggeredTS=v.last_triggered_ts,
-                    LastNotifiedTS=v.last_notified_ts,
-                    LastResolvedTS=v.last_resolved_ts,
-                    LastNodataTS=v.last_nodata_ts,
-                    Status=v.status.value if v.status else None,
+                    Name=v.name if hasattr(v, "name") else None,
+                    LastTriggeredTS=v.last_triggered_ts if hasattr(v, "last_triggered_ts") else None,
+                    LastNotifiedTS=v.last_notified_ts if hasattr(v, "last_notified_ts") else None,
+                    LastResolvedTS=v.last_resolved_ts if hasattr(v, "last_resolved_ts") else None,
+                    LastNodataTS=v.last_nodata_ts if hasattr(v, "last_nodata_ts") else None,
+                    Status=v.status.value if hasattr(v, "status") else None,
                 )
     model.Id = monitor.id
 

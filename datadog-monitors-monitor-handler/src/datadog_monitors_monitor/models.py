@@ -46,14 +46,12 @@ class ResourceModel(BaseModel):
     Name: Optional[str]
     Tags: Optional[Sequence[str]]
     Options: Optional["_MonitorOptions"]
-    OverallState: Optional[str]
     Query: Optional[str]
     Type: Optional[str]
     Multi: Optional[bool]
     Created: Optional[str]
     Deleted: Optional[str]
     Modified: Optional[str]
-    State: Optional["_MonitorState"]
 
     @classmethod
     def _deserialize(
@@ -72,14 +70,12 @@ class ResourceModel(BaseModel):
             Name=json_data.get("Name"),
             Tags=json_data.get("Tags"),
             Options=MonitorOptions._deserialize(json_data.get("Options")),
-            OverallState=json_data.get("OverallState"),
             Query=json_data.get("Query"),
             Type=json_data.get("Type"),
             Multi=json_data.get("Multi"),
             Created=json_data.get("Created"),
             Deleted=json_data.get("Deleted"),
             Modified=json_data.get("Modified"),
-            State=MonitorState._deserialize(json_data.get("State")),
         )
 
 
@@ -233,59 +229,5 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
-
-
-@dataclass
-class MonitorState(BaseModel):
-    MonitorID: Optional[int]
-    OverallState: Optional[str]
-    Groups: Optional[MutableMapping[str, "_MonitorStateGroup"]]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_MonitorState"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_MonitorState"]:
-        if not json_data:
-            return None
-        return cls(
-            MonitorID=json_data.get("MonitorID"),
-            OverallState=json_data.get("OverallState"),
-            Groups=json_data.get("Groups"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_MonitorState = MonitorState
-
-
-@dataclass
-class MonitorStateGroup(BaseModel):
-    Name: Optional[str]
-    LastTriggeredTS: Optional[int]
-    LastNotifiedTS: Optional[int]
-    Status: Optional[str]
-    LastResolvedTS: Optional[int]
-    LastNodataTS: Optional[int]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_MonitorStateGroup"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_MonitorStateGroup"]:
-        if not json_data:
-            return None
-        return cls(
-            Name=json_data.get("Name"),
-            LastTriggeredTS=json_data.get("LastTriggeredTS"),
-            LastNotifiedTS=json_data.get("LastNotifiedTS"),
-            Status=json_data.get("Status"),
-            LastResolvedTS=json_data.get("LastResolvedTS"),
-            LastNodataTS=json_data.get("LastNodataTS"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_MonitorStateGroup = MonitorStateGroup
 
 

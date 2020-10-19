@@ -20,7 +20,7 @@ from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorTy
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
 from datadog_cloudformation_common.api_clients import v1_client
 
-from .models import Creator, MonitorOptions, MonitorState, MonitorStateGroup, MonitorThresholdWindows, \
+from .models import Creator, MonitorOptions, MonitorThresholdWindows, \
     MonitorThresholds, \
     ResourceHandlerRequest, \
     ResourceModel
@@ -71,7 +71,7 @@ def read_handler(
             (model.Type == "metric alert" and monitor.type.value == "query alert")
     ):
         # metric alert and query alert are interchangeable, so don't update from one to the other
-        model.Type = monitor.type
+        model.Type = monitor.type.value
     model.Multi = monitor.multi
     if monitor.creator:
         model.Creator = Creator(Name=monitor.creator.name, Email=monitor.creator.email, Handle=monitor.creator.handle)
@@ -113,24 +113,6 @@ def read_handler(
                 TriggerWindow=tw.trigger_window if hasattr(tw, "trigger_window") else None,
                 RecoveryWindow=tw.recovery_window if hasattr(tw, "recovery_window") else None,
             )
-    model.OverallState = monitor.overall_state.value if hasattr(monitor, "overall_state") else None
-    if hasattr(monitor, "state"):
-        model.State = MonitorState(
-            MonitorID=monitor.id,
-            OverallState=model.OverallState,
-            Groups=None,
-        )
-        if monitor.state.groups:
-            model.State.Groups = {}
-            for k, v in monitor.state.groups:
-                model.State.Groups[k] = MonitorStateGroup(
-                    Name=v.name if hasattr(v, "name") else None,
-                    LastTriggeredTS=v.last_triggered_ts if hasattr(v, "last_triggered_ts") else None,
-                    LastNotifiedTS=v.last_notified_ts if hasattr(v, "last_notified_ts") else None,
-                    LastResolvedTS=v.last_resolved_ts if hasattr(v, "last_resolved_ts") else None,
-                    LastNodataTS=v.last_nodata_ts if hasattr(v, "last_nodata_ts") else None,
-                    Status=v.status.value if hasattr(v, "status") else None,
-                )
     model.Id = monitor.id
 
     return ProgressEvent(

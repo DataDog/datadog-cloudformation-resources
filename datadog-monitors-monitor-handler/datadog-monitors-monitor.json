@@ -19,69 +19,6 @@
                 }
             }
         },
-        "MonitorStateGroup": {
-            "type": "object",
-            "properties": {
-                "Name": {
-                    "description": "Name of the group. This is a CSV of tags and filters",
-                    "type": "string"
-                },
-                "LastTriggeredTS": {
-                    "description": "Timestamp when the group was last triggered",
-                    "type": "integer"
-                },
-                "LastNotifiedTS": {
-                    "description": "Timestamp when the group last notified",
-                    "type": "integer"
-                },
-                "Status": {
-                    "description": "Status of the group",
-                    "$ref": "#/definitions/MonitorOverallStates"
-                },
-                "LastResolvedTS": {
-                    "description": "Timestamp when the group was last resolved",
-                    "type": "integer"
-                },
-                "LastNodataTS": {
-                    "description": "Timestamp when the group was last getting no data",
-                    "type": "integer"
-                }
-            }
-        },
-        "MonitorOverallStates": {
-            "type": "string",
-            "enum": [
-                "Alert",
-                "Ignored",
-                "No Data",
-                "OK",
-                "Skipped",
-                "Unknown",
-                "Warn"
-            ]
-        },
-        "MonitorState": {
-            "type": "object",
-            "properties": {
-                "MonitorID": {
-                    "description": "ID of the monitor",
-                    "type": "integer"
-                },
-                "OverallState": {
-                    "description": "Overall state of the monitor",
-                    "$ref": "#/definitions/MonitorOverallStates"
-                },
-                "Groups": {
-                    "description": "State of each monitor group",
-                    "type": "object",
-                    "patternProperties": {
-                        ".*": {
-                            "$ref": "#/definitions/MonitorStateGroup"
-                        }
-                    }
-                }
-            }
-        },
         "MonitorThresholds": {
             "type": "object",
             "properties": {
@@ -239,10 +176,6 @@
             "description": "The monitor options",
             "$ref": "#/definitions/MonitorOptions"
         },
-        "OverallState": {
-            "description": "The overall state of the monitor",
-            "$ref": "#/definitions/MonitorOverallStates"
-        },
         "Query": {
             "description": "The monitor query",
             "type": "string"
@@ -280,10 +213,6 @@
             "description": "Date of modification of the monitor",
             "type": "string",
             "format": "date-time"
-        },
-        "State": {
-            "description": "State of the monitor",
-            "$ref": "#/definitions/MonitorState"
         }
     },
     "required": [

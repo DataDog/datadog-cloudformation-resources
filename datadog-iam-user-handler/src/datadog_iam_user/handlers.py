@@ -21,6 +21,7 @@ from .version import __version__
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::IAM::User"
+TELEMETRY_TYPE_NAME = "iam-user"
 
 resource = Resource(TYPE_NAME, ResourceModel)
 test_entrypoint = resource.test_entrypoint
@@ -34,13 +35,13 @@ def create_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
 
-    LOG.info("Starting the User Resource Create Handler")
+    LOG.info(f"Starting the {TYPE_NAME} Create Handler")
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
@@ -71,13 +72,13 @@ def update_handler(
         resourceModel=model,
     )
 
-    LOG.info("Starting the User Resource Update Handler")
+    LOG.info(f"Starting the {TYPE_NAME} Update Handler")
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
@@ -108,13 +109,13 @@ def delete_handler(
         resourceModel=model,
     )
 
-    LOG.info("Starting the User Resource Delete Handler")
+    LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
@@ -138,13 +139,13 @@ def read_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
-    LOG.info("Starting the User Resource Delete Handler")
+    LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
             model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TYPE_NAME,
+            TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)

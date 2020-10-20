@@ -1,0 +1,167 @@
+import json
+import logging
+from typing import Any, MutableMapping, Optional
+
+from cloudformation_cli_python_lib import (
+    Action,
+    HandlerErrorCode,
+    OperationStatus,
+    ProgressEvent,
+    Resource,
+    SessionProxy,
+)
+from datadog_api_client.v1 import ApiClient, ApiException
+from datadog_api_client.v1.api.dashboards_api import DashboardsApi
+from datadog_api_client.v1.model.dashboard import Dashboard
+from datadog_api_client.v1.model_utils import validate_and_convert_types
+from datadog_cloudformation_common.api_clients import v1_client
+
+from .models import ResourceHandlerRequest, ResourceModel
+from .version import __version__
+
+# Use this logger to forward log messages to CloudWatch Logs.
+LOG = logging.getLogger(__name__)
+LOG.setLevel(100)
+TYPE_NAME = "Datadog::Dashboards::Dashboard"
+TELEMETRY_TYPE_NAME = "dashboards-dashboard"
+
+resource = Resource(TYPE_NAME, ResourceModel)
+test_entrypoint = resource.test_entrypoint
+
+
+@resource.handler(Action.CREATE)
+def create_handler(
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
+) -> ProgressEvent:
+    model = request.desiredResourceState
+
+    json_payload = json.loads(model.DashboardDefinition)
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        dashboard = validate_and_convert_types(
+            json_payload, (Dashboard,), ["resource_data"], True, False, configuration=api_client.configuration
+        )
+        api_instance = DashboardsApi(api_client)
+        try:
+            res = api_instance.create_dashboard(dashboard)
+            model.Id = res.id
+        except ApiException as e:
+            LOG.error("Exception when calling DashboardsApi->create_dashboard: %s\n", e)
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating dashboard: {e}"
+            )
+    return read_handler(session, request, callback_context)
+
+
+@resource.handler(Action.UPDATE)
+def update_handler(
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
+) -> ProgressEvent:
+    model = request.desiredResourceState
+
+    json_payload = json.loads(model.DashboardDefinition)
+    dashboard_id = model.Id
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        dashboard = validate_and_convert_types(
+            json_payload, (Dashboard,), ["resource_data"], True, False, configuration=api_client.configuration
+        )
+        api_instance = DashboardsApi(api_client)
+        try:
+            api_instance.update_dashboard(dashboard_id, dashboard)
+        except ApiException as e:
+            LOG.error("Exception when calling DashboardsApi->update_dashboard: %s\n", e)
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error updating dashboard: {e}"
+            )
+    return read_handler(session, request, callback_context)
+
+
+@resource.handler(Action.DELETE)
+def delete_handler(
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
+) -> ProgressEvent:
+    model = request.desiredResourceState
+
+    dashboard_id = model.Id
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        api_instance = DashboardsApi(api_client)
+        try:
+            api_instance.delete_dashboard(dashboard_id)
+        except ApiException as e:
+            LOG.error("Exception when calling DashboardsApi->delete_dashboard: %s\n", e)
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error deleting dashboard: {e}"
+            )
+    return read_handler(session, request, callback_context)
+
+
+@resource.handler(Action.READ)
+def read_handler(
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
+) -> ProgressEvent:
+    model = request.desiredResourceState
+
+    dashboard_id = model.Id
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        api_instance = DashboardsApi(api_client)
+        try:
+            dash = api_instance.get_dashboard(dashboard_id)
+            json_dict = ApiClient.sanitize_for_serialization(dash)
+            model.DashboardDefinition = json.dumps(json_dict)
+        except ApiException as e:
+            LOG.error("Exception when calling DashboardsApi->get_dashboard: %s\n", e)
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error getting dashboard: {e}"
+            )
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=model,
+    )
+
+
+@resource.handler(Action.LIST)
+def list_handler(
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
+) -> ProgressEvent:
+    # TODO: put code here
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModels=[],
+    )

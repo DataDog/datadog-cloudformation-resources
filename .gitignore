@@ -22,6 +22,8 @@
 # auto-generated files
 */bin/target/
 */target/
+*/build/
+*/example_inputs
 
 # .class files
 **/*.class

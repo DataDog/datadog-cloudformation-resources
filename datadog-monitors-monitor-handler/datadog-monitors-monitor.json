@@ -19,69 +19,6 @@
                 }
             }
         },
-        "MonitorStateGroup": {
-            "type": "object",
-            "properties": {
-                "Name": {
-                    "description": "Name of the group. This is a CSV of tags and filters",
-                    "type": "string"
-                },
-                "LastTriggeredTS": {
-                    "description": "Timestamp when the group was last triggered",
-                    "type": "number"
-                },
-                "LastNotifiedTS": {
-                    "description": "Timestamp when the group last notified",
-                    "type": "number"
-                },
-                "Status": {
-                    "description": "Status of the group",
-                    "$ref": "#/definitions/MonitorOverallStates"
-                },
-                "LastResolvedTS": {
-                    "description": "Timestamp when the group was last resolved",
-                    "type": "number"
-                },
-                "LastNodataTS": {
-                    "description": "Timestamp when the group was last getting no data",
-                    "type": "number"
-                }
-            }
-        },
-        "MonitorOverallStates": {
-            "type": "string",
-            "enum": [
-                "Alert",
-                "Ignored",
-                "No Data",
-                "OK",
-                "Skipped",
-                "Unknown",
-                "Warn"
-            ]
-        },
-        "MonitorState": {
-            "type": "object",
-            "properties": {
-                "MonitorID": {
-                    "description": "ID of the monitor",
-                    "type": "number"
-                },
-                "OverallState": {
-                    "description": "Overall state of the monitor",
-                    "$ref": "#/definitions/MonitorOverallStates"
-                },
-                "Groups": {
-                    "description": "State of each monitor group",
-                    "type": "object",
-                    "patternProperties": {
-                        ".*": {
-                            "$ref": "#/definitions/MonitorStateGroup"
-                        }
-                    }
-                }
-            }
-        },
         "MonitorThresholds": {
             "type": "object",
             "properties": {
@@ -133,7 +70,7 @@
                 },
                 "EvaluationDelay": {
                     "description": "Time in seconds to delay evaluation",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
@@ -145,15 +82,15 @@
                 },
                 "MinLocationFailed": {
                     "description": "Number of locations allowed to fail before triggering alert",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NewHostDelay": {
                     "description": "Time in seconds to allow a host to start reporting data before starting the evaluation of monitor results",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NoDataTimeframe": {
                     "description": "Number of minutes data stopped reporting before notifying",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "NotifyAudit": {
                     "description": "Whether or not to notify tagged users when changes are made to the monitor",
@@ -165,7 +102,7 @@
                 },
                 "RenotifyInterval": {
                     "description": "Number of minutes after the last notification before the monitor re-notifies on the current status",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "RequireFullWindow": {
                     "description": "Whether or not the monitor requires a full window of data before it is evaluated",
@@ -173,7 +110,7 @@
                 },
                 "SyntheticsCheckID": {
                     "description": "ID of the corresponding synthetics check",
-                    "type": "number"
+                    "type": "integer"
                 },
                 "Thresholds": {
                     "description": "The threshold definitions",
@@ -218,7 +155,7 @@
         },
         "Id": {
             "description": "ID of the monitor",
-            "type": "number"
+            "type": "integer"
         },
         "Message": {
             "description": "A message to include with notifications for the monitor",
@@ -238,10 +175,6 @@
         "Options": {
             "description": "The monitor options",
             "$ref": "#/definitions/MonitorOptions"
-        },
-        "OverallState": {
-            "description": "The overall state of the monitor",
-            "$ref": "#/definitions/MonitorOverallStates"
         },
         "Query": {
             "description": "The monitor query",
@@ -280,10 +213,6 @@
             "description": "Date of modification of the monitor",
             "type": "string",
             "format": "date-time"
-        },
-        "State": {
-            "description": "State of the monitor",
-            "$ref": "#/definitions/MonitorState"
         }
     },
     "required": [

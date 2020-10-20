@@ -1,4 +1,4 @@
-# Datadog::Monitors::Monitor Options Thresholds
+# Datadog::Monitors::Monitor MonitorThresholds
 
 ## Syntax
 

@@ -1,16 +1,11 @@
 {
     "typeName": "Datadog::Monitors::Monitor",
-    "language": "java",
-    "runtime": "java8",
-    "entrypoint": "com.datadog.monitors.monitor.HandlerWrapper::handleRequest",
-    "testEntrypoint": "com.datadog.monitors.monitor.HandlerWrapper::testEntrypoint",
+    "language": "python37",
+    "runtime": "python3.7",
+    "entrypoint": "datadog_monitors_monitor.handlers.resource",
+    "testEntrypoint": "datadog_monitors_monitor.handlers.test_entrypoint",
     "settings": {
-        "namespace": [
-            "com",
-            "datadog",
-            "monitors",
-            "monitor"
-        ],
+        "use_docker": true,
         "protocolVersion": "2.0.0"
     }
 }

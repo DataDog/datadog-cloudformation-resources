@@ -1,4 +1,4 @@
-# Datadog::Monitors::Monitor Options
+# Datadog::Monitors::Monitor MonitorOptions
 
 ## Syntax
 
@@ -10,20 +10,20 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "<a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>" : <i>Boolean</i>,
     "<a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>" : <i>String</i>,
-    "<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>" : <i>Double</i>,
+    "<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>" : <i>Integer</i>,
     "<a href="#includetags" title="IncludeTags">IncludeTags</a>" : <i>Boolean</i>,
     "<a href="#locked" title="Locked">Locked</a>" : <i>Boolean</i>,
-    "<a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>" : <i>Double</i>,
-    "<a href="#newhostdelay" title="NewHostDelay">NewHostDelay</a>" : <i>Double</i>,
-    "<a href="#nodatatimeframe" title="NoDataTimeframe">NoDataTimeframe</a>" : <i>Double</i>,
+    "<a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>" : <i>Integer</i>,
+    "<a href="#newhostdelay" title="NewHostDelay">NewHostDelay</a>" : <i>Integer</i>,
+    "<a href="#nodatatimeframe" title="NoDataTimeframe">NoDataTimeframe</a>" : <i>Integer</i>,
     "<a href="#notifyaudit" title="NotifyAudit">NotifyAudit</a>" : <i>Boolean</i>,
     "<a href="#notifynodata" title="NotifyNoData">NotifyNoData</a>" : <i>Boolean</i>,
-    "<a href="#renotifyinterval" title="RenotifyInterval">RenotifyInterval</a>" : <i>Double</i>,
+    "<a href="#renotifyinterval" title="RenotifyInterval">RenotifyInterval</a>" : <i>Integer</i>,
     "<a href="#requirefullwindow" title="RequireFullWindow">RequireFullWindow</a>" : <i>Boolean</i>,
-    "<a href="#syntheticscheckid" title="SyntheticsCheckID">SyntheticsCheckID</a>" : <i>Double</i>,
-    "<a href="#thresholds" title="Thresholds">Thresholds</a>" : <i><a href="options-thresholds.md">Thresholds</a></i>,
-    "<a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>" : <i><a href="options-thresholdwindows.md">ThresholdWindows</a></i>,
-    "<a href="#timeouth" title="TimeoutH">TimeoutH</a>" : <i>Double</i>
+    "<a href="#syntheticscheckid" title="SyntheticsCheckID">SyntheticsCheckID</a>" : <i>Integer</i>,
+    "<a href="#thresholds" title="Thresholds">Thresholds</a>" : <i><a href="monitorthresholds.md">MonitorThresholds</a></i>,
+    "<a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>" : <i><a href="monitorthresholdwindows.md">MonitorThresholdWindows</a></i>,
+    "<a href="#timeouth" title="TimeoutH">TimeoutH</a>" : <i>Integer</i>
 }
 </pre>
 
@@ -32,20 +32,20 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 <a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>: <i>Boolean</i>
 <a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>: <i>String</i>
-<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>: <i>Double</i>
+<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>: <i>Integer</i>
 <a href="#includetags" title="IncludeTags">IncludeTags</a>: <i>Boolean</i>
 <a href="#locked" title="Locked">Locked</a>: <i>Boolean</i>
-<a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>: <i>Double</i>
-<a href="#newhostdelay" title="NewHostDelay">NewHostDelay</a>: <i>Double</i>
-<a href="#nodatatimeframe" title="NoDataTimeframe">NoDataTimeframe</a>: <i>Double</i>
+<a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>: <i>Integer</i>
+<a href="#newhostdelay" title="NewHostDelay">NewHostDelay</a>: <i>Integer</i>
+<a href="#nodatatimeframe" title="NoDataTimeframe">NoDataTimeframe</a>: <i>Integer</i>
 <a href="#notifyaudit" title="NotifyAudit">NotifyAudit</a>: <i>Boolean</i>
 <a href="#notifynodata" title="NotifyNoData">NotifyNoData</a>: <i>Boolean</i>
-<a href="#renotifyinterval" title="RenotifyInterval">RenotifyInterval</a>: <i>Double</i>
+<a href="#renotifyinterval" title="RenotifyInterval">RenotifyInterval</a>: <i>Integer</i>
 <a href="#requirefullwindow" title="RequireFullWindow">RequireFullWindow</a>: <i>Boolean</i>
-<a href="#syntheticscheckid" title="SyntheticsCheckID">SyntheticsCheckID</a>: <i>Double</i>
-<a href="#thresholds" title="Thresholds">Thresholds</a>: <i><a href="options-thresholds.md">Thresholds</a></i>
-<a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>: <i><a href="options-thresholdwindows.md">ThresholdWindows</a></i>
-<a href="#timeouth" title="TimeoutH">TimeoutH</a>: <i>Double</i>
+<a href="#syntheticscheckid" title="SyntheticsCheckID">SyntheticsCheckID</a>: <i>Integer</i>
+<a href="#thresholds" title="Thresholds">Thresholds</a>: <i><a href="monitorthresholds.md">MonitorThresholds</a></i>
+<a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>: <i><a href="monitorthresholdwindows.md">MonitorThresholdWindows</a></i>
+<a href="#timeouth" title="TimeoutH">TimeoutH</a>: <i>Integer</i>
 </pre>
 
 ## Properties
@@ -76,7 +76,7 @@ Time in seconds to delay evaluation
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -106,7 +106,7 @@ Number of locations allowed to fail before triggering alert
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -116,7 +116,7 @@ Time in seconds to allow a host to start reporting data before starting the eval
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -126,7 +126,7 @@ Number of minutes data stopped reporting before notifying
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -156,7 +156,7 @@ Number of minutes after the last notification before the monitor re-notifies on 
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -176,7 +176,7 @@ ID of the corresponding synthetics check
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -184,7 +184,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 _Required_: No
 
-_Type_: <a href="options-thresholds.md">Thresholds</a>
+_Type_: <a href="monitorthresholds.md">MonitorThresholds</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -192,7 +192,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 _Required_: No
 
-_Type_: <a href="options-thresholdwindows.md">ThresholdWindows</a>
+_Type_: <a href="monitorthresholdwindows.md">MonitorThresholdWindows</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -202,7 +202,7 @@ Number of hours of the monitor not reporting data before it automatically resolv
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

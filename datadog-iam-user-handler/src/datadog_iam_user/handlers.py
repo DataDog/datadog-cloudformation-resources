@@ -33,10 +33,6 @@ def create_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
-    progress: ProgressEvent = ProgressEvent(
-        status=OperationStatus.IN_PROGRESS,
-        resourceModel=model,
-    )
 
     LOG.info("Starting the User Resource Create Handler")
 

@@ -14,5 +14,5 @@ def v1_client(api_key: str, app_key: str, api_url: str, resource_name: str, reso
     )
 
     with ApiClient(configuration) as api_client:
-        api_client.user_agent = f"datadog-cloudformation-{resource_name}/{resource_version} {api_client.user_agent()}"
+        api_client.user_agent = f"datadog-cloudformation-{resource_name}/{resource_version} {api_client.user_agent}"
         yield api_client

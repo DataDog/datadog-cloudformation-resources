@@ -62,19 +62,19 @@ def read_handler(
 
     model.Created = monitor.created.isoformat()
     model.Modified = monitor.modified.isoformat()
-    if monitor.deleted:
-        model.Deleted = monitor.deleted.isoformat()
     model.Message = monitor.message
     model.Name = monitor.name
     model.Tags = monitor.tags
     model.Query = monitor.query
+    model.Multi = monitor.multi
+    if monitor.deleted:
+        model.Deleted = monitor.deleted.isoformat()
     if not (
             (model.Type == "query alert" and monitor.type.value == "metric alert") or
             (model.Type == "metric alert" and monitor.type.value == "query alert")
     ):
         # metric alert and query alert are interchangeable, so don't update from one to the other
         model.Type = monitor.type.value
-    model.Multi = monitor.multi
     if monitor.creator:
         model.Creator = Creator(Name=monitor.creator.name, Email=monitor.creator.email, Handle=monitor.creator.handle)
 
@@ -133,6 +133,8 @@ def update_handler(
     model = request.desiredResourceState
 
     monitor = ApiMonitorUpdateRequest()
+    monitor.query = model.Query
+    monitor.type = ApiMonitorType(model.Type)
     if model.Message is not None:
         monitor.message = model.Message
     if model.Name is not None:
@@ -142,8 +144,6 @@ def update_handler(
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
-    monitor.query = model.Query
-    monitor.type = ApiMonitorType(model.Type)
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
@@ -205,6 +205,8 @@ def create_handler(
     model = request.desiredResourceState
 
     monitor = ApiMonitor()
+    monitor.query = model.Query
+    monitor.type = ApiMonitorType(model.Type)
     if model.Message is not None:
         monitor.message = model.Message
     if model.Name is not None:
@@ -214,8 +216,6 @@ def create_handler(
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
-    monitor.query = model.Query
-    monitor.type = ApiMonitorType(model.Type)
 
     with v1_client(
             model.DatadogCredentials.ApiKey,

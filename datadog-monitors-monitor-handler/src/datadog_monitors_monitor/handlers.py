@@ -56,7 +56,9 @@ def read_handler(
             monitor = api_instance.get_monitor(monitor_id)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->get_monitor: %s\n", e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Error getting monitor: {e}")
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error getting monitor: {e}"
+            )
 
     model.Created = monitor.created.isoformat()
     model.Modified = monitor.modified.isoformat()
@@ -155,7 +157,9 @@ def update_handler(
             api_instance.update_monitor(model.Id, monitor)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->update_monitor: %s\n", e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when updating monitor {e}")
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error updating monitor: {e}"
+            )
 
     return read_handler(session, request, callback_context)
 
@@ -181,7 +185,9 @@ def delete_handler(
             api_instance.delete_monitor(model.Id)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when deleting monitor {e}")
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error deleting monitor: {e}"
+            )
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
@@ -223,7 +229,9 @@ def create_handler(
             api_instance.create_monitor(monitor)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->create_monitor: %s\n", e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when creating monitor {e}")
+            return ProgressEvent(
+                status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating monitor: {e}"
+            )
 
     return read_handler(session, request, callback_context)
 

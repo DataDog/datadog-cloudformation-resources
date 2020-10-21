@@ -35,6 +35,7 @@ def create_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     json_payload = json.loads(model.DashboardDefinition)
@@ -67,6 +68,7 @@ def update_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     json_payload = json.loads(model.DashboardDefinition)
@@ -99,6 +101,7 @@ def delete_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     dashboard_id = model.Id
@@ -127,6 +130,7 @@ def read_handler(
         request: ResourceHandlerRequest,
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
+    LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
 
     dashboard_id = model.Id

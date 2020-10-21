@@ -39,7 +39,7 @@
             "type": "string"
         },
         "FilterTags": {
-            "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
+            "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
             "type": "array",
             "items": {
                 "type": "string"

@@ -1,2 +1,1 @@
-cloudformation-cli-python-lib==2.1.1
-git+https://github.com/datadog/datadog-cloudformation-resources.git@96a9b95ec9670a63bf6311da9259a9d81d33e969#egg=datadog_cloudformation_common&subdirectory=datadog-cloudformation-common-python
+git+https://github.com/datadog/datadog-cloudformation-resources.git@datadog-cloudformation-common-python-0.0.1#egg=datadog_cloudformation_common&subdirectory=datadog-cloudformation-common-python

@@ -34,7 +34,8 @@ Note that once the release process is started, nobody should be merging/pushing 
 
 Our team will trigger the release pipeline.
 
-* (If you're releasing a Java resource) Bump the versions in the pom.xml, e.g. User resource pom.xml
+* (If you're releasing a Java resource) Bump the versions in the `pom.xml`, e.g. User resource pom.xml
+* (If you're releasing a Python resource) Bump the version in `version.py`
 * Update the `description` field in the resources json schema to include the version of the resource.
 * If you bumped the datadog-cloudformation-common version, update the dependency in the resource you are releasing.
 * If you're releasing a resource using the Java runtime (This step isn't needed for python resources):

@@ -1,39 +1,23 @@
 # Datadog::Dashboards::Dashboard
 
-Congratulations on starting development! Next steps:
+This resource represents a Datadog Dashboard, and is used to create and manage Datadog Dashboards.
+More information about the Datadog Dashboards can be found in the [Dashboards documentation](https://docs.datadoghq.com/dashboards/).
 
-1. Write the JSON schema describing your resource, `datadog-dashboards-dashboard.json`
-2. Implement your resource handlers in `datadog_dashboards_dashboard/handlers.py`
+## Example Usage
 
-> Don't modify `models.py` by hand, any modifications will be overwritten when the `generate` or `package` commands are run.
-
-Implement CloudFormation resource here. Each function must always return a ProgressEvent.
-
-```python
-ProgressEvent(
-    # Required
-    # Must be one of OperationStatus.IN_PROGRESS, OperationStatus.FAILED, OperationStatus.SUCCESS
-    status=OperationStatus.IN_PROGRESS,
-    # Required on SUCCESS (except for LIST where resourceModels is required)
-    # The current resource model after the operation; instance of ResourceModel class
-    resourceModel=model,
-    resourceModels=None,
-    # Required on FAILED
-    # Customer-facing message, displayed in e.g. CloudFormation stack events
-    message="",
-    # Required on FAILED: a HandlerErrorCode
-    errorCode=HandlerErrorCode.InternalFailure,
-    # Optional
-    # Use to store any state between re-invocation via IN_PROGRESS
-    callbackContext={},
-    # Required on IN_PROGRESS
-    # The number of seconds to delay before re-invocation
-    callbackDelaySeconds=0,
-)
+```
+Resources:
+  DatadogTestDashboard:
+    Type: 'Datadog::Dashboards::Dashboard'
+    Properties:
+      DashboardDefinition: |
+        <Put here the JSON string of the dashboard definition. Can be exported directly from the web application>
+      DatadogCredentials:
+        ApiURL: https://api.datadoghq.com
+        ApiKey: <DD_API_KEY>
+        ApplicationKey: <DD_APP_KEY>
 ```
 
-Failures can be passed back to CloudFormation by either raising an exception from `cloudformation_cli_python_lib.exceptions`, or setting the ProgressEvent's `status` to `OperationStatus.FAILED` and `errorCode` to one of `cloudformation_cli_python_lib.HandlerErrorCode`. There is a static helper function, `ProgressEvent.failed`, for this common case.
+## Property Reference:
 
-## What's with the type hints?
-
-We hope they'll be useful for getting started quicker with an IDE that support type hints. Type hints are optional - if your code doesn't use them, it will still work.
+For a list of available properties and their descriptions and examples, see the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-dashboards-dashboard-handler/datadog-dashboards-dashboard.json).

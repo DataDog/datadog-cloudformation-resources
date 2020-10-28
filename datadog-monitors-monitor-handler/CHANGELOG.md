@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.0b1 / 2020-10-29
+
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-3.0.0b1.zip`
+* [Changed] Migrate monitor resource to python. See [#89](https://github.com/DataDog/datadog-cloudformation-resources/pull/89).
+
+
 ## 2.1.0 / 2020-08-04
 
 * Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-2.1.0.zip`

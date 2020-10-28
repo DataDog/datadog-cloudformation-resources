@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::IAM::User",
-    "description": "Datadog Application User 1.2.0.dev",
+    "description": "Datadog Application User 1.2.0b1",
     "properties": {
         "DatadogCredentials": {
             "description": "Credentials for the Datadog API",

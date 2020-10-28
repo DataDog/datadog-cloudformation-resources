@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Monitor",
-    "description": "Datadog Monitor 2.2.0.dev",
+    "description": "Datadog Monitor 3.0.0b1",
     "definitions": {
         "Creator": {
             "type": "object",

@@ -1,0 +1,11 @@
+{
+    "typeName": "Datadog::Dashboards::Dashboard",
+    "language": "python37",
+    "runtime": "python3.7",
+    "entrypoint": "datadog_dashboards_dashboard.handlers.resource",
+    "testEntrypoint": "datadog_dashboards_dashboard.handlers.test_entrypoint",
+    "settings": {
+        "use_docker": true,
+        "protocolVersion": "2.0.0"
+    }
+}

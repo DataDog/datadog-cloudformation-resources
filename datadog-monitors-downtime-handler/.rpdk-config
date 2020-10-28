@@ -1,16 +1,11 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "language": "java",
-    "runtime": "java8",
-    "entrypoint": "com.datadog.monitors.downtime.HandlerWrapper::handleRequest",
-    "testEntrypoint": "com.datadog.monitors.downtime.HandlerWrapper::testEntrypoint",
+    "language": "python37",
+    "runtime": "python3.7",
+    "entrypoint": "datadog_monitors_downtime.handlers.resource",
+    "testEntrypoint": "datadog_monitors_downtime.handlers.test_entrypoint",
     "settings": {
-        "namespace": [
-            "com",
-            "datadog",
-            "monitors",
-            "downtime"
-        ],
+        "use_docker": true,
         "protocolVersion": "2.0.0"
     }
 }

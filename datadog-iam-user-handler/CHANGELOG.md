@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.2.0b1 / 2020-10-29
+## 1.2.0b1 / 2020-10-30
 * Link to Resource: `s3://datadog-cloudformation-resources/datadog-iam-user/datadog-iam-user-1.2.0b1.zip`
 * [Added] Migrate the Datadog::IAM::User resource to the python 3.7 runtime. See [#91](https://github.com/DataDog/datadog-cloudformation-resources/pull/91).
 

@@ -2,11 +2,11 @@
 
 * See individual Resource Changelogs for links to download their artifacts.
 
-## 2020-10-29
+## 2020-10-30
 
-- Release version [1.2.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-iam-user-1.2.0b1) of the Datadog user AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md#120b1--2020-10-29).
-- Release version [3.0.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-monitor-3.0.0b1) of the Datadog monitor AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md#300b1--2020-10-29).
-- Release version [1.0.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-dashboards-dashboard-1.0.0b1) of the Datadog dashboard AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-dashboards-dashboard-handler/CHANGELOG.md#100b1--2020-10-29).
+- Release version [1.2.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-iam-user-1.2.0b1) of the Datadog user AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md#120b1--2020-10-30).
+- Release version [3.0.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-monitors-monitor-3.0.0b1) of the Datadog monitor AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-monitor-handler/CHANGELOG.md#300b1--2020-10-30).
+- Release version [1.0.0b1](https://github.com/DataDog/datadog-cloudformation-resources/releases/tag/datadog-dashboards-dashboard-1.0.0b1) of the Datadog dashboard AWS CloudFormation resource. See details [here](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-dashboards-dashboard-handler/CHANGELOG.md#100b1--2020-10-30).
 
 ## 2020-08-04
 

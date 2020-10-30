@@ -149,7 +149,11 @@ def delete_handler(
             return ProgressEvent(
                 status=OperationStatus.FAILED, resourceModel=model, message=f"Error deleting dashboard: {e}"
             )
-    return read_handler(session, request, callback_context)
+
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=None,
+    )
 
 
 @resource.handler(Action.READ)

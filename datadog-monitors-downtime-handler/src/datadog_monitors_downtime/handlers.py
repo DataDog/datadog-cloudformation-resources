@@ -3,12 +3,10 @@ from typing import Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
     Action,
-    HandlerErrorCode,
     OperationStatus,
     ProgressEvent,
     Resource,
     SessionProxy,
-    exceptions,
 )
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api import downtimes_api
@@ -41,6 +39,20 @@ def create_handler(
     )
     LOG.info(f"Starting the {TYPE_NAME} Create Handler")
 
+    downtime_body = Downtime(
+        message=model.message,
+        monitorTags=model.MonitorTags,
+        scope=model.Scope,
+        timezone=model.Timezone,
+        start=model.Start
+    )
+
+    # Nullable attributes
+    if model.End:
+        downtime_body.end = model.End
+    if model.MonitorId:
+        downtime_body.monitor_id = model.MonitorId
+
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
@@ -49,8 +61,6 @@ def create_handler(
             __version__,
     ) as api_client:
         api_instance = downtimes_api.DowntimesApi(api_client)
-        # TODO Fill body
-        downtime_body = Downtime()
         try:
             api_resp = api_instance.create_downtime(downtime_body)
             model.Id = api_resp.id
@@ -72,8 +82,38 @@ def update_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
-    return progress
+
+    LOG.info(f"Starting the {TYPE_NAME} Update Handler")
+
+    downtime_body = Downtime(
+        message=model.message,
+        monitorTags=model.MonitorTags,
+        scope=model.Scope,
+        timezone=model.Timezone,
+        start=model.Start
+    )
+
+    # Nullable attributes
+    if model.End:
+        downtime_body.end = model.End
+    if model.MonitorId:
+        downtime_body.monitor_id = model.MonitorId
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        api_instance = downtimes_api.DowntimesApi(api_client)
+        try:
+            api_instance.update_downtime(model.Id, downtime_body)
+        except ApiException as e:
+            LOG.error("Exception when calling DowntimeApi->update_downtime: %s\n" % e)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
+
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.DELETE)
@@ -87,8 +127,23 @@ def delete_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
-    return progress
+    LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
+
+    with v1_client(
+            model.DatadogCredentials.ApiKey,
+            model.DatadogCredentials.ApplicationKey,
+            model.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
+    ) as api_client:
+        api_instance = downtimes_api.DowntimesApi(api_client)
+        try:
+            api_instance.cancel_downtime(model.Id)
+        except ApiException as e:
+            LOG.error("Exception when calling DowntimeApi->cancel_downtime: %s\n" % e)
+            return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
+
+    return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.READ)

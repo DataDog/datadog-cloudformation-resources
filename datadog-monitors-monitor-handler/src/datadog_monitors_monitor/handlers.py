@@ -226,13 +226,14 @@ def create_handler(
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
-            api_instance.create_monitor(monitor)
+            monitor_resp = api_instance.create_monitor(monitor)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->create_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating monitor: {e}"
             )
 
+    model.Id = monitor_resp.id
     return read_handler(session, request, callback_context)
 
 

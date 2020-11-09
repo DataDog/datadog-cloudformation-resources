@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "description": "An example resource schema demonstrating some basic constructs and validation rules.",
+    "description": "Datadog Monitor Downtime 1.2.0.dev",
     "definitions": {
         "DowntimeRecurrence": {
             "oneOf": [

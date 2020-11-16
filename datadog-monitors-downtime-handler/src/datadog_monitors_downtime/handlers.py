@@ -26,6 +26,26 @@ resource = Resource(TYPE_NAME, ResourceModel)
 test_entrypoint = resource.test_entrypoint
 
 
+def build_downtime_struct(model):
+    downtime = Downtime(
+        end=model.End,
+        monitor_id=model.MonitorId
+    )
+
+    # Non Nullable attributes
+    if model.Message:
+        downtime.message = model.Message
+    if model.MonitorTags:
+        downtime.monitorTags = model.MonitorTags
+    if model.Scope:
+        downtime.scope = model.Scope
+    if model.Timezone:
+        downtime.timezone = model.Timezone
+    if model.Start:
+        downtime.start = model.Start
+    return downtime
+
+
 @resource.handler(Action.CREATE)
 def create_handler(
     session: Optional[SessionProxy],
@@ -39,19 +59,7 @@ def create_handler(
     )
     LOG.info(f"Starting the {TYPE_NAME} Create Handler")
 
-    downtime_body = Downtime(
-        message=model.message,
-        monitorTags=model.MonitorTags,
-        scope=model.Scope,
-        timezone=model.Timezone,
-        start=model.Start
-    )
-
-    # Nullable attributes
-    if model.End:
-        downtime_body.end = model.End
-    if model.MonitorId:
-        downtime_body.monitor_id = model.MonitorId
+    downtime_body = build_downtime_struct(model)
 
     with v1_client(
             model.DatadogCredentials.ApiKey,
@@ -85,19 +93,7 @@ def update_handler(
 
     LOG.info(f"Starting the {TYPE_NAME} Update Handler")
 
-    downtime_body = Downtime(
-        message=model.message,
-        monitorTags=model.MonitorTags,
-        scope=model.Scope,
-        timezone=model.Timezone,
-        start=model.Start
-    )
-
-    # Nullable attributes
-    if model.End:
-        downtime_body.end = model.End
-    if model.MonitorId:
-        downtime_body.monitor_id = model.MonitorId
+    downtime_body = build_downtime_struct(model)
 
     with v1_client(
             model.DatadogCredentials.ApiKey,

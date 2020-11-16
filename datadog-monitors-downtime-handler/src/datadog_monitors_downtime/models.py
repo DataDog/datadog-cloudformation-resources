@@ -48,7 +48,7 @@ class ResourceModel(BaseModel):
     End: Optional[int]
     Id: Optional[int]
     Message: Optional[str]
-    MonitorId: Optional[float]
+    MonitorId: Optional[int]
     MonitorTags: Optional[Sequence[str]]
     ParentId: Optional[int]
     Scope: Optional[Sequence[str]]

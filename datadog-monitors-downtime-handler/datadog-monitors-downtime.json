@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "description": "Datadog Monitors Downtime 1.2.0.dev",
+    "description": "Datadog Monitors Downtime 2.0.0.dev",
     "definitions": {
         "DowntimeRecurrence": {
             "oneOf": [
@@ -111,7 +111,7 @@
         },
         "MonitorId": {
             "description": "A single monitor to which the downtime applies. If not provided, the downtime applies to all monitors.",
-            "type": "number"
+            "type": "integer"
         },
         "MonitorTags": {
             "description": "A comma-separated list of monitor tags, to which the downtime applies. The resulting downtime applies to monitors that match ALL provided monitor tags.",

@@ -1,6 +1,6 @@
 # Datadog::Monitors::Downtime
 
-An example resource schema demonstrating some basic constructs and validation rules.
+Datadog Monitors Downtime 2.0.0.dev
 
 ## Syntax
 
@@ -16,7 +16,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#disabled" title="Disabled">Disabled</a>" : <i>Boolean</i>,
         "<a href="#end" title="End">End</a>" : <i>Integer</i>,
         "<a href="#message" title="Message">Message</a>" : <i>String</i>,
-        "<a href="#monitorid" title="MonitorId">MonitorId</a>" : <i>Double</i>,
+        "<a href="#monitorid" title="MonitorId">MonitorId</a>" : <i>Integer</i>,
         "<a href="#monitortags" title="MonitorTags">MonitorTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#scope" title="Scope">Scope</a>" : <i>[ String, ... ]</i>,
         "<a href="#start" title="Start">Start</a>" : <i>Integer</i>,
@@ -34,7 +34,7 @@ Properties:
     <a href="#disabled" title="Disabled">Disabled</a>: <i>Boolean</i>
     <a href="#end" title="End">End</a>: <i>Integer</i>
     <a href="#message" title="Message">Message</a>: <i>String</i>
-    <a href="#monitorid" title="MonitorId">MonitorId</a>: <i>Double</i>
+    <a href="#monitorid" title="MonitorId">MonitorId</a>: <i>Integer</i>
     <a href="#monitortags" title="MonitorTags">MonitorTags</a>: <i>
       - String</i>
     <a href="#scope" title="Scope">Scope</a>: <i>
@@ -91,7 +91,7 @@ A single monitor to which the downtime applies. If not provided, the downtime ap
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

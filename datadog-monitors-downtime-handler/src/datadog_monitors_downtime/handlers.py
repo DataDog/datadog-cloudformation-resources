@@ -139,7 +139,10 @@ def delete_handler(
             LOG.error("Exception when calling DowntimeApi->cancel_downtime: %s\n" % e)
             return ProgressEvent(status=OperationStatus.FAILED, resourceModel=model, message=e.body)
 
-    return read_handler(session, request, callback_context)
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=None,
+    )
 
 
 @resource.handler(Action.READ)
@@ -167,14 +170,20 @@ def read_handler(
 
     LOG.info(f"Success retrieving downtime {api_resp}")
 
-    # Not Nullable attributes
-    model.Message = api_resp.message
-    model.MonitorTags = api_resp.monitor_tags
-    model.Scope = api_resp.scope
-    model.Timezone = api_resp.timezone
-    model.Start = api_resp.start
+    # Add hasattr checks for non-nullable fields to ensure they're available to be set
+    # Currently in datadog-api-client-python, accessing fields that don't exist return an AttributeError
+    if hasattr(api_resp, 'message'):
+        model.Message = api_resp.message
+    if hasattr(api_resp, 'monitor_tags'):
+        model.MonitorTags = api_resp.monitor_tags
+    if hasattr(api_resp, 'scope'):
+        model.Scope = api_resp.scope
+    if hasattr(api_resp, 'timezone'):
+        model.Timezone = api_resp.timezone
+    if hasattr(api_repo, 'start'):
+        model.Start = api_resp.start
 
-    # Nullable attributes
+    # Nullable fields, these should be None or set as a value
     if api_resp.end:
         model.End = api_resp.end
     if api_resp.monitor_id:

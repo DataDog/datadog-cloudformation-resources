@@ -55,7 +55,7 @@ def create_handler(
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            model.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -84,10 +84,22 @@ def update_handler(
     model = request.desiredResourceState
 
     aws_account = build_aws_account_from_model(model)
+    integration_id = f"{model.AccountID}:{model.RoleName}:{model.AccessKeyID}"
+    if integration_id != model.IntegrationID:
+        LOG.error(
+            f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+            f"Please delete it and create a new one instead."
+        )
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message=f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+                    f"Please delete it and create a new one instead."
+        )
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            model.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -121,7 +133,7 @@ def delete_handler(
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            model.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -151,7 +163,7 @@ def read_handler(
     with v1_client(
             model.DatadogCredentials.ApiKey,
             model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            model.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -166,6 +178,17 @@ def read_handler(
             LOG.error("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED, resourceModel=model, message=f"Error getting AWS account: {e}"
+            )
+        except IndexError:
+            LOG.error(
+                f"Account with integration ID '{model.IntegrationID}' not found. "
+                f"Was it updated outside of AWS CloudFormation ?"
+            )
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Account with integration ID '{model.IntegrationID}' not found. "
+                        f"Was it updated outside of AWS CloudFormation ?"
             )
 
     model.HostTags = aws_account.host_tags

@@ -1,6 +1,6 @@
 # Datadog::Monitors::Downtime
 
-An example resource schema demonstrating some basic constructs and validation rules.
+Datadog Monitors Downtime 2.0.0.dev
 
 ## Syntax
 
@@ -14,12 +14,12 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "Properties" : {
         "<a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>" : <i><a href="datadogcredentials.md">DatadogCredentials</a></i>,
         "<a href="#disabled" title="Disabled">Disabled</a>" : <i>Boolean</i>,
-        "<a href="#end" title="End">End</a>" : <i>Double</i>,
+        "<a href="#end" title="End">End</a>" : <i>Integer</i>,
         "<a href="#message" title="Message">Message</a>" : <i>String</i>,
-        "<a href="#monitorid" title="MonitorId">MonitorId</a>" : <i>Double</i>,
+        "<a href="#monitorid" title="MonitorId">MonitorId</a>" : <i>Integer</i>,
         "<a href="#monitortags" title="MonitorTags">MonitorTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#scope" title="Scope">Scope</a>" : <i>[ String, ... ]</i>,
-        "<a href="#start" title="Start">Start</a>" : <i>Double</i>,
+        "<a href="#start" title="Start">Start</a>" : <i>Integer</i>,
         "<a href="#timezone" title="Timezone">Timezone</a>" : <i>String</i>,
     }
 }
@@ -32,14 +32,14 @@ Type: Datadog::Monitors::Downtime
 Properties:
     <a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>: <i><a href="datadogcredentials.md">DatadogCredentials</a></i>
     <a href="#disabled" title="Disabled">Disabled</a>: <i>Boolean</i>
-    <a href="#end" title="End">End</a>: <i>Double</i>
+    <a href="#end" title="End">End</a>: <i>Integer</i>
     <a href="#message" title="Message">Message</a>: <i>String</i>
-    <a href="#monitorid" title="MonitorId">MonitorId</a>: <i>Double</i>
+    <a href="#monitorid" title="MonitorId">MonitorId</a>: <i>Integer</i>
     <a href="#monitortags" title="MonitorTags">MonitorTags</a>: <i>
       - String</i>
     <a href="#scope" title="Scope">Scope</a>: <i>
       - String</i>
-    <a href="#start" title="Start">Start</a>: <i>Double</i>
+    <a href="#start" title="Start">Start</a>: <i>Integer</i>
     <a href="#timezone" title="Timezone">Timezone</a>: <i>String</i>
 </pre>
 
@@ -71,7 +71,7 @@ POSIX timestamp to end the downtime. If not provided, the downtime is in effect 
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -91,7 +91,7 @@ A single monitor to which the downtime applies. If not provided, the downtime ap
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -121,7 +121,7 @@ POSIX timestamp to start the downtime. If not provided, the downtime starts the 
 
 _Required_: No
 
-_Type_: Double
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

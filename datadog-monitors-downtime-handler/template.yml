@@ -4,20 +4,21 @@ Description: AWS SAM template for the Datadog::Monitors::Downtime resource type
 
 Globals:
   Function:
-    Timeout: 60  # docker start-up times can be long for SAM CLI
+    Timeout: 180  # docker start-up times can be long for SAM CLI
+    MemorySize: 256
 
 Resources:
   TypeFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.datadog.monitors.downtime.HandlerWrapper::handleRequest
-      Runtime: java8
-      CodeUri: ./target/datadog-monitors-downtime-handler-1.0-SNAPSHOT.jar
+      Handler: datadog_monitors_downtime.handlers.resource
+      Runtime: python3.7
+      CodeUri: build/
 
   TestEntrypoint:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.datadog.monitors.downtime.HandlerWrapper::testEntrypoint
-      Runtime: java8
-      CodeUri: ./target/datadog-monitors-downtime-handler-1.0-SNAPSHOT.jar
+      Handler: datadog_monitors_downtime.handlers.test_entrypoint
+      Runtime: python3.7
+      CodeUri: build/
 

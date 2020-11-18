@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Integrations::AWS",
-    "description": "Datadog AWS Integrations 1.1.0",
+    "description": "Datadog AWS Integration 1.2.0.dev",
     "properties": {
         "DatadogCredentials": {
             "description": "Credentials for the Datadog API",
@@ -39,7 +39,7 @@
             "type": "string"
         },
         "FilterTags": {
-            "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
+            "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
             "type": "array",
             "items": {
                 "type": "string"

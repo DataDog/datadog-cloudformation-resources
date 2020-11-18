@@ -68,8 +68,7 @@ def create_handler(
                 status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating AWS account: {e}"
             )
 
-    integration_id = f"{model.AccountID}:{model.RoleName}:{model.AccessKeyID}"
-    model.IntegrationID = integration_id
+    model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
 
     return read_handler(session, request, callback_context)
 
@@ -84,8 +83,7 @@ def update_handler(
     model = request.desiredResourceState
 
     aws_account = build_aws_account_from_model(model)
-    integration_id = f"{model.AccountID}:{model.RoleName}:{model.AccessKeyID}"
-    if integration_id != model.IntegrationID:
+    if get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID) != model.IntegrationID:
         LOG.error(
             f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
             f"Please delete it and create a new one instead."
@@ -212,3 +210,7 @@ def list_handler(
         status=OperationStatus.SUCCESS,
         resourceModels=[],
     )
+
+
+def get_integration_id(account_id, role_name, access_key_id):
+    return f"{account_id}:{role_name}:{access_key_id}"

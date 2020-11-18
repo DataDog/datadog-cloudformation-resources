@@ -180,7 +180,7 @@ def read_handler(
         model.Scope = api_resp.scope
     if hasattr(api_resp, 'timezone'):
         model.Timezone = api_resp.timezone
-    if hasattr(api_repo, 'start'):
+    if hasattr(api_resp, 'start'):
         model.Start = api_resp.start
 
     # Nullable fields, these should be None or set as a value

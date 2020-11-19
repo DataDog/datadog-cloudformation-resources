@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.2.0b1 / 2020-11-20
+
+* [Fixed] Cleanup old java files and bump common-python dep in all resources. See [#105](https://github.com/DataDog/datadog-cloudformation-resources/pull/105).
+* [Fixed] Bump plugin and add new build deps. See [#101](https://github.com/DataDog/datadog-cloudformation-resources/pull/101).
+* [Changed] Migrate Datadog::Integrations::AWS resource to python. See [#95](https://github.com/DataDog/datadog-cloudformation-resources/pull/95).
+
 ## 1.1.0 / 2020-08-04
 
 * Link to Resource: `s3://datadog-cloudformation-resources/datadog-integrations-aws/datadog-integrations-aws-1.1.0.zip`

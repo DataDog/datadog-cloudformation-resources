@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0b1 / 2020-11-20
+
+* [Fixed] Cleanup old java files and bump common-python dep in all resources. See [#105](https://github.com/DataDog/datadog-cloudformation-resources/pull/105).
+* [Fixed] Bump plugin and add new build deps. See [#101](https://github.com/DataDog/datadog-cloudformation-resources/pull/101).
+* [Changed] Migrate the Downtime resource to python runtime. See [#102](https://github.com/DataDog/datadog-cloudformation-resources/pull/102).
+
 ## 1.1.0 / 2020-08-04
 
 * Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-downtime/datadog-monitors-downtime-1.1.0.zip`

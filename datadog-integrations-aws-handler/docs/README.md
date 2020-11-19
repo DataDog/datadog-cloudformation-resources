@@ -1,6 +1,6 @@
 # Datadog::Integrations::AWS
 
-Datadog AWS Integrations
+Datadog AWS Integration 1.2.0b1
 
 ## Syntax
 
@@ -83,7 +83,7 @@ _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/l
 
 #### FilterTags
 
-The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.
+The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.
 
 _Required_: No
 

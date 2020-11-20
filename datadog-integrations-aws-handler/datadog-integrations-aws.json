@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Integrations::AWS",
-    "description": "Datadog AWS Integration 1.2.0.dev",
+    "description": "Datadog AWS Integration 1.2.0b1",
     "properties": {
         "DatadogCredentials": {
             "description": "Credentials for the Datadog API",

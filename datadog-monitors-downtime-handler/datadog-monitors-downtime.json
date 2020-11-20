@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "description": "Datadog Monitors Downtime 2.0.0.dev",
+    "description": "Datadog Monitors Downtime 2.0.0b1",
     "definitions": {
         "DowntimeRecurrence": {
             "oneOf": [

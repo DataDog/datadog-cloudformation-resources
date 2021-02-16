@@ -1,6 +1,6 @@
 # Datadog::Monitors::Downtime
 
-Datadog Monitors Downtime 2.0.0b1
+Datadog Monitors Downtime 2.0.0
 
 ## Syntax
 

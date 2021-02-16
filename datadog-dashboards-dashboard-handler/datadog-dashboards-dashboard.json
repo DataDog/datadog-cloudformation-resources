@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::Dashboards::Dashboard",
-  "description": "Datadog Dashboard 1.0.0b2",
+  "description": "Datadog Dashboard 1.0.0",
   "definitions": {
   },
   "properties": {

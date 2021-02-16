@@ -1,4 +1,4 @@
-## 0.0.4 / 2021-02-16
+## datadog-cloudformation-common-python-0.0.4 / 2021-02-16
 
 * [Fixed] Bump datadog-api-client version. See [#114](https://github.com/DataDog/datadog-cloudformation-resources/pull/114).
 

@@ -3,9 +3,6 @@
 ## 2.0.0 / 2021-02-16
 
 * [Fixed] Bump common-python dependencies in all resources. See [#117](https://github.com/DataDog/datadog-cloudformation-resources/pull/117).
-* [Fixed] Bump datadog-api-client version. See [#114](https://github.com/DataDog/datadog-cloudformation-resources/pull/114).
-* [Fixed] Bump cloudformation-cli-python-plugin version. See [#111](https://github.com/DataDog/datadog-cloudformation-resources/pull/111).
-* [Fixed] Fix the user agent header when using the python common package. See [#109](https://github.com/DataDog/datadog-cloudformation-resources/pull/109).
 
 ## 2.0.0b1 / 2020-11-20
 

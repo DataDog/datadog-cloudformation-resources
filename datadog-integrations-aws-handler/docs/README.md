@@ -127,3 +127,6 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 
 An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.
 
+#### ExternalID
+
+An unique ID that should be used in the sts:ExternalId condition of the DataDog role.

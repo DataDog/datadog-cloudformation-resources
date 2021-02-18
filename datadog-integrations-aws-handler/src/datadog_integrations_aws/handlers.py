@@ -61,7 +61,8 @@ def create_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            api_instance.create_aws_account(aws_account)
+            api_resp = api_instance.create_aws_account(aws_account)
+            model.ExternalID = api_resp.external_id
         except ApiException as e:
             LOG.error("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(

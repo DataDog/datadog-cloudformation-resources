@@ -47,6 +47,7 @@ class ResourceModel(BaseModel):
     HostTags: Optional[Sequence[str]]
     AccountSpecificNamespaceRules: Optional[MutableMapping[str, bool]]
     IntegrationID: Optional[str]
+    ExternalID: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -66,6 +67,7 @@ class ResourceModel(BaseModel):
             HostTags=json_data.get("HostTags"),
             AccountSpecificNamespaceRules=json_data.get("AccountSpecificNamespaceRules"),
             IntegrationID=json_data.get("IntegrationID"),
+            ExternalID=json_data.get("ExternalID"),
         )
 
 
@@ -95,5 +97,3 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
-
-

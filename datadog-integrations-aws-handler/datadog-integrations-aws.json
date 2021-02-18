@@ -64,6 +64,10 @@
         "IntegrationID": {
             "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
             "type": "string"
+        },
+        "ExternalID": {
+            "description": "An unique ID that should be used in the sts:ExternalId condition of the DataDog role.",
+            "type": "string"
         }
     },
     "required": [
@@ -78,7 +82,8 @@
         "/properties/AccessKeyID"
     ],
     "readOnlyProperties": [
-        "/properties/IntegrationID"
+        "/properties/IntegrationID",
+        "/properties/ExternalID"
     ],
     "additionalProperties": false,
     "handlers": {

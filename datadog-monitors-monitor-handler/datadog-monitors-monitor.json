@@ -192,7 +192,8 @@
                 "query alert",
                 "service check",
                 "synthetics alert",
-                "trace-analytics alert"
+                "trace-analytics alert",
+                "slo alert"
             ]
         },
         "Multi": {

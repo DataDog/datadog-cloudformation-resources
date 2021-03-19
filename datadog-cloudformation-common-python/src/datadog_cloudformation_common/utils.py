@@ -8,6 +8,8 @@ from cloudformation_cli_python_lib import HandlerErrorCode
 def http_to_handler_error_code(http_error_code: int) -> HandlerErrorCode:
     if http_error_code == 400:
         return HandlerErrorCode.InvalidRequest
+    elif http_error_code == 402:
+        return HandlerErrorCode.ServiceLimitExceeded
     elif http_error_code == 403:
         return HandlerErrorCode.AccessDenied
     elif http_error_code == 404:
@@ -15,5 +17,7 @@ def http_to_handler_error_code(http_error_code: int) -> HandlerErrorCode:
     elif http_error_code == 409:
         return HandlerErrorCode.ResourceConflict
     elif http_error_code == 422:
-        return HandlerErrorCode.ServiceLimitExceeded
+        return HandlerErrorCode.GeneralServiceException
+    elif http_error_code == 429:
+        return HandlerErrorCode.Throttling
     return HandlerErrorCode.ServiceInternalError

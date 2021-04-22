@@ -107,7 +107,7 @@ def update_handler(
             # whether or not to do type conversion, true in our case too
             # and importantly the api_client configuration, needed to perform the type conversions
             dashboard = validate_and_convert_types(
-                json_payload, (Dashboard,), ["resource_data"], True, False, configuration=api_client.configuration
+                json_payload, (Dashboard,), ["resource_data"], True, True, configuration=api_client.configuration
             )
             api_instance.update_dashboard(dashboard_id, dashboard)
         except TypeError as e:

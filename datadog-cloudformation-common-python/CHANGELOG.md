@@ -1,3 +1,8 @@
+## datadog-cloudformation-common-python-0.0.5 / 2021-05-14
+
+* [Added] Bump python client to 1.0.0. See [#134](https://github.com/DataDog/datadog-cloudformation-resources/pull/134).
+* [Added] Add util for http to handler error code. See [#126](https://github.com/DataDog/datadog-cloudformation-resources/pull/126).
+
 ## datadog-cloudformation-common-python-0.0.4 / 2021-02-16
 
 * [Fixed] Bump datadog-api-client version. See [#114](https://github.com/DataDog/datadog-cloudformation-resources/pull/114).

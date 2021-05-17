@@ -1,0 +1,247 @@
+{
+  "DashboardDefinition": {
+    "title": "Datadog API Clients CI updated",
+    "description": "Various stats from CI runs of generated API clients",
+    "widgets": [
+      {
+        "id": 6109855634273062,
+        "definition": {
+          "type": "manage_status",
+          "summary_type": "groups",
+          "query": "NOT group_status:ok team:integration-tools-and-libraries \"failed test\"",
+          "sort": "triggered,desc",
+          "count": 50,
+          "start": 0,
+          "display_format": "countsAndList",
+          "color_preference": "background",
+          "hide_zero_counts": false,
+          "title": "CI monitor summary",
+          "title_size": "13",
+          "title_align": "left",
+          "show_last_triggered": true
+        },
+        "layout": {
+          "x": 0,
+          "y": 0,
+          "width": 86,
+          "height": 23
+        }
+      },
+      {
+        "id": 6164483642166923,
+        "definition": {
+          "type": "note",
+          "content": "[![Go Client](https://app.datadoghq.com/static/c/go_reversed_small-9c2c89efb76246c0a0281e319c17740a.svg)](https://github.com/DataDog/datadog-api-client-go)",
+          "background_color": "blue",
+          "font_size": "18",
+          "text_align": "center",
+          "show_tick": true,
+          "tick_pos": "50%",
+          "tick_edge": "bottom"
+        },
+        "layout": {
+          "x": 0,
+          "y": 24,
+          "width": 28,
+          "height": 8
+        }
+      },
+      {
+        "id": 1099109239368400,
+        "definition": {
+          "type": "timeseries",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{env:prod,service:datadog-api-client-go} by {resource_name}.as_count()"
+            }
+          ],
+          "custom_links": [],
+          "yaxis": {
+            "scale": "linear",
+            "min": "auto",
+            "max": "auto",
+            "include_zero": true
+          },
+          "title": "Error count on Go client in prod",
+          "title_size": "16",
+          "title_align": "left",
+          "show_legend": true
+        },
+        "layout": {
+          "x": 0,
+          "y": 34,
+          "width": 28,
+          "height": 15
+        }
+      },
+      {
+        "id": 8615735258064590,
+        "definition": {
+          "type": "toplist",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{service:datadog-api-client-go,env:prod} by {resource_name}.as_count()"
+            }
+          ],
+          "custom_links": [],
+          "title": "Go most often failing tests",
+          "title_size": "16",
+          "title_align": "left"
+        },
+        "layout": {
+          "x": 0,
+          "y": 50,
+          "width": 28,
+          "height": 15
+        }
+      },
+      {
+        "id": 6145637803569790,
+        "definition": {
+          "type": "note",
+          "content": "[![Java Client](https://app.datadoghq.com/static/c/java_reversed_small-b98017383d2c572bb29391e4ef3713cb.svg)](https://github.com/DataDog/datadog-api-client-java)",
+          "background_color": "vivid_pink",
+          "font_size": "18",
+          "text_align": "center",
+          "show_tick": true,
+          "tick_pos": "50%",
+          "tick_edge": "bottom"
+        },
+        "layout": {
+          "x": 29,
+          "y": 24,
+          "width": 28,
+          "height": 8
+        }
+      },
+      {
+        "id": 3144441827173702,
+        "definition": {
+          "type": "timeseries",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{env:prod,service:datadog-api-client-java} by {resource_name}.as_count()"
+            }
+          ],
+          "custom_links": [],
+          "yaxis": {
+            "scale": "linear",
+            "min": "auto",
+            "max": "auto",
+            "include_zero": true
+          },
+          "title": "Error count on Java client in prod",
+          "title_size": "16",
+          "title_align": "left",
+          "show_legend": true
+        },
+        "layout": {
+          "x": 29,
+          "y": 34,
+          "width": 28,
+          "height": 15
+        }
+      },
+      {
+        "id": 5202789945884836,
+        "definition": {
+          "type": "toplist",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{service:datadog-api-client-java,env:prod} by {resource_name}.as_count()"
+            }
+          ],
+          "custom_links": [],
+          "title": "Java most often failing tests",
+          "title_size": "16",
+          "title_align": "left"
+        },
+        "layout": {
+          "x": 29,
+          "y": 50,
+          "width": 28,
+          "height": 15
+        }
+      },
+      {
+        "id": 6338599556873784,
+        "definition": {
+          "type": "note",
+          "content": "[![py](https://app.datadoghq.com/static/c/python_reversed_small-7f89cd3c5c904f7720be0101050451a5.svg)](https://github.com/DataDog/datadog-api-client-python)",
+          "background_color": "vivid_yellow",
+          "font_size": "18",
+          "text_align": "center",
+          "show_tick": true,
+          "tick_pos": "50%",
+          "tick_edge": "bottom"
+        },
+        "layout": {
+          "x": 58,
+          "y": 24,
+          "width": 28,
+          "height": 8
+        }
+      },
+      {
+        "id": 6781216523838966,
+        "definition": {
+          "type": "timeseries",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{env:prod,service:datadog-api-client-python} by {resource_name}.as_count()",
+              "on_right_yaxis": false,
+              "style": {
+                  "palette": "warm",
+                  "line_type": "solid",
+                  "line_width": "normal"
+              },
+              "display_type": "bars"
+            }
+          ],
+          "custom_links": [],
+          "yaxis": {
+            "scale": "linear",
+            "min": "auto",
+            "max": "auto",
+            "include_zero": true
+          },
+          "title": "Error count on Python client in prod",
+          "title_size": "16",
+          "title_align": "left",
+          "show_legend": true
+        },
+        "layout": {
+          "x": 58,
+          "y": 34,
+          "width": 28,
+          "height": 15
+        }
+      },
+      {
+        "id": 3460654467622866,
+        "definition": {
+          "type": "toplist",
+          "requests": [
+            {
+              "q": "sum:trace.test.errors{service:datadog-api-client-python,env:prod} by {resource_name}.as_count()"
+            }
+          ],
+          "custom_links": [],
+          "title": "Python most often failing tests",
+          "title_size": "16",
+          "title_align": "left"
+        },
+        "layout": {
+          "x": 58,
+          "y": 50,
+          "width": 28,
+          "height": 15
+        }
+      }
+    ],
+    "template_variables": [],
+    "layout_type": "free",
+    "is_read_only": false,
+    "notify_list": []
+  }
+}

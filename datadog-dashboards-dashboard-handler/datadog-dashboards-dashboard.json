@@ -1,9 +1,15 @@
 {
   "typeName": "Datadog::Dashboards::Dashboard",
   "description": "Datadog Dashboard 1.0.0",
-  "definitions": {
+  "typeConfiguration": {
+    "properties": {
+      "DatadogCredentials": {
+        "$ref": "#/definitions/DatadogCredentials"
+      }
+    },
+    "additionalProperties": false
   },
-  "properties": {
+  "definitions": {
     "DatadogCredentials": {
       "description": "Credentials for the Datadog API",
       "properties": {
@@ -24,27 +30,31 @@
         "ApiKey",
         "ApplicationKey"
       ],
-      "type": "object"
-    },
+      "type": "object",
+      "additionalProperties": false
+    }
+  },
+  "properties": {
     "Id": {
       "description": "ID of the dashboard",
       "type": "string"
     },
+    "Url": {
+      "description": "Url of the dashboard",
+      "type": "string"
+    },
     "DashboardDefinition": {
       "description": "JSON string of the dashboard definition",
-      "type": "string"
+      "type": "object"
     }
   },
   "additionalProperties": false,
   "required": [
-    "DatadogCredentials",
     "DashboardDefinition"
   ],
-  "writeOnlyProperties": [
-    "/properties/DatadogCredentials"
-  ],
   "readOnlyProperties": [
-    "/properties/Id"
+    "/properties/Id",
+    "/properties/Url"
   ],
   "primaryIdentifier": [
     "/properties/Id"
@@ -66,11 +76,6 @@
       ]
     },
     "delete": {
-      "permissions": [
-        ""
-      ]
-    },
-    "list": {
       "permissions": [
         ""
       ]

@@ -1,0 +1,3 @@
+{
+  "DashboardDefinition": "{\"title\":\"Datadog API Clients CI\",\"description\":\"Various stats from CI runs of generated API clients\",\"template_variables\":[],\"layout_type\":\"free\",\"is_read_only\":false,\"notify_list\":[]}"
+}

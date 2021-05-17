@@ -12,7 +12,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "Datadog::Integrations::AWS",
     "Properties" : {
-        "<a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>" : <i><a href="datadogcredentials.md">DatadogCredentials</a></i>,
         "<a href="#accountid" title="AccountID">AccountID</a>" : <i>String</i>,
         "<a href="#rolename" title="RoleName">RoleName</a>" : <i>String</i>,
         "<a href="#accesskeyid" title="AccessKeyID">AccessKeyID</a>" : <i>String</i>,
@@ -28,7 +27,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: Datadog::Integrations::AWS
 Properties:
-    <a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>: <i><a href="datadogcredentials.md">DatadogCredentials</a></i>
     <a href="#accountid" title="AccountID">AccountID</a>: <i>String</i>
     <a href="#rolename" title="RoleName">RoleName</a>: <i>String</i>
     <a href="#accesskeyid" title="AccessKeyID">AccessKeyID</a>: <i>String</i>
@@ -41,16 +39,6 @@ Properties:
 
 ## Properties
 
-#### DatadogCredentials
-
-Credentials for the Datadog API
-
-_Required_: Yes
-
-_Type_: <a href="datadogcredentials.md">DatadogCredentials</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
 #### AccountID
 
 Your AWS Account ID without dashes.
@@ -59,7 +47,7 @@ _Required_: No
 
 _Type_: String
 
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
 #### RoleName
 

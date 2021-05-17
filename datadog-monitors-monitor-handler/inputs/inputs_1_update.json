@@ -1,0 +1,18 @@
+{
+  "Type": "log alert",
+  "Query": "logs(\"source:syslog @facility_name:authpriv.* env:prod @tag:(-CRON* -systemd* -sshd* -sudo* -useradd* -userdel)\").index(\"main\").rollup(\"count\").last(\"1h\") >= 5",
+  "Name": "SSH Activity on PROD updated",
+  "Message": "@slack-datadog-testing",
+  "Options": {
+    "Locked": false,
+    "IncludeTags": false,
+    "NewHostDelay": 40,
+    "NotifyAudit": true,
+    "NotifyNoData": true,
+    "RenotifyInterval": 5,
+    "EnableLogsSample": true,
+    "Thresholds": {
+      "Critical": 5
+    }
+  }
+}

@@ -1,7 +1,8 @@
 # Datadog::SLOs::SLO
 
 This resource represents a Datadog SLO, and is used to create and manage Datadog SLOs. More
- information about Datadog Monitors can be found in the [SLOs documentation](https://docs.datadoghq.com/monitors/service_level_objectives/).
+ information about Datadog SLOs can be found in the [SLOs documentation](https://docs.datadoghq.com
+ /monitors/service_level_objectives/).
 
 ## Example Usage
 

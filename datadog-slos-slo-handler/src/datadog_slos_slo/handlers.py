@@ -70,8 +70,9 @@ def read_handler(
                                 Handle=slo.data.creator.handle)
 
     if slo.data.type.value == "monitor":
-        model.Groups = slo.data.groups
-        model.MonitorIds = slo.data.monitorIds
+        if hasattr(slo.data, 'groups'):
+            model.Groups = slo.data.groups
+        model.MonitorIds = slo.data.monitor_ids
     elif slo.data.type.value == "metric":
         model.Query = Query(
             Denominator=slo.data.query.denominator,
@@ -107,13 +108,12 @@ def update_handler(
     thresholds = build_slo_thresholds_from_model(model)
 
     slo = ApiSLO(name=model.Name, type=ApiSLOType(model.Type), thresholds=thresholds)
-    # slo = ApiSLORequest()
     if model.Description is not None:
         slo.description = model.Description
     if model.Groups is not None:
         slo.groups = model.Groups
     if model.MonitorIds is not None:
-        slo.monitorIds = model.MonitorIds
+        slo.monitor_ids = model.MonitorIds
     if model.Query is not None:
         slo.query = ApiSLOQuery(numerator=model.Query.Numerator,
                                 denominator=model.Query.Denominator)
@@ -188,7 +188,7 @@ def create_handler(
     if model.Groups is not None:
         slo.groups = model.Groups
     if model.MonitorIds is not None:
-        slo.monitorIds = model.MonitorIds
+        slo.monitor_ids = model.MonitorIds
     if model.Query is not None:
         slo.query = ApiSLOQuery(numerator=model.Query.Numerator,
                                 denominator=model.Query.Denominator)

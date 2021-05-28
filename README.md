@@ -54,6 +54,7 @@ The following Datadog resources can be registered within your AWS account, refer
 | Monitors                | `Datadog::Monitors::Monitor`      | [Create, update, and delete Datadog monitors][9].       | `datadog-monitors-monitor`      | [Schema Handler Versions][10] |
 | Downtimes               | `Datadog::Monitors::Downtime`     | [Enable or disable downtimes for your monitors][11].    | `datadog-monitors-downtime`     | [Schema Handler Versions][12] |
 | User                    | `Datadog::IAM::User`              | [ Create and manage Datadog users][13].                 | `datadog-iam-user`              | [Schema Handler Versions][14] |
+| SLOs                    | `Datadog::IAM::User`              | [ Create and manage Datadog SLOs ][16].                 | `datadog-slos-slo`              | [Schema Handler Versions][17] |
 
 ## Troubleshooting
 
@@ -74,3 +75,5 @@ Need help? Contact [Datadog support][15].
 [13]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-iam-user-handler
 [14]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md
 [15]: https://docs.datadoghq.com/help/
+[16]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-slos-slo-handler
+[17]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md

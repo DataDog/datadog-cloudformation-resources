@@ -1,6 +1,6 @@
 {
-  "Type": "log alert",
-  "Query": "logs(\"source:syslog @facility_name:authpriv.* env:prod @tag:(-CRON* -systemd* -sshd* -sudo* -useradd* -userdel)\").index(\"main\").rollup(\"count\").last(\"1h\") >= 1",
+  "Type": "query alert",
+  "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host} > 4",
   "Name": "SSH Activity on PROD",
   "Message": "@slack-datadog-testing",
   "Options": {
@@ -12,7 +12,7 @@
     "RenotifyInterval": 0,
     "EnableLogsSample": true,
     "Thresholds": {
-      "Critical": 1
+      "Critical": 4
     }
   }
 }

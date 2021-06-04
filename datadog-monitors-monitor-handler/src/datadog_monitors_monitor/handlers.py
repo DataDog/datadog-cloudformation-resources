@@ -70,7 +70,7 @@ def read_handler(
         try:
             monitor = api_instance.get_monitor(monitor_id)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->get_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->get_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -175,7 +175,7 @@ def update_handler(
         try:
             api_instance.update_monitor(model.Id, monitor)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->update_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->update_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -207,7 +207,7 @@ def delete_handler(
         try:
             api_instance.delete_monitor(model.Id)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -255,7 +255,7 @@ def create_handler(
         try:
             monitor_resp = api_instance.create_monitor(monitor)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->create_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->create_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,

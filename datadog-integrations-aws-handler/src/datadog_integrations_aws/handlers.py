@@ -66,7 +66,7 @@ def create_handler(
         try:
             api_instance.create_aws_account(aws_account)
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -126,7 +126,7 @@ def update_handler(
                 access_key_id=model.AccessKeyID,
             )
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
             if e.status == 400 and "does not exist" in e.body:
                 error_code = HandlerErrorCode.NotFound
@@ -162,7 +162,7 @@ def delete_handler(
         try:
             api_instance.delete_aws_account(aws_account)
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
             if e.status == 400 and "does not exist" in e.body:
                 error_code = HandlerErrorCode.NotFound
@@ -203,7 +203,7 @@ def read_handler(
                 access_key_id=model.AccessKeyID
             ).accounts[0]
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,

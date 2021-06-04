@@ -22,7 +22,6 @@ from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
-LOG.setLevel(100)
 TYPE_NAME = "Datadog::Dashboards::Dashboard"
 TELEMETRY_TYPE_NAME = "dashboards-dashboard"
 
@@ -62,7 +61,7 @@ def create_handler(
             res = api_instance.create_dashboard(dashboard)
             model.Id = res.id
         except TypeError as e:
-            LOG.error("Exception when deserializing the Dashboard payload definition: %s\n", e)
+            LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -70,7 +69,7 @@ def create_handler(
                 errorCode=HandlerErrorCode.InternalFailure,
             )
         except ApiException as e:
-            LOG.error("Exception when calling DashboardsApi->create_dashboard: %s\n", e)
+            LOG.exception("Exception when calling DashboardsApi->create_dashboard: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -113,7 +112,7 @@ def update_handler(
             )
             api_instance.update_dashboard(dashboard_id, dashboard)
         except TypeError as e:
-            LOG.error("Exception when deserializing the Dashboard payload definition: %s\n", e)
+            LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -121,7 +120,7 @@ def update_handler(
                 errorCode=HandlerErrorCode.InternalFailure,
             )
         except ApiException as e:
-            LOG.error("Exception when calling DashboardsApi->update_dashboard: %s\n", e)
+            LOG.exception("Exception when calling DashboardsApi->update_dashboard: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -154,7 +153,7 @@ def delete_handler(
         try:
             api_instance.delete_dashboard(dashboard_id)
         except ApiException as e:
-            LOG.error("Exception when calling DashboardsApi->delete_dashboard: %s\n", e)
+            LOG.exception("Exception when calling DashboardsApi->delete_dashboard: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -196,7 +195,7 @@ def read_handler(
                 del json_dict[k]
             model.DashboardDefinition = json_dict
         except ApiException as e:
-            LOG.error("Exception when calling DashboardsApi->get_dashboard: %s\n", e)
+            LOG.exception("Exception when calling DashboardsApi->get_dashboard: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,

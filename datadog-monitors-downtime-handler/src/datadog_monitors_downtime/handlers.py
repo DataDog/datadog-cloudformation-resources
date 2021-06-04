@@ -72,7 +72,7 @@ def create_handler(
             api_resp = api_instance.create_downtime(downtime_body)
             model.Id = api_resp.id
         except ApiException as e:
-            LOG.error("Exception when calling DowntimeApi->create_downtime: %s\n" % e)
+            LOG.exception("Exception when calling DowntimeApi->create_downtime: %s\n" % e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -107,7 +107,7 @@ def update_handler(
         try:
             api_instance.update_downtime(model.Id, downtime_body)
         except ApiException as e:
-            LOG.error("Exception when calling DowntimeApi->update_downtime: %s\n" % e)
+            LOG.exception("Exception when calling DowntimeApi->update_downtime: %s\n" % e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -149,11 +149,11 @@ def delete_handler(
                 )
         except ApiException as e:
             # Log error but continue in case of failure to get, this should not prevent the next call to delete
-            LOG.error("Exception when calling DowntimeApi->get_downtime: %s\n" % e)
+            LOG.exception("Exception when calling DowntimeApi->get_downtime: %s\n" % e)
         try:
             api_instance.cancel_downtime(model.Id)
         except ApiException as e:
-            LOG.error("Exception when calling DowntimeApi->cancel_downtime: %s\n" % e)
+            LOG.exception("Exception when calling DowntimeApi->cancel_downtime: %s\n" % e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -195,7 +195,7 @@ def read_handler(
         try:
             api_resp = api_instance.get_downtime(model.Id)
         except ApiException as e:
-            LOG.error("Exception when calling DowntimeApi->get_downtime: %s\n" % e)
+            LOG.exception("Exception when calling DowntimeApi->get_downtime: %s\n" % e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,

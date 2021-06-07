@@ -1,6 +1,6 @@
 # Datadog::Dashboards::Dashboard
 
-Datadog Dashboard 1.0.0
+Datadog Dashboard 2.0.0
 
 ## Syntax
 
@@ -12,7 +12,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "Datadog::Dashboards::Dashboard",
     "Properties" : {
-        "<a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>" : <i>Map</i>
+        "<a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>" : <i>String</i>
     }
 }
 </pre>
@@ -22,7 +22,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: Datadog::Dashboards::Dashboard
 Properties:
-    <a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>: <i>Map</i>
+    <a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -33,7 +33,7 @@ JSON string of the dashboard definition
 
 _Required_: Yes
 
-_Type_: Map
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

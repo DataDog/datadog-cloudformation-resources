@@ -45,7 +45,7 @@
     },
     "DashboardDefinition": {
       "description": "JSON string of the dashboard definition",
-      "type": "object"
+      "type": "string"
     }
   },
   "additionalProperties": false,

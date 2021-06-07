@@ -42,7 +42,7 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
 class ResourceModel(BaseModel):
     Id: Optional[str]
     Url: Optional[str]
-    DashboardDefinition: Optional[MutableMapping[str, Any]]
+    DashboardDefinition: Optional[str]
 
     @classmethod
     def _deserialize(

@@ -39,7 +39,17 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    json_payload = model.DashboardDefinition
+    try:
+        json_payload = json.loads(model.DashboardDefinition)
+    except ValueError as e:
+        LOG.exception("Exception parsing dashboard payload: %s\n", e)
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message=f"Error parsing dashboard payload: {e}",
+            errorCode=HandlerErrorCode.InternalFailure,
+        )
+
     with v1_client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
@@ -89,7 +99,17 @@ def update_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    json_payload = model.DashboardDefinition
+    try:
+        json_payload = json.loads(model.DashboardDefinition)
+    except ValueError as e:
+        LOG.exception("Exception parsing dashboard payload: %s\n", e)
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message=f"Error parsing dashboard payload: {e}",
+            errorCode=HandlerErrorCode.InternalFailure,
+        )
+
     dashboard_id = model.Id
 
     with v1_client(
@@ -193,7 +213,7 @@ def read_handler(
             model.Url = json_dict["url"]
             for k in ["author_handle", "id", "created_at", "modified_at", "url"]:
                 del json_dict[k]
-            model.DashboardDefinition = json_dict
+            model.DashboardDefinition = json.dumps(json_dict, sort_keys=True)
         except ApiException as e:
             LOG.exception("Exception when calling DashboardsApi->get_dashboard: %s\n", e)
             return ProgressEvent(

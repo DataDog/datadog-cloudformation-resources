@@ -5,3 +5,4 @@
 # All your base
 *                   @DataDog/integrations-tools-and-libraries
 
+/README.md            @DataDog/documentation

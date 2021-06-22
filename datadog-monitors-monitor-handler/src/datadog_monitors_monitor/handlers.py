@@ -19,11 +19,17 @@ from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as 
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
 from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.utils import http_to_handler_error_code
 
-from .models import Creator, MonitorOptions, MonitorThresholdWindows, \
-    MonitorThresholds, \
-    ResourceHandlerRequest, \
-    ResourceModel
+from .models import (
+    Creator,
+    MonitorOptions,
+    MonitorThresholdWindows,
+    MonitorThresholds,
+    ResourceHandlerRequest,
+    ResourceModel,
+    TypeConfigurationModel,
+)
 from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -31,7 +37,7 @@ LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::Monitor"
 TELEMETRY_TYPE_NAME = "monitors-monitor"
 
-resource = Resource(TYPE_NAME, ResourceModel)
+resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -43,21 +49,33 @@ def read_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
+
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         monitor_id = model.Id
+        if monitor_id is None:
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error getting monitor: monitor does not exist",
+                errorCode=HandlerErrorCode.NotFound,
+            )
         try:
             monitor = api_instance.get_monitor(monitor_id)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->get_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->get_monitor: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error getting monitor: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error getting monitor: {e}",
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     model.Created = monitor.created.isoformat()
@@ -131,6 +149,7 @@ def update_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     monitor = ApiMonitorUpdateRequest()
     monitor.query = model.Query
@@ -146,9 +165,9 @@ def update_handler(
         monitor.options = options
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -156,9 +175,12 @@ def update_handler(
         try:
             api_instance.update_monitor(model.Id, monitor)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->update_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->update_monitor: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error updating monitor: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error updating monitor: {e}",
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     return read_handler(session, request, callback_context)
@@ -172,11 +194,12 @@ def delete_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -184,14 +207,17 @@ def delete_handler(
         try:
             api_instance.delete_monitor(model.Id)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error deleting monitor: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error deleting monitor: {e}",
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModel=model,
+        resourceModel=None,
     )
 
 
@@ -203,6 +229,7 @@ def create_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     monitor = ApiMonitor()
     monitor.query = model.Query
@@ -218,9 +245,9 @@ def create_handler(
         monitor.options = options
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -228,26 +255,16 @@ def create_handler(
         try:
             monitor_resp = api_instance.create_monitor(monitor)
         except ApiException as e:
-            LOG.error("Exception when calling MonitorsApi->create_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->create_monitor: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating monitor: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error creating monitor: {e}",
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     model.Id = monitor_resp.id
     return read_handler(session, request, callback_context)
-
-
-@resource.handler(Action.LIST)
-def list_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
-) -> ProgressEvent:
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModels=[],
-    )
 
 
 def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:

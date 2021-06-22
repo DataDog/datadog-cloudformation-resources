@@ -1,0 +1,3 @@
+{
+  "DashboardDefinition": "{\"title\":\"Datadog API Clients CI\",\"description\":\"invalid dashboard payload\", \"layout_type\": \"free\", \"widgets\": [{\"definition\": {\"color_preference\": \"background\", \"count\": 50, \"display_format\": \"countsAndList\", \"hide_zero_counts\": false, \"query\": \"NOT group_status:ok team:integration-tools-and-libraries \\\"failed test\\\"\", \"show_last_triggered\": true, \"sort\": \"triggered,desc\", \"start\": 0, \"summary_type\": \"groups\", \"title\": \"CI monitor summary\", \"title_align\": \"left\", \"title_size\": \"13\", \"type\": \"manage_status\"}, \"id\": 6109855634273062}]}"
+}

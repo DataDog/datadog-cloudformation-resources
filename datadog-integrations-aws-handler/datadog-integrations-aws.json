@@ -1,101 +1,119 @@
 {
-    "typeName": "Datadog::Integrations::AWS",
-    "description": "Datadog AWS Integration 1.2.0",
+  "typeName": "Datadog::Integrations::AWS",
+  "description": "Datadog AWS Integration 2.0.0",
+  "typeConfiguration": {
     "properties": {
-        "DatadogCredentials": {
-            "description": "Credentials for the Datadog API",
-            "properties": {
-                "ApiKey": {
-                    "description": "Datadog API key",
-                    "type": "string"
-                },
-                "ApplicationKey": {
-                    "description": "Datadog application key",
-                    "type": "string"
-                },
-                "ApiURL": {
-                    "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
-                    "type": "string"
-                }
-            },
-            "required": ["ApiKey", "ApplicationKey"],
-            "type": "object"
-        },
-        "AccountID": {
-            "description": "Your AWS Account ID without dashes.",
-            "type": "string",
-            "dependencies": {
-                "AccountID": [
-                    "RoleName"
-                ]
-            }
-        },
-        "RoleName" : {
-            "description": "Your Datadog role delegation name.",
-            "type": "string"
-        },
-        "AccessKeyID": {
-            "description": "If your AWS account is a GovCloud or China account, enter the corresponding Access Key ID.",
-            "type": "string"
-        },
-        "FilterTags": {
-            "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "HostTags": {
-            "description": "Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "AccountSpecificNamespaceRules": {
-            "description": "An object (in the form {\"namespace1\":true/false, \"namespace2\":true/false}) that enables or disables metric collection for specific AWS namespaces for this AWS account only.",
-            "type": "object",
-            "patternProperties": {
-                ".*": {
-                    "type": "boolean"
-                }
-            }
-        },
-        "IntegrationID": {
-            "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
-            "type": "string"
-        }
+      "DatadogCredentials": {
+        "$ref": "#/definitions/DatadogCredentials"
+      }
     },
-    "required": [
-        "DatadogCredentials"
-    ],
-    "primaryIdentifier": [
-        "/properties/IntegrationID"
-    ],
-    "createOnlyProperties": [
-        "/properties/accountID",
-        "/properties/RoleName",
-        "/properties/AccessKeyID"
-    ],
-    "readOnlyProperties": [
-        "/properties/IntegrationID"
-    ],
-    "additionalProperties": false,
-    "handlers": {
-        "create": {
-            "permissions": [""]
+    "additionalProperties": false
+  },
+  "definitions": {
+    "DatadogCredentials": {
+      "description": "Credentials for the Datadog API",
+      "properties": {
+        "ApiKey": {
+          "description": "Datadog API key",
+          "type": "string"
         },
-        "read": {
-            "permissions": [""]
+        "ApplicationKey": {
+          "description": "Datadog application key",
+          "type": "string"
         },
-        "update": {
-            "permissions": [""]
-        },
-        "delete": {
-            "permissions": [""]
-        },
-        "list": {
-            "permissions": [""]
+        "ApiURL": {
+          "description": "Datadog API URL (defaults to https://api.datadoghq.com)",
+          "type": "string"
         }
+      },
+      "required": [
+        "ApiKey",
+        "ApplicationKey"
+      ],
+      "type": "object",
+      "additionalProperties": false
     }
+  },
+  "properties": {
+    "AccountID": {
+      "description": "Your AWS Account ID without dashes.",
+      "type": "string",
+      "dependencies": {
+        "AccountID": [
+          "RoleName"
+        ]
+      }
+    },
+    "RoleName": {
+      "description": "Your Datadog role delegation name.",
+      "type": "string"
+    },
+    "AccessKeyID": {
+      "description": "If your AWS account is a GovCloud or China account, enter the corresponding Access Key ID.",
+      "type": "string"
+    },
+    "FilterTags": {
+      "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "HostTags": {
+      "description": "Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "AccountSpecificNamespaceRules": {
+      "description": "An object (in the form {\"namespace1\":true/false, \"namespace2\":true/false}) that enables or disables metric collection for specific AWS namespaces for this AWS account only.",
+      "type": "object",
+      "patternProperties": {
+        ".*": {
+          "type": "boolean"
+        }
+      },
+      "additionalProperties": false
+    },
+    "IntegrationID": {
+      "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
+      "type": "string"
+    }
+  },
+  "required": [],
+  "primaryIdentifier": [
+    "/properties/IntegrationID"
+  ],
+  "createOnlyProperties": [
+    "/properties/AccountID",
+    "/properties/RoleName",
+    "/properties/AccessKeyID"
+  ],
+  "readOnlyProperties": [
+    "/properties/IntegrationID"
+  ],
+  "additionalProperties": false,
+  "handlers": {
+    "create": {
+      "permissions": [
+        ""
+      ]
+    },
+    "read": {
+      "permissions": [
+        ""
+      ]
+    },
+    "update": {
+      "permissions": [
+        ""
+      ]
+    },
+    "delete": {
+      "permissions": [
+        ""
+      ]
+    }
+  }
 }

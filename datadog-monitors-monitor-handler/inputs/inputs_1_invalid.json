@@ -1,0 +1,6 @@
+{
+  "Type": "log alert",
+  "Query": "invalid query",
+  "Name": "SSH Activity on PROD",
+  "Message": "@slack-datadog-testing"
+}

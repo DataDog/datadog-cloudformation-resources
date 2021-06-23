@@ -1,0 +1,34 @@
+{
+    "properties": {
+        "DatadogCredentials": {
+            "$ref": "#/definitions/DatadogCredentials"
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                    "description": "Datadog API key",
+                    "type": "string"
+                },
+                "ApplicationKey": {
+                    "description": "Datadog application key",
+                    "type": "string"
+                },
+                "ApiURL": {
+                    "description": "Datadog API URL (defaults to https://api.datadoghq.com)",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ApiKey",
+                "ApplicationKey"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "typeName": "Datadog::Integrations::AWS"
+}

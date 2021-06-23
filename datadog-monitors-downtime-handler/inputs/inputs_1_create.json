@@ -1,0 +1,6 @@
+{
+  "MonitorTags": ["monitor:tag"],
+  "Scope": [
+    "foo:bar"
+  ]
+}

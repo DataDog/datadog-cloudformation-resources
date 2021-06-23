@@ -1,0 +1,164 @@
+{
+    "properties": {
+        "DatadogCredentials": {
+            "$ref": "#/definitions/DatadogCredentials"
+        }
+    },
+    "additionalProperties": false,
+    "definitions": {
+        "Creator": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Name": {
+                    "description": "Name of the creator of the monitor",
+                    "type": "string"
+                },
+                "Handle": {
+                    "description": "Handle of the creator of the monitor",
+                    "type": "string"
+                },
+                "Email": {
+                    "description": "Email of the creator of the monitor",
+                    "type": "string"
+                }
+            }
+        },
+        "MonitorThresholds": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Critical": {
+                    "description": "Threshold value for triggering an alert",
+                    "type": "number"
+                },
+                "CriticalRecovery": {
+                    "description": "Threshold value for recovering from an alert state",
+                    "type": "number"
+                },
+                "OK": {
+                    "description": "Threshold value for recovering from an alert state",
+                    "type": "number"
+                },
+                "Warning": {
+                    "description": "Threshold value for triggering a warning",
+                    "type": "number"
+                },
+                "WarningRecovery": {
+                    "description": "Threshold value for recovering from a warning state",
+                    "type": "number"
+                }
+            }
+        },
+        "MonitorThresholdWindows": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "TriggerWindow": {
+                    "description": "How long a metric must be anomalous before triggering an alert",
+                    "type": "string"
+                },
+                "RecoveryWindow": {
+                    "description": "How long an anomalous metric must be normal before recovering from an alert state",
+                    "type": "string"
+                }
+            }
+        },
+        "MonitorOptions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "EnableLogsSample": {
+                    "description": "Whether or not to include a sample of the logs",
+                    "type": "boolean"
+                },
+                "EscalationMessage": {
+                    "description": "Message to include with a re-notification when renotify_interval is set",
+                    "type": "string"
+                },
+                "EvaluationDelay": {
+                    "description": "Time in seconds to delay evaluation",
+                    "type": "integer"
+                },
+                "IncludeTags": {
+                    "description": "Whether or not to include triggering tags into notification title",
+                    "type": "boolean",
+                    "default": true
+                },
+                "Locked": {
+                    "description": "Whether or not changes to this monitor should be restricted to the creator or admins",
+                    "type": "boolean"
+                },
+                "MinLocationFailed": {
+                    "description": "Number of locations allowed to fail before triggering alert",
+                    "type": "integer"
+                },
+                "NewHostDelay": {
+                    "description": "Time in seconds to allow a host to start reporting data before starting the evaluation of monitor results",
+                    "type": "integer",
+                    "default": 300
+                },
+                "NoDataTimeframe": {
+                    "description": "Number of minutes data stopped reporting before notifying",
+                    "type": "integer"
+                },
+                "NotifyAudit": {
+                    "description": "Whether or not to notify tagged users when changes are made to the monitor",
+                    "type": "boolean"
+                },
+                "NotifyNoData": {
+                    "description": "Whether or not to notify when data stops reporting",
+                    "type": "boolean"
+                },
+                "RenotifyInterval": {
+                    "description": "Number of minutes after the last notification before the monitor re-notifies on the current status",
+                    "type": "integer"
+                },
+                "RequireFullWindow": {
+                    "description": "Whether or not the monitor requires a full window of data before it is evaluated",
+                    "type": "boolean"
+                },
+                "SyntheticsCheckID": {
+                    "description": "ID of the corresponding synthetics check",
+                    "type": "integer"
+                },
+                "Thresholds": {
+                    "description": "The threshold definitions",
+                    "$ref": "#/definitions/MonitorThresholds"
+                },
+                "ThresholdWindows": {
+                    "description": "The threshold window definitions",
+                    "$ref": "#/definitions/MonitorThresholdWindows"
+                },
+                "TimeoutH": {
+                    "description": "Number of hours of the monitor not reporting data before it automatically resolves",
+                    "type": "integer"
+                }
+            }
+        },
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                    "description": "Datadog API key",
+                    "type": "string"
+                },
+                "ApplicationKey": {
+                    "description": "Datadog application key",
+                    "type": "string"
+                },
+                "ApiURL": {
+                    "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "ApiKey",
+                "ApplicationKey"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "typeName": "Datadog::Monitors::Monitor"
+}

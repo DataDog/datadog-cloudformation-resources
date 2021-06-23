@@ -1,7 +1,15 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "description": "Datadog Monitors Downtime 2.0.0",
-    "properties": {
+    "description": "Datadog Monitors Downtime 3.0.0",
+    "typeConfiguration": {
+        "properties": {
+            "DatadogCredentials": {
+                "$ref": "#/definitions/DatadogCredentials"
+            }
+        },
+        "additionalProperties": false
+    },
+    "definitions": {
         "DatadogCredentials": {
             "description": "Credentials for the Datadog API",
             "properties": {
@@ -18,9 +26,15 @@
                     "type": "string"
                 }
             },
-            "required": ["ApiKey", "ApplicationKey"],
-            "type": "object"
-        },
+            "required": [
+                "ApiKey",
+                "ApplicationKey"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "properties": {
         "Active": {
             "description": "Whether or not this downtime is currently active",
             "type": "boolean"
@@ -102,8 +116,7 @@
     ],
     "additionalProperties": false,
     "required": [
-        "Scope",
-        "DatadogCredentials"
+        "Scope"
     ],
     "handlers": {
         "create": {
@@ -116,9 +129,6 @@
             "permissions": [""]
         },
         "delete": {
-            "permissions": [""]
-        },
-        "list": {
             "permissions": [""]
         }
     }

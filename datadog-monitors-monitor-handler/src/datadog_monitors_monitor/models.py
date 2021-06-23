@@ -35,11 +35,11 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
     # pylint: disable=invalid-name
     desiredResourceState: Optional["ResourceModel"]
     previousResourceState: Optional["ResourceModel"]
+    typeConfiguration: Optional["TypeConfigurationModel"]
 
 
 @dataclass
 class ResourceModel(BaseModel):
-    DatadogCredentials: Optional["_DatadogCredentials"]
     Creator: Optional["_Creator"]
     Id: Optional[int]
     Message: Optional[str]
@@ -63,7 +63,6 @@ class ResourceModel(BaseModel):
         dataclasses = {n: o for n, o in getmembers(sys.modules[__name__]) if isclass(o)}
         recast_object(cls, json_data, dataclasses)
         return cls(
-            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
             Creator=Creator._deserialize(json_data.get("Creator")),
             Id=json_data.get("Id"),
             Message=json_data.get("Message"),
@@ -81,30 +80,6 @@ class ResourceModel(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _ResourceModel = ResourceModel
-
-
-@dataclass
-class DatadogCredentials(BaseModel):
-    ApiKey: Optional[str]
-    ApplicationKey: Optional[str]
-    ApiURL: Optional[str]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_DatadogCredentials"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_DatadogCredentials"]:
-        if not json_data:
-            return None
-        return cls(
-            ApiKey=json_data.get("ApiKey"),
-            ApplicationKey=json_data.get("ApplicationKey"),
-            ApiURL=json_data.get("ApiURL"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_DatadogCredentials = DatadogCredentials
 
 
 @dataclass
@@ -229,5 +204,49 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
+
+
+@dataclass
+class TypeConfigurationModel(BaseModel):
+    DatadogCredentials: Optional["_DatadogCredentials"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_TypeConfigurationModel"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_TypeConfigurationModel"]:
+        if not json_data:
+            return None
+        return cls(
+            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_TypeConfigurationModel = TypeConfigurationModel
+
+
+@dataclass
+class DatadogCredentials(BaseModel):
+    ApiKey: Optional[str]
+    ApplicationKey: Optional[str]
+    ApiURL: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_DatadogCredentials"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_DatadogCredentials"]:
+        if not json_data:
+            return None
+        return cls(
+            ApiKey=json_data.get("ApiKey"),
+            ApplicationKey=json_data.get("ApplicationKey"),
+            ApiURL=json_data.get("ApiURL"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_DatadogCredentials = DatadogCredentials
 
 

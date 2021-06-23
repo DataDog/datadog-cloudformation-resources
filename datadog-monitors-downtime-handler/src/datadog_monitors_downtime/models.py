@@ -35,11 +35,11 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
     # pylint: disable=invalid-name
     desiredResourceState: Optional["ResourceModel"]
     previousResourceState: Optional["ResourceModel"]
+    typeConfiguration: Optional["TypeConfigurationModel"]
 
 
 @dataclass
 class ResourceModel(BaseModel):
-    DatadogCredentials: Optional["_DatadogCredentials"]
     Active: Optional[bool]
     Canceled: Optional[int]
     CreatorId: Optional[int]
@@ -66,7 +66,6 @@ class ResourceModel(BaseModel):
         dataclasses = {n: o for n, o in getmembers(sys.modules[__name__]) if isclass(o)}
         recast_object(cls, json_data, dataclasses)
         return cls(
-            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
             Active=json_data.get("Active"),
             Canceled=json_data.get("Canceled"),
             CreatorId=json_data.get("CreatorId"),
@@ -87,6 +86,26 @@ class ResourceModel(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _ResourceModel = ResourceModel
+
+
+@dataclass
+class TypeConfigurationModel(BaseModel):
+    DatadogCredentials: Optional["_DatadogCredentials"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_TypeConfigurationModel"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_TypeConfigurationModel"]:
+        if not json_data:
+            return None
+        return cls(
+            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_TypeConfigurationModel = TypeConfigurationModel
 
 
 @dataclass

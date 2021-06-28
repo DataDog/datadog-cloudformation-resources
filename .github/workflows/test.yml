@@ -1,0 +1,45 @@
+name: Run Contract Tests
+
+on:
+  pull_request:
+    branches:
+      - master
+
+concurrency:
+  group: contract-${{ github.head_ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        resource: [
+            datadog-dashboards-dashboard-handler,
+            datadog-monitors-monitor-handler,
+            datadog-monitors-downtime-handler,
+            datadog-integrations-aws-handler,
+            datadog-iam-user-handler
+        ]
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    steps:
+    - name: Install Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.9
+    - name: Install Deps
+      run: pip install --disable-pip-version-check -e .[build]
+    - name: Install SAM CLI
+      run: |
+        curl -o https://github.com/aws/aws-sam-cli/releases/v1.24.1/download/aws-sam-cli-linux-x86_64.zip
+        unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
+        sudo ./sam-installation/install
+        sam --version
+    - name: Checkout code
+      uses: actions/checkout@v2
+    - name: Run Tests
+      run: |
+        cd ${{ matrix.resource }}
+        sam local start-lambda &
+        cfn test

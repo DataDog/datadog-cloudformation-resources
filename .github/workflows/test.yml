@@ -28,12 +28,7 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install SAM CLI
-      run: |
-        curl -OL https://github.com/aws/aws-sam-cli/releases/download/v1.24.1/aws-sam-cli-linux-x86_64.zip
-        unzip aws-sam-cli-linux-x86_64.zip -d sam-installation
-        sudo ./sam-installation/install
-        sam --version
+    - uses: aws-actions/setup-sam@v1
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Install Deps

@@ -12,10 +12,6 @@ Resources:
     Properties:
       DashboardDefinition: |
         <Put here the JSON string of the dashboard definition. Can be exported directly from the web application>
-      DatadogCredentials:
-        ApiURL: https://api.datadoghq.com
-        ApiKey: <DD_API_KEY>
-        ApplicationKey: <DD_APP_KEY>
 ```
 
 ## Property Reference:

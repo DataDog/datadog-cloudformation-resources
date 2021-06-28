@@ -28,8 +28,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
-    - name: Install Deps
-      run: pip install --disable-pip-version-check -e .[build]
     - name: Install SAM CLI
       run: |
         curl -o https://github.com/aws/aws-sam-cli/releases/v1.24.1/download/aws-sam-cli-linux-x86_64.zip
@@ -38,6 +36,8 @@ jobs:
         sam --version
     - name: Checkout code
       uses: actions/checkout@v2
+    - name: Install Deps
+      run: pip install --disable-pip-version-check -e .[build]
     - name: Run Tests
       run: |
         cd ${{ matrix.resource }}

@@ -2,13 +2,13 @@
 
 [AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources.
 
-You can use either the AWS Console (UI) or the AWS CLI to use these resources.
+You can use either the AWS Management Console (UI) or the AWS CLI to use these resources.
 
-## AWS Console
+## AWS Management Console
 
 To get started:
 
-1. Sign in to the [AWS Console][16] with your account and navigate to CloudFormation.
+1. Sign in to the [AWS Management Console][16] with your account and navigate to CloudFormation.
 
 2. Select "Public extensions" from the left hand pane and filter Publisher by "Third Party".
 

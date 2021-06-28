@@ -32,7 +32,7 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
     - name: Install Deps
-      run: pip install --disable-pip-version-check -e .[build]
+      run: pip install --disable-pip-version-check -e ./datadog-cloudformation-common-python[build]
     - name: Run Tests
       run: |
         cd ${{ matrix.resource }}

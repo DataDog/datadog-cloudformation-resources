@@ -197,10 +197,11 @@ def read_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
+            [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
             aws_account = api_instance.list_aws_accounts(
-                account_id=model.AccountID,
-                role_name=model.RoleName,
-                access_key_id=model.AccessKeyID
+                account_id=account_id,
+                role_name=role_name,
+                access_key_id=access_key_id
             ).accounts[0]
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
@@ -235,3 +236,14 @@ def read_handler(
 
 def get_integration_id(account_id, role_name, access_key_id):
     return f"{account_id}:{role_name}:{access_key_id}"
+
+
+def parse_integration_id(integration_id):
+    ret = []
+    parts = integration_id.split(":")
+    for part in parts:
+        if part != "None":
+            ret.append(part)
+        else:
+            ret.append(None)
+    return ret

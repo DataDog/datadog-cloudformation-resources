@@ -33,10 +33,14 @@ jobs:
       uses: actions/checkout@v2
     - name: Install Deps
       run: pip install --disable-pip-version-check -e ./datadog-cloudformation-common-python[build]
-    - name: Run Tests
+    - name: Build Package
+      run: cfn submit --dry-run --no-role
+    - name: Create Type Configuration
       run: |
         mkdir ~/.cfn-cli
         echo "{\"DatadogCredentials\":{\"ApiKey\":\"${DD_TEST_CLIENT_API_KEY}\",\"ApplicationKey\":\"${DD_TEST_CLIENT_APP_KEY}\"}}" > ~/.cfn-cli/typeConfiguration.json
+    - name: Run Tests
+      run: |
         cd ${{ matrix.resource }}
         sam local start-lambda &
         cfn test

@@ -120,10 +120,6 @@ Need help? Contact [Datadog support][15].
 [13]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-iam-user-handler
 [14]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md
 [15]: https://docs.datadoghq.com/help/
-<<<<<<<<< Temporary merge branch 1
-[16]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-slos-slo-handler
-[17]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md
-=========
 [16]: https://aws.amazon.com/console/
 [17]: https://aws.amazon.com/secrets-manager/
 [18]: https://docs.amazonaws.cn/en_us/AWSCloudFormation/latest/UserGuide/dynamic-references.html#dynamic-references-secretsmanager

@@ -12,7 +12,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "Datadog::SLOs::SLO",
     "Properties" : {
-        "<a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>" : <i><a href="datadogcredentials.md">DatadogCredentials</a></i>,
         "<a href="#description" title="Description">Description</a>" : <i>String</i>,
         "<a href="#groups" title="Groups">Groups</a>" : <i>[ String, ... ]</i>,
         "<a href="#monitorids" title="MonitorIds">MonitorIds</a>" : <i>[ Integer, ... ]</i>,
@@ -30,7 +29,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: Datadog::SLOs::SLO
 Properties:
-    <a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>: <i><a href="datadogcredentials.md">DatadogCredentials</a></i>
     <a href="#description" title="Description">Description</a>: <i>String</i>
     <a href="#groups" title="Groups">Groups</a>: <i>
       - String</i>
@@ -46,16 +44,6 @@ Properties:
 </pre>
 
 ## Properties
-
-#### DatadogCredentials
-
-Credentials for the Datadog API
-
-_Required_: Yes
-
-_Type_: <a href="datadogcredentials.md">DatadogCredentials</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### Description
 

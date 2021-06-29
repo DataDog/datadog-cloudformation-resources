@@ -1,0 +1,18 @@
+{
+  "Type": "metric",
+  "Query": {
+    "Denominator": "(sum:aws.elb.httpcode_backend_5xx{*}.as_count()+sum:aws.elb.httpcode_backend_4xx{*}.as_count()+sum:aws.elb.httpcode_backend_2xx{*}.as_count())",
+    "Numerator": "(sum:aws.elb.httpcode_backend_2xx{*}.as_count())"
+  },
+  "Name": "CFT created Test Metric SLO Updated",
+  "Description": "This is a test SLO with CFT Provider",
+  "Thresholds": [
+    {
+      "Target": 90.0,
+      "Timeframe": "30d",
+      "TargetDisplay": "99.90",
+      "Warning": 99.9,
+      "WarningDisplay": "99.0"
+    }
+  ]
+}

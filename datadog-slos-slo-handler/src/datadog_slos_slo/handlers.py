@@ -17,12 +17,10 @@ from datadog_api_client.v1.model.service_level_objective_query import ServiceLev
 from datadog_api_client.v1.model.slo_threshold import SLOThreshold as ApiSLOThreshold
 from datadog_api_client.v1.model.slo_timeframe import SLOTimeframe as ApiSLOTimeframe
 from datadog_api_client.v1.model.slo_type import SLOType as ApiSLOType
-from datadog_api_client.v1.model.slo_list_response import SLOListResponse as ApiSLOList
-from datadog_api_client.v1.model.service_level_objective_request import \
-    ServiceLevelObjectiveRequest as ApiSLORequest
 from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.utils import http_to_handler_error_code
 
-from .models import Creator, Threshold, Query, ResourceHandlerRequest, ResourceModel
+from .models import Creator, Threshold, Query, ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -30,7 +28,7 @@ LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::SLOs::SLO"
 TELEMETRY_TYPE_NAME = "slos-slo"
 
-resource = Resource(TYPE_NAME, ResourceModel)
+resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -42,10 +40,12 @@ def read_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
+
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -56,8 +56,10 @@ def read_handler(
         except ApiException as e:
             LOG.error("Exception when calling SLOApi->get_slo: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model,
-                message=f"Error getting monitor: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error getting monitor: {e}",
+                errorCode=http_to_handler_error_code(e.status)
             )
     model.Created = slo.data.created_at
     model.Modified = slo.data.modified_at
@@ -66,7 +68,8 @@ def read_handler(
     model.Tags = slo.data.tags
     model.Type = slo.data.type.value
     if slo.data.creator:
-        model.Creator = Creator(Name=slo.data.creator.name, Email=slo.data.creator.email,
+        model.Creator = Creator(Name=slo.data.creator.name,
+                                Email=slo.data.creator.email,
                                 Handle=slo.data.creator.handle)
 
     if slo.data.type.value == "monitor":
@@ -93,7 +96,7 @@ def read_handler(
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModel=model,
+        resourceModel=model
     )
 
 
@@ -105,6 +108,7 @@ def update_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
     thresholds = build_slo_thresholds_from_model(model)
 
     slo = ApiSLO(name=model.Name, type=ApiSLOType(model.Type), thresholds=thresholds)
@@ -121,9 +125,9 @@ def update_handler(
         slo.tags = model.Tags
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -133,8 +137,10 @@ def update_handler(
         except ApiException as e:
             LOG.error("Exception when calling SLOApi->update_slo: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model,
-                message=f"Error updating slo: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error updating slo: {e}",
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     return read_handler(session, request, callback_context)
@@ -148,11 +154,12 @@ def delete_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -162,13 +169,15 @@ def delete_handler(
         except ApiException as e:
             LOG.error("Exception when calling SLOApi->delete_slo: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model,
-                message=f"Error deleting slo: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error deleting slo: {e}",
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModel=model,
+        resourceModel=model
     )
 
 
@@ -180,6 +189,7 @@ def create_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
     thresholds = build_slo_thresholds_from_model(model)
 
     slo = ApiSLO(name=model.Name, type=ApiSLOType(model.Type), thresholds=thresholds)
@@ -196,9 +206,9 @@ def create_handler(
         slo.tags = model.Tags
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -208,8 +218,10 @@ def create_handler(
         except ApiException as e:
             LOG.error("Exception when calling SLOApi->create_slo: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model,
-                message=f"Error creating slo: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error creating slo: {e}",
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     model.Id = slo_resp.data[0].id

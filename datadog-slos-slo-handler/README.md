@@ -23,10 +23,6 @@ Resources:
         TargetDisplay: '99.90'
         Warning: 99.0
         WarningDisplay: '99.0'
-      DatadogCredentials:
-        ApiURL: https://api.datadoghq.com
-        ApiKey: <DD_API_KEY>
-        ApplicationKey: <DD_APP_KEY>
 ```
 ```yaml
 Resources:
@@ -43,10 +39,6 @@ Resources:
         TargetDisplay: '99.00'
         Warning: 99.5
         WarningDisplay: '99.50'
-      DatadogCredentials:
-        ApiURL: https://api.datadoghq.com
-        ApiKey: <DD_API_KEY>
-        ApplicationKey: <DD_APP_KEY>
 ```
 ## Property Reference:
 

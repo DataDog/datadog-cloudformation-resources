@@ -1,9 +1,18 @@
 {
   "typeName": "Datadog::SLOs::SLO",
   "description": "Datadog SLO 1.0.0",
+  "typeConfiguration": {
+    "properties": {
+      "DatadogCredentials": {
+        "$ref": "#/definitions/DatadogCredentials"
+      }
+    },
+    "additionalProperties": false
+  },
   "definitions": {
     "Creator": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "Name": {
           "description": "Name of the creator of the slo",
@@ -21,6 +30,7 @@
     },
     "Threshold": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "Target": {
           "description": "TThe target value for the service level indicator within the corresponding timeframe.",
@@ -51,6 +61,7 @@
     },
     "Query": {
       "type": "object",
+      "additionalProperties": false,
       "properties": {
         "Numerator": {
           "description": "A Datadog metric query for total (valid) events.",
@@ -61,9 +72,7 @@
           "type": "string"
         }
       }
-    }
-  },
-  "properties": {
+    },
     "DatadogCredentials": {
       "description": "Credentials for the Datadog API",
       "properties": {
@@ -84,8 +93,11 @@
         "ApiKey",
         "ApplicationKey"
       ],
-      "type": "object"
-    },
+      "type": "object",
+      "additionalProperties": false
+    }
+  },
+  "properties": {
     "Creator": {
       "$ref": "#/definitions/Creator"
     },
@@ -156,13 +168,9 @@
     }
   },
   "required": [
-    "DatadogCredentials",
     "Name",
     "Thresholds",
     "Type"
-  ],
-  "writeOnlyProperties": [
-    "/properties/DatadogCredentials"
   ],
   "primaryIdentifier": [
     "/properties/Id"

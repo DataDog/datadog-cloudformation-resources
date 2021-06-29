@@ -14,13 +14,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        resource: [
-            datadog-dashboards-dashboard-handler,
-            datadog-monitors-monitor-handler,
-            datadog-monitors-downtime-handler,
-            datadog-integrations-aws-handler,
-            datadog-iam-user-handler
-        ]
+        resource:
+          - datadog-dashboards-dashboard-handler
+          - datadog-monitors-monitor-handler
+          - datadog-monitors-downtime-handler
+          - datadog-integrations-aws-handler
+#         - datadog-iam-user-handler
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:

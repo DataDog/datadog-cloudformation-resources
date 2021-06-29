@@ -1,6 +1,6 @@
 # Datadog::Dashboards::Dashboard
 
-Datadog Dashboard 1.0.0
+Datadog Dashboard 2.0.0
 
 ## Syntax
 
@@ -12,7 +12,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "Type" : "Datadog::Dashboards::Dashboard",
     "Properties" : {
-        "<a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>" : <i><a href="datadogcredentials.md">DatadogCredentials</a></i>,
         "<a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>" : <i>String</i>
     }
 }
@@ -23,21 +22,10 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <pre>
 Type: Datadog::Dashboards::Dashboard
 Properties:
-    <a href="#datadogcredentials" title="DatadogCredentials">DatadogCredentials</a>: <i><a href="datadogcredentials.md">DatadogCredentials</a></i>
     <a href="#dashboarddefinition" title="DashboardDefinition">DashboardDefinition</a>: <i>String</i>
 </pre>
 
 ## Properties
-
-#### DatadogCredentials
-
-Credentials for the Datadog API
-
-_Required_: Yes
-
-_Type_: <a href="datadogcredentials.md">DatadogCredentials</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### DashboardDefinition
 
@@ -64,4 +52,8 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### Id
 
 ID of the dashboard
+
+#### Url
+
+Url of the dashboard
 

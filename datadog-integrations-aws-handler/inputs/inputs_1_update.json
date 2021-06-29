@@ -1,0 +1,5 @@
+{
+  "AccountID": "123456781234",
+  "RoleName": "testCF",
+  "FilterTags": ["foo:bar"]
+}

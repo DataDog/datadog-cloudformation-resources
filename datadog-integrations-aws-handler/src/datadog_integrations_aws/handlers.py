@@ -7,13 +7,15 @@ from cloudformation_cli_python_lib import (
     ProgressEvent,
     Resource,
     SessionProxy,
+    HandlerErrorCode,
 )
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_api_client.v1.model.aws_account import AWSAccount
 from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.utils import http_to_handler_error_code
 
-from .models import ResourceHandlerRequest, ResourceModel
+from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -21,7 +23,7 @@ LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
 TELEMETRY_TYPE_NAME = "integrations-aws"
 
-resource = Resource(TYPE_NAME, ResourceModel)
+resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -50,12 +52,13 @@ def create_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     aws_account = build_aws_account_from_model(model)
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -63,9 +66,12 @@ def create_handler(
         try:
             api_instance.create_aws_account(aws_account)
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating AWS account: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error creating AWS account: {e}",
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
@@ -81,8 +87,17 @@ def update_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     aws_account = build_aws_account_from_model(model)
+    if not model.IntegrationID:
+        LOG.error("Cannot update non existent resource")
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message="Cannot update non existent resource",
+            errorCode=HandlerErrorCode.NotFound,
+        )
     if get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID) != model.IntegrationID:
         LOG.error(
             f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
@@ -92,12 +107,13 @@ def update_handler(
             status=OperationStatus.FAILED,
             resourceModel=model,
             message=f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-                    f"Please delete it and create a new one instead."
+                    f"Please delete it and create a new one instead.",
+            errorCode=HandlerErrorCode.NotUpdatable
         )
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -110,9 +126,15 @@ def update_handler(
                 access_key_id=model.AccessKeyID,
             )
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
+            error_code = http_to_handler_error_code(e.status)
+            if e.status == 400 and "does not exist" in e.body:
+                error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error updating AWS account: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error updating AWS account: {e}",
+                errorCode=error_code,
             )
 
     return read_handler(session, request, callback_context)
@@ -125,13 +147,14 @@ def delete_handler(
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     aws_account = build_aws_account_from_model(model)
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
@@ -139,9 +162,15 @@ def delete_handler(
         try:
             api_instance.delete_aws_account(aws_account)
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
+            error_code = http_to_handler_error_code(e.status)
+            if e.status == 400 and "does not exist" in e.body:
+                error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error deleting AWS account: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error deleting AWS account: {e}",
+                errorCode=error_code
             )
 
     return ProgressEvent(
@@ -157,25 +186,30 @@ def read_handler(
         callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
+    type_configuration = request.typeConfiguration
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
+            [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
             aws_account = api_instance.list_aws_accounts(
-                account_id=model.AccountID,
-                role_name=model.RoleName,
-                access_key_id=model.AccessKeyID
+                account_id=account_id,
+                role_name=role_name,
+                access_key_id=access_key_id
             ).accounts[0]
         except ApiException as e:
-            LOG.error("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             return ProgressEvent(
-                status=OperationStatus.FAILED, resourceModel=model, message=f"Error getting AWS account: {e}"
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error getting AWS account: {e}",
+                errorCode=http_to_handler_error_code(e.status),
             )
         except IndexError:
             LOG.error(
@@ -186,7 +220,8 @@ def read_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Account with integration ID '{model.IntegrationID}' not found. "
-                        f"Was it updated outside of AWS CloudFormation ?"
+                        f"Was it updated outside of AWS CloudFormation ?",
+                errorCode=HandlerErrorCode.NotFound,
             )
 
     model.HostTags = aws_account.host_tags
@@ -199,18 +234,16 @@ def read_handler(
     )
 
 
-@resource.handler(Action.LIST)
-def list_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
-) -> ProgressEvent:
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModels=[],
-    )
-
-
 def get_integration_id(account_id, role_name, access_key_id):
     return f"{account_id}:{role_name}:{access_key_id}"
+
+
+def parse_integration_id(integration_id):
+    ret = []
+    parts = integration_id.split(":")
+    for part in parts:
+        if part != "None":
+            ret.append(part)
+        else:
+            ret.append(None)
+    return ret

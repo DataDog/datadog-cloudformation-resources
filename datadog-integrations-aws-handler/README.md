@@ -14,10 +14,6 @@ Resources:
       FilterTags: ["filter:thisTag"]
       HostTags: ["env:staging", "account:123456"]
       AccountSpecificNamespaceRules: {"api_gateway": true, "route53": false}
-      DatadogCredentials:
-        ApiURL: https://api.datadoghq.com
-        ApiKey: <DD_API_KEY>
-        ApplicationKey: <DD_APP_KEY>
 ```
 
 **Note** The AccountID, RoleName, and AccessKeyID cannot be updated. To update these fields, you must delete and recreate the stack.

@@ -1,8 +1,53 @@
 # Datadog-AWS CloudFormation
 
-[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources. To get started:
+[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources.
 
-1. In your terminal, use the [aws-cli tool][2] to register a Datadog resource.
+You can use either the AWS Management Console (UI) or the AWS CLI to use these resources.
+
+## AWS Management Console
+
+To get started:
+
+1. Sign in to the [AWS Management Console][16] with your account and navigate to CloudFormation.
+
+2. Select "Public extensions" from the left hand pane and filter Publisher by "Third Party".
+
+3. Use the search bar to filter by the "Datadog" prefix.
+
+  Note: All official Datadog resources begin with `Datadog::` and specify that they are `Published by Datadog`.
+
+4. Select the desired resource name to view more information about its schema, and click **Activate**.
+
+5. On the Extension details page, specify:
+  - Extension name
+  - Execution role ARN
+  - Automatic updates for minor version releases
+  - Configuration
+
+6. For the resource configuration, **it is strongly recommended to use [AWS Secrets Manager][17] or similar service for storing your Datadog API and Application keys instead of clear text**.
+
+  If using AWS Secrets Manager, you can dynamically reference your API and Application keys in the configuration. See the [AWS docs][18] for more information.
+
+  Example:
+
+  ```
+  {
+	"DatadogCredentials": {
+		"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}",
+		"ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"
+	}
+}
+  ```
+
+4. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
+
+For more information about the available commands and workflows, see the official [AWS documentation][4].
+
+## AWS Command Line Interface
+
+To get started:
+
+1. In your terminal, use the [aws-cli tool][2] to register a Datadog resource:
 
     ```shell
     aws cloudformation register-type \
@@ -47,7 +92,7 @@ For more information about the available commands and workflows, see the the off
 
 The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
 
-| Resource                | Name                              | Description                                             | Folder                      | S3 Package Links              |
+| Resource                | Name                              | Description                                             | Folder                          | S3 Package Links              |
 |-------------------------|-----------------------------------|---------------------------------------------------------|---------------------------------|-------------------------------|
 | Dashboards              | `Datadog::Dashboards::Dashboard`  | [Create, update, and delete Datadog dashboards][5]      | `datadog-dashboards-dashboard`  | [Schema Handler Versions][6]  |
 | Datadog-AWS integration | `Datadog::Integrations::AWS`      | [Manage your Datadog-Amazon Web Service integration][7] | `datadog-integrations-aws`      | [Schema Handler Versions][8]  |
@@ -75,5 +120,8 @@ Need help? Contact [Datadog support][15].
 [13]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-iam-user-handler
 [14]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-iam-user-handler/CHANGELOG.md
 [15]: https://docs.datadoghq.com/help/
-[16]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-slos-slo-handler
-[17]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md
+[16]: https://aws.amazon.com/console/
+[17]: https://aws.amazon.com/secrets-manager/
+[18]: https://docs.amazonaws.cn/en_us/AWSCloudFormation/latest/UserGuide/dynamic-references.html#dynamic-references-secretsmanager
+[19]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-slos-slo-handler
+[20]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md

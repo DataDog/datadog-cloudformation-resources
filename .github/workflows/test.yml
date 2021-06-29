@@ -43,6 +43,7 @@ jobs:
         echo "{\"DatadogCredentials\":{\"ApiKey\":\"${DD_TEST_CLIENT_API_KEY}\",\"ApplicationKey\":\"${DD_TEST_CLIENT_APP_KEY}\"}}" > ~/.cfn-cli/typeConfiguration.json
     - name: Run Tests
       run: |
+        cd ${{ matrix.resource }}
         sam local start-lambda &
         cfn test
       env:

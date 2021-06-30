@@ -1,0 +1,11 @@
+{
+    "typeName": "Datadog::SLOs::SLO",
+    "language": "python37",
+    "runtime": "python3.7",
+    "entrypoint": "datadog_slos_slo.handlers.resource",
+    "testEntrypoint": "datadog_slos_slo.handlers.test_entrypoint",
+    "settings": {
+        "use_docker": true,
+        "protocolVersion": "2.0.0"
+    }
+}

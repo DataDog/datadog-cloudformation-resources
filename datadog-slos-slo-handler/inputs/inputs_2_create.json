@@ -1,0 +1,15 @@
+{
+  "Type": "monitor",
+  "Name": "CFT created Test Monitor SLO",
+  "Description": "This is a test SLO with CFT Provider",
+  "MonitorIds": [30497688],
+  "Thresholds": [
+    {
+      "Target": 99.0,
+      "Timeframe": "7d",
+      "TargetDisplay": "99.90",
+      "Warning": 99.9,
+      "WarningDisplay": "99.0"
+    }
+  ]
+}

@@ -122,6 +122,6 @@ Need help? Contact [Datadog support][15].
 [15]: https://docs.datadoghq.com/help/
 [16]: https://aws.amazon.com/console/
 [17]: https://aws.amazon.com/secrets-manager/
-[18]: https://docs.amazonaws.cn/en_us/AWSCloudFormation/latest/UserGuide/dynamic-references.html#dynamic-references-secretsmanager
+[18]: https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/dynamic-references.html#dynamic-references-secretsmanager
 [19]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-slos-slo-handler
 [20]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md

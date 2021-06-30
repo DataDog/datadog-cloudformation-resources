@@ -30,13 +30,13 @@ To get started:
 
   Example:
 
-  ```
+  ```json
   {
-	"DatadogCredentials": {
-		"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}",
-		"ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"
-	}
-}
+    "DatadogCredentials": {
+        "ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}",
+        "ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"
+    }
+  }
   ```
 
 4. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.

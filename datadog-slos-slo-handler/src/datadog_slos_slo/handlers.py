@@ -177,7 +177,7 @@ def delete_handler(
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModel=model
+        resourceModel=None
     )
 
 

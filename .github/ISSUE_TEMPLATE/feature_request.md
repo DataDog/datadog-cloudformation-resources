@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Note:** 
+**Note:**
 If you have a feature request, you should [contact support](https://docs.datadoghq.com/help/) so the request can be properly tracked.
 
 **Is your feature request related to a problem? Please describe.**

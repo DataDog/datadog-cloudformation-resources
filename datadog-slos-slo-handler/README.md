@@ -12,7 +12,7 @@ Resources:
     Type: 'Datadog::SLOs::SLO'
     Properties:
       Type: Metric
-      Query: 
+      Query:
         Denominator: ''
         Numerator: ''
       Name: Test Metric SLO

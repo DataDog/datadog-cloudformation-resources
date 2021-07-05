@@ -1,0 +1,2 @@
+boto3==1.17.105
+cloudformation-cli==0.2.13

@@ -3,7 +3,6 @@ from typing import Any, List, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
     Action,
-    HandlerErrorCode,
     OperationStatus,
     ProgressEvent,
     Resource,
@@ -12,6 +11,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.service_level_objectives_api import ServiceLevelObjectivesApi
 from datadog_api_client.v1.model.service_level_objective import ServiceLevelObjective as ApiSLO
+from datadog_api_client.v1.model.service_level_objective_request import ServiceLevelObjectiveRequest as ApiSLORequest
 from datadog_api_client.v1.model.service_level_objective_query import ServiceLevelObjectiveQuery as \
     ApiSLOQuery
 from datadog_api_client.v1.model.slo_threshold import SLOThreshold as ApiSLOThreshold
@@ -88,7 +88,7 @@ def read_handler(
             TargetDisplay=th.target_display if hasattr(th, "target_display") else None,
             Timeframe=th.timeframe.value if hasattr(th, "timeframe") else None,
             Warning=th.warning if hasattr(th, "warning") else None,
-            WarningDisplay=th.warning_display if hasattr(th,"warning_display") else None
+            WarningDisplay=th.warning_display if hasattr(th, "warning_display") else None
         ))
     model.Thresholds = thresholds
 
@@ -177,7 +177,7 @@ def delete_handler(
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
-        resourceModel=model
+        resourceModel=None
     )
 
 
@@ -192,7 +192,7 @@ def create_handler(
     type_configuration = request.typeConfiguration
     thresholds = build_slo_thresholds_from_model(model)
 
-    slo = ApiSLO(name=model.Name, type=ApiSLOType(model.Type), thresholds=thresholds)
+    slo = ApiSLORequest(name=model.Name, type=ApiSLOType(model.Type), thresholds=thresholds)
     if model.Description is not None:
         slo.description = model.Description
     if model.Groups is not None:

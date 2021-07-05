@@ -10,9 +10,9 @@
     {
       "Target": 99.0,
       "Timeframe": "7d",
-      "TargetDisplay": "99.90",
+      "TargetDisplay": "99.",
       "Warning": 99.9,
-      "WarningDisplay": "99.0"
+      "WarningDisplay": "99.9"
     }
   ]
 }

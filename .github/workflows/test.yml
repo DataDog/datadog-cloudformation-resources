@@ -10,7 +10,17 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
+  find_modified_resources:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Get changed files
+      id: changed_files
+      uses: tj-actions/changed-files@v8.4
+    outputs:
+      changed_files: ${{ steps.changed_files.outputs.all_changed_files }}
   test:
+    needs: find_modified_resources
     strategy:
       fail-fast: false
       matrix:
@@ -19,24 +29,31 @@ jobs:
           - datadog-monitors-monitor-handler
           - datadog-monitors-downtime-handler
           - datadog-integrations-aws-handler
+          - datadog-slos-slo-handler
 #         - datadog-iam-user-handler
     runs-on: ubuntu-latest
     if: github.event.pull_request.draft == false
     steps:
     - name: Install Python
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       uses: actions/setup-python@v2
       with:
         python-version: 3.9
     - uses: aws-actions/setup-sam@v1
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
     - name: Checkout code
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       uses: actions/checkout@v2
     - name: Install Deps
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: pip install --disable-pip-version-check -e ./datadog-cloudformation-common-python[build]
     - name: Build Package
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
         cd ${{ matrix.resource }}
         cfn submit --dry-run --no-role
     - name: Create Type Configuration
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
         mkdir ~/.cfn-cli
         echo "{\"DatadogCredentials\":{\"ApiKey\":\"${DD_TEST_CLIENT_API_KEY}\",\"ApplicationKey\":\"${DD_TEST_CLIENT_APP_KEY}\"}}" > ~/.cfn-cli/typeConfiguration.json
@@ -44,6 +61,7 @@ jobs:
         DD_TEST_CLIENT_API_KEY: ${{ secrets.DD_TEST_CLIENT_API_KEY }}
         DD_TEST_CLIENT_APP_KEY: ${{ secrets.DD_TEST_CLIENT_APP_KEY }}
     - name: Run Tests
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
         cd ${{ matrix.resource }}
         sam local start-lambda &

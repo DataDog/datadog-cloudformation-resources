@@ -30,7 +30,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 #### Target
 
-TThe target value for the service level indicator within the corresponding timeframe.
+The target value for the service level indicator within the corresponding timeframe.
 
 _Required_: No
 
@@ -40,7 +40,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### TargetDisplay
 
-TA string representation of the target that indicates its precision.(e.g. 98.00)
+A string representation of the target that indicates its precision.(e.g. 98.00)
 
 _Required_: No
 

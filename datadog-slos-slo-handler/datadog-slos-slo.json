@@ -33,11 +33,11 @@
       "additionalProperties": false,
       "properties": {
         "Target": {
-          "description": "TThe target value for the service level indicator within the corresponding timeframe.",
+          "description": "The target value for the service level indicator within the corresponding timeframe.",
           "type": "number"
         },
         "TargetDisplay": {
-          "description": "TA string representation of the target that indicates its precision.(e.g. 98.00)",
+          "description": "A string representation of the target that indicates its precision.(e.g. 98.00)",
           "type": "string"
         },
         "Timeframe": {
@@ -202,11 +202,6 @@
       ]
     },
     "delete": {
-      "permissions": [
-        ""
-      ]
-    },
-    "list": {
       "permissions": [
         ""
       ]

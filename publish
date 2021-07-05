@@ -1,0 +1,94 @@
+#!/usr/bin/env python
+
+import argparse
+import logging
+import subprocess
+import sys
+import time
+
+import boto3
+
+logging.basicConfig(
+    stream=sys.stdout,
+    level=logging.INFO,
+    format='[%(asctime)s] %(levelname)s - %(message)s'
+)
+
+parser = argparse.ArgumentParser(description="Publish a CloudFormation resource on the public registry")
+parser.add_argument("--resource-folder", "-f", required=True, help="The resource folder")
+parser.add_argument("--region", "-r", required=True, help="The AWS region where to publish the resource")
+parser.add_argument("--type-name", "-t", required=True, help="The resource type name")
+parser.add_argument("--version", "-v", required=True, help="The version of the resource to publish")
+parser.add_argument("--skip-submit", help="Skip the submit step", action="store_true")
+
+args = parser.parse_args()
+
+TYPE_CONFIGURATION = """
+{
+    "DatadogCredentials": {
+        "ApiKey": "{{resolve:secretsmanager:DD_KEYS:SecretString:DD_TEST_CLIENT_API_KEY}}",
+        "ApplicationKey": "{{resolve:secretsmanager:DD_KEYS:SecretString:DD_TEST_CLIENT_APP_KEY}}"
+    }
+}
+"""
+
+# Build and register resource
+if not args.skip_submit:
+    try:
+        logging.info("Submitting resource")
+        subprocess.check_call(
+            ["cfn", "submit", "--no-role", "--region", args.region, "--set-default"], cwd=args.resource_folder
+        )
+    except Exception:
+        logging.exception("Error submitting resource")
+        exit(1)
+
+client = boto3.client("cloudformation", region_name=args.region)
+# Set type configuration for resource
+try:
+    logging.info("Configuring resource")
+    res = client.set_type_configuration(Type="RESOURCE", TypeName=args.type_name, Configuration=TYPE_CONFIGURATION)
+except Exception:
+    logging.exception("Error configuring resource")
+    exit(1)
+
+# Execute contract tests on resource
+type_arn = ""
+try:
+    logging.info("Starting contract tests")
+    res = client.test_type(Type="RESOURCE", TypeName=args.type_name, LogDeliveryBucket="test-type-logs")
+    type_arn = res["TypeVersionArn"]
+except Exception:
+    logging.exception("Error starting contract tests")
+    exit(1)
+
+# Wait for tests to finish
+while True:
+    test_status = ""
+    test_status_desc = ""
+    try:
+        res = client.describe_type(Arn=type_arn)
+        test_status = res["TypeTestsStatus"]
+        test_status_desc = res["TypeTestsStatusDescription"]
+    except Exception:
+        logging.exception("Error checking contract tests status")
+        exit(1)
+    if test_status == "PASSED" or test_status == "FAILED":
+        break
+    logging.info(f"Waiting for contract test to finish. Current status: {test_status_desc}")
+    time.sleep(10)
+
+if test_status == "FAILED":
+    logging.error("Contract tests failed, aborting.")
+    exit(1)
+
+# Publish resource
+try:
+    logging.info("Publishing resource")
+    res = client.publish_type(Type="RESOURCE", TypeName=args.type_name)
+except Exception:
+    logging.exception("Error publishing resource")
+    exit(1)
+
+
+

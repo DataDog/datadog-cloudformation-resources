@@ -94,7 +94,7 @@ To get started:
 
     ```shell
     aws cloudformation set-type-configuration \
-        --type-name "<DATADOG_RESOURCE_NAME>" arn:aws:cloudformation:<OUR_REGION>:<OUR_ACCOUNT>:type/resource/Datadog-Monitors-Monitor \
+        --type-name "<DATADOG_RESOURCE_NAME>" \
         --type RESOURCE \
         --configuration '{"DatadogCredentials": {"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}", "ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"}}'
     ```

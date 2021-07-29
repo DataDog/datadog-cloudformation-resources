@@ -1,8 +1,14 @@
+{{< site-region region="us3,eu,gov" >}}
+<div class="alert alert-warning">
+  This integration is only supported in the US East (us-east-1) region.
+</div>
+{{< /site-region >}}
+
 # Datadog-AWS CloudFormation
 
 [AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources.
 
-You can use either the AWS Management Console (UI) or the AWS CLI to use these resources.
+To access these resources, use the AWS Management Console (UI) or the AWS Command Line Interface (CLI).
 
 ## AWS Management Console
 
@@ -18,7 +24,7 @@ To get started:
 
 4. Select the desired resource name to view more information about its schema, and click **Activate**.
 
-5. On the Extension details page, specify:
+5. On the **Extension details** page, specify:
   - Extension name
   - Execution role ARN
   - Automatic updates for minor version releases
@@ -26,9 +32,9 @@ To get started:
 
 6. For the resource configuration, **it is strongly recommended to use [AWS Secrets Manager][17] or similar service for storing your Datadog API and Application keys instead of clear text**.
 
-  If using AWS Secrets Manager, you can dynamically reference your API and Application keys in the configuration. See the [AWS docs][18] for more information.
+  If using AWS Secrets Manager, you can dynamically reference your API and Application keys in the configuration. For more information, see the [AWS documentation][18].
 
-  Example:
+  For example:
 
   ```json
   {
@@ -39,9 +45,9 @@ To get started:
   }
   ```
 
-4. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
+7. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
 
-For more information about the available commands and workflows, see the official [AWS documentation][4].
+For more information about available commands and workflows, see the official [AWS documentation][4].
 
 ## AWS Command Line Interface
 
@@ -84,13 +90,22 @@ To get started:
       * See the [Resources Available section](#resources-available), which links to examples of the latest supported S3 links.
     * `VERSION_ID`: The underlying version of the resource as returned by the command in step `2`.
 
-4. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+4. Set the newly registered resource configuration by running the following in your terminal:
 
-For more information about the available commands and workflows, see the the official [AWS documentation][4].
+    ```shell
+    aws cloudformation set-type-configuration \
+        --type-name "<DATADOG_RESOURCE_NAME>" arn:aws:cloudformation:<OUR_REGION>:<OUR_ACCOUNT>:type/resource/Datadog-Monitors-Monitor \
+        --type RESOURCE \
+        --configuration '{"DatadogCredentials": {"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}", "ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"}}'
+    ```
+
+5. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+
+For more information about available commands and workflows, see the official [AWS documentation][4].
 
 ## Resources available
 
-The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
+The following Datadog resources can be registered within your AWS account. Refer to their specific documentation to see how to configure them:
 
 | Resource                | Name                              | Description                                             | Folder                          | S3 Package Links              |
 |-------------------------|-----------------------------------|---------------------------------------------------------|---------------------------------|-------------------------------|

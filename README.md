@@ -1,8 +1,12 @@
+<div class="alert alert-warning">
+  The Datadog-Amazon CloudFormation resources are only available on the CloudFormation Public Registry in the us-east-1 region. To privately register a resource in any other region, use the provided packages.
+</div>
+
 # Datadog-AWS CloudFormation
 
-[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources.
+[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources, send resources to any Datadog datacenter, and privately register an extension in any region with Datadog resources.
 
-You can use either the AWS Management Console (UI) or the AWS CLI to use these resources.
+To access these resources, use the AWS Management Console (UI) or the AWS Command Line Interface (CLI).
 
 ## AWS Management Console
 
@@ -18,7 +22,7 @@ To get started:
 
 4. Select the desired resource name to view more information about its schema, and click **Activate**.
 
-5. On the Extension details page, specify:
+5. On the **Extension details** page, specify:
   - Extension name
   - Execution role ARN
   - Automatic updates for minor version releases
@@ -26,9 +30,9 @@ To get started:
 
 6. For the resource configuration, **it is strongly recommended to use [AWS Secrets Manager][17] or similar service for storing your Datadog API and Application keys instead of clear text**.
 
-  If using AWS Secrets Manager, you can dynamically reference your API and Application keys in the configuration. See the [AWS docs][18] for more information.
+  If using AWS Secrets Manager, you can dynamically reference your API and Application keys in the configuration. For more information, see the [AWS documentation][18].
 
-  Example:
+  For example:
 
   ```json
   {
@@ -39,9 +43,9 @@ To get started:
   }
   ```
 
-4. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
+7. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
 
-For more information about the available commands and workflows, see the official [AWS documentation][4].
+For more information about available commands and workflows, see the official [AWS documentation][4].
 
 ## AWS Command Line Interface
 
@@ -84,22 +88,31 @@ To get started:
       * See the [Resources Available section](#resources-available), which links to examples of the latest supported S3 links.
     * `VERSION_ID`: The underlying version of the resource as returned by the command in step `2`.
 
-4. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+4. Set the newly registered resource configuration by running the following in your terminal:
 
-For more information about the available commands and workflows, see the the official [AWS documentation][4].
+    ```shell
+    aws cloudformation set-type-configuration \
+        --type-name "<DATADOG_RESOURCE_NAME>" \
+        --type RESOURCE \
+        --configuration '{"DatadogCredentials": {"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}", "ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"}}'
+    ```
+
+5. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+
+For more information about available commands and workflows, see the official [AWS documentation][4].
 
 ## Resources available
 
-The following Datadog resources can be registered within your AWS account, refer to their specific documentation to see how to configure them:
+The following Datadog resources can be registered within your AWS account. Refer to their specific documentation to see how to configure them:
 
 | Resource                | Name                              | Description                                             | Folder                          | S3 Package Links              |
 |-------------------------|-----------------------------------|---------------------------------------------------------|---------------------------------|-------------------------------|
 | Dashboards              | `Datadog::Dashboards::Dashboard`  | [Create, update, and delete Datadog dashboards][5]      | `datadog-dashboards-dashboard`  | [Schema Handler Versions][6]  |
 | Datadog-AWS integration | `Datadog::Integrations::AWS`      | [Manage your Datadog-Amazon Web Service integration][7] | `datadog-integrations-aws`      | [Schema Handler Versions][8]  |
-| Monitors                | `Datadog::Monitors::Monitor`      | [Create, update, and delete Datadog monitors][9].       | `datadog-monitors-monitor`      | [Schema Handler Versions][10] |
-| Downtimes               | `Datadog::Monitors::Downtime`     | [Enable or disable downtimes for your monitors][11].    | `datadog-monitors-downtime`     | [Schema Handler Versions][12] |
-| User                    | `Datadog::IAM::User`              | [ Create and manage Datadog users][13].                 | `datadog-iam-user`              | [Schema Handler Versions][14] |
-| SLOs                    | `Datadog::SLOs::SLO`              | [ Create and manage Datadog SLOs ][19].                 | `datadog-slos-slo`              | [Schema Handler Versions][20] |
+| Monitors                | `Datadog::Monitors::Monitor`      | [Create, update, and delete Datadog monitors][9]        | `datadog-monitors-monitor`      | [Schema Handler Versions][10] |
+| Downtimes               | `Datadog::Monitors::Downtime`     | [Enable or disable downtimes for your monitors][11]     | `datadog-monitors-downtime`     | [Schema Handler Versions][12] |
+| User                    | `Datadog::IAM::User`              | [ Create and manage Datadog users][13]                  | `datadog-iam-user`              | [Schema Handler Versions][14] |
+| SLOs                    | `Datadog::SLOs::SLO`              | [ Create and manage Datadog SLOs][19]                   | `datadog-slos-slo`              | [Schema Handler Versions][20] |
 
 ## Troubleshooting
 

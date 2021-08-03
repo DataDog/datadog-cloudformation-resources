@@ -1,12 +1,10 @@
-{{< site-region region="us3,eu,gov" >}}
 <div class="alert alert-warning">
-  This integration is only supported in the US East (us-east-1) region.
+  The Datadog-Amazon CloudFormation resources are only available on the CloudFormation Public Registry in the us-east-1 region. To privately register a resource in any other region, use the provided packages.
 </div>
-{{< /site-region >}}
 
 # Datadog-AWS CloudFormation
 
-[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources.
+[AWS CloudFormation][1] gives you templates to describe, configure, and provision all of the AWS resources in your environment at once. The Datadog-AWS CloudFormation Resources allow you to interact with the supported Datadog resources, send resources to any Datadog datacenter, and privately register an extension in any region with Datadog resources.
 
 To access these resources, use the AWS Management Console (UI) or the AWS Command Line Interface (CLI).
 

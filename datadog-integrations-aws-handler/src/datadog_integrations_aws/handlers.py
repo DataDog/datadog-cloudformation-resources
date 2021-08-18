@@ -205,11 +205,14 @@ def read_handler(
             ).accounts[0]
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            error_code = http_to_handler_error_code(e.status)
+            if e.status == 400 and "does not exist" in e.body:
+                error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error getting AWS account: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=error_code,
             )
         except IndexError:
             LOG.error(

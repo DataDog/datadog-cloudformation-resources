@@ -1,4 +1,5 @@
 import logging
+import boto3
 from typing import Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
@@ -22,6 +23,7 @@ from .version import __version__
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
 TELEMETRY_TYPE_NAME = "integrations-aws"
+DEFAULT_SECRET_NAME = "DatadogIntegrationExternalID"
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -64,7 +66,7 @@ def create_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            api_instance.create_aws_account(aws_account)
+            response = api_instance.create_aws_account(aws_account)
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
@@ -73,6 +75,16 @@ def create_handler(
                 message=f"Error creating AWS account: {e}",
                 errorCode=http_to_handler_error_code(e.status)
             )
+    if model.ExternalIDSecretName is not None:
+        secret_name = model.ExternalIDSecretName
+    else:
+        secret_name = DEFAULT_SECRET_NAME
+    boto_client = session.client("secretsmanager", "us-east-1")
+    boto_client.create_secret(
+        Description='The external_id associated with your Datadog AWS Integration.',
+        Name=secret_name,
+        SecretString='{"external_id":"%s"}' % response.external_id,
+    )
 
     model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
 
@@ -173,6 +185,16 @@ def delete_handler(
                 errorCode=error_code
             )
 
+    if model.ExternalIDSecretName is not None:
+        secret_name = model.ExternalIDSecretName
+    else:
+        secret_name = DEFAULT_SECRET_NAME
+    boto_client = session.client("secretsmanager", "us-east-1")
+    boto_client.delete_secret(
+        SecretId=secret_name,
+        ForceDeleteWithoutRecovery=True,
+    )
+
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
         resourceModel=None,
@@ -227,6 +249,8 @@ def read_handler(
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags
     model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules
+    if model.ExternalIDSecretName is None:
+        model.secret_name = DEFAULT_SECRET_NAME
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

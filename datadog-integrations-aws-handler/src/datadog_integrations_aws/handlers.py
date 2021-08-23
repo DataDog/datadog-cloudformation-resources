@@ -188,7 +188,7 @@ def delete_handler(
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
-    boto_client = session.client("secretsmanager", "us-east-1")
+    boto_client = session.client("secretsmanager")
     boto_client.delete_secret(
         SecretId=secret_name,
         ForceDeleteWithoutRecovery=True,

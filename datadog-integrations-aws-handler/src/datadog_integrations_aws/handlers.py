@@ -1,5 +1,4 @@
 import logging
-import boto3
 from typing import Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
@@ -79,7 +78,7 @@ def create_handler(
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
-    boto_client = session.client("secretsmanager", "us-east-1")
+    boto_client = session.client("secretsmanager")
     boto_client.create_secret(
         Description='The external_id associated with your Datadog AWS Integration.',
         Name=secret_name,
@@ -249,8 +248,6 @@ def read_handler(
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags
     model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules
-    if model.ExternalIDSecretName is None:
-        model.secret_name = DEFAULT_SECRET_NAME
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

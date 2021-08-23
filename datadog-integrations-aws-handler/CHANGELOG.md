@@ -1,9 +1,5 @@
 # Changelog
 
-## 2.1.0 / 2021-08-20
-
-* [Added] Store returned external_id secret in AWS SecretsManager. See [#161](https://github.com/DataDog/datadog-cloudformation-resources/pull/161).
-
 ## 2.0.0 / 2021-06-28
 
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).

@@ -81,7 +81,7 @@
       "type": "string"
     },
     "ExternalIDSecretName": {
-      "description": "The name of the AWS SecretsManager secret we create in your account to hold this integration's external_id.",
+      "description": "The name of the AWS SecretsManager secret we create in your account to hold this integration's external_id. Defaults to DatadogIntegrationExternalID. Cannot be referenced from created resource.",
       "type": "string"
     }
   },

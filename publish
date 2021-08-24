@@ -14,12 +14,15 @@ logging.basicConfig(
     format='[%(asctime)s] %(levelname)s - %(message)s'
 )
 
-parser = argparse.ArgumentParser(description="Publish a CloudFormation resource on the public registry")
+parser = argparse.ArgumentParser(
+    description="Build, submit, test and publish a CloudFormation resource on the public registry"
+)
 parser.add_argument("--resource-folder", "-f", required=True, help="The resource folder")
 parser.add_argument("--region", "-r", required=True, help="The AWS region where to publish the resource")
 parser.add_argument("--type-name", "-t", required=True, help="The resource type name")
 parser.add_argument("--version", "-v", required=True, help="The version of the resource to publish")
 parser.add_argument("--skip-submit", help="Skip the submit step", action="store_true")
+parser.add_argument("--skip-publish", help="Skip the publish step", action="store_true")
 
 args = parser.parse_args()
 
@@ -83,12 +86,13 @@ if test_status == "FAILED":
     exit(1)
 
 # Publish resource
-try:
-    logging.info("Publishing resource")
-    res = client.publish_type(Type="RESOURCE", TypeName=args.type_name)
-except Exception:
-    logging.exception("Error publishing resource")
-    exit(1)
+if not args.skip_publish:
+    try:
+        logging.info("Publishing resource")
+        res = client.publish_type(Type="RESOURCE", TypeName=args.type_name)
+    except Exception:
+        logging.exception("Error publishing resource")
+        exit(1)
 
 
 

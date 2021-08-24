@@ -197,6 +197,13 @@ def read_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
+            if model.IntegrationID is None:
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=model,
+                    message=f"No IntegrationID set, resource never created",
+                    errorCode=HandlerErrorCode.NotFound,
+                )
             [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
             aws_account = api_instance.list_aws_accounts(
                 account_id=account_id,
@@ -205,11 +212,14 @@ def read_handler(
             ).accounts[0]
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            error_code = http_to_handler_error_code(e.status)
+            if e.status == 400 and "does not exist" in e.body:
+                error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error getting AWS account: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=error_code,
             )
         except IndexError:
             LOG.error(

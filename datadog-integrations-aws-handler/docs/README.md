@@ -103,7 +103,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### ExternalIDSecretName
 
-The name of the AWS SecretsManager secret we create in your account to hold this integration's external_id. Defaults to DatadogIntegrationExternalID. Cannot be referenced from created resource.
+The name of the AWS SecretsManager secret created in your account to hold this integration's `external_id`. Defaults to `DatadogIntegrationExternalID`. Cannot be referenced from created resource.
 
 _Required_: No
 

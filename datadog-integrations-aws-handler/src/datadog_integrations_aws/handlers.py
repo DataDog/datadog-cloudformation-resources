@@ -197,6 +197,13 @@ def read_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
+            if model.IntegrationID is None:
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=model,
+                    message=f"No IntegrationID set, resource never created",
+                    errorCode=HandlerErrorCode.NotFound,
+                )
             [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
             aws_account = api_instance.list_aws_accounts(
                 account_id=account_id,

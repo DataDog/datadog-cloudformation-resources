@@ -79,6 +79,10 @@
     "IntegrationID": {
       "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
       "type": "string"
+    },
+    "ExternalIDSecretName": {
+      "description": "The name of the AWS SecretsManager secret we create in your account to hold this integration's external_id. Defaults to `DatadogIntegrationExternalID`. Cannot be referenced from created resource.",
+      "type": "string"
     }
   },
   "required": [],
@@ -97,7 +101,7 @@
   "handlers": {
     "create": {
       "permissions": [
-        ""
+        "secretsmanager:CreateSecret"
       ]
     },
     "read": {
@@ -112,7 +116,7 @@
     },
     "delete": {
       "permissions": [
-        ""
+        "secretsmanager:DeleteSecret"
       ]
     }
   }

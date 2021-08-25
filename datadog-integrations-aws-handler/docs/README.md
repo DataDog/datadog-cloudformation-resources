@@ -1,6 +1,6 @@
 # Datadog::Integrations::AWS
 
-Datadog AWS Integration 1.2.0
+Datadog AWS Integration 2.0.0
 
 ## Syntax
 
@@ -18,6 +18,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#filtertags" title="FilterTags">FilterTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#hosttags" title="HostTags">HostTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>" : <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>,
+        "<a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>" : <i>String</i>
     }
 }
 </pre>
@@ -35,6 +36,7 @@ Properties:
     <a href="#hosttags" title="HostTags">HostTags</a>: <i>
       - String</i>
     <a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>: <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>
+    <a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -96,6 +98,16 @@ An object (in the form {"namespace1":true/false, "namespace2":true/false}) that 
 _Required_: No
 
 _Type_: <a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a>
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### ExternalIDSecretName
+
+The name of the AWS SecretsManager secret created in your account to hold this integration's `external_id`. Defaults to `DatadogIntegrationExternalID`. Cannot be referenced from created resource.
+
+_Required_: No
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

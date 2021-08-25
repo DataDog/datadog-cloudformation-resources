@@ -22,6 +22,7 @@ from .version import __version__
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
 TELEMETRY_TYPE_NAME = "integrations-aws"
+DEFAULT_SECRET_NAME = "DatadogIntegrationExternalID"
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -64,7 +65,7 @@ def create_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            api_instance.create_aws_account(aws_account)
+            response = api_instance.create_aws_account(aws_account)
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
@@ -73,6 +74,16 @@ def create_handler(
                 message=f"Error creating AWS account: {e}",
                 errorCode=http_to_handler_error_code(e.status)
             )
+    if model.ExternalIDSecretName is not None:
+        secret_name = model.ExternalIDSecretName
+    else:
+        secret_name = DEFAULT_SECRET_NAME
+    boto_client = session.client("secretsmanager")
+    boto_client.create_secret(
+        Description='The external_id associated with your Datadog AWS Integration.',
+        Name=secret_name,
+        SecretString='{"external_id":"%s"}' % response.external_id,
+    )
 
     model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
 
@@ -172,6 +183,16 @@ def delete_handler(
                 message=f"Error deleting AWS account: {e}",
                 errorCode=error_code
             )
+
+    if model.ExternalIDSecretName is not None:
+        secret_name = model.ExternalIDSecretName
+    else:
+        secret_name = DEFAULT_SECRET_NAME
+    boto_client = session.client("secretsmanager")
+    boto_client.delete_secret(
+        SecretId=secret_name,
+        ForceDeleteWithoutRecovery=True,
+    )
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

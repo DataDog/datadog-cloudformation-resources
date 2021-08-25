@@ -47,6 +47,7 @@ class ResourceModel(BaseModel):
     HostTags: Optional[Sequence[str]]
     AccountSpecificNamespaceRules: Optional[MutableMapping[str, bool]]
     IntegrationID: Optional[str]
+    ExternalIDSecretName: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -65,6 +66,7 @@ class ResourceModel(BaseModel):
             HostTags=json_data.get("HostTags"),
             AccountSpecificNamespaceRules=json_data.get("AccountSpecificNamespaceRules"),
             IntegrationID=json_data.get("IntegrationID"),
+            ExternalIDSecretName=json_data.get("ExternalIDSecretName"),
         )
 
 

@@ -63,6 +63,7 @@ jobs:
     - name: Check generated files are up-to-date
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
+        cd ${{ matrix.resource }}
         cfn generate
         git diff --exit-code
         if [ $? -ne 0  ]; then

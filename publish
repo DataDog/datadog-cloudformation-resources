@@ -22,6 +22,7 @@ parser.add_argument("--region", "-r", required=True, help="The AWS region where 
 parser.add_argument("--type-name", "-t", required=True, help="The resource type name")
 parser.add_argument("--version", "-v", required=True, help="The version of the resource to publish")
 parser.add_argument("--skip-submit", help="Skip the submit step", action="store_true")
+parser.add_argument("--skip-tests", help="Skip the tests step", action="store_true")
 parser.add_argument("--skip-publish", help="Skip the publish step", action="store_true")
 
 args = parser.parse_args()
@@ -60,40 +61,49 @@ except Exception:
     exit(1)
 
 # Execute contract tests on resource
-type_arn = ""
-try:
-    logging.info("Starting contract tests")
-    res = client.test_type(Type="RESOURCE", TypeName=args.type_name, LogDeliveryBucket="test-type-logs")
-    type_arn = res["TypeVersionArn"]
-except Exception:
-    logging.exception("Error starting contract tests")
-    exit(1)
-
-# Wait for tests to finish
-while True:
-    test_status = ""
-    test_status_desc = ""
+if not args.skip_tests:
+    type_arn = ""
     try:
-        res = client.describe_type(Arn=type_arn)
-        test_status = res["TypeTestsStatus"]
-        test_status_desc = res["TypeTestsStatusDescription"]
+        logging.info("Starting contract tests")
+        res = client.test_type(Type="RESOURCE", TypeName=args.type_name, LogDeliveryBucket="test-type-logs")
+        type_arn = res["TypeVersionArn"]
     except Exception:
-        logging.exception("Error checking contract tests status")
+        logging.exception("Error starting contract tests")
         exit(1)
-    if test_status == "PASSED" or test_status == "FAILED":
-        break
-    logging.info(f"Waiting for contract test to finish. Current status: {test_status_desc}")
-    time.sleep(10)
 
-if test_status == "FAILED":
-    logging.error("Contract tests failed, aborting.")
-    exit(1)
+    # Wait for tests to finish
+    while True:
+        test_status = ""
+        test_status_desc = ""
+        try:
+            res = client.describe_type(Arn=type_arn)
+            test_status = res["TypeTestsStatus"]
+            test_status_desc = res["TypeTestsStatusDescription"]
+        except Exception:
+            logging.exception("Error checking contract tests status")
+            exit(1)
+        if test_status == "PASSED" or test_status == "FAILED":
+            break
+        logging.info(f"Waiting for contract test to finish. Current status: {test_status_desc}")
+        time.sleep(10)
+
+    if test_status == "FAILED":
+        logging.error("Contract tests failed, aborting.")
+        exit(1)
 
 # Publish resource
 if not args.skip_publish:
     try:
+        logging.info("Register as publisher")
+        try:
+            res = client.register_publisher(
+                AcceptTermsAndConditions=True,
+                ConnectionArn="arn:aws:codestar-connections:us-east-1:088054601418:connection/bfde435c-304c-4630-ac45-04cb7ceeb159"
+            )
+        except client.exceptions.CFNRegistryException as e:
+            logging.debug("error registering publisher, likely already registered: %s", e)
         logging.info("Publishing resource")
-        res = client.publish_type(Type="RESOURCE", TypeName=args.type_name)
+        client.publish_type(Type="RESOURCE", TypeName=args.type_name, PublicVersionNumber=args.version)
     except Exception:
         logging.exception("Error publishing resource")
         exit(1)

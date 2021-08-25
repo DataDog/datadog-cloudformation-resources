@@ -65,10 +65,12 @@ jobs:
       run: |
         cd ${{ matrix.resource }}
         cfn generate
+        set +e
         git diff --exit-code
         if [ $? -ne 0  ]; then
           echo "'cfn generate' generated some changes. Run it locally and commit changes."
         fi
+        set -e
     - name: Run Tests
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |

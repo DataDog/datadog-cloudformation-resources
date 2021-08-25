@@ -38,9 +38,13 @@ TYPE_CONFIGURATION = """
 # Build and register resource
 if not args.skip_submit:
     try:
+        logging.info("Generating docs and resource-role.yaml")
+        subprocess.check_call(
+            ["cfn", "generate"], cwd=args.resource_folder
+        )
         logging.info("Submitting resource")
         subprocess.check_call(
-            ["cfn", "submit", "--no-role", "--region", args.region, "--set-default"], cwd=args.resource_folder
+            ["cfn", "submit", "--region", args.region, "--set-default"], cwd=args.resource_folder
         )
     except Exception:
         logging.exception("Error submitting resource")
@@ -93,6 +97,3 @@ if not args.skip_publish:
     except Exception:
         logging.exception("Error publishing resource")
         exit(1)
-
-
-

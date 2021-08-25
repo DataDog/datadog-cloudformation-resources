@@ -23,6 +23,8 @@ LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
 TELEMETRY_TYPE_NAME = "integrations-aws"
 DEFAULT_SECRET_NAME = "DatadogIntegrationExternalID"
+MAX_DELETE_SECRET_RETRIES = 30
+DELETE_SECRET_CALLBACK_INTERVAL = 2
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -160,43 +162,62 @@ def delete_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_aws_account_from_model(model)
-
-    with v1_client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-    ) as api_client:
-        api_instance = AWSIntegrationApi(api_client)
-        try:
-            api_instance.delete_aws_account(aws_account)
-        except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
-            error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "does not exist" in e.body:
-                error_code = HandlerErrorCode.NotFound
-            return ProgressEvent(
-                status=OperationStatus.FAILED,
-                resourceModel=model,
-                message=f"Error deleting AWS account: {e}",
-                errorCode=error_code
-            )
-
     if model.ExternalIDSecretName is not None:
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
     boto_client = session.client("secretsmanager")
-    boto_client.delete_secret(
-        SecretId=secret_name,
-        ForceDeleteWithoutRecovery=True,
-    )
+    callback_count = callback_context.get("callback_count", 0)
+
+    if 0 < callback_count <= MAX_DELETE_SECRET_RETRIES:
+        LOG.info(f"Checking deletion of secret {secret_name}")
+        try:
+            boto_client.describe_secret(SecretId=secret_name)
+        except boto_client.exceptions.ResourceNotFoundException:
+            return ProgressEvent(
+                status=OperationStatus.SUCCESS,
+                resourceModel=None,
+            )
+    elif callback_count > MAX_DELETE_SECRET_RETRIES:
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
+        )
+    else:
+        aws_account = build_aws_account_from_model(model)
+
+        with v1_client(
+                type_configuration.DatadogCredentials.ApiKey,
+                type_configuration.DatadogCredentials.ApplicationKey,
+                type_configuration.DatadogCredentials.ApiURL,
+                TELEMETRY_TYPE_NAME,
+                __version__,
+        ) as api_client:
+            api_instance = AWSIntegrationApi(api_client)
+            try:
+                api_instance.delete_aws_account(aws_account)
+            except ApiException as e:
+                LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
+                error_code = http_to_handler_error_code(e.status)
+                if e.status == 400 and "does not exist" in e.body:
+                    error_code = HandlerErrorCode.NotFound
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=model,
+                    message=f"Error deleting AWS account: {e}",
+                    errorCode=error_code
+                )
+
+        boto_client.delete_secret(
+            SecretId=secret_name,
+            ForceDeleteWithoutRecovery=True,
+        )
 
     return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModel=None,
+        status=OperationStatus.IN_PROGRESS,
+        resourceModel=model,
+        callbackContext={"callback_count": callback_count+1},
+        callbackDelaySeconds=DELETE_SECRET_CALLBACK_INTERVAL,
     )
 
 

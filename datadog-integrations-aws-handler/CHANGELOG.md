@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.1.0 / 2021-08-26
+
+* [Added] Store returned `external_id` secret in AWS SecretsManager. See [#161](https://github.com/DataDog/datadog-cloudformation-resources/pull/161).
+* [Fixed] Fix read handler not finding integration. See [#143](https://github.com/DataDog/datadog-cloudformation-resources/pull/143).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-integrations-aws/datadog-integrations-aws-2.1.0.zip`
+
 ## 2.0.0 / 2021-06-28
 
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).

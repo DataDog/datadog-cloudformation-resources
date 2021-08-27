@@ -20,7 +20,7 @@ parser = argparse.ArgumentParser(
 parser.add_argument("--resource-folder", "-f", required=True, help="The resource folder")
 parser.add_argument("--region", "-r", required=True, help="The AWS region where to publish the resource")
 parser.add_argument("--type-name", "-t", required=True, help="The resource type name")
-parser.add_argument("--version", "-v", required=True, help="The version of the resource to publish")
+parser.add_argument("--version", "-v", required=False, help="The version of the resource to publish")
 parser.add_argument("--skip-submit", help="Skip the submit step", action="store_true")
 parser.add_argument("--skip-tests", help="Skip the tests step", action="store_true")
 parser.add_argument("--skip-publish", help="Skip the publish step", action="store_true")
@@ -103,7 +103,10 @@ if not args.skip_publish:
         except client.exceptions.CFNRegistryException as e:
             logging.debug("error registering publisher, likely already registered: %s", e)
         logging.info("Publishing resource")
-        client.publish_type(Type="RESOURCE", TypeName=args.type_name, PublicVersionNumber=args.version)
+        if args.version:
+            client.publish_type(Type="RESOURCE", TypeName=args.type_name, PublicVersionNumber=args.version)
+        else:
+            client.publish_type(Type="RESOURCE", TypeName=args.type_name)
     except Exception:
         logging.exception("Error publishing resource")
         exit(1)

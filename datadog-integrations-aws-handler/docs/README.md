@@ -1,6 +1,6 @@
 # Datadog::Integrations::AWS
 
-Datadog AWS Integration 2.0.0
+Datadog AWS Integration 2.1.0
 
 ## Syntax
 

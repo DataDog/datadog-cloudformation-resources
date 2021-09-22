@@ -5,6 +5,7 @@
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).
 * [Fixed] Update Datadog::Dashboards::Dashboard UPDATE handler to check/convert types of sub-models. See [#130](https://github.com/DataDog/datadog-cloudformation-resources/pull/130).
 * [Changed]  Add Type Configuration to specify Datadog credentials instead of passing them in templates. See [#142](https://github.com/DataDog/datadog-cloudformation-resources/pull/142).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-dashboards-dashboard/datadog-dashboards-dashboard-2.0.0.zip`
 
 ## 1.0.0 / 2021-02-16
 

@@ -10,10 +10,8 @@ from cloudformation_cli_python_lib import (
     Resource,
     SessionProxy,
 )
-from datadog_api_client.v1 import ApiClient, ApiException
+from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.dashboards_api import DashboardsApi
-from datadog_api_client.v1.model.dashboard import Dashboard
-from datadog_api_client.v1.model_utils import validate_and_convert_types
 from datadog_cloudformation_common.api_clients import v1_client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
@@ -59,17 +57,10 @@ def create_handler(
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
-            # Call the deserialization function of the python client.
-            # It expects the loaded JSON payload, the python client type of the model,
-            # some path to the data (not sure what this one does),
-            # whether or not the payload is a server payload, so true in our case,
-            # whether or not to do type conversion, true in our case too
-            # and importantly the api_client configuration, needed to perform the type conversions
-            dashboard = validate_and_convert_types(
-                json_payload, (Dashboard,), ["resource_data"], True, True, configuration=api_client.configuration
-            )
-            res = api_instance.create_dashboard(dashboard)
-            model.Id = res.id
+            # Get raw http response with _preload_content False
+            resp = api_instance.create_dashboard(json_payload, _preload_content=False)
+            json_dict = json.loads(resp.data)
+            model.Id = json_dict["id"]
         except TypeError as e:
             LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(
@@ -121,16 +112,8 @@ def update_handler(
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
-            # Call the deserialization function of the python client.
-            # It expects the loaded JSON payload, the python client type of the model,
-            # some path to the data (not sure what this one does),
-            # whether or not the payload is a server payload, so true in our case,
-            # whether or not to do type conversion, true in our case too
-            # and importantly the api_client configuration, needed to perform the type conversions
-            dashboard = validate_and_convert_types(
-                json_payload, (Dashboard,), ["resource_data"], True, True, configuration=api_client.configuration
-            )
-            api_instance.update_dashboard(dashboard_id, dashboard)
+            # Get raw http response with _preload_content False
+            api_instance.update_dashboard(dashboard_id, json_payload, _preload_content=False)
         except TypeError as e:
             LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(
@@ -171,7 +154,8 @@ def delete_handler(
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
-            api_instance.delete_dashboard(dashboard_id)
+            # Get raw http response with _preload_content False
+            api_instance.delete_dashboard(dashboard_id, _preload_content=False)
         except ApiException as e:
             LOG.exception("Exception when calling DashboardsApi->delete_dashboard: %s\n", e)
             return ProgressEvent(
@@ -208,11 +192,15 @@ def read_handler(
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
-            dash = api_instance.get_dashboard(dashboard_id)
-            json_dict = ApiClient.sanitize_for_serialization(dash)
+            # Get raw http response with _preload_content  set to False
+            resp = api_instance.get_dashboard(dashboard_id, _preload_content=False)
+            json_dict = json.loads(resp.data)
             model.Url = json_dict["url"]
-            for k in ["author_handle", "id", "created_at", "modified_at", "url"]:
-                del json_dict[k]
+            for k in ["author_handle", "id", "created_at", "modified_at", "url", "author_name"]:
+                try:
+                    del json_dict[k]
+                except KeyError:
+                    pass
             model.DashboardDefinition = json.dumps(json_dict, sort_keys=True)
         except ApiException as e:
             LOG.exception("Exception when calling DashboardsApi->get_dashboard: %s\n", e)

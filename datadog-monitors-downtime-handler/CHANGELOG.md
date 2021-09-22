@@ -4,7 +4,8 @@
 
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).
 * [Changed] Add Type Configuration to specify Datadog credentials instead of passing them in templates. See [#142](https://github.com/DataDog/datadog-cloudformation-resources/pull/142).
-
+* Link to resource `s3://datadog-cloudformation-resources/datadog-monitors-downtime/datadog-monitors-downtime-3.0.0.zip`
+* 
 ## 2.0.0 / 2021-02-16
 
 * [Fixed] Bump common-python dependencies in all resources. See [#117](https://github.com/DataDog/datadog-cloudformation-resources/pull/117).

@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::Dashboards::Dashboard",
-  "description": "Datadog Dashboard 2.0.0",
+  "description": "Datadog Dashboard 2.0.1",
   "typeConfiguration": {
     "properties": {
       "DatadogCredentials": {

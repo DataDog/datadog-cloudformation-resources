@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.1 / 2021-09-23
+
+* [Fixed] Pass dashboard JSON payload to API directly, unmodified. See [#165](https://github.com/DataDog/datadog-cloudformation-resources/pull/165).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-dashboards-dashboard/datadog-dashboards-dashboard-2.0.1.zip`
+
 ## 2.0.0 / 2021-06-28
 
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).

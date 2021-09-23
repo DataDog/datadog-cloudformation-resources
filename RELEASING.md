@@ -34,7 +34,7 @@ Note that once the release process is started, nobody should be merging/pushing 
 Our team will trigger the release pipeline.
 
 * Bump the version in `version.py`.
-* Bump the version in the `description` field of the resource's JSON schema.
+* Bump the version in the `description` field of the resource's JSON schema, and in the `README.md` of the resource.
 * If you bumped the datadog-cloudformation-common version, update the dependency in the resource you are releasing.
 * Merge the release PR.
 * Run the `publish` script `./publish -f <RESOURCE_DIRECTORY> -r <REGION> -t <RESOURCE_TYPE_NAME> -v <VERSION>`.

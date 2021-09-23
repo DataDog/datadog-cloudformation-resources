@@ -1,6 +1,6 @@
 # Datadog::Dashboards::Dashboard
 
-Datadog Dashboard 2.0.0
+Datadog Dashboard 2.0.1
 
 ## Syntax
 

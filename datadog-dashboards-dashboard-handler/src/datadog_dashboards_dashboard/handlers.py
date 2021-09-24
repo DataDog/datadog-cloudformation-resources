@@ -58,7 +58,7 @@ def create_handler(
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content False
-            resp = api_instance.create_dashboard(json_payload, _preload_content=False)
+            resp = api_instance.create_dashboard(json_payload, _check_input_type=False, _preload_content=False)
             json_dict = json.loads(resp.data)
             model.Id = json_dict["id"]
         except TypeError as e:
@@ -113,7 +113,7 @@ def update_handler(
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content False
-            api_instance.update_dashboard(dashboard_id, json_payload, _preload_content=False)
+            api_instance.update_dashboard(dashboard_id, json_payload, _check_input_type=False, _preload_content=False)
         except TypeError as e:
             LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(

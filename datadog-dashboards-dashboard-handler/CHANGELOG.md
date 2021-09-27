@@ -3,6 +3,7 @@
 ## 2.0.2 / 2021-09-27
 
 * [Fixed] Properly pass raw JSON payload to API. See [#167](https://github.com/DataDog/datadog-cloudformation-resources/pull/167).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-dashboards-dashboard/datadog-dashboards-dashboard-2.0.2.zip`
 
 ## 2.0.1 / 2021-09-23
 

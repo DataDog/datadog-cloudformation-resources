@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2 / 2021-09-27
+
+* [Fixed] Properly pass raw JSON payload to API. See [#167](https://github.com/DataDog/datadog-cloudformation-resources/pull/167).
+
 ## 2.0.1 / 2021-09-23
 
 * [Fixed] Pass dashboard JSON payload to API directly, unmodified. See [#165](https://github.com/DataDog/datadog-cloudformation-resources/pull/165).

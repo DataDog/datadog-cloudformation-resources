@@ -15,6 +15,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#message" title="Message">Message</a>" : <i>String</i>,
         "<a href="#name" title="Name">Name</a>" : <i>String</i>,
         "<a href="#tags" title="Tags">Tags</a>" : <i>[ String, ... ]</i>,
+        "<a href="#priority" title="Priority">Priority</a>" : <i>Integer</i>,
         "<a href="#options" title="Options">Options</a>" : <i><a href="monitoroptions.md">MonitorOptions</a></i>,
         "<a href="#query" title="Query">Query</a>" : <i>String</i>,
         "<a href="#type" title="Type">Type</a>" : <i>String</i>,
@@ -32,6 +33,7 @@ Properties:
     <a href="#name" title="Name">Name</a>: <i>String</i>
     <a href="#tags" title="Tags">Tags</a>: <i>
       - String</i>
+    <a href="#priority" title="Priority">Priority</a>: <i>Integer</i>
     <a href="#options" title="Options">Options</a>: <i><a href="monitoroptions.md">MonitorOptions</a></i>
     <a href="#query" title="Query">Query</a>: <i>String</i>
     <a href="#type" title="Type">Type</a>: <i>String</i>
@@ -67,6 +69,16 @@ Tags associated with the monitor
 _Required_: No
 
 _Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Priority
+
+Integer from 1 (high) to 5 (low) indicating alert severity.
+
+_Required_: No
+
+_Type_: Integer
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

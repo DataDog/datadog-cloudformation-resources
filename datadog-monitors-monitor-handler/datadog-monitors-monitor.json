@@ -187,6 +187,10 @@
         "type": "string"
       }
     },
+    "Priority": {
+      "description": "Integer from 1 (high) to 5 (low) indicating alert severity.",
+      "type": "integer" 
+    },
     "Options": {
       "description": "The monitor options",
       "$ref": "#/definitions/MonitorOptions"

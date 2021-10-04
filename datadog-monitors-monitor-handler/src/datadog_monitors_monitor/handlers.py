@@ -83,6 +83,7 @@ def read_handler(
     model.Message = monitor.message
     model.Name = monitor.name
     model.Tags = monitor.tags
+    model.Priority = monitor.priority
     model.Query = monitor.query
     model.Multi = monitor.multi
     if monitor.deleted:
@@ -160,6 +161,8 @@ def update_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
+    if model.Priority is not None:
+        monitor.priority = model.Priority
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
@@ -240,6 +243,8 @@ def create_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
+    if model.Priority is not None:
+        monitor.priority = model.Priority
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options

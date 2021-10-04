@@ -45,6 +45,7 @@ class ResourceModel(BaseModel):
     Message: Optional[str]
     Name: Optional[str]
     Tags: Optional[Sequence[str]]
+    Priority: Optional[str]
     Options: Optional["_MonitorOptions"]
     Query: Optional[str]
     Type: Optional[str]
@@ -68,6 +69,7 @@ class ResourceModel(BaseModel):
             Message=json_data.get("Message"),
             Name=json_data.get("Name"),
             Tags=json_data.get("Tags"),
+            Priority=json_data.get("Priority"),
             Options=MonitorOptions._deserialize(json_data.get("Options")),
             Query=json_data.get("Query"),
             Type=json_data.get("Type"),

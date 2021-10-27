@@ -19,9 +19,9 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#hosttags" title="HostTags">HostTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>" : <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>,
         "<a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>" : <i>String</i>,
-        "<a href="#infrastructuremonitoring" title="InfrastructureMonitoring">InfrastructureMonitoring</a>" : <i>Boolean</i>,
-        "<a href="#compliancesecurityposturemanagement" title="ComplianceSecurityPostureManagement">ComplianceSecurityPostureManagement</a>" : <i>Boolean</i>,
-        "<a href="#generalresourcecollection" title="GeneralResourceCollection">GeneralResourceCollection</a>" : <i>Boolean</i>
+        "<a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>" : <i>Boolean</i>,
+        "<a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>" : <i>Boolean</i>,
+        "<a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>" : <i>Boolean</i>
     }
 }
 </pre>
@@ -40,9 +40,9 @@ Properties:
       - String</i>
     <a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>: <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>
     <a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>: <i>String</i>
-    <a href="#infrastructuremonitoring" title="InfrastructureMonitoring">InfrastructureMonitoring</a>: <i>Boolean</i>
-    <a href="#compliancesecurityposturemanagement" title="ComplianceSecurityPostureManagement">ComplianceSecurityPostureManagement</a>: <i>Boolean</i>
-    <a href="#generalresourcecollection" title="GeneralResourceCollection">GeneralResourceCollection</a>: <i>Boolean</i>
+    <a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>: <i>Boolean</i>
+    <a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>: <i>Boolean</i>
+    <a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>: <i>Boolean</i>
 </pre>
 
 ## Properties
@@ -117,7 +117,7 @@ _Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### InfrastructureMonitoring
+#### MetricsCollection
 
 Enable the infrastructure monitoring Datadog product. This will enable collecting all AWS metrics in your account.
 
@@ -127,7 +127,7 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### ComplianceSecurityPostureManagement
+#### CSPMResourceCollection
 
 Enable the compliance and security posture management Datadog product. This will enable collecting information on your AWS resources and providing security validation.
 
@@ -137,7 +137,7 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### GeneralResourceCollection
+#### ResourceCollection
 
 Enable collecting information on your AWS resources for use in Datadog products such as Network Process Monitoring.
 

@@ -45,11 +45,11 @@ def build_aws_account_from_model(model):
     if model.AccountSpecificNamespaceRules is not None:
         aws_account.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
     if model.InfrastructureMonitoring is not None:
-        aws_account.infrastructure_monitoring = model.InfrastructureMonitoring
+        aws_account.metrics_collection_enabled = model.MetricsCollection
     if model.ComplianceSecurityPostureManagement is not None:
-        aws_account.compliance_security_posture_management = model.ComplianceSecurityPostureManagement
+        aws_account.cspm_resource_collection_enabled = model.CSPMResourceCollection
     if model.GeneralResourceCollection is not None:
-        aws_account.general_resource_collection = model.GeneralResourceCollection
+        aws_account.resource_collection_enabled = model.ResourceCollection
     return aws_account
 
 

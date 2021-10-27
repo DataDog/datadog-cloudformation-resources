@@ -48,6 +48,9 @@ class ResourceModel(BaseModel):
     AccountSpecificNamespaceRules: Optional[MutableMapping[str, bool]]
     IntegrationID: Optional[str]
     ExternalIDSecretName: Optional[str]
+    InfrastructureMonitoring: Optional[bool]
+    ComplianceSecurityPostureManagement: Optional[bool]
+    GeneralResourceCollection: Optional[bool]
 
     @classmethod
     def _deserialize(
@@ -67,6 +70,9 @@ class ResourceModel(BaseModel):
             AccountSpecificNamespaceRules=json_data.get("AccountSpecificNamespaceRules"),
             IntegrationID=json_data.get("IntegrationID"),
             ExternalIDSecretName=json_data.get("ExternalIDSecretName"),
+            InfrastructureMonitoring=json_data.get("InfrastructureMonitoring"),
+            ComplianceSecurityPostureManagement=json_data.get("ComplianceSecurityPostureManagement"),
+            GeneralResourceCollection=json_data.get("GeneralResourceCollection"),
         )
 
 

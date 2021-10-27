@@ -44,6 +44,12 @@ def build_aws_account_from_model(model):
         aws_account.filter_tags = model.FilterTags
     if model.AccountSpecificNamespaceRules is not None:
         aws_account.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
+    if model.InfrastructureMonitoring is not None:
+        aws_account.infrastructure_monitoring = model.InfrastructureMonitoring
+    if model.ComplianceSecurityPostureManagement is not None:
+        aws_account.compliance_security_posture_management = model.ComplianceSecurityPostureManagement
+    if model.GeneralResourceCollection is not None:
+        aws_account.general_resource_collection = model.GeneralResourceCollection
     return aws_account
 
 

@@ -44,6 +44,12 @@ def build_aws_account_from_model(model):
         aws_account.filter_tags = model.FilterTags
     if model.AccountSpecificNamespaceRules is not None:
         aws_account.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
+    if model.MetricsCollection is not None:
+        aws_account.metrics_collection_enabled = model.MetricsCollection
+    if model.CSPMResourceCollection is not None:
+        aws_account.cspm_resource_collection_enabled = model.CSPMResourceCollection
+    if model.ResourceCollection is not None:
+        aws_account.resource_collection_enabled = model.ResourceCollection
     return aws_account
 
 

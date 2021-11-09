@@ -1,3 +1,7 @@
+## datadog-cloudformation-common-python-0.0.7 / 2021-11-09
+
+* [Added] Bump datadog-api-client version to 1.6.0. See [#174](https://github.com/DataDog/datadog-cloudformation-resources/pull/174).
+
 ## datadog-cloudformation-common-python-0.0.6 / 2021-06-28
 
 * [Added] Bump common dependencies to build and run resources with new type configuration. See [#144](https://github.com/DataDog/datadog-cloudformation-resources/pull/144).

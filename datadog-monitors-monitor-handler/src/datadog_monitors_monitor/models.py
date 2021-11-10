@@ -45,7 +45,7 @@ class ResourceModel(BaseModel):
     Message: Optional[str]
     Name: Optional[str]
     Tags: Optional[Sequence[str]]
-    Priority: Optional[str]
+    Priority: Optional[int]
     Options: Optional["_MonitorOptions"]
     Query: Optional[str]
     Type: Optional[str]

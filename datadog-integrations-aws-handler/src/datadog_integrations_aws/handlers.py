@@ -120,14 +120,14 @@ def update_handler(
         )
     if get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID) != model.IntegrationID:
         LOG.error(
-            f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-            f"Please delete it and create a new one instead."
+            "Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+            "Please delete it and create a new one instead."
         )
         return ProgressEvent(
             status=OperationStatus.FAILED,
             resourceModel=model,
-            message=f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-                    f"Please delete it and create a new one instead.",
+            message="Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+                    "Please delete it and create a new one instead.",
             errorCode=HandlerErrorCode.NotUpdatable
         )
     with v1_client(
@@ -191,6 +191,7 @@ def delete_handler(
             message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
         )
     else:
+        kwargs = {}
         if model.AccountID is not None:
             kwargs["account_id"] = model.AccountID
         if model.RoleName is not None:
@@ -208,7 +209,7 @@ def delete_handler(
         ) as api_client:
             api_instance = AWSIntegrationApi(api_client)
             try:
-                api_instance.delete_aws_account(aws_account)
+                api_instance.delete_aws_account(delete_request)
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
@@ -256,7 +257,7 @@ def read_handler(
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
                     resourceModel=model,
-                    message=f"No IntegrationID set, resource never created",
+                    message="No IntegrationID set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
             account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)

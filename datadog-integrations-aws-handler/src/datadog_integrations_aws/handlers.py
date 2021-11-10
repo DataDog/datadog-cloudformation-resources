@@ -12,6 +12,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_api_client.v1.model.aws_account import AWSAccount
+from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
 from datadog_cloudformation_common.api_clients import v1_client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
@@ -190,7 +191,13 @@ def delete_handler(
             message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
         )
     else:
-        aws_account = build_aws_account_from_model(model)
+        if model.AccountID is not None:
+            kwargs["account_id"] = model.AccountID
+        if model.RoleName is not None:
+            kwargs["role_name"] = model.RoleName
+        if model.AccessKeyID is not None:
+            kwargs["access_key_id"] = model.AccessKeyID
+        delete_request = AWSAccountDeleteRequest(**kwargs)
 
         with v1_client(
                 type_configuration.DatadogCredentials.ApiKey,
@@ -252,12 +259,15 @@ def read_handler(
                     message=f"No IntegrationID set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
-            [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
-            aws_account = api_instance.list_aws_accounts(
-                account_id=account_id,
-                role_name=role_name,
-                access_key_id=access_key_id
-            ).accounts[0]
+            account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
+            kwargs = {}
+            if account_id is not None:
+                kwargs["account_id"] = account_id
+            if role_name is not None:
+                kwargs["role_name"] = role_name
+            if access_key_id is not None:
+                kwargs["access_key_id"] = access_key_id
+            aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             error_code = http_to_handler_error_code(e.status)

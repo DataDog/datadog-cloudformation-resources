@@ -234,9 +234,7 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    monitor = ApiMonitor()
-    monitor.query = model.Query
-    monitor.type = ApiMonitorType(model.Type)
+    monitor = ApiMonitor(model.Query, ApiMonitorType(model.Type))
     if model.Message is not None:
         monitor.message = model.Message
     if model.Name is not None:

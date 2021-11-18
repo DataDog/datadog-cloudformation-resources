@@ -12,6 +12,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_api_client.v1.model.aws_account import AWSAccount
+from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
 from datadog_cloudformation_common.api_clients import v1_client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
@@ -119,14 +120,14 @@ def update_handler(
         )
     if get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID) != model.IntegrationID:
         LOG.error(
-            f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-            f"Please delete it and create a new one instead."
+            "Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+            "Please delete it and create a new one instead."
         )
         return ProgressEvent(
             status=OperationStatus.FAILED,
             resourceModel=model,
-            message=f"Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-                    f"Please delete it and create a new one instead.",
+            message="Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
+                    "Please delete it and create a new one instead.",
             errorCode=HandlerErrorCode.NotUpdatable
         )
     with v1_client(
@@ -138,12 +139,14 @@ def update_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            api_instance.update_aws_account(
-                aws_account,
-                account_id=model.AccountID,
-                role_name=model.RoleName,
-                access_key_id=model.AccessKeyID,
-            )
+            kwargs = {}
+            if model.AccountID is not None:
+                kwargs["account_id"] = model.AccountID
+            if model.RoleName is not None:
+                kwargs["role_name"] = model.RoleName
+            if model.AccessKeyID is not None:
+                kwargs["access_key_id"] = model.AccessKeyID
+            api_instance.update_aws_account(aws_account, **kwargs)
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
@@ -190,7 +193,14 @@ def delete_handler(
             message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
         )
     else:
-        aws_account = build_aws_account_from_model(model)
+        kwargs = {}
+        if model.AccountID is not None:
+            kwargs["account_id"] = model.AccountID
+        if model.RoleName is not None:
+            kwargs["role_name"] = model.RoleName
+        if model.AccessKeyID is not None:
+            kwargs["access_key_id"] = model.AccessKeyID
+        delete_request = AWSAccountDeleteRequest(**kwargs)
 
         with v1_client(
                 type_configuration.DatadogCredentials.ApiKey,
@@ -201,7 +211,7 @@ def delete_handler(
         ) as api_client:
             api_instance = AWSIntegrationApi(api_client)
             try:
-                api_instance.delete_aws_account(aws_account)
+                api_instance.delete_aws_account(delete_request)
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
@@ -249,15 +259,18 @@ def read_handler(
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
                     resourceModel=model,
-                    message=f"No IntegrationID set, resource never created",
+                    message="No IntegrationID set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
-            [account_id, role_name, access_key_id] = parse_integration_id(model.IntegrationID)
-            aws_account = api_instance.list_aws_accounts(
-                account_id=account_id,
-                role_name=role_name,
-                access_key_id=access_key_id
-            ).accounts[0]
+            account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
+            kwargs = {}
+            if account_id is not None:
+                kwargs["account_id"] = account_id
+            if role_name is not None:
+                kwargs["role_name"] = role_name
+            if access_key_id is not None:
+                kwargs["access_key_id"] = access_key_id
+            aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             error_code = http_to_handler_error_code(e.status)

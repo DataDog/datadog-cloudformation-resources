@@ -139,12 +139,14 @@ def update_handler(
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            api_instance.update_aws_account(
-                aws_account,
-                account_id=model.AccountID,
-                role_name=model.RoleName,
-                access_key_id=model.AccessKeyID,
-            )
+            kwargs = {}
+            if model.AccountID is not None:
+                kwargs["account_id"] = model.AccountID
+            if model.RoleName is not None:
+                kwargs["role_name"] = model.RoleName
+            if model.AccessKeyID is not None:
+                kwargs["access_key_id"] = model.AccessKeyID
+            api_instance.update_aws_account(aws_account, **kwargs)
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)

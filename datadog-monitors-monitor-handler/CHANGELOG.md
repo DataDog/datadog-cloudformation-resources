@@ -1,5 +1,11 @@
 # Changelog
 
+## 4.1.0 / 2021-11-23
+
+* [Added] Update common version. See [#176](https://github.com/DataDog/datadog-cloudformation-resources/pull/176).
+* [Added] Set priority on monitor creation/update. See [#170](https://github.com/DataDog/datadog-cloudformation-resources/pull/170). Thanks [bencrinkle](https://github.com/bencrinkle).
+* Link to Resource:  s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.1.0.zip
+
 ## 4.0.0 / 2021-06-28
 
 * [Added] Upgrade datadog-cloudformation-common-python version. See [#138](https://github.com/DataDog/datadog-cloudformation-resources/pull/138). Thanks [iwt-dennyschaefer](https://github.com/iwt-dennyschaefer).

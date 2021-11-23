@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.2.0 / 2021-11-23
+
+* [Added] Update common version. See [#176](https://github.com/DataDog/datadog-cloudformation-resources/pull/176).
+* [Added] Support additional params for AWS resource. See [#173](https://github.com/DataDog/datadog-cloudformation-resources/pull/173).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-integrations-aws/datadog-integrations-aws-2.2.0.zip`
+
 ## 2.1.0 / 2021-08-26
 
 * [Added] Store returned `external_id` secret in AWS SecretsManager. See [#161](https://github.com/DataDog/datadog-cloudformation-resources/pull/161).

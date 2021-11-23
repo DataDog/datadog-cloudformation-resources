@@ -1,6 +1,6 @@
 # Datadog::Integrations::AWS
 
-Datadog AWS Integration 2.1.0
+Datadog AWS Integration 2.2.0
 
 ## Syntax
 
@@ -119,7 +119,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### MetricsCollection
 
-Enable the infrastructure monitoring Datadog product. This will enable collecting all AWS metrics in your account.
+Enable the infrastructure monitoring Datadog product for this AWS Account. This will enable collecting all AWS metrics in your account.
 
 _Required_: No
 

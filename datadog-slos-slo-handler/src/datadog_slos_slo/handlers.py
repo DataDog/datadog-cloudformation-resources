@@ -51,6 +51,13 @@ def read_handler(
     ) as api_client:
         api_instance = ServiceLevelObjectivesApi(api_client)
         slo_id = model.Id
+        if slo_id is None:
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message="Error getting SLO: SLO does not exist",
+                errorCode=HandlerErrorCode.NotFound,
+            )
         try:
             slo = api_instance.get_slo(slo_id)
         except ApiException as e:
@@ -58,7 +65,7 @@ def read_handler(
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting monitor: {e}",
+                message=f"Error getting SLO: {e}",
                 errorCode=http_to_handler_error_code(e.status)
             )
     model.Created = slo.data.created_at

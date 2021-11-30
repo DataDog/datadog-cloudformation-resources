@@ -1,6 +1,6 @@
 # Datadog::SLOs::SLO
 
-Datadog SLO 1.0.0
+Datadog SLO 1.0.1
 
 ## Syntax
 

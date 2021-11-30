@@ -1,5 +1,5 @@
 {
-  "AccountID": "123456781234",
+  "AccountID": "{{UniqueAWSAccountID}}",
   "RoleName": "testCF",
   "FilterTags": ["foo:bar"]
 }

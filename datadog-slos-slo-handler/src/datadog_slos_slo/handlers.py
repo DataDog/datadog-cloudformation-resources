@@ -7,6 +7,7 @@ from cloudformation_cli_python_lib import (
     ProgressEvent,
     Resource,
     SessionProxy,
+    HandlerErrorCode,
 )
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.service_level_objectives_api import ServiceLevelObjectivesApi

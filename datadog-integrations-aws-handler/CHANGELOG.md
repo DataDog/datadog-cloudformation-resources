@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.2.1 / 2021-11-30
+
+* [Added] Use custom exports for AWS contract tests. See [#181](https://github.com/DataDog/datadog-cloudformation-resources/pull/181).
+
 ## 2.2.0 / 2021-11-23
 
 * [Added] Update common version. See [#176](https://github.com/DataDog/datadog-cloudformation-resources/pull/176).

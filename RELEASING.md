@@ -36,8 +36,16 @@ Our team will trigger the release pipeline.
 * Bump the version in `version.py`.
 * Bump the version in the `description` field of the resource's JSON schema.
 * Run `cfn submit --dry-run` to generate a zip file of the resource.
+* Run `cfn generate` code based on the project and resource type schema.
 * If you bumped the datadog-cloudformation-common version, update the dependency in the resource you are releasing.
 * Merge the release PR.
-* Run the `publish` script `./publish -f <RESOURCE_DIRECTORY> -r <REGION> -t <RESOURCE_TYPE_NAME> -v <VERSION>`.
 * Upload the generated ZIP file to the s3 bucket `aws s3 cp <ZIP_FILE> s3://datadog-cloudformation-resources/<RESOURCE_NAME>/<RESOURCE_NAME>-<VERSION>.zip`.
+* Run
+    ```
+    aws cloudformation update-stack-set --stack-set-name <RESOURCE_NAME> \
+      --use-previous-template \
+      --parameters '[{"ParameterKey": "VersionToPublish", "ParameterValue":"<VERSION_TO_DEPLOY>"}]' \
+      --operation-preferences '{"RegionConcurrencyType": "<SEQUENTIAL|PARALLEL>", "FailureToleranceCount": "16"}'
+    ```
+* Check the StackSet in AWS to ensure deploys in all regions succeed
 * Create a github release for this version, and attach the generated ZIP file.

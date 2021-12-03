@@ -110,7 +110,7 @@ The following Datadog resources can be registered within your AWS account. Refer
 | User                    | `Datadog::IAM::User`              | [ Create and manage Datadog users][13]                  | `datadog-iam-user`              | [Schema Handler Versions][14] |
 | SLOs                    | `Datadog::SLOs::SLO`              | [ Create and manage Datadog SLOs][19]                   | `datadog-slos-slo`              | [Schema Handler Versions][20] |
 
-## Supported Regions
+## Supported regions
 
 The Datadog-Amazon CloudFormation resources are available on the CloudFormation Public Registry in the following regions:
 
@@ -131,7 +131,7 @@ The Datadog-Amazon CloudFormation resources are available on the CloudFormation 
 - ap-northeast-1
 - us-east-2
 
-*Note*: To privately register a resource in any other region, use the provided packages.
+**Note**: To privately register a resource in any other region, use the provided packages.
 
 ## Troubleshooting
 

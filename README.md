@@ -114,22 +114,24 @@ The following Datadog resources can be registered within your AWS account. Refer
 
 The Datadog-Amazon CloudFormation resources are available on the CloudFormation Public Registry in the following regions:
 
-- us-east-1
-- us-east-2
-- us-west-1
-- us-west-2
-- ap-south-1
-- ap-northeast-1
-- ap-northeast-2
-- ap-southeast-1
-- ap-southeast-2
-- ca-central-1
-- eu-central-1
-- eu-west-1
-- eu-west-2
-- eu-west-3
-- eu-north-1
-- sa-east-1
+| Code            | Name                      |
+|-----------------|---------------------------|
+| us-east-1       | US East (N. Virginia)     |
+| us-east-2       | US East (Ohio)            |
+| us-west-1       | US West (N. California)   |
+| us-west-2       | US West (Oregon)          |
+| ap-south-1      | Africa (Cape Town)        |
+| ap-northeast-1  | Asia Pacific (Tokyo)      |
+| ap-northeast-2  | Asia Pacific (Seoul)      |
+| ap-southeast-1  | Asia Pacific (Singapore)  |
+| ap-southeast-2  | Asia Pacific (Sydney)     |
+| ca-central-1    | Canada (Central)          |
+| eu-central-1    | Europe (Frankfurt)        |
+| eu-west-1       | Europe (Ireland)          |
+| eu-west-2       | Europe (London)           |
+| eu-west-3       | Europe (Paris)            |
+| eu-north-1      | Europe (Stockholm)        |
+| sa-east-1       | South America (São Paulo) |
 
 **Note**: To privately register a resource in any other region, use the provided packages.
 

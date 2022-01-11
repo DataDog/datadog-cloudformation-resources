@@ -212,7 +212,8 @@
         "service check",
         "synthetics alert",
         "trace-analytics alert",
-        "slo alert"
+        "slo alert",
+        "rum alert"
       ]
     },
     "Multi": {

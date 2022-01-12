@@ -108,7 +108,7 @@ _Required_: Yes
 
 _Type_: String
 
-_Allowed Values_: <code>composite</code> | <code>event alert</code> | <code>log alert</code> | <code>metric alert</code> | <code>process alert</code> | <code>query alert</code> | <code>service check</code> | <code>synthetics alert</code> | <code>trace-analytics alert</code> | <code>slo alert</code>
+_Allowed Values_: <code>composite</code> | <code>event alert</code> | <code>log alert</code> | <code>metric alert</code> | <code>process alert</code> | <code>query alert</code> | <code>service check</code> | <code>synthetics alert</code> | <code>trace-analytics alert</code> | <code>slo alert</code> | <code>rum alert</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

@@ -10,34 +10,34 @@ Resources:
   DatadogTestSLO:
     Type: 'Datadog::SLOs::SLO'
     Properties:
-      Type: Metric
+      Type: metric
       Query:
         Denominator: ''
         Numerator: ''
       Name: Test Metric SLO
       Description: This is a test SLO
       Thresholds:
-        Target: 99.9
-        Timeframe: '30d'
-        TargetDisplay: '99.90'
-        Warning: 99.0
-        WarningDisplay: '99.0'
+        - Target: 99.9
+          Timeframe: '30d'
+          TargetDisplay: '99.90'
+          Warning: 99.0
+          WarningDisplay: '99.0'
 ```
 ```yaml
 Resources:
   DatadogTestSLO:
     Type: 'Datadog::SLOs::SLO'
     Properties:
-      Type: Monitor
+      Type: monitor
       Name: Test Monitor SLO
       Description: This is a test SLO
       MonitorIds: [12251, 1232345]
       Thresholds:
-        Target: 99.0
-        Timeframe: '30d'
-        TargetDisplay: '99.00'
-        Warning: 99.5
-        WarningDisplay: '99.50'
+        - Target: 99.0
+          Timeframe: '30d'
+          TargetDisplay: '99.00'
+          Warning: 99.5
+          WarningDisplay: '99.50'
 ```
 ## Property Reference:
 

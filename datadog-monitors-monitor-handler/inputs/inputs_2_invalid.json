@@ -1,0 +1,6 @@
+{
+  "Type": "rum alert",
+  "Query": "invalid query",
+  "Name": "RUM Monitoring on PROD",
+  "Message": "@slack-datadog-testing"
+}

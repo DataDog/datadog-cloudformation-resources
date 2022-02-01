@@ -213,7 +213,8 @@
         "synthetics alert",
         "trace-analytics alert",
         "slo alert",
-        "rum alert"
+        "rum alert",
+        "ci-pipelines alert"
       ]
     },
     "Multi": {

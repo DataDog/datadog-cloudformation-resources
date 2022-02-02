@@ -150,7 +150,7 @@ def update_handler(
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "does not exist" in e.body:
+            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body['errors']):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -215,7 +215,7 @@ def delete_handler(
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
-                if e.status == 400 and "does not exist" in e.body:
+                if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body['errors']):
                     error_code = HandlerErrorCode.NotFound
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
@@ -274,7 +274,7 @@ def read_handler(
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "does not exist" in e.body:
+            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body['errors']):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,

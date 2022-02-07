@@ -1,10 +1,17 @@
 # Changelog
 
+## 4.2.0 / 2022-02-07
+
+* [Added] Bump common package in all resources. See [#197](https://github.com/DataDog/datadog-cloudformation-resources/pull/197).
+* [Added] Add support for `ci-pipelines alert` monitor type. See [#196](https://github.com/DataDog/datadog-cloudformation-resources/pull/196).
+* [Added] Add support for RUM monitors. See [#191](https://github.com/DataDog/datadog-cloudformation-resources/pull/191).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.2.0.zip`
+
 ## 4.1.0 / 2021-11-23
 
 * [Added] Update common version. See [#176](https://github.com/DataDog/datadog-cloudformation-resources/pull/176).
 * [Added] Set priority on monitor creation/update. See [#170](https://github.com/DataDog/datadog-cloudformation-resources/pull/170). Thanks [bencrinkle](https://github.com/bencrinkle).
-* Link to Resource:  s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.1.0.zip
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.1.0.zip`
 
 ## 4.0.0 / 2021-06-28
 

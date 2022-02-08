@@ -120,7 +120,7 @@ The Datadog-Amazon CloudFormation resources are available on the CloudFormation 
 | us-east-2       | US East (Ohio)            |
 | us-west-1       | US West (N. California)   |
 | us-west-2       | US West (Oregon)          |
-| ap-south-1      | Africa (Cape Town)        |
+| ap-south-1      | Asia Pacific (Mumbai)     |
 | ap-northeast-1  | Asia Pacific (Tokyo)      |
 | ap-northeast-2  | Asia Pacific (Seoul)      |
 | ap-southeast-1  | Asia Pacific (Singapore)  |

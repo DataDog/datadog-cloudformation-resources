@@ -44,7 +44,7 @@ Our team will trigger the release pipeline.
     ```
     aws cloudformation update-stack-set --stack-set-name <RESOURCE_NAME> \
       --use-previous-template \
-      --parameters '[{"ParameterKey": "VersionToPublish", "ParameterValue":"<VERSION_TO_DEPLOY>"}]' \
+      --parameters '[{"ParameterKey": "FirstTimePublishing", "ParameterValue":"true|false"}, {"ParameterKey": "VersionToPublish", "ParameterValue":"<VERSION_TO_DEPLOY>"}]' \
       --operation-preferences '{"RegionConcurrencyType": "<SEQUENTIAL|PARALLEL>", "FailureToleranceCount": "16"}'
     ```
 * Check the StackSet in AWS to ensure deploys in all regions succeed.

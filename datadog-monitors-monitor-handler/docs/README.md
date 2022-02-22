@@ -46,7 +46,7 @@ Properties:
 
 Credentials for the Datadog API
 
-_Required_: Yes
+_Required_: No
 
 _Type_: <a href="datadogcredentials.md">DatadogCredentials</a>
 

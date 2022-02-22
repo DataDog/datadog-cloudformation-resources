@@ -35,13 +35,14 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
     # pylint: disable=invalid-name
     desiredResourceState: Optional["ResourceModel"]
     previousResourceState: Optional["ResourceModel"]
+    typeConfiguration: Optional["TypeConfigurationModel"]
 
 
 @dataclass
 class ResourceModel(BaseModel):
     DatadogCredentials: Optional["_DatadogCredentials"]
     Creator: Optional["_Creator"]
-    Id: Optional[int]
+    Id: Optional[Any]
     Message: Optional[str]
     Name: Optional[str]
     Tags: Optional[Sequence[str]]
@@ -229,5 +230,25 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
+
+
+@dataclass
+class TypeConfigurationModel(BaseModel):
+    DatadogCredentials: Optional["_DatadogCredentials"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_TypeConfigurationModel"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_TypeConfigurationModel"]:
+        if not json_data:
+            return None
+        return cls(
+            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_TypeConfigurationModel = TypeConfigurationModel
 
 

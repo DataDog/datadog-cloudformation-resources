@@ -1,14 +1,10 @@
 {
-    "typeName": "Datadog::Monitors::Monitor",
-    "description": "Datadog Monitor 3.0.0",
-    "typeConfiguration": {
-        "properties": {
-            "DatadogCredentials": {
-                "$ref": "#/definitions/DatadogCredentials"
-            }
-        },
-        "additionalProperties": false
+    "properties": {
+        "DatadogCredentials": {
+            "$ref": "#/definitions/DatadogCredentials"
+        }
     },
+    "additionalProperties": false,
     "definitions": {
         "Creator": {
             "type": "object",
@@ -158,117 +154,5 @@
             "additionalProperties": false
         }
     },
-    "properties": {
-        "DatadogCredentials": {
-            "$ref": "#/definitions/DatadogCredentials"
-        },
-        "Creator": {
-            "$ref": "#/definitions/Creator"
-        },
-        "Id": {
-            "description": "ID of the monitor",
-            "oneOf": [
-                {
-                    "type": "string"
-                },
-                {
-                    "type": "integer"
-                }
-              ]
-        },
-        "Message": {
-            "description": "A message to include with notifications for the monitor",
-            "type": "string"
-        },
-        "Name": {
-            "description": "Name of the monitor",
-            "type": "string"
-        },
-        "Tags": {
-            "description": "Tags associated with the monitor",
-            "type": "array",
-            "items": {
-                "type": "string"
-            }
-        },
-        "Options": {
-            "description": "The monitor options",
-            "$ref": "#/definitions/MonitorOptions"
-        },
-        "Query": {
-            "description": "The monitor query",
-            "type": "string"
-        },
-        "Type": {
-            "type": "string",
-            "description": "The type of the monitor",
-            "enum": [
-                "composite",
-                "event alert",
-                "log alert",
-                "metric alert",
-                "process alert",
-                "query alert",
-                "service check",
-                "synthetics alert",
-                "trace-analytics alert"
-            ]
-        },
-        "Multi": {
-            "description": "Whether or not the monitor is multi alert",
-            "type": "boolean"
-        },
-        "Created": {
-            "description": "Date of creation of the monitor",
-            "type": "string",
-            "format": "date-time"
-        },
-        "Deleted": {
-            "description": "Date of deletion of the monitor",
-            "type": "string",
-            "format": "date-time"
-        },
-        "Modified": {
-            "description": "Date of modification of the monitor",
-            "type": "string",
-            "format": "date-time"
-        }
-    },
-    "required": [
-        "Query",
-        "Type"
-    ],
-    "writeOnlyProperties": [
-        "/properties/DatadogCredentials"
-    ],
-    "primaryIdentifier": [
-        "/properties/Id"
-    ],
-    "readOnlyProperties": [
-        "/properties/Modified",
-        "/properties/Id",
-        "/properties/Deleted",
-        "/properties/State",
-        "/properties/OverallState",
-        "/properties/Creator",
-        "/properties/Created"
-    ],
-    "additionalProperties": false,
-    "handlers": {
-        "create": {
-            "permissions": [""]
-        },
-        "read": {
-            "permissions": [""]
-        },
-        "update": {
-            "permissions": [""]
-        },
-        "delete": {
-            "permissions": [""]
-        },
-        "list": {
-            "permissions": [""]
-        }
-    }
+    "typeName": "Datadog::Monitors::Monitor"
 }

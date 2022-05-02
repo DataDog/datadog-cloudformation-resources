@@ -216,7 +216,8 @@
         "trace-analytics alert",
         "slo alert",
         "rum alert",
-        "ci-pipelines alert"
+        "ci-pipelines alert",
+        "error-tracking alert"
       ]
     },
     "Multi": {

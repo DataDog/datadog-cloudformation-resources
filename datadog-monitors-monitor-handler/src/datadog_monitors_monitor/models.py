@@ -53,6 +53,7 @@ class ResourceModel(BaseModel):
     Created: Optional[str]
     Deleted: Optional[str]
     Modified: Optional[str]
+    RestrictedRoles: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -77,6 +78,7 @@ class ResourceModel(BaseModel):
             Created=json_data.get("Created"),
             Deleted=json_data.get("Deleted"),
             Modified=json_data.get("Modified"),
+            RestrictedRoles=json_data.get("RestrictedRoles"),
         )
 
 
@@ -126,6 +128,10 @@ class MonitorOptions(BaseModel):
     Thresholds: Optional["_MonitorThresholds"]
     ThresholdWindows: Optional["_MonitorThresholdWindows"]
     TimeoutH: Optional[int]
+    RenotifyOccurrences: Optional[int]
+    RenotifyStatuses: Optional[Sequence[str]]
+    MinFailureDuration: Optional[int]
+    NewGroupDelay: Optional[int]
 
     @classmethod
     def _deserialize(
@@ -151,6 +157,10 @@ class MonitorOptions(BaseModel):
             Thresholds=MonitorThresholds._deserialize(json_data.get("Thresholds")),
             ThresholdWindows=MonitorThresholdWindows._deserialize(json_data.get("ThresholdWindows")),
             TimeoutH=json_data.get("TimeoutH"),
+            RenotifyOccurrences=json_data.get("RenotifyOccurrences"),
+            RenotifyStatuses=json_data.get("RenotifyStatuses"),
+            MinFailureDuration=json_data.get("MinFailureDuration"),
+            NewGroupDelay=json_data.get("NewGroupDelay"),
         )
 
 

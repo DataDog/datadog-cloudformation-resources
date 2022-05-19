@@ -203,8 +203,10 @@
       "type": "string",
       "description": "The type of the monitor",
       "enum": [
+        "audit alert",
         "composite",
         "event alert",
+        "event-v2 alert",
         "log alert",
         "metric alert",
         "process alert",
@@ -214,7 +216,8 @@
         "trace-analytics alert",
         "slo alert",
         "rum alert",
-        "ci-pipelines alert"
+        "ci-pipelines alert",
+        "error-tracking alert"
       ]
     },
     "Multi": {

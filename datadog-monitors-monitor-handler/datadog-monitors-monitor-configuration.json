@@ -83,6 +83,7 @@
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
                     "type": "boolean",
+                    "insertionOrder": false,
                     "default": true
                 },
                 "Locked": {
@@ -141,6 +142,7 @@
                 "RenotifyStatuses": {
                     "description": "The types of monitor statuses for which re-notification messages are sent.",
                     "type": "array",
+                    "insertionOrder": false,
                     "items": {
                         "type": "string",
                         "enum": [
@@ -157,8 +159,9 @@
                     "maximum": 7200
                 },
                 "NewGroupDelay": {
-                    "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer",
-                    "type": "integer"
+                    "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.",
+                    "type": "integer",
+                    "minimum": 0
                 }
             }
         },

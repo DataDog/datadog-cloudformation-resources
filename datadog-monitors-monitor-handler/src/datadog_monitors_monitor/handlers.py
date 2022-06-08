@@ -121,7 +121,7 @@ def read_handler(
             ThresholdWindows=None,
             TimeoutH=options.timeout_h if hasattr(options, "timeout_h") else None,
             RenotifyOccurrences=options.renotify_occurrences if hasattr(options, "renotify_occurrences") else None,
-            RenotifyStatuses=list(map(lambda el: str(el),options.renotify_statuses)) if hasattr(options, "renotify_statuses") else None,
+            RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
             MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
         )

@@ -299,7 +299,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 
         # Non nullable
         if model.Options.RenotifyStatuses is not None:
-            options.renotify_statuses=list(map(lambda el: MonitorRenotifyStatusType(el),model.Options.RenotifyStatuses)) if model.Options.RenotifyStatuses is not None else None
+            options.renotify_statuses=[MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses] if model.Options.RenotifyStatuses is not None else None
         if model.Options.EnableLogsSample is not None:
             options.enable_logs_sample = model.Options.EnableLogsSample
         if model.Options.EscalationMessage is not None:

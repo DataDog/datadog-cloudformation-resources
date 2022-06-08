@@ -83,6 +83,7 @@
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
                     "type": "boolean",
+                    "insertionOrder": false,
                     "default": true
                 },
                 "Locked": {
@@ -133,6 +134,34 @@
                 "TimeoutH": {
                     "description": "Number of hours of the monitor not reporting data before it automatically resolves",
                     "type": "integer"
+                },
+                "RenotifyOccurrences": {
+                    "description": "The number of times re-notification messages should be sent on the current status at the provided re-notification interval.",
+                    "type": "integer"
+                },
+                "RenotifyStatuses": {
+                    "description": "The types of monitor statuses for which re-notification messages are sent.",
+                    "type": "array",
+                    "insertionOrder": false,
+                    "items": {
+                        "type": "string",
+                        "enum": [
+                            "alert",
+                            "no data",
+                            "warn"
+                        ]
+                    }
+                },
+                "MinFailureDuration": {
+                    "description": "How long the test should be in failure before alerting (integer, number of seconds, max 7200).",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 7200
+                },
+                "NewGroupDelay": {
+                    "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.",
+                    "type": "integer",
+                    "minimum": 0
                 }
             }
         },

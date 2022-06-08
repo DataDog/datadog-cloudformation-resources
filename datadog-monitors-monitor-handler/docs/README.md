@@ -20,6 +20,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#query" title="Query">Query</a>" : <i>String</i>,
         "<a href="#type" title="Type">Type</a>" : <i>String</i>,
         "<a href="#multi" title="Multi">Multi</a>" : <i>Boolean</i>,
+        "<a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>" : <i>[ String, ... ]</i>
     }
 }
 </pre>
@@ -38,6 +39,8 @@ Properties:
     <a href="#query" title="Query">Query</a>: <i>String</i>
     <a href="#type" title="Type">Type</a>: <i>String</i>
     <a href="#multi" title="Multi">Multi</a>: <i>Boolean</i>
+    <a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>: <i>
+      - String</i>
 </pre>
 
 ## Properties
@@ -119,6 +122,16 @@ Whether or not the monitor is multi alert
 _Required_: No
 
 _Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### RestrictedRoles
+
+A list of unique role identifiers to define which roles are allowed to edit the monitor. The unique identifiers for all roles can be pulled from the [Roles API](https://docs.datadoghq.com/api/latest/roles/#list-roles) and are located in the `data.id` field. Editing a monitor includes any updates to the monitor configuration, monitor deletion, and muting of the monitor for any amount of time. `restricted_roles` is the successor of `locked`. For more information about `locked` and `restricted_roles`, see the [monitor options docs](https://docs.datadoghq.com/monitors/guide/monitor_api_options/#permissions-options).
+
+_Required_: No
+
+_Type_: List of String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

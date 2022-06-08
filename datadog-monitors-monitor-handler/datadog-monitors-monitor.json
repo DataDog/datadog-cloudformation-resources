@@ -87,6 +87,7 @@
         "IncludeTags": {
           "description": "Whether or not to include triggering tags into notification title",
           "type": "boolean",
+          "insertionOrder": false,
           "default": true
         },
         "Locked": {
@@ -137,6 +138,34 @@
         "TimeoutH": {
           "description": "Number of hours of the monitor not reporting data before it automatically resolves",
           "type": "integer"
+        },
+        "RenotifyOccurrences": {
+          "description": "The number of times re-notification messages should be sent on the current status at the provided re-notification interval.",
+          "type": "integer"
+        },
+        "RenotifyStatuses": {
+          "description":"The types of monitor statuses for which re-notification messages are sent.",
+          "type": "array",
+          "insertionOrder": false,
+          "items": {
+            "type": "string",
+            "enum":  [
+              "alert",
+              "no data",
+              "warn"
+            ]
+          }
+        },
+        "MinFailureDuration": {
+          "description": "How long the test should be in failure before alerting (integer, number of seconds, max 7200).",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 7200
+        },
+        "NewGroupDelay": {
+          "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.",
+          "type": "integer",
+          "minimum": 0
         }
       }
     },
@@ -238,6 +267,14 @@
       "description": "Date of modification of the monitor",
       "type": "string",
       "format": "date-time"
+    },
+    "RestrictedRoles": {
+      "description": "A list of unique role identifiers to define which roles are allowed to edit the monitor. The unique identifiers for all roles can be pulled from the [Roles API](https://docs.datadoghq.com/api/latest/roles/#list-roles) and are located in the `data.id` field. Editing a monitor includes any updates to the monitor configuration, monitor deletion, and muting of the monitor for any amount of time. `restricted_roles` is the successor of `locked`. For more information about `locked` and `restricted_roles`, see the [monitor options docs](https://docs.datadoghq.com/monitors/guide/monitor_api_options/#permissions-options).",
+      "type": "array",
+      "insertionOrder": false,
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [

@@ -23,7 +23,11 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "<a href="#syntheticscheckid" title="SyntheticsCheckID">SyntheticsCheckID</a>" : <i>Integer</i>,
     "<a href="#thresholds" title="Thresholds">Thresholds</a>" : <i><a href="monitorthresholds.md">MonitorThresholds</a></i>,
     "<a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>" : <i><a href="monitorthresholdwindows.md">MonitorThresholdWindows</a></i>,
-    "<a href="#timeouth" title="TimeoutH">TimeoutH</a>" : <i>Integer</i>
+    "<a href="#timeouth" title="TimeoutH">TimeoutH</a>" : <i>Integer</i>,
+    "<a href="#renotifyoccurrences" title="RenotifyOccurrences">RenotifyOccurrences</a>" : <i>Integer</i>,
+    "<a href="#renotifystatuses" title="RenotifyStatuses">RenotifyStatuses</a>" : <i>[ String, ... ]</i>,
+    "<a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>" : <i>Integer</i>,
+    "<a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>" : <i>Integer</i>
 }
 </pre>
 
@@ -46,6 +50,11 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <a href="#thresholds" title="Thresholds">Thresholds</a>: <i><a href="monitorthresholds.md">MonitorThresholds</a></i>
 <a href="#thresholdwindows" title="ThresholdWindows">ThresholdWindows</a>: <i><a href="monitorthresholdwindows.md">MonitorThresholdWindows</a></i>
 <a href="#timeouth" title="TimeoutH">TimeoutH</a>: <i>Integer</i>
+<a href="#renotifyoccurrences" title="RenotifyOccurrences">RenotifyOccurrences</a>: <i>Integer</i>
+<a href="#renotifystatuses" title="RenotifyStatuses">RenotifyStatuses</a>: <i>
+      - String</i>
+<a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>: <i>Integer</i>
+<a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>: <i>Integer</i>
 </pre>
 
 ## Properties
@@ -199,6 +208,46 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 #### TimeoutH
 
 Number of hours of the monitor not reporting data before it automatically resolves
+
+_Required_: No
+
+_Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### RenotifyOccurrences
+
+The number of times re-notification messages should be sent on the current status at the provided re-notification interval.
+
+_Required_: No
+
+_Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### RenotifyStatuses
+
+The types of monitor statuses for which re-notification messages are sent.
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### MinFailureDuration
+
+How long the test should be in failure before alerting (integer, number of seconds, max 7200).
+
+_Required_: No
+
+_Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### NewGroupDelay
+
+Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.
 
 _Required_: No
 

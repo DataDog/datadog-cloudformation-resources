@@ -13,6 +13,7 @@ from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.monitors_api import MonitorsApi
 from datadog_api_client.v1.model.monitor import Monitor as ApiMonitor
 from datadog_api_client.v1.model.monitor_options import MonitorOptions as ApiMonitorOptions
+from datadog_api_client.v1.model.monitor_renotify_status_type import MonitorRenotifyStatusType
 from datadog_api_client.v1.model.monitor_threshold_window_options import \
     MonitorThresholdWindowOptions as ApiMonitorThresholdWindows
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
@@ -86,6 +87,7 @@ def read_handler(
     model.Priority = monitor.priority
     model.Query = monitor.query
     model.Multi = monitor.multi
+    model.RestrictedRoles = monitor.restricted_roles
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (
@@ -118,6 +120,10 @@ def read_handler(
             Thresholds=None,
             ThresholdWindows=None,
             TimeoutH=options.timeout_h if hasattr(options, "timeout_h") else None,
+            RenotifyOccurrences=options.renotify_occurrences if hasattr(options, "renotify_occurrences") else None,
+            RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
+            MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
+            NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
         )
         thresholds = options.thresholds if hasattr(options, "thresholds") else None
         if thresholds:
@@ -163,6 +169,8 @@ def update_handler(
         monitor.tags = model.Tags
     if model.Priority is not None:
         monitor.priority = model.Priority
+    if model.RestrictedRoles is not None:
+        monitor.restricted_roles = model.RestrictedRoles
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
@@ -243,6 +251,8 @@ def create_handler(
         monitor.tags = model.Tags
     if model.Priority is not None:
         monitor.priority = model.Priority
+    if model.RestrictedRoles is not None:
+        monitor.restricted_roles = model.RestrictedRoles
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
@@ -283,8 +293,13 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         options.synthetics_check_id = model.Options.SyntheticsCheckID
         options.timeout_h = model.Options.TimeoutH
         options.renotify_interval = model.Options.RenotifyInterval
+        options.renotify_occurrences = model.Options.RenotifyOccurrences
+        options.min_failure_duration = model.Options.MinFailureDuration
+        options.new_group_delay = model.Options.NewGroupDelay
 
         # Non nullable
+        if model.Options.RenotifyStatuses is not None:
+            options.renotify_statuses=[MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses] if model.Options.RenotifyStatuses is not None else None
         if model.Options.EnableLogsSample is not None:
             options.enable_logs_sample = model.Options.EnableLogsSample
         if model.Options.EscalationMessage is not None:

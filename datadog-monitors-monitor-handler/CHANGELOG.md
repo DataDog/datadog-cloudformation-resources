@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.4.0 / 2022-06-13
+
+* [Added] Add missing monitor type and bump common package version. See [#221](https://github.com/DataDog/datadog-cloudformation-resources/pull/221).
+* [Added] Add missing monitor fields. See [#216](https://github.com/DataDog/datadog-cloudformation-resources/pull/216). Thanks [huyngogia1997](https://github.com/huyngogia1997)
+
 ## 4.3.0 / 2022-05-19
 
 * [Added] Add missing monitors alert types and bump common package in all resources. See [#207](https://github.com/DataDog/datadog-cloudformation-resources/pull/207).

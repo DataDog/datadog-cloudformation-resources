@@ -167,6 +167,7 @@ def update_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
+    _copy_stack_tags(monitor, request)
     if model.Priority is not None:
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
@@ -249,6 +250,7 @@ def create_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
+    _copy_stack_tags(monitor, request)
     if model.Priority is not None:
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
@@ -333,3 +335,22 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
     return options
+
+
+def _copy_stack_tags(monitor: ApiMonitor, request: ResourceHandlerRequest):
+    if request.typeConfiguration.TagResourceWithStackTags:
+        tags_to_copy = dict(**request.systemTags)
+        if request.desiredResourceTags:
+            tags_to_copy.update(**request.desiredResourceTags)
+
+        monitor.tags = monitor.get("tags", [])
+        for k, v in tags_to_copy.items():
+            # we also replace the : in the tag name to avoid issues with datadog's tagging format
+            k = k.replace(':', '_')
+            found = False
+            for existing_tag in monitor.tags:
+                if existing_tag.startswith(f"{k}:"):
+                    found = True
+                    break
+            if not found:
+                monitor.tags.append(f"{k}:{v}")

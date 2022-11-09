@@ -221,6 +221,7 @@ _MonitorThresholdWindows = MonitorThresholdWindows
 @dataclass
 class TypeConfigurationModel(BaseModel):
     DatadogCredentials: Optional["_DatadogCredentials"]
+    TagResourceWithStackTags: Optional[bool]
 
     @classmethod
     def _deserialize(
@@ -231,6 +232,7 @@ class TypeConfigurationModel(BaseModel):
             return None
         return cls(
             DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
+            TagResourceWithStackTags=json_data.get("TagResourceWithStackTags"),
         )
 
 

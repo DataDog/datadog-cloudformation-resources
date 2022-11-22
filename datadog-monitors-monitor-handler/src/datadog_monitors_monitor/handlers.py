@@ -79,6 +79,8 @@ def read_handler(
                 errorCode=http_to_handler_error_code(e.status),
             )
 
+    _copy_stack_tags(monitor, request)
+
     model.Created = monitor.created.isoformat()
     model.Modified = monitor.modified.isoformat()
     model.Message = monitor.message
@@ -345,12 +347,7 @@ def _copy_stack_tags(monitor: ApiMonitor, request: ResourceHandlerRequest):
 
         monitor.tags = monitor.get("tags", [])
         for k, v in tags_to_copy.items():
-            # we also replace the : in the tag name to avoid issues with datadog's tagging format
             k = k.replace(':', '_')
-            found = False
-            for existing_tag in monitor.tags:
-                if existing_tag.startswith(f"{k}:"):
-                    found = True
-                    break
-            if not found:
-                monitor.tags.append(f"{k}:{v}")
+            if any(tag.startswith(f"{k}:") for tag in monitor.tags):
+                continue
+            monitor.tags.append(f"{k}:{v}")

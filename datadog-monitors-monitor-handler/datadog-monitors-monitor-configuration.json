@@ -87,7 +87,6 @@
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
                     "type": "boolean",
-                    "insertionOrder": false,
                     "default": true
                 },
                 "Locked": {

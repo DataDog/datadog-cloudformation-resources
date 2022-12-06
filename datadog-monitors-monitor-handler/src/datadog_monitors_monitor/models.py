@@ -132,6 +132,7 @@ class MonitorOptions(BaseModel):
     RenotifyStatuses: Optional[Sequence[str]]
     MinFailureDuration: Optional[int]
     NewGroupDelay: Optional[int]
+    Variables: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -161,6 +162,7 @@ class MonitorOptions(BaseModel):
             RenotifyStatuses=json_data.get("RenotifyStatuses"),
             MinFailureDuration=json_data.get("MinFailureDuration"),
             NewGroupDelay=json_data.get("NewGroupDelay"),
+            Variables=json_data.get("Variables"),
         )
 
 

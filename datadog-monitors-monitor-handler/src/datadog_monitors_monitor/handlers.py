@@ -347,7 +347,7 @@ def _copy_stack_tags(monitor: ApiMonitor, request: ResourceHandlerRequest):
 
         monitor.tags = monitor.get("tags", [])
         for k, v in tags_to_copy.items():
-            k = k.replace(':', '_')
-            if any(tag.startswith(f"{k}:") for tag in monitor.tags):
+            corrected_k = k.replace(':', '_')
+            if any(tag.startswith(f"{corrected_k}:") for tag in monitor.tags):
                 continue
-            monitor.tags.append(f"{k}:{v}")
+            monitor.tags.append(f"{corrected_k}:{v}")

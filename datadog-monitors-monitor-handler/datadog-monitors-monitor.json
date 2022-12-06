@@ -166,6 +166,146 @@
           "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.",
           "type": "integer",
           "minimum": 0
+        },
+        "Variables": {
+          "description": "Variables, containing formula and functions events queries.",
+          "type": "array",
+          "insertionorder": false,
+          "items": {
+            "type": "object",
+            "additionalproperties": false,
+            "properties": {
+              "compute": {
+                "description": "Compute options.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "aggregation": {
+                    "description": "Aggregation methods for event platform queries.",
+                    "type": "string",
+                    "enum": [
+                      "count",
+                      "cardinality",
+                      "median",
+                      "pc75",
+                      "pc90",
+                      "pc95",
+                      "pc98",
+                      "pc99",
+                      "sum",
+                      "min",
+                      "max",
+                      "avg"
+                    ]
+                  },
+                  "interval": {
+                    "description": "A time interval in milliseconds.",
+                    "type": "int",
+                    "minimum": 0
+                  },
+                  "metric": {
+                    "description": "Measurable attribute to compute.",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "aggregation"
+                ]
+              },
+              "data_source": {
+                "description": "Data source for event platform-based queries.",
+                "type": "string",
+                "enum": [
+                  "rum",
+                  "ci_pipelines",
+                  "ci_tests",
+                  "audit",
+                  "events",
+                  "logs",
+                  "spans"
+                ]
+              },
+              "group_by": {
+                "description": "Group by options.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "facet": "string",
+                  "limit": "int",
+                  "sort": {
+                    "description": "Options for sorting group by results.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                      "aggregation": {
+                        "description": "Aggregation methods for event platform queries.",
+                        "type": "string",
+                        "enum": [
+                          "count",
+                          "cardinality",
+                          "median",
+                          "pc75",
+                          "pc90",
+                          "pc95",
+                          "pc98",
+                          "pc99",
+                          "sum",
+                          "min",
+                          "max",
+                          "avg"
+                        ]
+                      },
+                      "metric": "string",
+                      "order": {
+                        "description": "Direction of sort.",
+                        "type": "string",
+                        "enum": [
+                          "asc",
+                          "desc"
+                        ]
+                      },
+                      "required": [
+                        "aggregation"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "facet",
+                    "sort"
+                  ]
+                }
+              },
+              "indexes": {
+                "type": "array",
+                "insertionOrder": false,
+                "items": {
+                  "type": "string"
+                }
+              },
+              "name": "string",
+              "search": {
+                "description": "Search options.",
+                "type": "object",
+                "additionalProperties": false,
+                "properties": {
+                  "query": {
+                    "description": "The monitor query.",
+                    "type": "string"
+                  },
+                  "required": [
+                    "query"
+                  ]
+                }
+              }
+            },
+            "required": [
+              "compute",
+              "data_source",
+              "group_by",
+              "name",
+              "search"
+            ]
+          }
         }
       }
     },

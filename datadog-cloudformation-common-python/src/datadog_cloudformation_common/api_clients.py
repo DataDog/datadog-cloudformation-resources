@@ -1,11 +1,11 @@
 from contextlib import contextmanager
 import pkg_resources
 
-from datadog_api_client.v1 import ApiClient, Configuration
+from datadog_api_client import ApiClient, Configuration
 
 
 @contextmanager
-def v1_client(api_key: str, app_key: str, api_url: str, resource_name: str, resource_version: str) -> ApiClient:
+def client(api_key: str, app_key: str, api_url: str, resource_name: str, resource_version: str) -> ApiClient:
     configuration = Configuration(
         host=api_url or "https://api.datadoghq.com",
         api_key={

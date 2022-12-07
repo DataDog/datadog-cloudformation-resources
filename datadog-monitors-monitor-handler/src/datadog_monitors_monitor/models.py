@@ -132,7 +132,7 @@ class MonitorOptions(BaseModel):
     RenotifyStatuses: Optional[Sequence[str]]
     MinFailureDuration: Optional[int]
     NewGroupDelay: Optional[int]
-    Variables: Optional["_MonitorVariables"]
+    Variables: Optional[Sequence["_MonitorVariable"]]
 
     @classmethod
     def _deserialize(
@@ -162,7 +162,7 @@ class MonitorOptions(BaseModel):
             RenotifyStatuses=json_data.get("RenotifyStatuses"),
             MinFailureDuration=json_data.get("MinFailureDuration"),
             NewGroupDelay=json_data.get("NewGroupDelay"),
-            Variables=MonitorVariables._deserialize(json_data.get("Variables")),
+            Variables=json_data.get("Variables"),
         )
 
 
@@ -218,6 +218,128 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
+
+
+@dataclass
+class MonitorVariable(BaseModel):
+    Compute: Optional["_MonitorVariableCompute"]
+    DataSource: Optional[str]
+    GroupBy: Optional["_MonitorVariableGroupBy"]
+    Indexes: Optional[Sequence[str]]
+    Name: Optional[str]
+    Search: Optional["_MonitorVariableSearch"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorVariable"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorVariable"]:
+        if not json_data:
+            return None
+        return cls(
+            Compute=json_data.get("Compute"),
+            DataSource=json_data.get("DataSource"),
+            GroupBy=json_data.get("GroupBy"),
+            Indexes=json_data.get("Indexes"),
+            Name=json_data.get("Name"),
+            Search=json_data.get("Search"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorVariable = MonitorVariable
+
+
+@dataclass
+class MonitorVariableCompute(BaseModel):
+    Aggregation: Optional[str]
+    Internal: Optional[str]
+    Metric: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorVariableCompute"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorVariableCompute"]:
+        if not json_data:
+            return None
+        return cls(
+            Aggregation=json_data.get("Compute")),
+            Internal=json_data.get("Internal")),
+            Metric=json_data.get("Metric")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorVariableCompute = MonitorVariableCompute
+
+
+@dataclass
+class MonitorVariableGroupBy(BaseModel):
+    Facet: Optional[str]
+    Limit: Optional[int]
+    Sort: Optional["_MonitorVariableGroupBySort"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorVariableGroupBy"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorVariableGroupBy"]:
+        if not json_data:
+            return None
+        return cls(
+            Facet=json_data.get("Facet")),
+            Limit=json_data.get("Limit")),
+            Sort=json_data.get("Sort")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorVariableGroupBy = MonitorVariableGroupBy
+
+
+@dataclass
+class MonitorVariableGroupBySort(BaseModel):
+    Aggregation: Optional[str]
+    Metric: Optional[str]
+    Order: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorVariableGroupBySort"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorVariableGroupBySort"]:
+        if not json_data:
+            return None
+        return cls(
+            Aggregation=json_data.get("Compute")),
+            Metric=json_data.get("Metric")),
+            Order=json_data.get("Order")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorVariableGroupBySort = MonitorVariableGroupBySort
+
+
+@dataclass
+class MonitorVariableSearch(BaseModel):
+    Query: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorVariableSearch"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorVariableSearch"]:
+        if not json_data:
+            return None
+        return cls(
+            Query=json_data.get("Query")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorVariableSearch = MonitorVariableSearch
 
 
 @dataclass

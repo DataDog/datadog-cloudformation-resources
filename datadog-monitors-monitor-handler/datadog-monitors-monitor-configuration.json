@@ -2,6 +2,10 @@
     "properties": {
         "DatadogCredentials": {
             "$ref": "#/definitions/DatadogCredentials"
+        },
+        "TagResourceWithStackTags": {
+            "description": "Copy the Cloudformation Stack tags to the datadog monitor. It defaults to false to stay backwards compatible.",
+            "type": "boolean"
         }
     },
     "additionalProperties": false,
@@ -83,7 +87,6 @@
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
                     "type": "boolean",
-                    "insertionOrder": false,
                     "default": true
                 },
                 "Locked": {

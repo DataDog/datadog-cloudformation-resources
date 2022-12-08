@@ -79,8 +79,6 @@ def read_handler(
                 errorCode=http_to_handler_error_code(e.status),
             )
 
-    _copy_stack_tags(monitor, request)
-
     model.Created = monitor.created.isoformat()
     model.Modified = monitor.modified.isoformat()
     model.Message = monitor.message
@@ -169,7 +167,6 @@ def update_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
-    _copy_stack_tags(monitor, request)
     if model.Priority is not None:
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
@@ -252,7 +249,6 @@ def create_handler(
         monitor.name = model.Name
     if model.Tags is not None:
         monitor.tags = model.Tags
-    _copy_stack_tags(monitor, request)
     if model.Priority is not None:
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
@@ -337,17 +333,3 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
     return options
-
-
-def _copy_stack_tags(monitor: ApiMonitor, request: ResourceHandlerRequest):
-    if request.typeConfiguration.TagResourceWithStackTags:
-        tags_to_copy = dict(**request.systemTags)
-        if request.desiredResourceTags:
-            tags_to_copy.update(**request.desiredResourceTags)
-
-        monitor.tags = monitor.get("tags", [])
-        for k, v in tags_to_copy.items():
-            corrected_k = k.replace(':', '_')
-            if any(tag.startswith(f"{corrected_k}:") for tag in monitor.tags):
-                continue
-            monitor.tags.append(f"{corrected_k}:{v}")

@@ -1,0 +1,49 @@
+{
+  "Type": "query alert",
+  "Query": "formula(\"query1 + query2\").last(\"1h\") > 5",
+  "Name": "SSH Activity on PROD",
+  "Message": "@slack-datadog-testing",
+  "Priority": 1,
+  "Options": {
+    "Locked": false,
+    "IncludeTags": true,
+    "NewHostDelay": 300,
+    "NotifyAudit": false,
+    "NotifyNoData": false,
+    "RenotifyInterval": 0,
+    "EnableLogsSample": true,
+    "Thresholds": {
+      "Critical": 4
+    },
+    "Variables": [
+      {
+        "DataSource": "logs",
+        "Name": "query1",
+        "Search": {
+          "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host}"
+        },
+        "Indexes": [
+          "*"
+        ],
+        "Compute": {
+          "Aggregation": "count"
+        },
+        "GroupBy": []
+      },
+      {
+        "DataSource": "logs",
+        "Name": "query2",
+        "Search": {
+          "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:bah} by {host}"
+        },
+        "Indexes": [
+          "*"
+        ],
+        "Compute": {
+          "Aggregation": "count"
+        },
+        "GroupBy": []
+      }
+    ]
+  }
+}

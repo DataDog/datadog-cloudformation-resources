@@ -264,7 +264,7 @@ class MonitorVariableCompute(BaseModel):
         if not json_data:
             return None
         return cls(
-            Aggregation=json_data.get("Compute")),
+            Aggregation=json_data.get("Aggregation")),
             Internal=json_data.get("Internal")),
             Metric=json_data.get("Metric")),
         )
@@ -312,7 +312,7 @@ class MonitorVariableGroupBySort(BaseModel):
         if not json_data:
             return None
         return cls(
-            Aggregation=json_data.get("Compute")),
+            Aggregation=json_data.get("Aggregation")),
             Metric=json_data.get("Metric")),
             Order=json_data.get("Order")),
         )

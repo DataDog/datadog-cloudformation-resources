@@ -124,6 +124,7 @@ def read_handler(
             RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
             MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
+            Variables=options.variables if hasattr(options, "variables") else None
         )
         thresholds = options.thresholds if hasattr(options, "thresholds") else None
         if thresholds:

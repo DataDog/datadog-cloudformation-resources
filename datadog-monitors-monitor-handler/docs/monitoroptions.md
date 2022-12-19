@@ -27,7 +27,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "<a href="#renotifyoccurrences" title="RenotifyOccurrences">RenotifyOccurrences</a>" : <i>Integer</i>,
     "<a href="#renotifystatuses" title="RenotifyStatuses">RenotifyStatuses</a>" : <i>[ String, ... ]</i>,
     "<a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>" : <i>Integer</i>,
-    "<a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>" : <i>Integer</i>
+    "<a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>" : <i>Integer</i>,
+    "<a href="#variables" title="Variables">Variables</a>" : <i>[ <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>, ... ]</i>
 }
 </pre>
 
@@ -55,6 +56,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
       - String</i>
 <a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>: <i>Integer</i>
 <a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>: <i>Integer</i>
+<a href="#variables" title="Variables">Variables</a>: <i>
+      - <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a></i>
 </pre>
 
 ## Properties
@@ -252,6 +255,16 @@ Time (in seconds) to skip evaluations for new groups. For example, this option c
 _Required_: No
 
 _Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Variables
+
+List of requests that can be used in the monitor query.
+
+_Required_: No
+
+_Type_: List of <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

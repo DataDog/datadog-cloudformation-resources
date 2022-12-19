@@ -19,7 +19,7 @@ from datadog_api_client.v1.model.monitor_threshold_window_options import \
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
 from .models import (
@@ -52,7 +52,7 @@ def read_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -176,7 +176,7 @@ def update_handler(
     if options:
         monitor.options = options
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -208,7 +208,7 @@ def delete_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -258,7 +258,7 @@ def create_handler(
     if options:
         monitor.options = options
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,

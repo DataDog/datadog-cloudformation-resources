@@ -14,6 +14,7 @@
 # IntelliJ
 */*.iml
 */.idea
+**/*.idea/
 */out.java
 */out/
 */.settings
@@ -37,3 +38,5 @@ rpdk.log
 
 # SAM test files
 */sam-tests/*
+
+**/*.egg-info/

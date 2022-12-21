@@ -425,7 +425,7 @@ def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryD
                     Metric=variable.compute.metric if hasattr(variable.compute, "metric") else None,
                 ),
                 Search=Search(Query=variable.search.query) if hasattr(variable, "search") else None,
-                Indexes=variable.indexes if hasattr(variable.indexes, "indexes") else None,
+                Indexes=variable.indexes if hasattr(variable, "indexes") else None,
                 GroupBy=None,
             )
 

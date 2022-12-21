@@ -1,5 +1,5 @@
 import logging
-from typing import Any, MutableMapping, Optional
+from typing import List, Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
     Action,
@@ -19,6 +19,32 @@ from datadog_api_client.v1.model.monitor_threshold_window_options import \
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
+from datadog_api_client.v1.model.query_sort_order import QuerySortOrder as ApiMonitorQuerySortOrder
+from datadog_api_client.v1.model.monitor_formula_and_function_event_query_definition import (
+    MonitorFormulaAndFunctionEventQueryDefinition as ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_events_data_source import (
+    MonitorFormulaAndFunctionEventsDataSource as ApiMonitorMonitorFormulaAndFunctionEventsDataSource,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_event_query_definition_compute import (
+    MonitorFormulaAndFunctionEventQueryDefinitionCompute as ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_event_aggregation import (
+    MonitorFormulaAndFunctionEventAggregation as ApiMonitorMonitorFormulaAndFunctionEventAggregation,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_event_query_definition_search import (
+    MonitorFormulaAndFunctionEventQueryDefinitionSearch as ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionSearch,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_event_query_group_by import (
+    MonitorFormulaAndFunctionEventQueryGroupBy as ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_event_query_group_by_sort import (
+MonitorFormulaAndFunctionEventQueryGroupBySort as ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_query_definition import (
+    MonitorFormulaAndFunctionQueryDefinition as ApiMonitorMonitorFormulaAndFunctionQueryDefinition,
+)
+
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
@@ -29,6 +55,11 @@ from .models import (
     MonitorThresholds,
     ResourceHandlerRequest,
     ResourceModel,
+    MonitorFormulaAndFunctionEventQueryDefinition,
+    MonitorFormulaAndFunctionEventQueryGroupBy,
+    Sort,
+    Compute,
+    Search,
     TypeConfigurationModel,
 )
 from .version import __version__
@@ -124,8 +155,13 @@ def read_handler(
             RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
             MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
-            Variables=options.variables if hasattr(options, "variables") else None
+            Variables=None
         )
+
+        variables = options.variables if hasattr(options, "variables") else None
+        if variables:
+            model.Options.Variables = build_cf_variables(variables)
+
         thresholds = options.thresholds if hasattr(options, "thresholds") else None
         if thresholds:
             model.Options.Thresholds = MonitorThresholds(
@@ -280,7 +316,6 @@ def create_handler(
     model.Id = monitor_resp.id
     return read_handler(session, request, callback_context)
 
-
 def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
     options = None
     if model.Options:
@@ -334,6 +369,80 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
         if model.Options.Variables is not None:
-            options.variables = model.Options.Variables
+            options.variables = []
+            for variable in model.Options.Variables:
+                if type(variable) == MonitorFormulaAndFunctionEventQueryDefinition:
+                    datadog_variable = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition(
+                        data_source=ApiMonitorMonitorFormulaAndFunctionEventsDataSource(variable.DataSource),
+                        name=variable.Name,
+                        compute=ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute(
+                            aggregation=ApiMonitorMonitorFormulaAndFunctionEventAggregation(variable.Compute.Aggregation),
+                        ),
+                    )
+                    # Optional fields
+                    if variable.Compute.Interval is not None:
+                        datadog_variable.compute.interval = variable.Compute.Interval
+                    if variable.Compute.Metric is not None:
+                        datadog_variable.compute.metric = variable.Compute.Metric
+
+                    if variable.Search is not None:
+                        datadog_variable.search = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionSearch(
+                            query=variable.Search.Query,
+                        )
+                    if variable.Indexes is not None:
+                        datadog_variable.indexes = variable.Indexes
+
+                    datadog_variable.group_by = []
+                    if variable.GroupBy is not None:
+                        for group in variable.GroupBy:
+                            datadog_group = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy(group.Facet)
+                            if group.Sort is not None:
+                                datadog_group.sort = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort(group.Sort.Aggregation)
+                                if group.Sort.Metric is not None:
+                                    datadog_group.sort.metric = group.Sort.Metric
+                                if group.Sort.Order is not None:
+                                    datadog_group.sort.order = ApiMonitorQuerySortOrder(group.Sort.Order)
+                            if group.Limit is not None:
+                                datadog_group.limit = group.Limit
+
+                            datadog_variable.group_by.append(datadog_group)
+                    options.variables.append(datadog_variable)
 
     return options
+
+
+def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryDefinition]):
+    cf_variables = []
+    for variable in variables:
+        ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition
+        if type(variable._composed_instances[0]) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
+            cf_variable = MonitorFormulaAndFunctionEventQueryDefinition(
+                DataSource=variable.data_source.value,
+                Name=variable.name,
+                Compute=Compute(
+                    Aggregation=variable.compute.aggregation.value,
+                    Interval=variable.compute.interval if hasattr(variable.compute, "interval") else None,
+                    Metric=variable.compute.metric if hasattr(variable.compute, "metric") else None,
+                ),
+                Search=Search(Query=variable.search.query) if hasattr(variable, "search") else None,
+                Indexes=variable.indexes if hasattr(variable.indexes, "indexes") else None,
+                GroupBy=None,
+            )
+
+            if hasattr(variable, "group_by"):
+                cf_variable.GroupBy = []
+                for group in variable.group_by:
+                    cf_group = MonitorFormulaAndFunctionEventQueryGroupBy(
+                        Facet=group.facet,
+                        Sort=None,
+                        Limit=group.limit if hasattr(group, "limit") else None,
+                    )
+                    if hasattr(group, "sort"):
+                        cf_group.Sort = Sort(
+                            Aggregation=group.sort.aggregation.value,
+                            Metric=group.sort.metric if hasattr(group.sort, "metric") else None,
+                            Order=group.sort.order.value if hasattr(group.sort, "order") else None,
+                        )
+                    cf_variable.GroupBy.append(cf_group)
+            cf_variables.append(cf_variable)
+    return cf_variables

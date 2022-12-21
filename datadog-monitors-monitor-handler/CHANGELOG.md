@@ -1,9 +1,5 @@
 # Changelog
 
-## 4.4.1 / 2022-06-13
-
-* [Added] Add Variables to Monitor Options [#232](https://github.com/DataDog/datadog-cloudformation-resources/pull/232).
-
 ## 4.4.0 / 2022-06-13
 
 * [Added] Add missing monitor type and bump common package version. See [#221](https://github.com/DataDog/datadog-cloudformation-resources/pull/221).

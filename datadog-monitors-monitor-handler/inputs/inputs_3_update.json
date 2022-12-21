@@ -1,8 +1,8 @@
 {
-  "Type": "query alert",
-  "Query": "formula(\"query1 + query2\").last(\"1h\") > 5",
-  "Name": "SSH Activity on PROD",
-  "Message": "@slack-datadog-testing",
+  "Type": "rum alert",
+  "Query": "formula(\"var1 + var2\").last(\"5m\") > 10",
+  "Name": "Monitor type variables test - updated",
+  "Message": "@slack-datadog-testing-updated",
   "Priority": 1,
   "Options": {
     "Locked": false,
@@ -13,14 +13,14 @@
     "RenotifyInterval": 0,
     "EnableLogsSample": true,
     "Thresholds": {
-      "Critical": 4
+      "Critical": 10
     },
     "Variables": [
       {
-        "DataSource": "logs",
-        "Name": "query1",
+       "DataSource": "rum",
+        "Name": "var1",
         "Search": {
-          "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host}"
+          "Query": "@browser.name:Firefox"
         },
         "Indexes": [
           "*"
@@ -31,10 +31,10 @@
         "GroupBy": []
       },
       {
-        "DataSource": "logs",
-        "Name": "query2",
+        "DataSource": "rum",
+        "Name": "var2",
         "Search": {
-          "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:bah} by {host}"
+          "Query": "@browser.name:Chrome"
         },
         "Indexes": [
           "*"

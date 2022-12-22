@@ -244,9 +244,7 @@
             "required": [
                 "Compute",
                 "DataSource",
-                "GroupBy",
-                "Name",
-                "Search"
+                "Name"
             ]
         },
         "MonitorFormulaAndFunctionEventsDataSource": {
@@ -318,8 +316,7 @@
                 }
             },
             "required": [
-                "Facet",
-                "Sort"
+                "Facet"
             ],
             "type": "object",
             "additionalProperties": false

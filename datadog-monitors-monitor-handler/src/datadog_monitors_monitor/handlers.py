@@ -158,7 +158,7 @@ def read_handler(
             Variables=None
         )
 
-        variables = options.variables if hasattr(options, "variables") else None
+        variables = getattr(options, "variables", None)
         if variables:
             model.Options.Variables = build_cf_variables(variables)
 
@@ -371,7 +371,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         if model.Options.Variables is not None:
             options.variables = []
             for variable in model.Options.Variables:
-                if type(variable) == MonitorFormulaAndFunctionEventQueryDefinition:
+                if isinstance(variable, MonitorFormulaAndFunctionEventQueryDefinition):
                     datadog_variable = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition(
                         data_source=ApiMonitorMonitorFormulaAndFunctionEventsDataSource(variable.DataSource),
                         name=variable.Name,
@@ -414,7 +414,6 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryDefinition]):
     cf_variables = []
     for variable in variables:
-        ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition
         if type(variable._composed_instances[0]) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
             cf_variable = MonitorFormulaAndFunctionEventQueryDefinition(
                 DataSource=variable.data_source.value,

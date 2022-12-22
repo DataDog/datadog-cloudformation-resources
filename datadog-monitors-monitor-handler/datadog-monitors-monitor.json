@@ -242,9 +242,8 @@
       "required": [
         "Compute",
         "DataSource",
-        "GroupBy",
-        "Name",
-        "Search"        ]
+        "Name"
+      ]
     },
     "MonitorFormulaAndFunctionEventsDataSource": {
       "description": "Data source for event platform-based queries.",
@@ -313,8 +312,7 @@
         }
       },
       "required": [
-        "Facet",
-        "Sort"
+        "Facet"
       ],
       "type": "object",
       "additionalProperties": false

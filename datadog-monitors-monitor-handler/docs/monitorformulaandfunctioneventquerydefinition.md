@@ -48,7 +48,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### Search
 
-_Required_: Yes
+_Required_: No
 
 _Type_: <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>
 
@@ -76,7 +76,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 Group by options.
 
-_Required_: Yes
+_Required_: No
 
 _Type_: List of <a href="monitorformulaandfunctioneventquerygroupby.md">MonitorFormulaAndFunctionEventQueryGroupBy</a>
 

@@ -51,6 +51,8 @@ def build_aws_account_from_model(model):
         aws_account.cspm_resource_collection_enabled = model.CSPMResourceCollection
     if model.ResourceCollection is not None:
         aws_account.resource_collection_enabled = model.ResourceCollection
+    if model.ExcludedRegions is not None:
+        aws_account.excluded_regions = model.ExcludedRegions
     return aws_account
 
 
@@ -298,6 +300,7 @@ def read_handler(
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags
     model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules
+    model.ExcludedRegions = aws_account.excluded_regions
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

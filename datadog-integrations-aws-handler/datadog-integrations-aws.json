@@ -95,6 +95,13 @@
     "ResourceCollection": {
       "description": "Enable collecting information on your AWS resources for use in Datadog products such as Network Process Monitoring.",
       "type": "boolean"
+    },
+    "ExcludedRegions": {
+      "description": "Array of AWS regions to exclude from metrics collection.",
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
     }
   },
   "required": [],

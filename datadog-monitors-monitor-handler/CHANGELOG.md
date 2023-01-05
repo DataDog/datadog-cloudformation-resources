@@ -1,9 +1,16 @@
 # Changelog
 
+## 4.5.0 / 2023-01-05
+
+* [Added] support for variables option. See [#237](https://github.com/DataDog/datadog-cloudformation-resources/pull/237).
+* [Added] Bump common package to 0.0.12. See [#237](https://github.com/DataDog/datadog-cloudformation-resources/pull/237).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.5.0.zip`
+
 ## 4.4.0 / 2022-06-13
 
 * [Added] Add missing monitor type and bump common package version. See [#221](https://github.com/DataDog/datadog-cloudformation-resources/pull/221).
 * [Added] Add missing monitor fields. See [#216](https://github.com/DataDog/datadog-cloudformation-resources/pull/216). Thanks [huyngogia1997](https://github.com/huyngogia1997)
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.4.0.zip`
 
 ## 4.3.0 / 2022-05-19
 

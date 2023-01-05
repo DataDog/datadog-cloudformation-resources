@@ -1,0 +1,49 @@
+{
+  "Type": "rum alert",
+  "Query": "formula(\"var1 + var2\").last(\"5m\") > 10",
+  "Name": "Monitor type variables test - updated",
+  "Message": "@slack-datadog-testing-updated",
+  "Priority": 1,
+  "Options": {
+    "Locked": false,
+    "IncludeTags": true,
+    "NewHostDelay": 300,
+    "NotifyAudit": false,
+    "NotifyNoData": false,
+    "RenotifyInterval": 0,
+    "EnableLogsSample": true,
+    "Thresholds": {
+      "Critical": 10
+    },
+    "Variables": [
+      {
+       "DataSource": "rum",
+        "Name": "var1",
+        "Search": {
+          "Query": "@browser.name:Firefox"
+        },
+        "Indexes": [
+          "*"
+        ],
+        "Compute": {
+          "Aggregation": "count"
+        },
+        "GroupBy": []
+      },
+      {
+        "DataSource": "rum",
+        "Name": "var2",
+        "Search": {
+          "Query": "@browser.name:Chrome"
+        },
+        "Indexes": [
+          "*"
+        ],
+        "Compute": {
+          "Aggregation": "count"
+        },
+        "GroupBy": []
+      }
+    ]
+  }
+}

@@ -162,8 +162,164 @@
                     "description": "Time (in seconds) to skip evaluations for new groups. For example, this option can be used to skip evaluations for new hosts while they initialize. Must be a non negative integer.",
                     "type": "integer",
                     "minimum": 0
+                },
+                "Variables": {
+                    "description": "List of requests that can be used in the monitor query.",
+                    "type": "array",
+                    "items": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"
+                            }
+                        ]
+                    }
                 }
             }
+        },
+        "MonitorFormulaAndFunctionEventQueryDefinition": {
+            "description": "A formula and functions events query.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "DataSource": {
+                    "description": "Threshold value for triggering an alert.",
+                    "$ref": "#/definitions/MonitorFormulaAndFunctionEventsDataSource"
+                },
+                "Search": {
+                    "description": "Search options.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Query": {
+                            "description": "The monitor query.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Query"
+                    ]
+                },
+                "Indexes": {
+                    "description": "An array of index names to query in the stream. Omit or use `[]` to query all indexes at once.",
+                    "type": "array",
+                    "insertionOrder": false,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "Compute": {
+                    "description": "Compute options.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Aggregation": {
+                            "$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"
+                        },
+                        "Interval": {
+                            "description": "A time interval in milliseconds.",
+                            "type": "integer",
+                            "minimum": 0
+                        },
+                        "Metric": {
+                            "description": "Measurable attribute to compute.",
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "Aggregation"
+                    ]
+                },
+                "GroupBy": {
+                    "description": "Group by options.",
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"
+                    }
+                },
+                "Name": {
+                    "description": "Name of the monitor",
+                    "type": "string"
+                }
+            },
+            "required": [
+                "Compute",
+                "DataSource",
+                "Name"
+            ]
+        },
+        "MonitorFormulaAndFunctionEventsDataSource": {
+            "description": "Data source for event platform-based queries.",
+            "type": "string",
+            "enum": [
+                "rum",
+                "ci_pipelines",
+                "ci_tests",
+                "audit",
+                "events",
+                "logs",
+                "spans"
+            ]
+        },
+        "MonitorFormulaAndFunctionEventAggregation": {
+            "description": "Data source for event platform-based queries.",
+            "type": "string",
+            "enum": [
+                "count",
+                "cardinality",
+                "median",
+                "pc75",
+                "pc90",
+                "pc95",
+                "pc98",
+                "pc99",
+                "sum",
+                "min",
+                "max",
+                "avg"
+            ]
+        },
+        "MonitorFormulaAndFunctionEventQueryGroupBy": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "Facet": {
+                    "description": "Event facet.",
+                    "type": "string"
+                },
+                "Limit": {
+                    "description": "Event facet.",
+                    "type": "integer"
+                },
+                "Sort": {
+                    "description": "Options for sorting group by results.",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "properties": {
+                        "Aggregation": {
+                            "$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"
+                        },
+                        "Metric": {
+                            "description": "Options for sorting group by results.",
+                            "type": "string"
+                        },
+                        "Order": {
+                            "description": "Direction of sort.",
+                            "type": "string",
+                            "enum": [
+                                "asc",
+                                "desc"
+                            ]
+                        }
+                    },
+                    "required": [
+                        "Aggregation"
+                    ]
+                }
+            },
+            "required": [
+                "Facet"
+            ],
+            "type": "object",
+            "additionalProperties": false
         },
         "DatadogCredentials": {
             "description": "Credentials for the Datadog API",

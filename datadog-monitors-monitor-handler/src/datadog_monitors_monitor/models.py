@@ -132,6 +132,7 @@ class MonitorOptions(BaseModel):
     RenotifyStatuses: Optional[Sequence[str]]
     MinFailureDuration: Optional[int]
     NewGroupDelay: Optional[int]
+    Variables: Optional[Sequence["_MonitorFormulaAndFunctionEventQueryDefinition"]]
 
     @classmethod
     def _deserialize(
@@ -161,6 +162,7 @@ class MonitorOptions(BaseModel):
             RenotifyStatuses=json_data.get("RenotifyStatuses"),
             MinFailureDuration=json_data.get("MinFailureDuration"),
             NewGroupDelay=json_data.get("NewGroupDelay"),
+            Variables=deserialize_list(json_data.get("Variables"), MonitorFormulaAndFunctionEventQueryDefinition),
         )
 
 
@@ -216,6 +218,128 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
+
+
+@dataclass
+class MonitorFormulaAndFunctionEventQueryDefinition(BaseModel):
+    DataSource: Optional[str]
+    Search: Optional["_Search"]
+    Indexes: Optional[Sequence[str]]
+    Compute: Optional["_Compute"]
+    GroupBy: Optional[Sequence["_MonitorFormulaAndFunctionEventQueryGroupBy"]]
+    Name: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorFormulaAndFunctionEventQueryDefinition"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorFormulaAndFunctionEventQueryDefinition"]:
+        if not json_data:
+            return None
+        return cls(
+            DataSource=json_data.get("DataSource"),
+            Search=Search._deserialize(json_data.get("Search")),
+            Indexes=json_data.get("Indexes"),
+            Compute=Compute._deserialize(json_data.get("Compute")),
+            GroupBy=deserialize_list(json_data.get("GroupBy"), MonitorFormulaAndFunctionEventQueryGroupBy),
+            Name=json_data.get("Name"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorFormulaAndFunctionEventQueryDefinition = MonitorFormulaAndFunctionEventQueryDefinition
+
+
+@dataclass
+class Search(BaseModel):
+    Query: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_Search"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_Search"]:
+        if not json_data:
+            return None
+        return cls(
+            Query=json_data.get("Query"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_Search = Search
+
+
+@dataclass
+class Compute(BaseModel):
+    Aggregation: Optional[str]
+    Interval: Optional[int]
+    Metric: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_Compute"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_Compute"]:
+        if not json_data:
+            return None
+        return cls(
+            Aggregation=json_data.get("Aggregation"),
+            Interval=json_data.get("Interval"),
+            Metric=json_data.get("Metric"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_Compute = Compute
+
+
+@dataclass
+class MonitorFormulaAndFunctionEventQueryGroupBy(BaseModel):
+    Facet: Optional[str]
+    Limit: Optional[int]
+    Sort: Optional["_Sort"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorFormulaAndFunctionEventQueryGroupBy"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorFormulaAndFunctionEventQueryGroupBy"]:
+        if not json_data:
+            return None
+        return cls(
+            Facet=json_data.get("Facet"),
+            Limit=json_data.get("Limit"),
+            Sort=Sort._deserialize(json_data.get("Sort")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorFormulaAndFunctionEventQueryGroupBy = MonitorFormulaAndFunctionEventQueryGroupBy
+
+
+@dataclass
+class Sort(BaseModel):
+    Aggregation: Optional[str]
+    Metric: Optional[str]
+    Order: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_Sort"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_Sort"]:
+        if not json_data:
+            return None
+        return cls(
+            Aggregation=json_data.get("Aggregation"),
+            Metric=json_data.get("Metric"),
+            Order=json_data.get("Order"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_Sort = Sort
 
 
 @dataclass

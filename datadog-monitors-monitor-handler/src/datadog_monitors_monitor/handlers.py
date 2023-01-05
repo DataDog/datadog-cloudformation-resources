@@ -414,7 +414,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryDefinition]):
     cf_variables = []
     for variable in variables:
-        if type(variable._composed_instances[0]) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
+        if type(variable.get_oneof_instance()) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
             cf_variable = MonitorFormulaAndFunctionEventQueryDefinition(
                 DataSource=variable.data_source.value,
                 Name=variable.name,

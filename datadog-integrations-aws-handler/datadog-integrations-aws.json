@@ -99,6 +99,8 @@
     "ExcludedRegions": {
       "description": "Array of AWS regions to exclude from metrics collection.",
       "type": "array",
+      "uniqueItems": true,
+      "insertionOrder": false,
       "items": {
         "type": "string"
       }

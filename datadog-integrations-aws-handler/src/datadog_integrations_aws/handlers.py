@@ -298,6 +298,9 @@ def read_handler(
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags
     model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules
+    model.MetricsCollection = aws_account.metrics_collection_enabled
+    model.CSPMResourceCollection = aws_account.cspm_resource_collection_enabled
+    model.ResourceCollection = aws_account.resource_collection_enabled
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

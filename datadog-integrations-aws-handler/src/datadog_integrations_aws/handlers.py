@@ -13,7 +13,7 @@ from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_api_client.v1.model.aws_account import AWSAccount
 from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
@@ -67,7 +67,7 @@ def create_handler(
     type_configuration = request.typeConfiguration
 
     aws_account = build_aws_account_from_model(model)
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -132,7 +132,7 @@ def update_handler(
                     "Please delete it and create a new one instead.",
             errorCode=HandlerErrorCode.NotUpdatable
         )
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -204,7 +204,7 @@ def delete_handler(
             kwargs["access_key_id"] = model.AccessKeyID
         delete_request = AWSAccountDeleteRequest(**kwargs)
 
-        with v1_client(
+        with client(
                 type_configuration.DatadogCredentials.ApiKey,
                 type_configuration.DatadogCredentials.ApplicationKey,
                 type_configuration.DatadogCredentials.ApiURL,
@@ -248,7 +248,7 @@ def read_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,

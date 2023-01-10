@@ -1,5 +1,6 @@
 {
   "AccountID": "{{UniqueAWSAccountID}}",
   "RoleName": "testCF",
-  "FilterTags": ["foo:bar"]
+  "FilterTags": ["foo:bar"],
+  "ExcludedRegions": ["us-east-1", "us-west-2"]
 }

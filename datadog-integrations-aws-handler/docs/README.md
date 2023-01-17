@@ -21,7 +21,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>" : <i>String</i>,
         "<a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>" : <i>Boolean</i>,
         "<a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>" : <i>Boolean</i>,
-        "<a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>" : <i>Boolean</i>
+        "<a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>" : <i>Boolean</i>,
+        "<a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>" : <i>[ String, ... ]</i>
     }
 }
 </pre>
@@ -43,6 +44,8 @@ Properties:
     <a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>: <i>Boolean</i>
     <a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>: <i>Boolean</i>
     <a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>: <i>Boolean</i>
+    <a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>: <i>
+      - String</i>
 </pre>
 
 ## Properties
@@ -144,6 +147,16 @@ Enable collecting information on your AWS resources for use in Datadog products 
 _Required_: No
 
 _Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### ExcludedRegions
+
+Array of AWS regions to exclude from metrics collection.
+
+_Required_: No
+
+_Type_: List of String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

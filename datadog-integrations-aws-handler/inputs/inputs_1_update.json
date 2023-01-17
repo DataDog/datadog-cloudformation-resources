@@ -1,5 +1,8 @@
 {
   "AccountID": "{{UniqueAWSAccountID}}",
   "RoleName": "testCF",
-  "FilterTags": ["foo:bar"]
+  "FilterTags": ["foo:bar"],
+  "MetricsCollection": false,
+  "CSPMResourceCollection": true,
+  "ResourceCollection": true
 }

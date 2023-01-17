@@ -55,6 +55,7 @@
     "FilterTags": {
       "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
       "type": "array",
+      "insertionOrder": false,
       "items": {
         "type": "string"
       }
@@ -62,6 +63,7 @@
     "HostTags": {
       "description": "Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.",
       "type": "array",
+      "insertionOrder": false,
       "items": {
         "type": "string"
       }
@@ -86,15 +88,18 @@
     },
     "MetricsCollection": {
       "description": "Enable the infrastructure monitoring Datadog product for this AWS Account. This will enable collecting all AWS metrics in your account.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": true
     },
     "CSPMResourceCollection": {
       "description": "Enable the compliance and security posture management Datadog product. This will enable collecting information on your AWS resources and providing security validation.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     },
     "ResourceCollection": {
       "description": "Enable collecting information on your AWS resources for use in Datadog products such as Network Process Monitoring.",
-      "type": "boolean"
+      "type": "boolean",
+      "default": false
     }
   },
   "required": [],

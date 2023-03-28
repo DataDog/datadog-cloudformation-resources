@@ -1,3 +1,7 @@
+## datadog-cloudformation-common-python-0.0.15 / 2023-03-28
+
+* [Fixed] Pin `cryptography` package to < `0.40.0`. See [#249](https://github.com/DataDog/datadog-cloudformation-resources/pull/249).
+
 ## datadog-cloudformation-common-python-0.0.14 / 2023-03-28
 
 * [Added] Bump `datadog-cloudformation-common-python-plugin` to `2.1.7`. See [#247](https://github.com/DataDog/datadog-cloudformation-resources/pull/247).

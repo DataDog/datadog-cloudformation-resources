@@ -26,6 +26,8 @@
 */build/
 */example_inputs
 */.gitignore
+*/.venv
+*/.hypothesis
 
 # .class files
 **/*.class

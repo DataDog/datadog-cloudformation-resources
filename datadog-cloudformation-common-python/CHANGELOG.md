@@ -1,3 +1,7 @@
+## datadog-cloudformation-common-python-0.0.13 / 2023-03-28
+
+* [Added] Bump common dependencies to latest. See [#245](https://github.com/DataDog/datadog-cloudformation-resources/pull/245).
+
 ## datadog-cloudformation-common-python-0.0.12 / 2023-01-05
 
 * [Added] Bump datadog-api-client version to 2.8.0. See [#240](https://github.com/DataDog/datadog-cloudformation-resources/pull/240).

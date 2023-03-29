@@ -39,9 +39,11 @@ def errors_handler(f) -> Callable:
         try:
             return f(*args, **kwargs)
         except Exception as e:
+            model = args[1].desiredResourceState or None
             LOG.exception("Exception when calling %s: %s\n", f.__name__, e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
+                resourceModel=model,
                 message=f"Exception when calling {f.__name__}: {e}",
             )
 

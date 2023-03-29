@@ -9,6 +9,7 @@ from typing import Callable
 from cloudformation_cli_python_lib import (
     HandlerErrorCode,
     ProgressEvent,
+    OperationStatus,
 )
 
 LOG = logging.getLogger(__name__)
@@ -39,6 +40,9 @@ def errors_handler(f) -> Callable:
             return f(*args, **kwargs)
         except Exception as e:
             LOG.exception("Exception when calling %s: %s\n", f.__name__, e)
-            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when calling {f.__name__}: {e}")
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                message=f"Exception when calling {f.__name__}: {e}",
+            )
 
     return decorated

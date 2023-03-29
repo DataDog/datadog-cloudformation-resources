@@ -1,7 +1,7 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "language": "python37",
-    "runtime": "python3.7",
+    "language": "python39",
+    "runtime": "python3.9",
     "entrypoint": "datadog_monitors_downtime.handlers.resource",
     "testEntrypoint": "datadog_monitors_downtime.handlers.test_entrypoint",
     "settings": {

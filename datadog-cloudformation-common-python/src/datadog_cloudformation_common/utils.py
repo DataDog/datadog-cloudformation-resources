@@ -2,7 +2,16 @@
 # under the Apache 2.0 style license (see LICENSE).
 # This product includes software developed at Datadog (https://www.datadoghq.com/).
 # Copyright 2020-Present Datadog, Inc.
-from cloudformation_cli_python_lib import HandlerErrorCode
+import logging
+from functools import wraps
+from typing import Callable
+
+from cloudformation_cli_python_lib import (
+    HandlerErrorCode,
+    ProgressEvent,
+)
+
+LOG = logging.getLogger(__name__)
 
 
 def http_to_handler_error_code(http_error_code: int) -> HandlerErrorCode:
@@ -21,3 +30,15 @@ def http_to_handler_error_code(http_error_code: int) -> HandlerErrorCode:
     elif http_error_code == 429:
         return HandlerErrorCode.Throttling
     return HandlerErrorCode.ServiceInternalError
+
+
+def errors_handler(f) -> Callable:
+    @wraps(f)
+    def decorated(*args, **kwargs) -> ProgressEvent:
+        try:
+            return f(*args, **kwargs)
+        except Exception as e:
+            LOG.exception("Exception when calling %s: %s\n", f.__name__, e)
+            return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"Exception when calling {f.__name__}: {e}")
+
+    return decorated

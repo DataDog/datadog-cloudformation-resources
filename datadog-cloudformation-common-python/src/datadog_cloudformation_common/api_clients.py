@@ -11,12 +11,12 @@ def client(api_key: str, app_key: str, api_url: str, resource_name: str, resourc
         api_key={
             "apiKeyAuth": api_key,
             "appKeyAuth": app_key,
-        },
+        }
     )
 
     with ApiClient(configuration) as api_client:
         try:
-            plugin_ver = pkg_resources.get_distribution("cloudformation_cli_python_lib").version
+            plugin_ver = pkg_resources.get_distribution('cloudformation_cli_python_lib').version
         except ValueError:
             # Fallback if we're unable to retrieve the plugin version for any reason
             plugin_ver = "NA"

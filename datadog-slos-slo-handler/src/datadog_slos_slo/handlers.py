@@ -13,7 +13,8 @@ from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.service_level_objectives_api import ServiceLevelObjectivesApi
 from datadog_api_client.v1.model.service_level_objective import ServiceLevelObjective as ApiSLO
 from datadog_api_client.v1.model.service_level_objective_request import ServiceLevelObjectiveRequest as ApiSLORequest
-from datadog_api_client.v1.model.service_level_objective_query import ServiceLevelObjectiveQuery as ApiSLOQuery
+from datadog_api_client.v1.model.service_level_objective_query import ServiceLevelObjectiveQuery as \
+    ApiSLOQuery
 from datadog_api_client.v1.model.slo_threshold import SLOThreshold as ApiSLOThreshold
 from datadog_api_client.v1.model.slo_timeframe import SLOTimeframe as ApiSLOTimeframe
 from datadog_api_client.v1.model.slo_type import SLOType as ApiSLOType
@@ -34,20 +35,20 @@ test_entrypoint = resource.test_entrypoint
 
 @resource.handler(Action.READ)
 def read_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
     with v1_client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
-        TELEMETRY_TYPE_NAME,
-        __version__,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = ServiceLevelObjectivesApi(api_client)
         slo_id = model.Id
@@ -66,7 +67,7 @@ def read_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error getting SLO: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=http_to_handler_error_code(e.status)
             )
     model.Created = slo.data.created_at
     model.Modified = slo.data.modified_at
@@ -75,39 +76,43 @@ def read_handler(
     model.Tags = slo.data.tags
     model.Type = slo.data.type.value
     if slo.data.creator:
-        model.Creator = Creator(
-            Name=slo.data.creator.name, Email=slo.data.creator.email, Handle=slo.data.creator.handle
-        )
+        model.Creator = Creator(Name=slo.data.creator.name,
+                                Email=slo.data.creator.email,
+                                Handle=slo.data.creator.handle)
 
     if slo.data.type.value == "monitor":
-        if hasattr(slo.data, "groups"):
+        if hasattr(slo.data, 'groups'):
             model.Groups = slo.data.groups
         model.MonitorIds = slo.data.monitor_ids
     elif slo.data.type.value == "metric":
-        model.Query = Query(Denominator=slo.data.query.denominator, Numerator=slo.data.query.numerator)
+        model.Query = Query(
+            Denominator=slo.data.query.denominator,
+            Numerator=slo.data.query.numerator
+        )
     thresholds = []
     for th in slo.data.thresholds:
-        thresholds.append(
-            Threshold(
-                Target=th.target if hasattr(th, "target") else None,
-                TargetDisplay=th.target_display if hasattr(th, "target_display") else None,
-                Timeframe=th.timeframe.value if hasattr(th, "timeframe") else None,
-                Warning=th.warning if hasattr(th, "warning") else None,
-                WarningDisplay=th.warning_display if hasattr(th, "warning_display") else None,
-            )
-        )
+        thresholds.append(Threshold(
+            Target=th.target if hasattr(th, "target") else None,
+            TargetDisplay=th.target_display if hasattr(th, "target_display") else None,
+            Timeframe=th.timeframe.value if hasattr(th, "timeframe") else None,
+            Warning=th.warning if hasattr(th, "warning") else None,
+            WarningDisplay=th.warning_display if hasattr(th, "warning_display") else None
+        ))
     model.Thresholds = thresholds
 
     model.Id = slo.data.id
 
-    return ProgressEvent(status=OperationStatus.SUCCESS, resourceModel=model)
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=model
+    )
 
 
 @resource.handler(Action.UPDATE)
 def update_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -122,16 +127,17 @@ def update_handler(
     if model.MonitorIds is not None:
         slo.monitor_ids = model.MonitorIds
     if model.Query is not None:
-        slo.query = ApiSLOQuery(numerator=model.Query.Numerator, denominator=model.Query.Denominator)
+        slo.query = ApiSLOQuery(numerator=model.Query.Numerator,
+                                denominator=model.Query.Denominator)
     if model.Tags is not None:
         slo.tags = model.Tags
 
     with v1_client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
-        TELEMETRY_TYPE_NAME,
-        __version__,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = ServiceLevelObjectivesApi(api_client)
         try:
@@ -142,7 +148,7 @@ def update_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error updating slo: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     return read_handler(session, request, callback_context)
@@ -150,20 +156,20 @@ def update_handler(
 
 @resource.handler(Action.DELETE)
 def delete_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
     with v1_client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
-        TELEMETRY_TYPE_NAME,
-        __version__,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = ServiceLevelObjectivesApi(api_client)
         try:
@@ -174,17 +180,20 @@ def delete_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error deleting slo: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=http_to_handler_error_code(e.status)
             )
 
-    return ProgressEvent(status=OperationStatus.SUCCESS, resourceModel=None)
+    return ProgressEvent(
+        status=OperationStatus.SUCCESS,
+        resourceModel=None
+    )
 
 
 @resource.handler(Action.CREATE)
 def create_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
+        session: Optional[SessionProxy],
+        request: ResourceHandlerRequest,
+        callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -199,16 +208,17 @@ def create_handler(
     if model.MonitorIds is not None:
         slo.monitor_ids = model.MonitorIds
     if model.Query is not None:
-        slo.query = ApiSLOQuery(numerator=model.Query.Numerator, denominator=model.Query.Denominator)
+        slo.query = ApiSLOQuery(numerator=model.Query.Numerator,
+                                denominator=model.Query.Denominator)
     if model.Tags is not None:
         slo.tags = model.Tags
 
     with v1_client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
-        TELEMETRY_TYPE_NAME,
-        __version__,
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL,
+            TELEMETRY_TYPE_NAME,
+            __version__,
     ) as api_client:
         api_instance = ServiceLevelObjectivesApi(api_client)
         try:
@@ -219,7 +229,7 @@ def create_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error creating slo: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=http_to_handler_error_code(e.status)
             )
 
     model.Id = slo_resp.data[0].id
@@ -230,7 +240,8 @@ def build_slo_thresholds_from_model(model: ResourceModel) -> List[ApiSLOThreshol
     thresholds = []
     if model.Thresholds:
         for threshold in model.Thresholds:
-            th = ApiSLOThreshold(target=threshold.Target, timeframe=ApiSLOTimeframe(threshold.Timeframe))
+            th = ApiSLOThreshold(target=threshold.Target,
+                                 timeframe=ApiSLOTimeframe(threshold.Timeframe))
 
             if threshold.TargetDisplay is not None:
                 th.target_display = threshold.TargetDisplay

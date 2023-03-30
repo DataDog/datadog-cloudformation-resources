@@ -29,9 +29,9 @@ test_entrypoint = resource.test_entrypoint
 
 @resource.handler(Action.CREATE)
 def create_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -49,12 +49,12 @@ def create_handler(
         )
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False, "check_input_type": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False, "check_input_type": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -76,16 +76,16 @@ def create_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error creating dashboard: {e}",
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
     return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.UPDATE)
 def update_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -105,12 +105,12 @@ def update_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False, "check_input_type": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False, "check_input_type": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -130,16 +130,16 @@ def update_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error updating dashboard: {e}",
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
     return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.DELETE)
 def delete_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -148,12 +148,12 @@ def delete_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -176,9 +176,9 @@ def delete_handler(
 
 @resource.handler(Action.READ)
 def read_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -187,12 +187,12 @@ def read_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -212,7 +212,7 @@ def read_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error getting dashboard: {e}",
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
     return ProgressEvent(
         status=OperationStatus.SUCCESS,

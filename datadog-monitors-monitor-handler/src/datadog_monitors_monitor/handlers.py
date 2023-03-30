@@ -14,8 +14,9 @@ from datadog_api_client.v1.api.monitors_api import MonitorsApi
 from datadog_api_client.v1.model.monitor import Monitor as ApiMonitor
 from datadog_api_client.v1.model.monitor_options import MonitorOptions as ApiMonitorOptions
 from datadog_api_client.v1.model.monitor_renotify_status_type import MonitorRenotifyStatusType
-from datadog_api_client.v1.model.monitor_threshold_window_options import \
-    MonitorThresholdWindowOptions as ApiMonitorThresholdWindows
+from datadog_api_client.v1.model.monitor_threshold_window_options import (
+    MonitorThresholdWindowOptions as ApiMonitorThresholdWindows,
+)
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
@@ -39,7 +40,7 @@ from datadog_api_client.v1.model.monitor_formula_and_function_event_query_group_
     MonitorFormulaAndFunctionEventQueryGroupBy as ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy,
 )
 from datadog_api_client.v1.model.monitor_formula_and_function_event_query_group_by_sort import (
-MonitorFormulaAndFunctionEventQueryGroupBySort as ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort,
+    MonitorFormulaAndFunctionEventQueryGroupBySort as ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort,
 )
 from datadog_api_client.v1.model.monitor_formula_and_function_query_definition import (
     MonitorFormulaAndFunctionQueryDefinition as ApiMonitorMonitorFormulaAndFunctionQueryDefinition,
@@ -75,20 +76,20 @@ test_entrypoint = resource.test_entrypoint
 
 @resource.handler(Action.READ)
 def read_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         monitor_id = model.Id
@@ -122,8 +123,8 @@ def read_handler(
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (
-            (model.Type == "query alert" and monitor.type.value == "metric alert") or
-            (model.Type == "metric alert" and monitor.type.value == "query alert")
+        (model.Type == "query alert" and monitor.type.value == "metric alert")
+        or (model.Type == "metric alert" and monitor.type.value == "query alert")
     ):
         # metric alert and query alert are interchangeable, so don't update from one to the other
         model.Type = monitor.type.value
@@ -152,10 +153,12 @@ def read_handler(
             ThresholdWindows=None,
             TimeoutH=options.timeout_h if hasattr(options, "timeout_h") else None,
             RenotifyOccurrences=options.renotify_occurrences if hasattr(options, "renotify_occurrences") else None,
-            RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
+            RenotifyStatuses=[str(status) for status in options.renotify_statuses]
+            if hasattr(options, "renotify_statuses")
+            else None,
             MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
-            Variables=None
+            Variables=None,
         )
 
         variables = getattr(options, "variables", None)
@@ -187,9 +190,9 @@ def read_handler(
 
 @resource.handler(Action.UPDATE)
 def update_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -213,11 +216,11 @@ def update_handler(
         monitor.options = options
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
@@ -236,20 +239,20 @@ def update_handler(
 
 @resource.handler(Action.DELETE)
 def delete_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
@@ -271,9 +274,9 @@ def delete_handler(
 
 @resource.handler(Action.CREATE)
 def create_handler(
-        session: Optional[SessionProxy],
-        request: ResourceHandlerRequest,
-        callback_context: MutableMapping[str, Any],
+    session: Optional[SessionProxy],
+    request: ResourceHandlerRequest,
+    callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
@@ -295,11 +298,11 @@ def create_handler(
         monitor.options = options
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
@@ -315,6 +318,7 @@ def create_handler(
 
     model.Id = monitor_resp.id
     return read_handler(session, request, callback_context)
+
 
 def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
     options = None
@@ -335,7 +339,11 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 
         # Non nullable
         if model.Options.RenotifyStatuses is not None:
-            options.renotify_statuses=[MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses] if model.Options.RenotifyStatuses is not None else None
+            options.renotify_statuses = (
+                [MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses]
+                if model.Options.RenotifyStatuses is not None
+                else None
+            )
         if model.Options.EnableLogsSample is not None:
             options.enable_logs_sample = model.Options.EnableLogsSample
         if model.Options.EscalationMessage is not None:
@@ -376,7 +384,9 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
                         data_source=ApiMonitorMonitorFormulaAndFunctionEventsDataSource(variable.DataSource),
                         name=variable.Name,
                         compute=ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute(
-                            aggregation=ApiMonitorMonitorFormulaAndFunctionEventAggregation(variable.Compute.Aggregation),
+                            aggregation=ApiMonitorMonitorFormulaAndFunctionEventAggregation(
+                                variable.Compute.Aggregation
+                            ),
                         ),
                     )
                     # Optional fields
@@ -397,7 +407,9 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
                         for group in variable.GroupBy:
                             datadog_group = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy(group.Facet)
                             if group.Sort is not None:
-                                datadog_group.sort = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort(group.Sort.Aggregation)
+                                datadog_group.sort = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort(
+                                    group.Sort.Aggregation
+                                )
                                 if group.Sort.Metric is not None:
                                     datadog_group.sort.metric = group.Sort.Metric
                                 if group.Sort.Order is not None:

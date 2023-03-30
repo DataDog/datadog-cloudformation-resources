@@ -12,7 +12,7 @@ from cloudformation_cli_python_lib import (
 )
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.dashboards_api import DashboardsApi
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
@@ -48,17 +48,18 @@ def create_handler(
             errorCode=HandlerErrorCode.InternalFailure,
         )
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            {"preload_content": False, "check_input_type": False}
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content False
-            resp = api_instance.create_dashboard(json_payload, _check_input_type=False, _preload_content=False)
+            resp = api_instance.create_dashboard(json_payload)
             json_dict = json.loads(resp.data)
             model.Id = json_dict["id"]
         except TypeError as e:
@@ -103,17 +104,18 @@ def update_handler(
 
     dashboard_id = model.Id
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            {"preload_content": False, "check_input_type": False}
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content False
-            api_instance.update_dashboard(dashboard_id, json_payload, _check_input_type=False, _preload_content=False)
+            api_instance.update_dashboard(dashboard_id, json_payload)
         except TypeError as e:
             LOG.exception("Exception when deserializing the Dashboard payload definition: %s\n", e)
             return ProgressEvent(
@@ -145,17 +147,18 @@ def delete_handler(
 
     dashboard_id = model.Id
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            {"preload_content": False}
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content False
-            api_instance.delete_dashboard(dashboard_id, _preload_content=False)
+            api_instance.delete_dashboard(dashboard_id)
         except ApiException as e:
             LOG.exception("Exception when calling DashboardsApi->delete_dashboard: %s\n", e)
             return ProgressEvent(
@@ -183,17 +186,18 @@ def read_handler(
 
     dashboard_id = model.Id
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            {"preload_content": False}
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
             # Get raw http response with _preload_content  set to False
-            resp = api_instance.get_dashboard(dashboard_id, _preload_content=False)
+            resp = api_instance.get_dashboard(dashboard_id)
             json_dict = json.loads(resp.data)
             model.Url = json_dict["url"]
             for k in ["author_handle", "id", "created_at", "modified_at", "url", "author_name"]:

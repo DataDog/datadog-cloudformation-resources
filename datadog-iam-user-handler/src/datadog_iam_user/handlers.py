@@ -38,11 +38,11 @@ def create_handler(
     LOG.info(f"Starting the {TYPE_NAME} Create Handler")
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        model.DatadogCredentials.ApiKey,
+        model.DatadogCredentials.ApplicationKey,
+        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         body = User(
@@ -75,11 +75,11 @@ def update_handler(
     LOG.info(f"Starting the {TYPE_NAME} Update Handler")
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        model.DatadogCredentials.ApiKey,
+        model.DatadogCredentials.ApplicationKey,
+        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         body = User(
@@ -112,11 +112,11 @@ def delete_handler(
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        model.DatadogCredentials.ApiKey,
+        model.DatadogCredentials.ApplicationKey,
+        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         user_handle = model.Handle
@@ -142,11 +142,11 @@ def read_handler(
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
     with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
+        model.DatadogCredentials.ApiKey,
+        model.DatadogCredentials.ApplicationKey,
+        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = users_api.UsersApi(api_client)
         user_handle = model.Handle

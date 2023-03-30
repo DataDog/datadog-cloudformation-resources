@@ -1,7 +1,7 @@
 {
     "typeName": "Datadog::Monitors::Monitor",
-    "language": "python37",
-    "runtime": "python3.7",
+    "language": "python39",
+    "runtime": "python3.9",
     "entrypoint": "datadog_monitors_monitor.handlers.resource",
     "testEntrypoint": "datadog_monitors_monitor.handlers.test_entrypoint",
     "settings": {

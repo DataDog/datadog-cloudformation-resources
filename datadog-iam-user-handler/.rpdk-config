@@ -1,7 +1,7 @@
 {
     "typeName": "Datadog::IAM::User",
-    "language": "python37",
-    "runtime": "python3.7",
+    "language": "python39",
+    "runtime": "python3.9",
     "entrypoint": "datadog_iam_user.handlers.resource",
     "testEntrypoint": "datadog_iam_user.handlers.test_entrypoint",
     "settings": {

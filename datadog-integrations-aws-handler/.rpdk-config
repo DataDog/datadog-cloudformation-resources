@@ -1,7 +1,7 @@
 {
     "typeName": "Datadog::Integrations::AWS",
-    "language": "python37",
-    "runtime": "python3.7",
+    "language": "python39",
+    "runtime": "python3.9",
     "entrypoint": "datadog_integrations_aws.handlers.resource",
     "testEntrypoint": "datadog_integrations_aws.handlers.test_entrypoint",
     "settings": {

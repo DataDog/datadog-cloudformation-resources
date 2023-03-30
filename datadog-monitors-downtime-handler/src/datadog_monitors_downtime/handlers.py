@@ -12,8 +12,8 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api import downtimes_api
 from datadog_api_client.v1.model.downtime import Downtime
-from datadog_cloudformation_common.api_clients import v1_client
-from datadog_cloudformation_common.utils import http_to_handler_error_code
+from datadog_cloudformation_common.api_clients import client
+from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
@@ -29,10 +29,7 @@ test_entrypoint = resource.test_entrypoint
 
 
 def build_downtime_struct(model):
-    downtime = Downtime(
-        end=model.End,
-        monitor_id=model.MonitorId
-    )
+    downtime = Downtime(end=model.End, monitor_id=model.MonitorId)
 
     # Non Nullable attributes
     if model.Message:
@@ -49,6 +46,7 @@ def build_downtime_struct(model):
 
 
 @resource.handler(Action.CREATE)
+@errors_handler
 def create_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -60,12 +58,12 @@ def create_handler(
 
     downtime_body = build_downtime_struct(model)
 
-    with v1_client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+    with client(
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = downtimes_api.DowntimesApi(api_client)
         try:
@@ -77,13 +75,14 @@ def create_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=e.body,
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.UPDATE)
+@errors_handler
 def update_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -96,12 +95,12 @@ def update_handler(
 
     downtime_body = build_downtime_struct(model)
 
-    with v1_client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+    with client(
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = downtimes_api.DowntimesApi(api_client)
         try:
@@ -112,13 +111,14 @@ def update_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=e.body,
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     return read_handler(session, request, callback_context)
 
 
 @resource.handler(Action.DELETE)
+@errors_handler
 def delete_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -128,12 +128,12 @@ def delete_handler(
     type_configuration = request.typeConfiguration
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
-    with v1_client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+    with client(
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = downtimes_api.DowntimesApi(api_client)
         # First get the downtime to check if it's disabled (mostly a hack to make a contract_delete_delete test pass)
@@ -145,7 +145,7 @@ def delete_handler(
                     status=OperationStatus.FAILED,
                     resourceModel=None,
                     message="Downtime {model.Id} already disabled",
-                    errorCode=HandlerErrorCode.NotFound
+                    errorCode=HandlerErrorCode.NotFound,
                 )
         except ApiException as e:
             # Log error but continue in case of failure to get, this should not prevent the next call to delete
@@ -158,7 +158,7 @@ def delete_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=e.body,
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     return ProgressEvent(
@@ -168,6 +168,7 @@ def delete_handler(
 
 
 @resource.handler(Action.READ)
+@errors_handler
 def read_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -182,14 +183,14 @@ def read_handler(
             status=OperationStatus.FAILED,
             resourceModel=model,
             message="No downtime ID in model",
-            errorCode=HandlerErrorCode.NotFound
+            errorCode=HandlerErrorCode.NotFound,
         )
-    with v1_client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
+    with client(
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
     ) as api_client:
         api_instance = downtimes_api.DowntimesApi(api_client)
         try:
@@ -200,7 +201,7 @@ def read_handler(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=e.body,
-                errorCode=http_to_handler_error_code(e.status)
+                errorCode=http_to_handler_error_code(e.status),
             )
 
     LOG.info(f"Success retrieving downtime {api_resp}")
@@ -211,20 +212,20 @@ def read_handler(
             status=OperationStatus.FAILED,
             resourceModel=model,
             message=f"downtime {model.Id} is disabled",
-            errorCode=HandlerErrorCode.NotFound
+            errorCode=HandlerErrorCode.NotFound,
         )
 
     # Add hasattr checks for non-nullable fields to ensure they're available to be set
     # Currently in datadog-api-client-python, accessing fields that don't exist return an AttributeError
-    if hasattr(api_resp, 'message'):
+    if hasattr(api_resp, "message"):
         model.Message = api_resp.message
-    if hasattr(api_resp, 'monitor_tags'):
+    if hasattr(api_resp, "monitor_tags"):
         model.MonitorTags = api_resp.monitor_tags
-    if hasattr(api_resp, 'scope'):
+    if hasattr(api_resp, "scope"):
         model.Scope = api_resp.scope
-    if hasattr(api_resp, 'timezone'):
+    if hasattr(api_resp, "timezone"):
         model.Timezone = api_resp.timezone
-    if hasattr(api_resp, 'start'):
+    if hasattr(api_resp, "start"):
         model.Start = api_resp.start
 
     # Nullable fields, these should be None or set as a value

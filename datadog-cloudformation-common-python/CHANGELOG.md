@@ -1,3 +1,11 @@
+## datadog-cloudformation-common-python-0.0.17 / 2023-03-30
+
+* [Added] Expose config object for configuring dd client Configuration. See [#254](https://github.com/DataDog/datadog-cloudformation-resources/pull/254).
+
+## datadog-cloudformation-common-python-0.0.16 / 2023-03-30
+
+* [Added] Introduce error wrapper to for use in resources. See [#251](https://github.com/DataDog/datadog-cloudformation-resources/pull/251).
+
 ## datadog-cloudformation-common-python-0.0.15 / 2023-03-28
 
 * [Fixed] Pin `cryptography` package to < `0.40.0`. See [#249](https://github.com/DataDog/datadog-cloudformation-resources/pull/249).

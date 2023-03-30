@@ -13,7 +13,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.dashboards_api import DashboardsApi
 from datadog_cloudformation_common.api_clients import client
-from datadog_cloudformation_common.utils import http_to_handler_error_code
+from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
@@ -28,6 +28,7 @@ test_entrypoint = resource.test_entrypoint
 
 
 @resource.handler(Action.CREATE)
+@errors_handler
 def create_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -82,6 +83,7 @@ def create_handler(
 
 
 @resource.handler(Action.UPDATE)
+@errors_handler
 def update_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -136,6 +138,7 @@ def update_handler(
 
 
 @resource.handler(Action.DELETE)
+@errors_handler
 def delete_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,
@@ -175,6 +178,7 @@ def delete_handler(
 
 
 @resource.handler(Action.READ)
+@errors_handler
 def read_handler(
     session: Optional[SessionProxy],
     request: ResourceHandlerRequest,

@@ -49,12 +49,12 @@ def create_handler(
         )
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False, "check_input_type": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False, "check_input_type": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -105,12 +105,12 @@ def update_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False, "check_input_type": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False, "check_input_type": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -148,12 +148,12 @@ def delete_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:
@@ -187,12 +187,12 @@ def read_handler(
     dashboard_id = model.Id
 
     with client(
-            type_configuration.DatadogCredentials.ApiKey,
-            type_configuration.DatadogCredentials.ApplicationKey,
-            type_configuration.DatadogCredentials.ApiURL,
-            TELEMETRY_TYPE_NAME,
-            __version__,
-            {"preload_content": False}
+        type_configuration.DatadogCredentials.ApiKey,
+        type_configuration.DatadogCredentials.ApplicationKey,
+        type_configuration.DatadogCredentials.ApiURL,
+        TELEMETRY_TYPE_NAME,
+        __version__,
+        {"preload_content": False},
     ) as api_client:
         api_instance = DashboardsApi(api_client)
         try:

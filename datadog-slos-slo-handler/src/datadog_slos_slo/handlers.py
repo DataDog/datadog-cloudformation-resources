@@ -17,7 +17,7 @@ from datadog_api_client.v1.model.service_level_objective_query import ServiceLev
 from datadog_api_client.v1.model.slo_threshold import SLOThreshold as ApiSLOThreshold
 from datadog_api_client.v1.model.slo_timeframe import SLOTimeframe as ApiSLOTimeframe
 from datadog_api_client.v1.model.slo_type import SLOType as ApiSLOType
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
 from .models import Creator, Threshold, Query, ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
@@ -42,7 +42,7 @@ def read_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    with v1_client(
+    with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
@@ -126,7 +126,7 @@ def update_handler(
     if model.Tags is not None:
         slo.tags = model.Tags
 
-    with v1_client(
+    with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
@@ -158,7 +158,7 @@ def delete_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    with v1_client(
+    with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
@@ -203,7 +203,7 @@ def create_handler(
     if model.Tags is not None:
         slo.tags = model.Tags
 
-    with v1_client(
+    with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,

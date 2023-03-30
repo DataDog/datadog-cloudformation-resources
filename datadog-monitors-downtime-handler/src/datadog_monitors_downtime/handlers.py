@@ -12,7 +12,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api import downtimes_api
 from datadog_api_client.v1.model.downtime import Downtime
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import http_to_handler_error_code
 
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
@@ -60,7 +60,7 @@ def create_handler(
 
     downtime_body = build_downtime_struct(model)
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -96,7 +96,7 @@ def update_handler(
 
     downtime_body = build_downtime_struct(model)
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -128,7 +128,7 @@ def delete_handler(
     type_configuration = request.typeConfiguration
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
@@ -184,7 +184,7 @@ def read_handler(
             message="No downtime ID in model",
             errorCode=HandlerErrorCode.NotFound
         )
-    with v1_client(
+    with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,

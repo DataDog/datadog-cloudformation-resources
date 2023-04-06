@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.1.0 / 2023-04-06
+
+* [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).
+* [Added] Bump common package in all resources. See [#255](https://github.com/DataDog/datadog-cloudformation-resources/pull/255).
+* [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-dashboards-dashboard/datadog-dashboards-dashboard-2.1.0.zip`
+
 ## 2.0.2 / 2021-09-27
 
 * [Fixed] Properly pass raw JSON payload to API. See [#167](https://github.com/DataDog/datadog-cloudformation-resources/pull/167).

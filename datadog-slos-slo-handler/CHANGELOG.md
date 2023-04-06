@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.1.0 / 2023-04-06
+
+* [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).
+* [Added] Bump common package in all resources. See [#255](https://github.com/DataDog/datadog-cloudformation-resources/pull/255).
+* [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).
+
 ## 1.0.1 / 2021-11-30
 
 * [Added] Update common version. See [#176](https://github.com/DataDog/datadog-cloudformation-resources/pull/176).

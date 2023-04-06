@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::SLOs::SLO",
-  "description": "Datadog SLO 1.0.1",
+  "description": "Datadog SLO 1.1.0",
   "typeConfiguration": {
     "properties": {
       "DatadogCredentials": {

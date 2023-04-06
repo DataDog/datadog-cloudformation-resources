@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.4.0 / 2023-04-06
+
+* [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).
+* [Added] Bump common package in all resources. See [#255](https://github.com/DataDog/datadog-cloudformation-resources/pull/255).
+* [Added] Add support for ExcludedRegions. See [#243](https://github.com/DataDog/datadog-cloudformation-resources/pull/243).
+* [Added] Fix AWS resource metric fields setting in state. See [#244](https://github.com/DataDog/datadog-cloudformation-resources/pull/244).
+* [Added] Use custom exports for AWS contract tests. See [#181](https://github.com/DataDog/datadog-cloudformation-resources/pull/181).
+* [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).
+
 ## 2.3.0 / 2021-12-02
 
 * Same as previous release 2.2.1 See version [2.2.1](#221--2021-11-30).

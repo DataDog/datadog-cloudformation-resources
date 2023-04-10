@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.4.0 / 2023-04-06
+## 2.4.0 / 2023-04-10
 
 * [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).
 * [Added] Bump common package in all resources. See [#255](https://github.com/DataDog/datadog-cloudformation-resources/pull/255).

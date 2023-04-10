@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Downtime",
-    "description": "Datadog Monitors Downtime 3.0.0",
+    "description": "Datadog Monitors Downtime 3.1.0",
     "typeConfiguration": {
         "properties": {
             "DatadogCredentials": {

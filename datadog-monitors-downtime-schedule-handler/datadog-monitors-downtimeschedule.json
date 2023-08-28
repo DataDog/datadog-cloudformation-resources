@@ -1,0 +1,73 @@
+{
+    "typeName": "Datadog::Monitors::DowntimeSchedule",
+    "description": "Datadog Downtime Schedule 0.0.1",
+    "typeConfiguration": {
+        "properties": {
+            "DatadogCredentials": {
+            "$ref": "#/definitions/DatadogCredentials"
+            }
+        },
+        "additionalProperties": false
+    },
+    "definitions": {
+        "DatadogCredentials": {
+            "description": "Credentials for the Datadog API",
+            "properties": {
+                "ApiKey": {
+                "description": "Datadog API key",
+                "type": "string"
+                },
+                "ApplicationKey": {
+                "description": "Datadog application key",
+                "type": "string"
+                },
+                "ApiURL": {
+                "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
+                "type": "string"
+                }
+            },
+            "required": [
+                "ApiKey",
+                "ApplicationKey"
+            ],
+            "type": "object",
+            "additionalProperties": false
+        }
+    },
+    "properties": {
+        "TPSCode": {
+            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
+            "type": "string"
+        }
+    },
+    "additionalProperties": false,
+    "required": [],
+    "readOnlyProperties": [
+        "/properties/Id"
+    ],
+    "primaryIdentifier": [
+        "/properties/Id"
+    ],
+    "handlers": {
+        "create": {
+            "permissions": [
+                ""
+            ]
+        },
+        "read": {
+            "permissions": [
+                ""
+            ]
+        },
+        "update": {
+            "permissions": [
+                ""
+            ]
+        },
+        "delete": {
+            "permissions": [
+                ""
+            ]
+        }
+    }
+}

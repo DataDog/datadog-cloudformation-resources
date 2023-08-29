@@ -4,7 +4,7 @@
     "typeConfiguration": {
         "properties": {
             "DatadogCredentials": {
-            "$ref": "#/definitions/DatadogCredentials"
+                "$ref": "#/definitions/DatadogCredentials"
             }
         },
         "additionalProperties": false
@@ -14,16 +14,16 @@
             "description": "Credentials for the Datadog API",
             "properties": {
                 "ApiKey": {
-                "description": "Datadog API key",
-                "type": "string"
+                    "description": "Datadog API key",
+                    "type": "string"
                 },
                 "ApplicationKey": {
-                "description": "Datadog application key",
-                "type": "string"
+                    "description": "Datadog application key",
+                    "type": "string"
                 },
                 "ApiURL": {
-                "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
-                "type": "string"
+                    "description": "Datadog API URL (defaults to https://api.datadoghq.com) Use https://api.datadoghq.eu for EU accounts.",
+                    "type": "string"
                 }
             },
             "required": [
@@ -32,16 +32,137 @@
             ],
             "type": "object",
             "additionalProperties": false
+        },
+        "MonitorId": {
+            "type" : "object",
+            "properties" : {
+                "MonitorId" : {
+                    "type" : "string",
+                    "description": "ID of the monitor to prevent notifications."
+                }
+            },
+            "required": ["MonitorId"],
+            "additionalProperties": false
+        },
+        "MonitorTags": {
+            "type" : "object",
+            "properties" : {
+                "MonitorTags" : {
+                    "type" : "string",
+                    "description": "A list of monitor tags. For example, tags that are applied directly to monitors, not tags that are used in monitor queries (which are filtered by the scope parameter), to which the downtime applies. The resulting downtime applies to monitors that match **all** provided monitor tags. Setting `monitor_tags` to `[*]` configures the downtime to mute all monitors for the given scope."
+                }
+            },
+            "required": ["MonitorTags"],
+            "additionalProperties": false
+        },
+        "RecurringSchedule": {
+            "type" : "object",
+            "description": "A recurring downtime schedule definition.",
+            "properties" : {
+                "Timezone" : {
+                    "type" : "string",
+                    "description": "The timezone in which to schedule the downtime."
+                },
+                "Recurrences": {
+                    "type": "object",
+                    "description": "A list of downtime recurrences.",
+                    "properties" : {
+                        "Duration" : {
+                            "type" : "string",
+                            "description": "The timezone in which to schedule the downtime."
+                        },
+                        "Rrule": {
+                            "type" : "string",
+                            "description": "The `RRULE` standard for defining recurring events. For example, to have a recurring event on the first day of each month, set the type to `rrule` and set the `FREQ` to `MONTHLY` and `BYMONTHDAY` to `1`. Most common `rrule` options from the [iCalendar Spec](https://tools.ietf.org/html/rfc5545) are supported.  **Note**: Attributes specifying the duration in `RRULE` are not supported (for example, `DTSTART`, `DTEND`, `DURATION`). More examples available in this [downtime guide](https://docs.datadoghq.com/monitors/guide/suppress-alert-with-downtimes/?tab=api)."
+                        },
+                        "Start" : {
+                            "type" : "string",
+                            "description": "ISO-8601 Datetime to start the downtime. Must not include a UTC offset. If not provided, the downtime starts the moment it is created."
+                        }
+                    },
+                    "required": ["MonitorTags"],
+                    "additionalProperties": false
+                }
+            },
+            "additionalProperties": false
+        }
+        ,
+        "OneTimeSchedule": {
+            "type" : "object",
+            "description": "A recurring downtime schedule definition.",
+            "properties" : {
+                "Start" : {
+                    "type" : "string",
+                    "description": "ISO-8601 Datetime to start the downtime. Must include a UTC offset of zero. If not provided, the downtime starts the moment it is created."
+                },
+                "End" : {
+                    "type" : "string",
+                    "description": " ISO-8601 Datetime to end the downtime. Must include a UTC offset of zero. If not provided, the downtime continues forever."
+                }
+            },
+            "additionalProperties": false
         }
     },
     "properties": {
-        "TPSCode": {
-            "description": "A TPS Code is automatically generated on creation and assigned as the unique identifier.",
+        "Id": {
+            "description": "ID of the downtime.",
             "type": "string"
+        },
+        "DisplayTimezone": {
+            "description": "The timezone in which to display the downtime's start and end times in Datadog applications. This is not used as an offset for scheduling.",
+            "type": "string"
+        },
+        "Message": {
+            "description": "A message to include with notifications for this downtime. Email notifications can be sent to specific users by using the same `@username` notation as events.",
+            "type": "string"
+        },
+        "MuteFirstRecoveryNotification": {
+            "description": "If the first recovery notification during a downtime should be muted.",
+            "type": "boolean",
+            "default": false
+        },
+        "Scope": {
+            "description": "The scope to which the downtime applies. Must follow the [common search syntax](https://docs.datadoghq.com/logs/explorer/search_syntax/).",
+            "type": "string"
+        },
+        "NotifyEndStates": {
+            "description": "States that will trigger a monitor notification when the `notify_end_types` action occurs.",
+            "items": {
+                "type": "string"
+            },
+            "type": "array",
+            "insertionOrder": false
+        },
+        "NotifyEndtypes": {
+            "description": "Actions that will trigger a monitor notification if the downtime is in the `notify_end_types` state.",
+            "items": {
+                "type": "string"
+            },
+            "type": "array",
+            "insertionOrder": false
+        },
+        "MonitorIdentifier": {
+            "description": "Monitor identifier for the downtime.",
+            "type": "object",
+            "oneOf": [
+                {"$ref": "#/definitions/MonitorId"},
+                {"$ref": "#/definitions/MonitorTags"}
+            ]
+        },
+        "Schedule": {
+            "description": "The schedule that defines when the monitor starts, stops, and recurs. There are two types of schedules: one-time and recurring. Recurring schedules may have up to five RRULE-based recurrences. If no schedules are provided, the downtime will begin immediately and never end.",
+            "type": "object",
+            "oneOf": [
+                {"$ref": "#/definitions/RecurringSchedule"},
+                {"$ref": "#/definitions/OneTimeSchedule"}
+            ]
         }
     },
     "additionalProperties": false,
-    "required": [],
+    "required": [
+        "Scope",
+        "MonitorIdentifier"
+    ],
     "readOnlyProperties": [
         "/properties/Id"
     ],

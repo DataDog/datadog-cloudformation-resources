@@ -41,7 +41,15 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
 
 @dataclass
 class ResourceModel(BaseModel):
-    TPSCode: Optional[str]
+    Id: Optional[str]
+    DisplayTimezone: Optional[str]
+    Message: Optional[str]
+    MuteFirstRecoveryNotification: Optional[bool]
+    Scope: Optional[str]
+    NotifyEndStates: Optional[Sequence[str]]
+    NotifyEndtypes: Optional[Sequence[str]]
+    MonitorIdentifier: Optional[Any]
+    Schedule: Optional[Any]
 
     @classmethod
     def _deserialize(
@@ -53,12 +61,128 @@ class ResourceModel(BaseModel):
         dataclasses = {n: o for n, o in getmembers(sys.modules[__name__]) if isclass(o)}
         recast_object(cls, json_data, dataclasses)
         return cls(
-            TPSCode=json_data.get("TPSCode"),
+            Id=json_data.get("Id"),
+            DisplayTimezone=json_data.get("DisplayTimezone"),
+            Message=json_data.get("Message"),
+            MuteFirstRecoveryNotification=json_data.get("MuteFirstRecoveryNotification"),
+            Scope=json_data.get("Scope"),
+            NotifyEndStates=json_data.get("NotifyEndStates"),
+            NotifyEndtypes=json_data.get("NotifyEndtypes"),
+            MonitorIdentifier=json_data.get("MonitorIdentifier"),
+            Schedule=json_data.get("Schedule"),
         )
 
 
 # work around possible type aliasing issues when variable has same name as a model
 _ResourceModel = ResourceModel
+
+
+@dataclass
+class MonitorId(BaseModel):
+    MonitorId: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorId"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorId"]:
+        if not json_data:
+            return None
+        return cls(
+            MonitorId=json_data.get("MonitorId"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorId = MonitorId
+
+
+@dataclass
+class MonitorTags(BaseModel):
+    MonitorTags: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorTags"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorTags"]:
+        if not json_data:
+            return None
+        return cls(
+            MonitorTags=json_data.get("MonitorTags"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorTags = MonitorTags
+
+
+@dataclass
+class RecurringSchedule(BaseModel):
+    Timezone: Optional[str]
+    Recurrences: Optional["_Recurrences"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_RecurringSchedule"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_RecurringSchedule"]:
+        if not json_data:
+            return None
+        return cls(
+            Timezone=json_data.get("Timezone"),
+            Recurrences=Recurrences._deserialize(json_data.get("Recurrences")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_RecurringSchedule = RecurringSchedule
+
+
+@dataclass
+class Recurrences(BaseModel):
+    Duration: Optional[str]
+    Rrule: Optional[str]
+    Start: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_Recurrences"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_Recurrences"]:
+        if not json_data:
+            return None
+        return cls(
+            Duration=json_data.get("Duration"),
+            Rrule=json_data.get("Rrule"),
+            Start=json_data.get("Start"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_Recurrences = Recurrences
+
+
+@dataclass
+class OneTimeSchedule(BaseModel):
+    Start: Optional[str]
+    End: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_OneTimeSchedule"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_OneTimeSchedule"]:
+        if not json_data:
+            return None
+        return cls(
+            Start=json_data.get("Start"),
+            End=json_data.get("End"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_OneTimeSchedule = OneTimeSchedule
 
 
 @dataclass

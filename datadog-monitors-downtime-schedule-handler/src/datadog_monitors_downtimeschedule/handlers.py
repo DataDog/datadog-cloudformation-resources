@@ -32,14 +32,14 @@ from datadog_api_client.v2.model.downtime_update_request_data import DowntimeUpd
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 from .version import __version__
 from datadog_cloudformation_common.api_clients import client
-from .models import MonitorId, MonitorTags, OneTimeSchedule, Recurrences, RecurringSchedule, ResourceHandlerRequest, ResourceModel
+from .models import MonitorId, MonitorTags, OneTimeSchedule, Recurrences, RecurringSchedule, ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::DowntimeSchedule"
 TELEMETRY_TYPE_NAME = "monitors-downtime-schedule"
 
-resource = Resource(TYPE_NAME, ResourceModel)
+resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -232,7 +232,6 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
     elif isinstance(model.MonitorIdentifier, MonitorTags):
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_tags=model.MonitorIdentifier.MonitorTags)
     else:
-        LOG.error("Invalid value for MonitorIdentifier")
         raise Exception("Invalid value for MonitorIdentifier")
 
     attributes = DDDowntimeCreateRequestAttributes(scope=scope, monitor_identifier=monitor_identifier)

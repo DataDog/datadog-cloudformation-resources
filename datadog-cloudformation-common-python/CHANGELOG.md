@@ -1,3 +1,7 @@
+## datadog-cloudformation-common-python-0.0.18 / 2023-08-30
+
+* [Added] Bump datadog-api-client and cloudformation-cli-python packages. See [#268](https://github.com/DataDog/datadog-cloudformation-resources/pull/268).
+
 ## datadog-cloudformation-common-python-0.0.17 / 2023-03-30
 
 * [Added] Expose config object for configuring dd client Configuration. See [#254](https://github.com/DataDog/datadog-cloudformation-resources/pull/254).

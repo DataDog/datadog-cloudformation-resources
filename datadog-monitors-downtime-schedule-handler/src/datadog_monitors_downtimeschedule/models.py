@@ -79,7 +79,7 @@ _ResourceModel = ResourceModel
 
 @dataclass
 class MonitorId(BaseModel):
-    MonitorId: Optional[str]
+    MonitorId: Optional[int]
 
     @classmethod
     def _deserialize(
@@ -99,7 +99,7 @@ _MonitorId = MonitorId
 
 @dataclass
 class MonitorTags(BaseModel):
-    MonitorTags: Optional[str]
+    MonitorTags: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -120,7 +120,7 @@ _MonitorTags = MonitorTags
 @dataclass
 class RecurringSchedule(BaseModel):
     Timezone: Optional[str]
-    Recurrences: Optional["_Recurrences"]
+    Recurrences: Optional[Sequence["_Recurrences"]]
 
     @classmethod
     def _deserialize(
@@ -131,7 +131,7 @@ class RecurringSchedule(BaseModel):
             return None
         return cls(
             Timezone=json_data.get("Timezone"),
-            Recurrences=Recurrences._deserialize(json_data.get("Recurrences")),
+            Recurrences=deserialize_list(json_data.get("Recurrences"), Recurrences),
         )
 
 

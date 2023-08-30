@@ -18,7 +18,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#scope" title="Scope">Scope</a>" : <i>String</i>,
         "<a href="#notifyendstates" title="NotifyEndStates">NotifyEndStates</a>" : <i>[ String, ... ]</i>,
         "<a href="#notifyendtypes" title="NotifyEndtypes">NotifyEndtypes</a>" : <i>[ String, ... ]</i>,
-        "<a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>" : <i>Map, <a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>,
+        "<a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>" : <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>,
         "<a href="#schedule" title="Schedule">Schedule</a>" : <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
     }
 }
@@ -37,7 +37,7 @@ Properties:
       - String</i>
     <a href="#notifyendtypes" title="NotifyEndtypes">NotifyEndtypes</a>: <i>
       - String</i>
-    <a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>: <i>Map, <a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>
+    <a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>: <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>
     <a href="#schedule" title="Schedule">Schedule</a>: <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
 </pre>
 
@@ -105,11 +105,9 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### MonitorIdentifier
 
-Monitor identifier for the downtime.
-
 _Required_: Yes
 
-_Type_: Map, <a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a>
+_Type_: <a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

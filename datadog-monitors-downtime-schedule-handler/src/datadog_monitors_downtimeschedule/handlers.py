@@ -11,11 +11,20 @@ from cloudformation_cli_python_lib import (
     identifier_utils,
 )
 
+from datadog_api_client import ApiClient, Configuration
+from datadog_api_client.v2.api.downtimes_api import DowntimesApi
+from datadog_api_client.v2.model.downtime_create_request import DowntimeCreateRequest
+from datadog_api_client.v2.model.downtime_create_request_attributes import DowntimeCreateRequestAttributes
+from datadog_api_client.v2.model.downtime_create_request_data import DowntimeCreateRequestData
+from datadog_api_client.v2.model.downtime_monitor_identifier_tags import DowntimeMonitorIdentifierTags
+from datadog_api_client.v2.model.downtime_resource_type import DowntimeResourceType
+
 from .models import ResourceHandlerRequest, ResourceModel
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::DowntimeSchedule"
+TELEMETRY_TYPE_NAME = "monitors-downtime-schedule"
 
 resource = Resource(TYPE_NAME, ResourceModel)
 test_entrypoint = resource.test_entrypoint
@@ -32,32 +41,8 @@ def create_handler(
         status=OperationStatus.IN_PROGRESS,
         resourceModel=model,
     )
-    # TODO: put code here
-
-    # Example:
-    try:
-
-        # primary identifier from example
-        primary_identifier = None
-
-        # setting up random primary identifier compliant with cfn standard
-        if primary_identifier is None:
-            primary_identifier = identifier_utils.generate_resource_identifier(
-                stack_id_or_name=request.stackId,
-                logical_resource_id=request.logicalResourceIdentifier,
-                client_request_token=request.clientRequestToken,
-                max_length=255
-                )
-
-        if isinstance(session, SessionProxy):
-            client = session.client("s3")
-        # Setting Status to success will signal to cfn that the operation is complete
-        progress.status = OperationStatus.SUCCESS
-    except TypeError as e:
-        # exceptions module lets CloudFormation know the type of failure that occurred
-        raise exceptions.InternalFailure(f"was not expecting type {e}")
-        # this can also be done by returning a failed progress event
-        # return ProgressEvent.failed(HandlerErrorCode.InternalFailure, f"was not expecting type {e}")
+    
+    downtime = build_downtime_create(model)
 
     return read_handler(session, request, callback_context)
 
@@ -106,14 +91,8 @@ def read_handler(
     )
 
 
-@resource.handler(Action.LIST)
-def list_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
-) -> ProgressEvent:
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModels=[],
-    )
+def build_downtime_create(model: ResourceModel):
+    scope = model.Scope
+    # if model.MonitorIdentifier
+    # if isinstance(model.Schedule, _OneTimeSc)    
+    

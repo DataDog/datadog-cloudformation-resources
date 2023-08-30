@@ -1,12 +1,12 @@
 {
-    "TPSCode": "...",
-    "Title": "...",
-    "CoverSheetIncluded": "...",
-    "DueDate": "...",
-    "ApprovalDate": "...",
-    "Memo": "...",
-    "SecondCopyOfMemo": "...",
-    "TestCode": "...",
-    "Authors": "...",
-    "Tags": "..."
+    "DisplayTimezone": "UTC",
+    "Message": "yo random mesasge",
+    "MuteFirstRecoveryNotification": false,
+    "Scope": "env:(staging OR %v)",
+    "NotifyEndStates": ["warn"],
+    "NotifyEndTypes": ["expired"],
+    "MonitorIdentifier": {
+        "MonitorTags": ["cat:hat2"]
+    },
+    "Schedule": {}
 }

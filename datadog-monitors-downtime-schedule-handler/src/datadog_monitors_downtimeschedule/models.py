@@ -47,7 +47,7 @@ class ResourceModel(BaseModel):
     MuteFirstRecoveryNotification: Optional[bool]
     Scope: Optional[str]
     NotifyEndStates: Optional[Sequence[str]]
-    NotifyEndtypes: Optional[Sequence[str]]
+    NotifyEndTypes: Optional[Sequence[str]]
     MonitorIdentifier: Optional[Any]
     Schedule: Optional[Any]
 
@@ -67,7 +67,7 @@ class ResourceModel(BaseModel):
             MuteFirstRecoveryNotification=json_data.get("MuteFirstRecoveryNotification"),
             Scope=json_data.get("Scope"),
             NotifyEndStates=json_data.get("NotifyEndStates"),
-            NotifyEndtypes=json_data.get("NotifyEndtypes"),
+            NotifyEndTypes=json_data.get("NotifyEndTypes"),
             MonitorIdentifier=json_data.get("MonitorIdentifier"),
             Schedule=json_data.get("Schedule"),
         )

@@ -17,7 +17,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#mutefirstrecoverynotification" title="MuteFirstRecoveryNotification">MuteFirstRecoveryNotification</a>" : <i>Boolean</i>,
         "<a href="#scope" title="Scope">Scope</a>" : <i>String</i>,
         "<a href="#notifyendstates" title="NotifyEndStates">NotifyEndStates</a>" : <i>[ String, ... ]</i>,
-        "<a href="#notifyendtypes" title="NotifyEndtypes">NotifyEndtypes</a>" : <i>[ String, ... ]</i>,
+        "<a href="#notifyendtypes" title="NotifyEndTypes">NotifyEndTypes</a>" : <i>[ String, ... ]</i>,
         "<a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>" : <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>,
         "<a href="#schedule" title="Schedule">Schedule</a>" : <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
     }
@@ -35,7 +35,7 @@ Properties:
     <a href="#scope" title="Scope">Scope</a>: <i>String</i>
     <a href="#notifyendstates" title="NotifyEndStates">NotifyEndStates</a>: <i>
       - String</i>
-    <a href="#notifyendtypes" title="NotifyEndtypes">NotifyEndtypes</a>: <i>
+    <a href="#notifyendtypes" title="NotifyEndTypes">NotifyEndTypes</a>: <i>
       - String</i>
     <a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>: <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>
     <a href="#schedule" title="Schedule">Schedule</a>: <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
@@ -93,7 +93,7 @@ _Type_: List of String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### NotifyEndtypes
+#### NotifyEndTypes
 
 Actions that will trigger a monitor notification if the downtime is in the `notify_end_types` state.
 

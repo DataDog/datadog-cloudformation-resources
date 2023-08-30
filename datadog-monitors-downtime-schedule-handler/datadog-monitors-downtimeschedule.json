@@ -140,7 +140,7 @@
             "type": "array",
             "insertionOrder": false
         },
-        "NotifyEndtypes": {
+        "NotifyEndTypes": {
             "description": "Actions that will trigger a monitor notification if the downtime is in the `notify_end_types` state.",
             "items": {
                 "type": "string"

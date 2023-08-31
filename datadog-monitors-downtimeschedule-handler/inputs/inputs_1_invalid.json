@@ -2,7 +2,7 @@
     "DisplayTimezone": "UTC",
     "Message": "yo random mesasge",
     "MuteFirstRecoveryNotification": false,
-    "Scope": "env:(staging OR %v)",
+    "Scope": "env:(staging OR dev)",
     "NotifyEndStates": ["warn"],
     "NotifyEndTypes": ["expired"],
     "Schedule": {

@@ -1,39 +1,27 @@
 # Datadog::Monitors::DowntimeSchedule
 
-Congratulations on starting development! Next steps:
+This resource represents a Datadog Monitor Downtime and is used to create and manage these downtimes. More information about Downtimes can be found in the [Downtime documentation](https://docs.datadoghq.com/monitors/downtimes/).
 
-1. Write the JSON schema describing your resource, `datadog-monitors-downtimeschedule.json`
-2. Implement your resource handlers in `datadog_monitors_downtimeschedule/handlers.py`
+## Example Usage
 
-> Don't modify `models.py` by hand, any modifications will be overwritten when the `generate` or `package` commands are run.
+This example stack creates a downtime on scope `env:(staging OR dev)`.
 
-Implement CloudFormation resource here. Each function must always return a ProgressEvent.
-
-```python
-ProgressEvent(
-    # Required
-    # Must be one of OperationStatus.IN_PROGRESS, OperationStatus.FAILED, OperationStatus.SUCCESS
-    status=OperationStatus.IN_PROGRESS,
-    # Required on SUCCESS (except for LIST where resourceModels is required)
-    # The current resource model after the operation; instance of ResourceModel class
-    resourceModel=model,
-    resourceModels=None,
-    # Required on FAILED
-    # Customer-facing message, displayed in e.g. CloudFormation stack events
-    message="",
-    # Required on FAILED: a HandlerErrorCode
-    errorCode=HandlerErrorCode.InternalFailure,
-    # Optional
-    # Use to store any state between re-invocation via IN_PROGRESS
-    callbackContext={},
-    # Required on IN_PROGRESS
-    # The number of seconds to delay before re-invocation
-    callbackDelaySeconds=0,
-)
+```
+Resources:
+  DatadogTestDowntimeOnetime:
+    Type: 'Datadog::Monitors::DowntimeSchedule'
+    Properties:
+      Message: "Setting downtime on this monitor during regular maintenance"
+      Scope: "env:(staging OR prod)"
+      Timezone: "EST"
+      NotifyEndStates: ["warn"]
+      NotifyEndTypes: ["expired"]
+      MonitorIdentifier:
+        MonitorTags: ["cat:hatcf1234"]
+      Schedule:
+        Start: "2050-01-02T03:04:05+00:00"
 ```
 
-Failures can be passed back to CloudFormation by either raising an exception from `cloudformation_cli_python_lib.exceptions`, or setting the ProgressEvent's `status` to `OperationStatus.FAILED` and `errorCode` to one of `cloudformation_cli_python_lib.HandlerErrorCode`. There is a static helper function, `ProgressEvent.failed`, for this common case.
+## Property Reference:
 
-## What's with the type hints?
-
-We hope they'll be useful for getting started quicker with an IDE that support type hints. Type hints are optional - if your code doesn't use them, it will still work.
+For a list of available properties and their descriptions and examples, see the [JSON Schema for this resource](https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-downtimeschedule-handler/datadog-monitors-downtimeschedule.json).

@@ -122,10 +122,6 @@ def delete_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    LOG.warning("check these1 -------- desiredResourceState")
-    LOG.warning(request.desiredResourceState)
-    LOG.warning("check these2 --------")
-
     with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
@@ -206,10 +202,12 @@ def read_handler(
         
         if attributes.schedule:
             schedule = attributes.schedule.get_oneof_instance()
-            if isinstance(monitor_identifier, DDDowntimeScheduleOneTimeResponse):
+            if isinstance(schedule, DDDowntimeScheduleOneTimeResponse):
                 model.Schedule = Schedule(
-                    Start=getattr(schedule, "start", None),
-                    End=getattr(schedule, "end", None)
+                    Start=schedule.start.isoformat() if schedule.start else None,
+                    End=schedule.end.isoformat() if schedule.end else None,
+                    Timezone=None,
+                    Recurrences=None,
                 )
             elif isinstance(schedule, DDDowntimeScheduleRecurrencesResponse):
                 recurrences = []
@@ -219,8 +217,10 @@ def read_handler(
                         Start=getattr(r, "start", None),
                         Duration=getattr(r, "duration", None),
                     )
-                    recurrences.append(r)
+                    recurrences.append(recurrence)
                 model.Schedule = Schedule(
+                    Start=None,
+                    End=None,
                     Timezone=getattr(schedule, "timezone", None),
                     Recurrences=recurrences,
                 )
@@ -289,7 +289,6 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
     elif model.MonitorIdentifier.MonitorTags is not None:
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_tags=model.MonitorIdentifier.MonitorTags)
     else:
-        LOG.error("Invalid value for MonitorIdentifier")
         raise Exception("Invalid value for MonitorIdentifier")
 
     attributes = DDDowntimeUpdateRequestData(scope=scope, monitor_identifier=monitor_identifier)

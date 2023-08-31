@@ -7,8 +7,6 @@ from cloudformation_cli_python_lib import (
     ProgressEvent,
     Resource,
     SessionProxy,
-    exceptions,
-    identifier_utils,
 )
 
 from datadog_api_client.v2 import ApiException
@@ -23,17 +21,18 @@ from datadog_api_client.v2.model.downtime_notify_end_state_actions import Downti
 from datadog_api_client.v2.model.downtime_notify_end_state_types import DowntimeNotifyEndStateTypes as DDDowntimeNotifyEndStateTypes
 from datadog_api_client.v2.model.downtime_resource_type import DowntimeResourceType as DDDowntimeResourceType
 from datadog_api_client.v2.model.downtime_schedule_create_request import DowntimeScheduleCreateRequest as DDDowntimeScheduleCreateRequest
+from datadog_api_client.v2.model.downtime_schedule_one_time_create_update_request import DowntimeScheduleOneTimeCreateUpdateRequest as DDDowntimeScheduleOneTimeCreateUpdateRequest
 from datadog_api_client.v2.model.downtime_schedule_one_time_response import DowntimeScheduleOneTimeResponse as DDDowntimeScheduleOneTimeResponse
 from datadog_api_client.v2.model.downtime_schedule_recurrence_create_update_request import DowntimeScheduleRecurrenceCreateUpdateRequest as DDDowntimeScheduleRecurrenceCreateUpdateRequest
 from datadog_api_client.v2.model.downtime_schedule_recurrences_response import DowntimeScheduleRecurrencesResponse as DDDowntimeScheduleRecurrencesResponse
-from datadog_api_client.v2.model.downtime_schedule_update_request import DowntimeScheduleUpdateRequest as DDDowntimeScheduleUpdateRequest
+from datadog_api_client.v2.model.downtime_schedule_recurrences_update_request import DowntimeScheduleRecurrencesUpdateRequest as DDDowntimeScheduleRecurrencesUpdateRequest
 from datadog_api_client.v2.model.downtime_update_request import DowntimeUpdateRequest as DDDowntimeUpdateRequest
-from datadog_api_client.v2.model.downtime_update_request_attributes import DowntimeUpdateRequestAttributes as DDDowntimeUpdateRequestData
+from datadog_api_client.v2.model.downtime_update_request_attributes import DowntimeUpdateRequestAttributes as DDDowntimeUpdateRequestAttributes
 from datadog_api_client.v2.model.downtime_update_request_data import DowntimeUpdateRequestData as DDDowntimeUpdateRequestData
 
-from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 from .version import __version__
 from datadog_cloudformation_common.api_clients import client
+from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 from .models import MonitorIdentifier, Recurrences, ResourceHandlerRequest, ResourceModel, Schedule, TypeConfigurationModel
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -291,7 +290,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
     else:
         raise Exception("Invalid value for MonitorIdentifier")
 
-    attributes = DDDowntimeUpdateRequestData(scope=scope, monitor_identifier=monitor_identifier)
+    attributes = DDDowntimeUpdateRequestAttributes(scope=scope, monitor_identifier=monitor_identifier)
 
     if model.DisplayTimezone is not None:
         attributes.display_timezone = model.DisplayTimezone
@@ -304,8 +303,8 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
     if model.NotifyEndTypes is not None:
         attributes.notify_end_types = [DDDowntimeNotifyEndStateActions(s) for s in model.NotifyEndTypes]
     if model.Schedule is not None:
-        schedule = DDDowntimeScheduleUpdateRequest()
         if model.Schedule.Recurrences is not None:
+            schedule = DDDowntimeScheduleRecurrencesUpdateRequest()
             recurrences = []
             for r in model.Schedule.Recurrences:
                 recurrence = DDDowntimeScheduleRecurrenceCreateUpdateRequest(duration=r.Duration, rrule=r.Rrule)
@@ -317,7 +316,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
             if model.Schedule.Timezone is not None:
                 schedule.timezone = model.Schedule.Timezone
         else:
-            schedule = DDDowntimeScheduleUpdateRequest()
+            schedule = DDDowntimeScheduleOneTimeCreateUpdateRequest()
             if model.Schedule.Start is not None:
                 schedule.start = model.Schedule.Start
             if model.Schedule.End is not None:

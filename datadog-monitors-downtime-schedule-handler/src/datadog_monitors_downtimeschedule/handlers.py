@@ -19,6 +19,8 @@ from datadog_api_client.v2.model.downtime_create_request_data import DowntimeCre
 from datadog_api_client.v2.model.downtime_monitor_identifier import DowntimeMonitorIdentifier as DDDowntimeMonitorIdentifier
 from datadog_api_client.v2.model.downtime_monitor_identifier_id import DowntimeMonitorIdentifierId as DDDowntimeMonitorIdentifierId
 from datadog_api_client.v2.model.downtime_monitor_identifier_tags import DowntimeMonitorIdentifierTags as DDDowntimeMonitorIdentifierTags
+from datadog_api_client.v2.model.downtime_notify_end_state_actions import DowntimeNotifyEndStateActions as DDDowntimeNotifyEndStateActions
+from datadog_api_client.v2.model.downtime_notify_end_state_types import DowntimeNotifyEndStateTypes as DDDowntimeNotifyEndStateTypes
 from datadog_api_client.v2.model.downtime_resource_type import DowntimeResourceType as DDDowntimeResourceType
 from datadog_api_client.v2.model.downtime_schedule_create_request import DowntimeScheduleCreateRequest as DDDowntimeScheduleCreateRequest
 from datadog_api_client.v2.model.downtime_schedule_one_time_response import DowntimeScheduleOneTimeResponse as DDDowntimeScheduleOneTimeResponse
@@ -64,6 +66,7 @@ def create_handler(
         api_instance = DowntimesApi(api_client)
         try:
             resp = api_instance.create_downtime(downtime)
+            model.Id = resp.data.id
         except ApiException as e:
             LOG.exception("Exception when calling DowntimesApi->create_downtime: %s\n", e)
             return ProgressEvent(
@@ -73,7 +76,6 @@ def create_handler(
                 errorCode=http_to_handler_error_code(e.status),
             )
 
-    model.Id = resp.data.id
     return read_handler(session, request, callback_context)
 
 
@@ -119,6 +121,10 @@ def delete_handler(
 ) -> ProgressEvent:
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
+
+    LOG.warning("check these1 -------- desiredResourceState")
+    LOG.warning(request.desiredResourceState)
+    LOG.warning("check these2 --------")
 
     with client(
         type_configuration.DatadogCredentials.ApiKey,
@@ -189,14 +195,14 @@ def read_handler(
         model.DisplayTimezone = getattr(attributes, "display_timezone", None)
         model.Message = getattr(attributes, "message", None)
         model.MuteFirstRecoveryNotification = getattr(attributes, "mute_first_recovery_notification", None)
-        model.NotifyEndStates = getattr(attributes, "notify_end_states", None)
-        model.NotifyEndTypes = getattr(attributes, "notify_end_types", None)
-        
+        model.NotifyEndStates = [str(s) for s in attributes.notify_end_states] if hasattr(attributes, "notify_end_states") else None
+        model.NotifyEndTypes = [str(s) for s in attributes.notify_end_types] if hasattr(attributes, "notify_end_types") else None
+
         monitor_identifier = attributes.monitor_identifier.get_oneof_instance()
         if isinstance(monitor_identifier, DDDowntimeMonitorIdentifierId):
-            model.MonitorIdentifier = MonitorIdentifier(MonitorId=monitor_identifier.monitor_id)
-        elif type(model.MonitorIdentifier.get_oneof_instance()) == DDDowntimeMonitorIdentifierTags:
-            model.MonitorIdentifier = MonitorIdentifier(MonitorTags=monitor_identifier.monitor_tags)
+            model.MonitorIdentifier = MonitorIdentifier(MonitorId=monitor_identifier.monitor_id, MonitorTags=None)
+        elif isinstance(monitor_identifier, DDDowntimeMonitorIdentifierTags):
+            model.MonitorIdentifier = MonitorIdentifier(MonitorId=None, MonitorTags=monitor_identifier.monitor_tags)
         
         if attributes.schedule:
             schedule = attributes.schedule.get_oneof_instance()
@@ -205,7 +211,7 @@ def read_handler(
                     Start=getattr(schedule, "start", None),
                     End=getattr(schedule, "end", None)
                 )
-            elif type(model.MonitorIdentifier.get_oneof_instance()) == DDDowntimeScheduleRecurrencesResponse:
+            elif isinstance(schedule, DDDowntimeScheduleRecurrencesResponse):
                 recurrences = []
                 for r in schedule.recurrences:
                     recurrence = Recurrences(
@@ -218,7 +224,7 @@ def read_handler(
                     Timezone=getattr(schedule, "timezone", None),
                     Recurrences=recurrences,
                 )
-    
+
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
@@ -243,9 +249,9 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
     if model.MuteFirstRecoveryNotification is not None:
         attributes.mute_first_recovery_notification = model.MuteFirstRecoveryNotification
     if model.NotifyEndStates is not None:
-        attributes.notify_end_states = model.NotifyEndStates
+        attributes.notify_end_states = [DDDowntimeNotifyEndStateTypes(s) for s in model.NotifyEndStates]
     if model.NotifyEndTypes is not None:
-        attributes.notify_end_types = model.NotifyEndTypes
+        attributes.notify_end_types = [DDDowntimeNotifyEndStateActions(s) for s in model.NotifyEndTypes]
     if model.Schedule is not None:
         schedule = DDDowntimeScheduleCreateRequest()
         if model.Schedule.Recurrences is not None:
@@ -295,9 +301,9 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
     if model.MuteFirstRecoveryNotification is not None:
         attributes.mute_first_recovery_notification = model.MuteFirstRecoveryNotification
     if model.NotifyEndStates is not None:
-        attributes.notify_end_states = model.NotifyEndStates
+        attributes.notify_end_states = [DDDowntimeNotifyEndStateTypes(s) for s in model.NotifyEndStates]
     if model.NotifyEndTypes is not None:
-        attributes.notify_end_types = model.NotifyEndTypes
+        attributes.notify_end_types = [DDDowntimeNotifyEndStateActions(s) for s in model.NotifyEndTypes]
     if model.Schedule is not None:
         schedule = DDDowntimeScheduleUpdateRequest()
         if model.Schedule.Recurrences is not None:

@@ -6,7 +6,7 @@
     "NotifyEndStates": ["warn"],
     "NotifyEndTypes": ["expired"],
     "MonitorIdentifier": {
-        "MonitorTags": ["cat:hat"]
+        "MonitorTags": ["cat:hatcf1"]
     },
     "Schedule": {}
 }

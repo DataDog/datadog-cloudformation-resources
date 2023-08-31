@@ -17,6 +17,12 @@ def client(
         **datadog_config,
     )
 
+    # Enable unstable operations
+    configuration.unstable_operations["get_downtime"] = True
+    configuration.unstable_operations["create_downtime"] = True
+    configuration.unstable_operations["update_downtime"] = True
+    configuration.unstable_operations["cancel_downtime"] = True
+
     with ApiClient(configuration) as api_client:
         try:
             plugin_ver = pkg_resources.get_distribution("cloudformation_cli_python_lib").version

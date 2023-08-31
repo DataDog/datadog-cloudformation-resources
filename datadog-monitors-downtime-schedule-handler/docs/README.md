@@ -18,8 +18,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#scope" title="Scope">Scope</a>" : <i>String</i>,
         "<a href="#notifyendstates" title="NotifyEndStates">NotifyEndStates</a>" : <i>[ String, ... ]</i>,
         "<a href="#notifyendtypes" title="NotifyEndTypes">NotifyEndTypes</a>" : <i>[ String, ... ]</i>,
-        "<a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>" : <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>,
-        "<a href="#schedule" title="Schedule">Schedule</a>" : <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
+        "<a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>" : <i><a href="monitoridentifier.md">MonitorIdentifier</a></i>,
+        "<a href="#schedule" title="Schedule">Schedule</a>" : <i><a href="schedule.md">Schedule</a></i>
     }
 }
 </pre>
@@ -37,8 +37,8 @@ Properties:
       - String</i>
     <a href="#notifyendtypes" title="NotifyEndTypes">NotifyEndTypes</a>: <i>
       - String</i>
-    <a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>: <i><a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a></i>
-    <a href="#schedule" title="Schedule">Schedule</a>: <i>Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a></i>
+    <a href="#monitoridentifier" title="MonitorIdentifier">MonitorIdentifier</a>: <i><a href="monitoridentifier.md">MonitorIdentifier</a></i>
+    <a href="#schedule" title="Schedule">Schedule</a>: <i><a href="schedule.md">Schedule</a></i>
 </pre>
 
 ## Properties
@@ -107,17 +107,17 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 _Required_: Yes
 
-_Type_: <a href="monitorid.md">MonitorId</a>, <a href="monitortags.md">MonitorTags</a>
+_Type_: <a href="monitoridentifier.md">MonitorIdentifier</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### Schedule
 
-The schedule that defines when the monitor starts, stops, and recurs. There are two types of schedules: one-time and recurring. Recurring schedules may have up to five RRULE-based recurrences. If no schedules are provided, the downtime will begin immediately and never end.
+A recurring downtime schedule definition.
 
 _Required_: No
 
-_Type_: Map, <a href="recurringschedule.md">RecurringSchedule</a>, <a href="onetimeschedule.md">OneTimeSchedule</a>
+_Type_: <a href="schedule.md">Schedule</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

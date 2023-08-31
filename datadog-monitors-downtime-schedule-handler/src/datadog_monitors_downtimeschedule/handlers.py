@@ -32,7 +32,7 @@ from datadog_api_client.v2.model.downtime_update_request_data import DowntimeUpd
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 from .version import __version__
 from datadog_cloudformation_common.api_clients import client
-from .models import MonitorId, MonitorTags, OneTimeSchedule, Recurrences, RecurringSchedule, ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
+from .models import MonitorIdentifier, Recurrences, ResourceHandlerRequest, ResourceModel, Schedule, TypeConfigurationModel
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
@@ -194,14 +194,14 @@ def read_handler(
         
         monitor_identifier = attributes.monitor_identifier.get_oneof_instance()
         if isinstance(monitor_identifier, DDDowntimeMonitorIdentifierId):
-            model.MonitorIdentifier = MonitorId(MonitorId=monitor_identifier.monitor_id)
+            model.MonitorIdentifier = MonitorIdentifier(MonitorId=monitor_identifier.monitor_id)
         elif type(model.MonitorIdentifier.get_oneof_instance()) == DDDowntimeMonitorIdentifierTags:
-            model.MonitorIdentifier = MonitorTags(MonitorTags=monitor_identifier.monitor_tags)
+            model.MonitorIdentifier = MonitorIdentifier(MonitorTags=monitor_identifier.monitor_tags)
         
         if attributes.schedule:
             schedule = attributes.schedule.get_oneof_instance()
             if isinstance(monitor_identifier, DDDowntimeScheduleOneTimeResponse):
-                model.Schedule = OneTimeSchedule(
+                model.Schedule = Schedule(
                     Start=getattr(schedule, "start", None),
                     End=getattr(schedule, "end", None)
                 )
@@ -214,7 +214,7 @@ def read_handler(
                         Duration=getattr(r, "duration", None),
                     )
                     recurrences.append(r)
-                model.Schedule = RecurringSchedule(
+                model.Schedule = Schedule(
                     Timezone=getattr(schedule, "timezone", None),
                     Recurrences=recurrences,
                 )
@@ -227,9 +227,9 @@ def read_handler(
 
 def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRequest:
     scope = model.Scope
-    if isinstance(model.MonitorIdentifier, MonitorId):
+    if model.MonitorIdentifier.MonitorId is not None:
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_id=model.MonitorIdentifier.MonitorId)
-    elif isinstance(model.MonitorIdentifier, MonitorTags):
+    elif model.MonitorIdentifier.MonitorTags is not None:
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_tags=model.MonitorIdentifier.MonitorTags)
     else:
         raise Exception("Invalid value for MonitorIdentifier")
@@ -237,7 +237,7 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
     attributes = DDDowntimeCreateRequestAttributes(scope=scope, monitor_identifier=monitor_identifier)
 
     if model.DisplayTimezone is not None:
-        attributes.display_timezoe = model.DisplayTimezone
+        attributes.display_timezone = model.DisplayTimezone
     if model.Message is not None:
         attributes.message = model.Message
     if model.MuteFirstRecoveryNotification is not None:
@@ -248,7 +248,7 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
         attributes.notify_end_types = model.NotifyEndTypes
     if model.Schedule is not None:
         schedule = DDDowntimeScheduleCreateRequest()
-        if isinstance(model.Schedule, RecurringSchedule):
+        if model.Schedule.Recurrences is not None:
             recurrences = []
             for r in model.Schedule.Recurrences:
                 recurrence = DDDowntimeScheduleRecurrenceCreateUpdateRequest(duration=r.Duration, rrule=r.Rrule)
@@ -259,7 +259,8 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
 
             if model.Schedule.Timezone is not None:
                 schedule.timezone = model.Schedule.Timezone
-        elif isinstance(model.Schedule, OneTimeSchedule):
+        # We fall back to one time schedule if recurrence(required property is not set)
+        else:
             schedule = DDDowntimeScheduleCreateRequest()
             if model.Schedule.Start is not None:
                 schedule.start = model.Schedule.Start
@@ -277,9 +278,9 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
 
 def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRequest:
     scope = model.Scope
-    if isinstance(model.MonitorIdentifier, MonitorId):
+    if model.MonitorIdentifier.MonitorId is not None:
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_id=model.MonitorIdentifier.MonitorId)
-    elif isinstance(model.MonitorIdentifier, MonitorTags):
+    elif model.MonitorIdentifier.MonitorTags is not None:
         monitor_identifier = DDDowntimeMonitorIdentifier(monitor_tags=model.MonitorIdentifier.MonitorTags)
     else:
         LOG.error("Invalid value for MonitorIdentifier")
@@ -288,7 +289,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
     attributes = DDDowntimeUpdateRequestData(scope=scope, monitor_identifier=monitor_identifier)
 
     if model.DisplayTimezone is not None:
-        attributes.display_timezoe = model.DisplayTimezone
+        attributes.display_timezone = model.DisplayTimezone
     if model.Message is not None:
         attributes.message = model.Message
     if model.MuteFirstRecoveryNotification is not None:
@@ -299,7 +300,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
         attributes.notify_end_types = model.NotifyEndTypes
     if model.Schedule is not None:
         schedule = DDDowntimeScheduleUpdateRequest()
-        if isinstance(model.Schedule, RecurringSchedule):
+        if model.Schedule.Recurrences is not None:
             recurrences = []
             for r in model.Schedule.Recurrences:
                 recurrence = DDDowntimeScheduleRecurrenceCreateUpdateRequest(duration=r.Duration, rrule=r.Rrule)
@@ -310,7 +311,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
 
             if model.Schedule.Timezone is not None:
                 schedule.timezone = model.Schedule.Timezone
-        elif isinstance(model.Schedule, OneTimeSchedule):
+        else:
             schedule = DDDowntimeScheduleUpdateRequest()
             if model.Schedule.Start is not None:
                 schedule.start = model.Schedule.Start

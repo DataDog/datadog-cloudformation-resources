@@ -79,37 +79,6 @@
                 }
             },
             "additionalProperties": false
-        },
-        "MonitorId": {
-            "type": "object",
-            "properties": {
-                "MonitorId": {
-                    "description": "ID of the monitor to prevent notifications.",
-                    "type": "integer"
-                }
-            },
-            "required": [
-                "MonitorId"
-            ],
-            "additionalProperties": false
-        },
-        "MonitorTags": {
-            "type": "object",
-            "properties": {
-                "MonitorTags": {
-                    "description": "A list of monitor tags. For example, tags that are applied directly to monitors, not tags that are used in monitor queries (which are filtered by the scope parameter), to which the downtime applies. The resulting downtime applies to monitors that match **all** provided monitor tags. Setting `monitor_tags` to `[*]` configures the downtime to mute all monitors for the given scope.",
-                    "type": "array",
-                    "items": {
-                        "type": "string",
-                        "insertionOrder": false
-                    },
-                    "minItems": 1
-                }
-            },
-            "required": [
-                "MonitorTags"
-            ],
-            "additionalProperties": false
         }
     },
     "typeName": "Datadog::Monitors::DowntimeSchedule"

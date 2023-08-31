@@ -26,6 +26,7 @@ from datadog_api_client.v2.model.downtime_schedule_one_time_response import Down
 from datadog_api_client.v2.model.downtime_schedule_recurrence_create_update_request import DowntimeScheduleRecurrenceCreateUpdateRequest as DDDowntimeScheduleRecurrenceCreateUpdateRequest
 from datadog_api_client.v2.model.downtime_schedule_recurrences_response import DowntimeScheduleRecurrencesResponse as DDDowntimeScheduleRecurrencesResponse
 from datadog_api_client.v2.model.downtime_schedule_recurrences_update_request import DowntimeScheduleRecurrencesUpdateRequest as DDDowntimeScheduleRecurrencesUpdateRequest
+from datadog_api_client.v2.model.downtime_status import DowntimeStatus as DDDowntimeStatus
 from datadog_api_client.v2.model.downtime_update_request import DowntimeUpdateRequest as DDDowntimeUpdateRequest
 from datadog_api_client.v2.model.downtime_update_request_attributes import DowntimeUpdateRequestAttributes as DDDowntimeUpdateRequestAttributes
 from datadog_api_client.v2.model.downtime_update_request_data import DowntimeUpdateRequestData as DDDowntimeUpdateRequestData
@@ -129,6 +130,21 @@ def delete_handler(
         __version__,
     ) as api_client:
         api_instance = DowntimesApi(api_client)
+
+        try:
+            resp = api_instance.get_downtime(model.Id)
+            if resp.data.attributes.status == DDDowntimeStatus.CANCELED:
+                # Return a 404 to indicate the downtime was already deleted
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=None,
+                    message="Downtime {model.Id} already canceled",
+                    errorCode=HandlerErrorCode.NotFound,
+                )
+        except ApiException as e:
+            # Log error but continue in case of failure to get, this should not prevent the next call to delete
+            LOG.exception("Exception when calling DowntimeApi->get_downtime: %s\n", e)
+
         try:
             api_instance.cancel_downtime(model.Id)
         except ApiException as e:
@@ -165,13 +181,6 @@ def read_handler(
         __version__,
     ) as api_client:
         api_instance = DowntimesApi(api_client)
-        if model.Id is None:
-            return ProgressEvent(
-                status=OperationStatus.FAILED,
-                resourceModel=model,
-                message=f"Error getting downtime: downtime does not exist",
-                errorCode=HandlerErrorCode.NotFound,
-            )
         try:
             resp = api_instance.get_downtime(model.Id)
         except ApiException as e:
@@ -181,6 +190,15 @@ def read_handler(
                 resourceModel=model,
                 message=f"Error getting downtime: {e}",
                 errorCode=http_to_handler_error_code(e.status),
+            )
+
+         # If downtime is disabled, return a NotFound error code to indicate so
+        if resp.data.attributes.status == DDDowntimeStatus.CANCELED:
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"downtime {model.Id} is canceled",
+                errorCode=HandlerErrorCode.NotFound,
             )
 
         attributes = resp.data.attributes

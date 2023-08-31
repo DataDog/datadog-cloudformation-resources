@@ -6,7 +6,7 @@
     "NotifyEndStates": ["warn"],
     "NotifyEndTypes": ["expired"],
     "MonitorIdentifier": {
-        "MonitorTags": ["cat:hatcf1"]
+        "MonitorTags": ["cat:hatcf1234"]
     },
     "Schedule": {
         "Start": "2050-01-02T03:04:05+00:00"

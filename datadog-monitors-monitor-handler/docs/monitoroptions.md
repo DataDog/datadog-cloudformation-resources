@@ -8,6 +8,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
+    "<a href="#enablesamples" title="EnableSamples">EnableSamples</a>" : <i>Boolean</i>,
     "<a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>" : <i>Boolean</i>,
     "<a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>" : <i>String</i>,
     "<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>" : <i>Integer</i>,
@@ -35,6 +36,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
+<a href="#enablesamples" title="EnableSamples">EnableSamples</a>: <i>Boolean</i>
 <a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>: <i>Boolean</i>
 <a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>: <i>String</i>
 <a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>: <i>Integer</i>
@@ -61,6 +63,16 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 </pre>
 
 ## Properties
+
+#### EnableSamples
+
+Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.
+
+_Required_: No
+
+_Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### EnableLogsSample
 

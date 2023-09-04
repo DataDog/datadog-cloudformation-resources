@@ -72,6 +72,10 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
+        "EnableSamples":{
+          "description":"Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.",
+          "type":"boolean"
+        },
         "EnableLogsSample": {
           "description": "Whether or not to include a sample of the logs",
           "type": "boolean"

@@ -104,8 +104,9 @@
                     "type": "integer"
                 },
                 "NotifyAudit": {
-                    "description": "Whether or not to notify tagged users when changes are made to the monitor",
-                    "type": "boolean"
+                    "description": "A Boolean indicating whether tagged users is notified on changes to this monitor.",
+                    "type": "boolean",
+                    "default": false
                 },
                 "NotifyNoData": {
                     "description": "Whether or not to notify when data stops reporting",

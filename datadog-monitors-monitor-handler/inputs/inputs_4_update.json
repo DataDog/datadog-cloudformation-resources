@@ -4,14 +4,13 @@
     "Query": "ci-tests(\"test_level:test @test.service:* @git.branch:* @git.commit.author.email:* @test.status:fail\").rollup(\"count\").last(\"5m\") > 1",
     "Message": "@slack-datadog-testing",
     "Tags": [],
+    "Priority": 2,
     "Options": {
         "Thresholds": {
             "Critical": 4
         },
         "EnableLogsSample": false,
         "NotifyAudit": false,
-        "RestrictionQuery": null,
-        "OnMissingData": "default",
         "IncludeTags": false,
         "EnableSamples": false
     }

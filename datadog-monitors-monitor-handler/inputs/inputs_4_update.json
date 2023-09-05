@@ -7,7 +7,7 @@
     "Priority": 2,
     "Options": {
         "Thresholds": {
-            "Critical": 4
+            "Critical": 1
         },
         "EnableLogsSample": false,
         "NotifyAudit": false,

@@ -6,16 +6,13 @@ from cloudformation_cli_python_lib.interface import (
     BaseResourceHandlerRequest,
 )
 from cloudformation_cli_python_lib.recast import recast_object
-from cloudformation_cli_python_lib.utils import deserialize_list
 
 import sys
 from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
     Any,
-    Generic,
     Mapping,
-    MutableMapping,
     Optional,
     Sequence,
     Type,

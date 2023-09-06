@@ -10,4 +10,4 @@ repos:
   rev: v0.0.287
   hooks:
   - id: ruff
-    entry: ruff --fix --quiet --exit-zero --fixable I001,F401 --ignore E501 src examples tests
+    entry: ruff --fix --quiet --exit-zero --fixable I001,F401 --ignore E501 .

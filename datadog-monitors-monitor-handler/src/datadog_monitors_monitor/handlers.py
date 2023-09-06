@@ -98,7 +98,7 @@ def read_handler(
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting monitor: monitor does not exist",
+                message="Error getting monitor: monitor does not exist",
                 errorCode=HandlerErrorCode.NotFound,
             )
         try:

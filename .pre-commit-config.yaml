@@ -3,7 +3,6 @@ repos:
   rev: 23.7.0
   hooks:
   - id: black
-    stages: [manual]
     entry: black --fast --line-length 120 ./
     pass_filenames: false
 - repo: https://github.com/charliermarsh/ruff-pre-commit

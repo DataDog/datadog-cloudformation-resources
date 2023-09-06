@@ -85,6 +85,7 @@ jobs:
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: pip install --disable-pip-version-check -e ./datadog-cloudformation-common-python[build]
     - name: Install pre-commit
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: python -m pip install pre-commit
     - name: Build Package
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)

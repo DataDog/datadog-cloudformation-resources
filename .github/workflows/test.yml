@@ -25,6 +25,10 @@ jobs:
   #         python-version: '3.9'
   #     - name: Install pre-commit
   #       run: python -m pip install pre-commit
+  #     - uses: actions/cache@v3
+  #       with:
+  #       path: ~/.cache/pre-commit
+  #       key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
   #     - id: pre_commit
   #       name: Run pre-commit
   #       if: github.event.action != 'closed' && github.event.pull_request.merged != true
@@ -87,6 +91,10 @@ jobs:
     - name: Install pre-commit
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: python -m pip install pre-commit
+    - uses: actions/cache@v3
+      with:
+        path: ~/.cache/pre-commit
+        key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
     - name: Build Package
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
@@ -105,11 +113,11 @@ jobs:
       run: |
         cd ${{ matrix.resource }}
         cfn generate
-        pre-commit run --all-files
         set +e
+        pre-commit run --all-files
         git diff --exit-code
         if [ $? -ne 0  ]; then
-          echo "'cfn generate' generated some changes. Run it locally and commit changes."
+          echo "'cfn generate and pre-commit run --all-files' generated changes. Run it locally and commit the changes."
         fi
         set -e
     - name: Run Tests

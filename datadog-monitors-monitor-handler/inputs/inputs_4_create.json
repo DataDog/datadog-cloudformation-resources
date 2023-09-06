@@ -1,0 +1,17 @@
+{
+    "Name": "ci test notification",
+    "Type": "ci-tests alert",
+    "Query": "ci-tests(\"test_level:test @test.service:* @git.branch:* @git.commit.author.email:* @test.status:fail\").rollup(\"count\").last(\"5m\") > 1",
+    "Message": "@slack-datadog-testing",
+    "Tags": [],
+    "Priority": 1,
+    "Options": {
+        "Thresholds": {
+            "Critical": 1
+        },
+        "EnableLogsSample": false,
+        "NotifyAudit": false,
+        "IncludeTags": false,
+        "EnableSamples": true
+    }
+}

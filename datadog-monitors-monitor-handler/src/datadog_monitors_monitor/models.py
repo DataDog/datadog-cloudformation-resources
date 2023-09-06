@@ -113,6 +113,7 @@ _Creator = Creator
 
 @dataclass
 class MonitorOptions(BaseModel):
+    EnableSamples: Optional[bool]
     EnableLogsSample: Optional[bool]
     EscalationMessage: Optional[str]
     EvaluationDelay: Optional[int]
@@ -143,6 +144,7 @@ class MonitorOptions(BaseModel):
         if not json_data:
             return None
         return cls(
+            EnableSamples=json_data.get("EnableSamples"),
             EnableLogsSample=json_data.get("EnableLogsSample"),
             EscalationMessage=json_data.get("EscalationMessage"),
             EvaluationDelay=json_data.get("EvaluationDelay"),

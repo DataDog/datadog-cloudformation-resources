@@ -121,6 +121,7 @@ class MonitorOptions(BaseModel):
     NewHostDelay: Optional[int]
     NoDataTimeframe: Optional[int]
     NotifyAudit: Optional[bool]
+    GroupbySimpleMonitor: Optional[bool]
     NotifyNoData: Optional[bool]
     RenotifyInterval: Optional[int]
     RequireFullWindow: Optional[bool]
@@ -152,6 +153,7 @@ class MonitorOptions(BaseModel):
             NewHostDelay=json_data.get("NewHostDelay"),
             NoDataTimeframe=json_data.get("NoDataTimeframe"),
             NotifyAudit=json_data.get("NotifyAudit"),
+            GroupbySimpleMonitor=json_data.get("Multi"),
             NotifyNoData=json_data.get("NotifyNoData"),
             RenotifyInterval=json_data.get("RenotifyInterval"),
             RequireFullWindow=json_data.get("RequireFullWindow"),

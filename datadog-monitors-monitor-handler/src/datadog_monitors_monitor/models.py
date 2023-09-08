@@ -113,19 +113,26 @@ _Creator = Creator
 
 @dataclass
 class MonitorOptions(BaseModel):
-    EnableSamples: Optional[bool]
+    Aggregation: Optional["_MonitorAggregation"]
     EnableLogsSample: Optional[bool]
+    EnableSamples: Optional[bool]
     EscalationMessage: Optional[str]
     EvaluationDelay: Optional[int]
+    GroupRetentionDuration: Optional[str]
+    GroupBySimpleMonitor: Optional[bool]
     IncludeTags: Optional[bool]
     Locked: Optional[bool]
     MinLocationFailed: Optional[int]
     NewHostDelay: Optional[int]
     NoDataTimeframe: Optional[int]
     NotifyAudit: Optional[bool]
+    NotifyBy: Optional[Sequence[str]]
     NotifyNoData: Optional[bool]
+    NotificationPresetName: Optional[str]
+    OnMissingData: Optional[str]
     RenotifyInterval: Optional[int]
     RequireFullWindow: Optional[bool]
+    SchedulingOptions: Optional["_MonitorSchedulingOptions"]
     SyntheticsCheckID: Optional[int]
     Thresholds: Optional["_MonitorThresholds"]
     ThresholdWindows: Optional["_MonitorThresholdWindows"]
@@ -144,19 +151,26 @@ class MonitorOptions(BaseModel):
         if not json_data:
             return None
         return cls(
-            EnableSamples=json_data.get("EnableSamples"),
+            Aggregation=MonitorAggregation._deserialize(json_data.get("Aggregation")),
             EnableLogsSample=json_data.get("EnableLogsSample"),
+            EnableSamples=json_data.get("EnableSamples"),
             EscalationMessage=json_data.get("EscalationMessage"),
             EvaluationDelay=json_data.get("EvaluationDelay"),
+            GroupRetentionDuration=json_data.get("GroupRetentionDuration"),
+            GroupBySimpleMonitor=json_data.get("GroupBySimpleMonitor"),
             IncludeTags=json_data.get("IncludeTags"),
             Locked=json_data.get("Locked"),
             MinLocationFailed=json_data.get("MinLocationFailed"),
             NewHostDelay=json_data.get("NewHostDelay"),
             NoDataTimeframe=json_data.get("NoDataTimeframe"),
             NotifyAudit=json_data.get("NotifyAudit"),
+            NotifyBy=json_data.get("NotifyBy"),
             NotifyNoData=json_data.get("NotifyNoData"),
+            NotificationPresetName=json_data.get("NotificationPresetName"),
+            OnMissingData=json_data.get("OnMissingData"),
             RenotifyInterval=json_data.get("RenotifyInterval"),
             RequireFullWindow=json_data.get("RequireFullWindow"),
+            SchedulingOptions=MonitorSchedulingOptions._deserialize(json_data.get("SchedulingOptions")),
             SyntheticsCheckID=json_data.get("SyntheticsCheckID"),
             Thresholds=MonitorThresholds._deserialize(json_data.get("Thresholds")),
             ThresholdWindows=MonitorThresholdWindows._deserialize(json_data.get("ThresholdWindows")),
@@ -171,6 +185,74 @@ class MonitorOptions(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorOptions = MonitorOptions
+
+
+@dataclass
+class MonitorAggregation(BaseModel):
+    Metric: Optional[str]
+    Type: Optional[str]
+    GroupBy: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorAggregation"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorAggregation"]:
+        if not json_data:
+            return None
+        return cls(
+            Metric=json_data.get("Metric"),
+            Type=json_data.get("Type"),
+            GroupBy=json_data.get("GroupBy"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorAggregation = MonitorAggregation
+
+
+@dataclass
+class MonitorSchedulingOptions(BaseModel):
+    EvaluationWindow: Optional["_MonitorSchedulingOptionsEvaluationWindow"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorSchedulingOptions"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorSchedulingOptions"]:
+        if not json_data:
+            return None
+        return cls(
+            EvaluationWindow=MonitorSchedulingOptionsEvaluationWindow._deserialize(json_data.get("EvaluationWindow")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorSchedulingOptions = MonitorSchedulingOptions
+
+
+@dataclass
+class MonitorSchedulingOptionsEvaluationWindow(BaseModel):
+    DayStarts: Optional[str]
+    MonthStarts: Optional[int]
+    HourStarts: Optional[int]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorSchedulingOptionsEvaluationWindow"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorSchedulingOptionsEvaluationWindow"]:
+        if not json_data:
+            return None
+        return cls(
+            DayStarts=json_data.get("DayStarts"),
+            MonthStarts=json_data.get("MonthStarts"),
+            HourStarts=json_data.get("HourStarts"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorSchedulingOptionsEvaluationWindow = MonitorSchedulingOptionsEvaluationWindow
 
 
 @dataclass

@@ -17,6 +17,9 @@ from datadog_api_client.v1.model.monitor_renotify_status_type import MonitorReno
 from datadog_api_client.v1.model.monitor_threshold_window_options import (
     MonitorThresholdWindowOptions as ApiMonitorThresholdWindows,
 )
+from datadog_api_client.v1.model.monitor_options_scheduling_options import MonitorOptionsSchedulingOptions
+from datadog_api_client.v1.model.monitor_options_scheduling_options_evaluation_window import MonitorOptionsSchedulingOptionsEvaluationWindow
+from datadog_api_client.v1.model.monitor_options_aggregation import MonitorOptionsAggregation
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
@@ -27,6 +30,8 @@ from datadog_api_client.v1.model.monitor_formula_and_function_event_query_defini
 from datadog_api_client.v1.model.monitor_formula_and_function_events_data_source import (
     MonitorFormulaAndFunctionEventsDataSource as ApiMonitorMonitorFormulaAndFunctionEventsDataSource,
 )
+from datadog_api_client.v1.model.on_missing_data_option import OnMissingDataOption
+from datadog_api_client.v1.model.monitor_options_notification_presets import MonitorOptionsNotificationPresets
 from datadog_api_client.v1.model.monitor_formula_and_function_event_query_definition_compute import (
     MonitorFormulaAndFunctionEventQueryDefinitionCompute as ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute,
 )
@@ -52,6 +57,9 @@ from datadog_cloudformation_common.utils import errors_handler, http_to_handler_
 from .models import (
     Creator,
     MonitorOptions,
+    MonitorAggregation,
+    MonitorSchedulingOptions,
+    MonitorSchedulingOptionsEvaluationWindow,
     MonitorThresholdWindows,
     MonitorThresholds,
     ResourceHandlerRequest,
@@ -137,19 +145,28 @@ def read_handler(
     options = monitor.options if hasattr(monitor, "options") else None
     if options:
         model.Options = MonitorOptions(
+            Aggregation=None,
             EnableSamples = options.enable_samples if hasattr(options, "enable_samples") else None,
             EnableLogsSample=options.enable_logs_sample if hasattr(options, "enable_logs_sample") else None,
             EscalationMessage=options.escalation_message if hasattr(options, "escalation_message") else None,
             EvaluationDelay=options.evaluation_delay if hasattr(options, "evaluation_delay") else None,
+            GroupRetentionDuration=options.group_retention_duration if hasattr(options,"group_retention_duration") else None,
+            GroupBySimpleMonitor=options.group_by_simple_monitor if hasattr(options,"group_by_simple_monitor") else None,
             IncludeTags=options.include_tags if hasattr(options, "include_tags") else None,
             Locked=options.locked if hasattr(options, "locked") else None,
             MinLocationFailed=options.min_location_failed if hasattr(options, "min_location_failed") else None,
             NewHostDelay=options.new_host_delay if hasattr(options, "new_host_delay") else None,
             NoDataTimeframe=options.no_data_timeframe if hasattr(options, "no_data_timeframe") else None,
             NotifyAudit=options.notify_audit if hasattr(options, "notify_audit") else None,
+            NotifyBy=[str(notify) for notify in options.notify_by]
+            if hasattr(options,"notify_by")
+            else None,
             NotifyNoData=options.notify_no_data if hasattr(options, "notify_no_data") else None,
+            NotificationPresetName=options.notification_preset_name if hasattr(options, "notification_preset_name") else None,
+            OnMissingData=options.on_missing_data if hasattr(options, "on_missing_data") else None,
             RenotifyInterval=options.renotify_interval if hasattr(options, "renotify_interval") else None,
             RequireFullWindow=options.require_full_window if hasattr(options, "require_full_window") else None,
+            SchedulingOptions=None,
             SyntheticsCheckID=options.synthetics_check_id if hasattr(options, "synthetics_check_id") else None,
             Thresholds=None,
             ThresholdWindows=None,
@@ -162,6 +179,25 @@ def read_handler(
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
             Variables=None,
         )
+
+        aggregation = getattr(options, "aggregation", None)
+        if aggregation: 
+            model.Options.Aggregation = MonitorAggregation(
+                Metric= aggregation.metric if hasattr(aggregation, "metric") else None,
+                Type=aggregation.type if hasattr(aggregation, "type") else None,
+                GroupBy=aggregation.group_by if hasattr(aggregation, "group_by") else None,
+            )
+        
+        scheduling_options = getattr(options, "scheduling_options",None)
+        if scheduling_options:
+            model.Options.SchedulingOptions = MonitorSchedulingOptions()
+            scheduling_options_eval_window = getattr(scheduling_options,"evaluation_window",None)
+            if scheduling_options_eval_window:
+                model.Options.SchedulingOptions.EvaluationWindow = MonitorSchedulingOptionsEvaluationWindow(
+                    DayStarts = scheduling_options_eval_window.day_starts if hasattr(scheduling_options_eval_window,"day_starts") else None,
+                    MonthStarts = scheduling_options_eval_window.month_starts if hasattr(scheduling_options_eval_window,"month_starts") else None,
+                    HourStarts = scheduling_options_eval_window.hour_starts if hasattr(scheduling_options_eval_window,"hour_starts") else None
+                )
 
         variables = getattr(options, "variables", None)
         if variables:
@@ -343,6 +379,14 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         options.new_group_delay = model.Options.NewGroupDelay
 
         # Non nullable
+        if model.Options.Aggregation is not None:
+            options.aggregation = MonitorOptionsAggregation()
+            if model.Options.Aggregation.GroupBy is not None:
+                options.aggregation.group_by = model.Options.Aggregation.GroupBy
+            if model.Options.Aggregation.Metric is not None:
+                options.aggregation.metric = model.Options.Aggregation.Metric
+            if model.Options.Aggregation.Type is not None:
+                options.aggregation.type = model.Options.Aggregation.Type
         if model.Options.RenotifyStatuses is not None:
             options.renotify_statuses = (
                 [MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses]
@@ -355,14 +399,28 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.enable_logs_sample = model.Options.EnableLogsSample
         if model.Options.EscalationMessage is not None:
             options.escalation_message = model.Options.EscalationMessage
+        if model.Options.GroupRetentionDuration is not None:
+            options.group_retention_duration = model.Options.GroupRetentionDuration
+        if model.Options.GroupBySimpleMonitor is not None:
+            options.group_by_simple_monitor = model.Options.GroupBySimpleMonitor
         if model.Options.IncludeTags is not None:
             options.include_tags = model.Options.IncludeTags
         if model.Options.Locked is not None:
             options.locked = model.Options.Locked
+        if model.Options.NotificationPresetName is not None:
+            options.notification_preset_name = MonitorOptionsNotificationPresets(str(model.Options.NotificationPresetName))
         if model.Options.NotifyAudit is not None:
             options.notify_audit = model.Options.NotifyAudit
+        if model.Options.NotifyBy is not None:
+            options.notify_by = (
+                [str(notify) for notify in model.Options.NotifyBy]
+                if model.Options.NotifyBy is not None
+                else None
+            )
         if model.Options.NotifyNoData is not None:
             options.notify_no_data = model.Options.NotifyNoData
+        if model.Options.OnMissingData is not None:
+            options.on_missing_data = OnMissingDataOption(str(model.Options.OnMissingData))
         if model.Options.RequireFullWindow is not None:
             options.require_full_window = model.Options.RequireFullWindow
         if model.Options.Thresholds is not None:
@@ -377,6 +435,12 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
                 options.thresholds.warning_recovery = model.Options.Thresholds.WarningRecovery
             if model.Options.Thresholds.OK is not None:
                 options.thresholds.ok = model.Options.Thresholds.OK
+        if model.Options.SchedulingOptions is not None:
+            options.scheduling_options = MonitorOptionsSchedulingOptions()
+            options.scheduling_options.evaluation_window = MonitorOptionsSchedulingOptionsEvaluationWindow()
+            options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
+            options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
+            options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
 
         if model.Options.ThresholdWindows is not None:
             options.threshold_windows = ApiMonitorThresholdWindows()

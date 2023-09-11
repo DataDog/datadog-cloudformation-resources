@@ -106,7 +106,7 @@ def read_handler(
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting monitor: monitor does not exist",
+                message="Error getting monitor: monitor does not exist",
                 errorCode=HandlerErrorCode.NotFound,
             )
         try:
@@ -393,7 +393,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
                 if model.Options.RenotifyStatuses is not None
                 else None
             )
-        if model.Options.EnableSamples is not None: 
+        if model.Options.EnableSamples is not None:
             options.enable_samples = model.Options.EnableSamples
         if model.Options.EnableLogsSample is not None:
             options.enable_logs_sample = model.Options.EnableLogsSample

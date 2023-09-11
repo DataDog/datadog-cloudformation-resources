@@ -3,7 +3,6 @@ from typing import Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
     Action,
-    HandlerErrorCode,
     OperationStatus,
     ProgressEvent,
     Resource,
@@ -67,10 +66,6 @@ def update_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
-    progress: ProgressEvent = ProgressEvent(
-        status=OperationStatus.IN_PROGRESS,
-        resourceModel=model,
-    )
 
     LOG.info(f"Starting the {TYPE_NAME} Update Handler")
 
@@ -104,10 +99,6 @@ def delete_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     model = request.desiredResourceState
-    progress: ProgressEvent = ProgressEvent(
-        status=OperationStatus.IN_PROGRESS,
-        resourceModel=model,
-    )
 
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
@@ -164,17 +155,4 @@ def read_handler(
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
-    )
-
-
-@resource.handler(Action.LIST)
-def list_handler(
-    session: Optional[SessionProxy],
-    request: ResourceHandlerRequest,
-    callback_context: MutableMapping[str, Any],
-) -> ProgressEvent:
-    # TODO: put code here
-    return ProgressEvent(
-        status=OperationStatus.SUCCESS,
-        resourceModels=[],
     )

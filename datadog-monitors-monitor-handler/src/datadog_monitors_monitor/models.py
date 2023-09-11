@@ -119,7 +119,6 @@ class MonitorOptions(BaseModel):
     EscalationMessage: Optional[str]
     EvaluationDelay: Optional[int]
     GroupRetentionDuration: Optional[str]
-    GroupBySimpleMonitor: Optional[bool]
     IncludeTags: Optional[bool]
     Locked: Optional[bool]
     MinLocationFailed: Optional[int]
@@ -157,7 +156,6 @@ class MonitorOptions(BaseModel):
             EscalationMessage=json_data.get("EscalationMessage"),
             EvaluationDelay=json_data.get("EvaluationDelay"),
             GroupRetentionDuration=json_data.get("GroupRetentionDuration"),
-            GroupBySimpleMonitor=json_data.get("GroupBySimpleMonitor"),
             IncludeTags=json_data.get("IncludeTags"),
             Locked=json_data.get("Locked"),
             MinLocationFailed=json_data.get("MinLocationFailed"),

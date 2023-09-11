@@ -84,11 +84,15 @@
                 },
                 "MonthStarts": {
                     "description": "The day of the month at which a one month cumulative evaluation window starts.",
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1
                 },
                 "HourStarts": {
                     "description": "The minute of the hour at which a one hour cumulative evaluation window starts.",
-                    "type": "integer"
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 59
                 }
             }
         },
@@ -158,10 +162,6 @@
                 "GroupRetentionDuration": {
                     "description": "The time span after which groups with missing data are dropped from the monitor state.\nThe minimum value is one hour, and the maximum value is 72 hours.\nExample values are: \"60m\", \"1h\", and \"2d\".\nThis option is only available for APM Trace Analytics, Audit Trail, CI, Error Tracking, Event, Logs, and RUM monitors.",
                     "type": "string"
-                },
-                "GroupBySimpleMonitor": {
-                    "description": "Whether the log alert monitor triggers a single alert or multiple alerts when any group breaches a threshold.",
-                    "type": "boolean"
                 },
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",

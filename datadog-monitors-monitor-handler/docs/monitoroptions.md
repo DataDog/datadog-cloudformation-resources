@@ -14,7 +14,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "<a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>" : <i>String</i>,
     "<a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>" : <i>Integer</i>,
     "<a href="#groupretentionduration" title="GroupRetentionDuration">GroupRetentionDuration</a>" : <i>String</i>,
-    "<a href="#groupbysimplemonitor" title="GroupBySimpleMonitor">GroupBySimpleMonitor</a>" : <i>Boolean</i>,
     "<a href="#includetags" title="IncludeTags">IncludeTags</a>" : <i>Boolean</i>,
     "<a href="#locked" title="Locked">Locked</a>" : <i>Boolean</i>,
     "<a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>" : <i>Integer</i>,
@@ -49,7 +48,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>: <i>String</i>
 <a href="#evaluationdelay" title="EvaluationDelay">EvaluationDelay</a>: <i>Integer</i>
 <a href="#groupretentionduration" title="GroupRetentionDuration">GroupRetentionDuration</a>: <i>String</i>
-<a href="#groupbysimplemonitor" title="GroupBySimpleMonitor">GroupBySimpleMonitor</a>: <i>Boolean</i>
 <a href="#includetags" title="IncludeTags">IncludeTags</a>: <i>Boolean</i>
 <a href="#locked" title="Locked">Locked</a>: <i>Boolean</i>
 <a href="#minlocationfailed" title="MinLocationFailed">MinLocationFailed</a>: <i>Integer</i>
@@ -139,16 +137,6 @@ This option is only available for APM Trace Analytics, Audit Trail, CI, Error Tr
 _Required_: No
 
 _Type_: String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### GroupBySimpleMonitor
-
-Whether the log alert monitor triggers a single alert or multiple alerts when any group breaches a threshold.
-
-_Required_: No
-
-_Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

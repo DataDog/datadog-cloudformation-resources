@@ -1,6 +1,6 @@
 {
   "Type": "query alert",
-  "Query": "avg(last_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host} > 4",
+  "Query": "avg(last_1mo):avg:aws.ec2.cpu{environment:foo,host:foo} by {host,environment} > 4",
   "Name": "SSH Activity on PROD",
   "Message": "@slack-datadog-testing",
   "Priority": 1,
@@ -9,6 +9,8 @@
     "IncludeTags": true,
     "NewHostDelay": 300,
     "NotifyAudit": false,
+    "NotifyBy": ["host"],
+    "NotificationPresetName":"show_all",
     "NotifyNoData": false,
     "RenotifyInterval": 0,
     "EnableLogsSample": true,

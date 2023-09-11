@@ -17,8 +17,8 @@ from datadog_api_client.v1.model.monitor_renotify_status_type import MonitorReno
 from datadog_api_client.v1.model.monitor_threshold_window_options import (
     MonitorThresholdWindowOptions as ApiMonitorThresholdWindows,
 )
-from datadog_api_client.v1.model.monitor_options_scheduling_options import MonitorOptionsSchedulingOptions
-from datadog_api_client.v1.model.monitor_options_scheduling_options_evaluation_window import MonitorOptionsSchedulingOptionsEvaluationWindow
+from datadog_api_client.v1.model.monitor_options_scheduling_options import MonitorOptionsSchedulingOptions as ApiMonitorOptionsSchedulingOptions
+from datadog_api_client.v1.model.monitor_options_scheduling_options_evaluation_window import MonitorOptionsSchedulingOptionsEvaluationWindow as ApiMonitorOptionsSchedulingOptionsEvaluationWindow
 from datadog_api_client.v1.model.monitor_options_aggregation import MonitorOptionsAggregation
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
@@ -151,7 +151,6 @@ def read_handler(
             EscalationMessage=options.escalation_message if hasattr(options, "escalation_message") else None,
             EvaluationDelay=options.evaluation_delay if hasattr(options, "evaluation_delay") else None,
             GroupRetentionDuration=options.group_retention_duration if hasattr(options,"group_retention_duration") else None,
-            GroupBySimpleMonitor=options.group_by_simple_monitor if hasattr(options,"group_by_simple_monitor") else None,
             IncludeTags=options.include_tags if hasattr(options, "include_tags") else None,
             Locked=options.locked if hasattr(options, "locked") else None,
             MinLocationFailed=options.min_location_failed if hasattr(options, "min_location_failed") else None,
@@ -188,16 +187,17 @@ def read_handler(
                 GroupBy=aggregation.group_by if hasattr(aggregation, "group_by") else None,
             )
         
-        scheduling_options = getattr(options, "scheduling_options",None)
+        scheduling_options = options.scheduling_options if hasattr (options,"scheduling_options") else None
         if scheduling_options:
-            model.Options.SchedulingOptions = MonitorSchedulingOptions()
-            scheduling_options_eval_window = getattr(scheduling_options,"evaluation_window",None)
-            if scheduling_options_eval_window:
-                model.Options.SchedulingOptions.EvaluationWindow = MonitorSchedulingOptionsEvaluationWindow(
-                    DayStarts = scheduling_options_eval_window.day_starts if hasattr(scheduling_options_eval_window,"day_starts") else None,
-                    MonthStarts = scheduling_options_eval_window.month_starts if hasattr(scheduling_options_eval_window,"month_starts") else None,
-                    HourStarts = scheduling_options_eval_window.hour_starts if hasattr(scheduling_options_eval_window,"hour_starts") else None
-                )
+            evaluation_window = getattr(scheduling_options,"evaluation_window",None)
+            if evaluation_window:
+                model.Options.SchedulingOptions = MonitorSchedulingOptions(
+                    EvaluationWindow = MonitorSchedulingOptionsEvaluationWindow(
+                        DayStarts = evaluation_window.day_starts if hasattr(evaluation_window,"day_starts") else None,
+                        MonthStarts = evaluation_window.month_starts if hasattr(evaluation_window,"month_starts") else None,
+                        HourStarts = evaluation_window.hour_starts if hasattr(evaluation_window,"hour_starts") else None
+                    )
+            )
 
         variables = getattr(options, "variables", None)
         if variables:
@@ -401,8 +401,6 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.escalation_message = model.Options.EscalationMessage
         if model.Options.GroupRetentionDuration is not None:
             options.group_retention_duration = model.Options.GroupRetentionDuration
-        if model.Options.GroupBySimpleMonitor is not None:
-            options.group_by_simple_monitor = model.Options.GroupBySimpleMonitor
         if model.Options.IncludeTags is not None:
             options.include_tags = model.Options.IncludeTags
         if model.Options.Locked is not None:
@@ -436,11 +434,12 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             if model.Options.Thresholds.OK is not None:
                 options.thresholds.ok = model.Options.Thresholds.OK
         if model.Options.SchedulingOptions is not None:
-            options.scheduling_options = MonitorOptionsSchedulingOptions()
-            options.scheduling_options.evaluation_window = MonitorOptionsSchedulingOptionsEvaluationWindow()
-            options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
-            options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
-            options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
+            options.scheduling_options = ApiMonitorOptionsSchedulingOptions()
+            if model.Options.SchedulingOptions.EvaluationWindow is not None: 
+                options.scheduling_options.evaluation_window = ApiMonitorOptionsSchedulingOptionsEvaluationWindow()
+                options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
+                options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
+                options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
 
         if model.Options.ThresholdWindows is not None:
             options.threshold_windows = ApiMonitorThresholdWindows()

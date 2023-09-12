@@ -1,7 +1,7 @@
 {
-    "Name": "ci test notification",
-    "Type": "ci-tests alert",
-    "Query": "ci-tests(\"test_level:test @test.service:* @git.branch:* @git.commit.author.email:* @test.status:fail\").rollup(\"count\").last(\"5m\") > 1",
+    "Name": "ci_test_notification",
+    "Type": "ci-pipelines alert",
+    "Query": "ci-pipelines(\"ci_level:pipeline @ci.status:error\").rollup(\"count\").by(\"@ci.pipeline.name\").last(\"5m\") > 4",
     "Message": "@slack-datadog-testing",
     "Tags": [],
     "Priority": 1,
@@ -9,11 +9,11 @@
         "OnMissingData": "show_and_notify_no_data",
         "GroupRetentionDuration": "60m",
         "Thresholds": {
-            "Critical": 1
+            "Critical": 4
         },
         "EnableLogsSample": false,
         "NotifyAudit": false,
-        "IncludeTags": false,
+        "IncludeTags": true,
         "EnableSamples": true
     }
 }

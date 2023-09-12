@@ -161,8 +161,8 @@ def read_handler(
             if hasattr(options,"notify_by")
             else None,
             NotifyNoData=options.notify_no_data if hasattr(options, "notify_no_data") else None,
-            NotificationPresetName=options.notification_preset_name if hasattr(options, "notification_preset_name") else None,
-            OnMissingData=options.on_missing_data if hasattr(options, "on_missing_data") else None,
+            NotificationPresetName=str(options.notification_preset_name) if hasattr(options, "notification_preset_name") else None,
+            OnMissingData=str(options.on_missing_data) if hasattr(options, "on_missing_data") else None,
             RenotifyInterval=options.renotify_interval if hasattr(options, "renotify_interval") else None,
             RequireFullWindow=options.require_full_window if hasattr(options, "require_full_window") else None,
             SchedulingOptions=None,
@@ -197,7 +197,7 @@ def read_handler(
                         MonthStarts = evaluation_window.month_starts if hasattr(evaluation_window,"month_starts") else None,
                         HourStarts = evaluation_window.hour_starts if hasattr(evaluation_window,"hour_starts") else None
                     )
-            )
+                )
 
         variables = getattr(options, "variables", None)
         if variables:
@@ -438,8 +438,8 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             if model.Options.SchedulingOptions.EvaluationWindow is not None: 
                 options.scheduling_options.evaluation_window = ApiMonitorOptionsSchedulingOptionsEvaluationWindow()
                 options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
-                options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
-                options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
+                options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
+                options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
 
         if model.Options.ThresholdWindows is not None:
             options.threshold_windows = ApiMonitorThresholdWindows()

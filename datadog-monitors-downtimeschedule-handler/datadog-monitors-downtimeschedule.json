@@ -40,7 +40,7 @@
             "type": "string"
         },
         "DisplayTimezone": {
-            "description": "The timezone in which to display the downtime's start and end times in Datadog applications. This is not used as an offset for scheduling.",
+            "description": "The timezone in which to display the downtime's start and end times in Datadog applications. The timezone is not used as an offset for scheduling.",
             "type": "string"
         },
         "Message": {
@@ -152,7 +152,7 @@
                         },
                         "End": {
                             "type": "string",
-                            "description": " ISO-8601 Datetime to end the downtime. Must include a UTC offset of zero. If not provided, the downtime continues forever."
+                            "description": "ISO-8601 Datetime to end the downtime. Must include a UTC offset of zero. If not provided, the downtime continues forever."
                         }
                     },
                     "additionalProperties": false

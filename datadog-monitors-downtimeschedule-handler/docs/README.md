@@ -45,7 +45,7 @@ Properties:
 
 #### DisplayTimezone
 
-The timezone in which to display the downtime's start and end times in Datadog applications. This is not used as an offset for scheduling.
+The timezone in which to display the downtime's start and end times in Datadog applications. The timezone is not used as an offset for scheduling.
 
 _Required_: No
 

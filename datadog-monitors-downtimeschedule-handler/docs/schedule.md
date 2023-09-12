@@ -61,7 +61,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### End
 
- ISO-8601 Datetime to end the downtime. Must include a UTC offset of zero. If not provided, the downtime continues forever.
+ISO-8601 Datetime to end the downtime. Must include a UTC offset of zero. If not provided, the downtime continues forever.
 
 _Required_: No
 

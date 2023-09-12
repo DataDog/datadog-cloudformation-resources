@@ -107,9 +107,9 @@ The following Datadog resources can be registered within your AWS account. Refer
 | Datadog-AWS integration | `Datadog::Integrations::AWS`          | [Manage your Datadog-Amazon Web Service integration][7] | `datadog-integrations-aws`          | [Schema Handler Versions][8]  |
 | Monitors                | `Datadog::Monitors::Monitor`          | [Create, update, and delete Datadog monitors][9]        | `datadog-monitors-monitor`          | [Schema Handler Versions][10] |
 | Downtimes               | `Datadog::Monitors::Downtime`         | [Enable or disable downtimes for your monitors][11]     | `datadog-monitors-downtime`         | [Schema Handler Versions][12] |
-| Downtimes Schedule      | `Datadog::Monitors::DowntimeSchedule` | [Enable or disable downtimes][21]                       | `datadog-monitors-downtimeschedule` | [Schema Handler Versions][22] |
-| User                    | `Datadog::IAM::User`                  | [ Create and manage Datadog users][13]                  | `datadog-iam-user`                  | [Schema Handler Versions][14] |
-| SLOs                    | `Datadog::SLOs::SLO`                  | [ Create and manage Datadog SLOs][19]                   | `datadog-slos-slo`                  | [Schema Handler Versions][20] |
+| Downtimes Schedule      | `Datadog::Monitors::DowntimeSchedule` | [Schedule Datadog downtimes][21]                        | `datadog-monitors-downtimeschedule` | [Schema Handler Versions][22] |
+| User                    | `Datadog::IAM::User`                  | [Create and manage Datadog users][13]                   | `datadog-iam-user`                  | [Schema Handler Versions][14] |
+| SLOs                    | `Datadog::SLOs::SLO`                  | [Create and manage Datadog SLOs][19]                    | `datadog-slos-slo`                  | [Schema Handler Versions][20] |
 
 ## Supported regions
 

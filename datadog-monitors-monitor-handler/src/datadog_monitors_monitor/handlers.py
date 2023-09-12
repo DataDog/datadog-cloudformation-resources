@@ -143,7 +143,6 @@ def read_handler(
     options = monitor.options if hasattr(monitor, "options") else None
     if options:
         model.Options = MonitorOptions(
-            Aggregation=None,
             EnableSamples = options.enable_samples if hasattr(options, "enable_samples") else None,
             EnableLogsSample=options.enable_logs_sample if hasattr(options, "enable_logs_sample") else None,
             EscalationMessage=options.escalation_message if hasattr(options, "escalation_message") else None,

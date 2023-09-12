@@ -437,9 +437,12 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.scheduling_options = ApiMonitorOptionsSchedulingOptions()
             if model.Options.SchedulingOptions.EvaluationWindow is not None: 
                 options.scheduling_options.evaluation_window = ApiMonitorOptionsSchedulingOptionsEvaluationWindow()
-                options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
-                options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
-                options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
+                if model.Options.SchedulingOptions.EvaluationWindow.DayStarts is not None:
+                    options.scheduling_options.evaluation_window.day_starts = model.Options.SchedulingOptions.EvaluationWindow.DayStarts
+                if model.Options.SchedulingOptions.EvaluationWindow.HourStarts is not None:
+                    options.scheduling_options.evaluation_window.hour_starts = model.Options.SchedulingOptions.EvaluationWindow.HourStarts
+                if model.Options.SchedulingOptions.EvaluationWindow.MonthStarts is not None:
+                    options.scheduling_options.evaluation_window.month_starts = model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
 
         if model.Options.ThresholdWindows is not None:
             options.threshold_windows = ApiMonitorThresholdWindows()

@@ -28,25 +28,6 @@
         }
       }
     },
-    "MonitorAggregation": {
-      "description": "Type of aggregation performed in the monitor query.",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-          "Metric": {
-              "description": "Metric name used in the monitor.",
-              "type": "string"
-          },
-          "Type": {
-              "description": "Metric type used in the monitor.",
-              "type": "string"
-          },
-          "GroupBy": {
-              "description": "Group to break down the monitor on.",
-              "type": "string"
-          }
-      }
-    },
     "MonitorNotificationPresetName":{
       "description": "Toggles the display of additional content sent in the monitor notification.",
       "type": "string",
@@ -145,9 +126,6 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "Aggregation":{
-          "$ref": "#/definitions/MonitorAggregation"
-        },
         "EnableLogsSample": {
           "description": "Whether or not to include a sample of the logs",
           "type": "boolean"

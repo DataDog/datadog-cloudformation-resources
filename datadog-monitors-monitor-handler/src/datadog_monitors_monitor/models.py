@@ -13,7 +13,9 @@ from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
     Any,
+    Generic,
     Mapping,
+    MutableMapping,
     Optional,
     Sequence,
     Type,
@@ -111,7 +113,6 @@ _Creator = Creator
 
 @dataclass
 class MonitorOptions(BaseModel):
-    Aggregation: Optional["_MonitorAggregation"]
     EnableLogsSample: Optional[bool]
     EnableSamples: Optional[bool]
     EscalationMessage: Optional[str]
@@ -148,7 +149,6 @@ class MonitorOptions(BaseModel):
         if not json_data:
             return None
         return cls(
-            Aggregation=MonitorAggregation._deserialize(json_data.get("Aggregation")),
             EnableLogsSample=json_data.get("EnableLogsSample"),
             EnableSamples=json_data.get("EnableSamples"),
             EscalationMessage=json_data.get("EscalationMessage"),
@@ -181,30 +181,6 @@ class MonitorOptions(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorOptions = MonitorOptions
-
-
-@dataclass
-class MonitorAggregation(BaseModel):
-    Metric: Optional[str]
-    Type: Optional[str]
-    GroupBy: Optional[str]
-
-    @classmethod
-    def _deserialize(
-        cls: Type["_MonitorAggregation"],
-        json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_MonitorAggregation"]:
-        if not json_data:
-            return None
-        return cls(
-            Metric=json_data.get("Metric"),
-            Type=json_data.get("Type"),
-            GroupBy=json_data.get("GroupBy"),
-        )
-
-
-# work around possible type aliasing issues when variable has same name as a model
-_MonitorAggregation = MonitorAggregation
 
 
 @dataclass
@@ -465,3 +441,5 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
+
+

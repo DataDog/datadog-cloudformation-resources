@@ -8,7 +8,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 
 <pre>
 {
-    "<a href="#aggregation" title="Aggregation">Aggregation</a>" : <i><a href="monitoraggregation.md">MonitorAggregation</a></i>,
     "<a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>" : <i>Boolean</i>,
     "<a href="#enablesamples" title="EnableSamples">EnableSamples</a>" : <i>Boolean</i>,
     "<a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>" : <i>String</i>,
@@ -42,7 +41,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 ### YAML
 
 <pre>
-<a href="#aggregation" title="Aggregation">Aggregation</a>: <i><a href="monitoraggregation.md">MonitorAggregation</a></i>
 <a href="#enablelogssample" title="EnableLogsSample">EnableLogsSample</a>: <i>Boolean</i>
 <a href="#enablesamples" title="EnableSamples">EnableSamples</a>: <i>Boolean</i>
 <a href="#escalationmessage" title="EscalationMessage">EscalationMessage</a>: <i>String</i>
@@ -76,16 +74,6 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 </pre>
 
 ## Properties
-
-#### Aggregation
-
-Type of aggregation performed in the monitor query.
-
-_Required_: No
-
-_Type_: <a href="monitoraggregation.md">MonitorAggregation</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
 #### EnableLogsSample
 

@@ -19,7 +19,6 @@ from datadog_api_client.v1.model.monitor_threshold_window_options import (
 )
 from datadog_api_client.v1.model.monitor_options_scheduling_options import MonitorOptionsSchedulingOptions as ApiMonitorOptionsSchedulingOptions
 from datadog_api_client.v1.model.monitor_options_scheduling_options_evaluation_window import MonitorOptionsSchedulingOptionsEvaluationWindow as ApiMonitorOptionsSchedulingOptionsEvaluationWindow
-from datadog_api_client.v1.model.monitor_options_aggregation import MonitorOptionsAggregation
 from datadog_api_client.v1.model.monitor_thresholds import MonitorThresholds as ApiMonitorThresholds
 from datadog_api_client.v1.model.monitor_type import MonitorType as ApiMonitorType
 from datadog_api_client.v1.model.monitor_update_request import MonitorUpdateRequest as ApiMonitorUpdateRequest
@@ -57,7 +56,6 @@ from datadog_cloudformation_common.utils import errors_handler, http_to_handler_
 from .models import (
     Creator,
     MonitorOptions,
-    MonitorAggregation,
     MonitorSchedulingOptions,
     MonitorSchedulingOptionsEvaluationWindow,
     MonitorThresholdWindows,
@@ -178,14 +176,6 @@ def read_handler(
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
             Variables=None,
         )
-
-        aggregation = getattr(options, "aggregation", None)
-        if aggregation: 
-            model.Options.Aggregation = MonitorAggregation(
-                Metric= aggregation.metric if hasattr(aggregation, "metric") else None,
-                Type=aggregation.type if hasattr(aggregation, "type") else None,
-                GroupBy=aggregation.group_by if hasattr(aggregation, "group_by") else None,
-            )
         
         scheduling_options = options.scheduling_options if hasattr (options,"scheduling_options") else None
         if scheduling_options:
@@ -379,14 +369,6 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         options.new_group_delay = model.Options.NewGroupDelay
 
         # Non nullable
-        if model.Options.Aggregation is not None:
-            options.aggregation = MonitorOptionsAggregation()
-            if model.Options.Aggregation.GroupBy is not None:
-                options.aggregation.group_by = model.Options.Aggregation.GroupBy
-            if model.Options.Aggregation.Metric is not None:
-                options.aggregation.metric = model.Options.Aggregation.Metric
-            if model.Options.Aggregation.Type is not None:
-                options.aggregation.type = model.Options.Aggregation.Type
         if model.Options.RenotifyStatuses is not None:
             options.renotify_statuses = (
                 [MonitorRenotifyStatusType(status) for status in model.Options.RenotifyStatuses]

@@ -16,8 +16,7 @@
     "EnableLogsSample": true,
     "SchedulingOptions": {
 			"EvaluationWindow": {
-				"DayStarts": "22:00",
-        "MonthStarts":1
+				"HourStarts":1
 			}
     },
     "Thresholds": {

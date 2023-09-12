@@ -1,6 +1,6 @@
 {
   "Type": "query alert",
-  "Query": "avg(current_1mo):avg:aws.ec2.cpu{environment:foo,host:foo} by {host,environment} > 5",
+  "Query": "avg(current_1h):avg:aws.ec2.cpu{environment:foo,host:foo} by {host,environment} > 5",
   "Name": "SSH Activity on PROD updated",
   "Message": "@slack-datadog-testing",
   "Priority": 1,

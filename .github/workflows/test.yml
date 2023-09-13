@@ -118,6 +118,7 @@ jobs:
         git diff --exit-code
         if [ $? -ne 0  ]; then
           echo "'cfn generate and pre-commit run --all-files' generated changes. Run it locally and commit the changes."
+          exit 1
         fi
         set -e
     - name: Run Tests

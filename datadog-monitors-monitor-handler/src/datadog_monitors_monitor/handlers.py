@@ -383,6 +383,10 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.threshold_windows.trigger_window = model.Options.ThresholdWindows.TriggerWindow
             options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
+
+
+
+
         if model.Options.Variables is not None:
             options.variables = []
             for variable in model.Options.Variables:

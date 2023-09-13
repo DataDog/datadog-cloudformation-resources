@@ -95,6 +95,19 @@ jobs:
       with:
         path: ~/.cache/pre-commit
         key: pre-commit|${{ hashFiles('.pre-commit-config.yaml') }}
+    - name: Check generated files are up-to-date
+      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
+      run: |
+        cd ${{ matrix.resource }}
+        cfn generate
+        set +e
+        pre-commit run --all-files
+        git diff --exit-code
+        if [ $? -ne 0  ]; then
+          echo "'cfn generate and pre-commit run --all-files' generated changes. Run it locally and commit the changes."
+          exit 1
+        fi
+        set -e  
     - name: Build Package
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |
@@ -108,19 +121,6 @@ jobs:
       env:
         DD_TEST_CLIENT_API_KEY: ${{ secrets.DD_TEST_CLIENT_API_KEY }}
         DD_TEST_CLIENT_APP_KEY: ${{ secrets.DD_TEST_CLIENT_APP_KEY }}
-    - name: Check generated files are up-to-date
-      if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
-      run: |
-        cd ${{ matrix.resource }}
-        cfn generate
-        set +e
-        pre-commit run --all-files
-        git diff --exit-code
-        if [ $? -ne 0  ]; then
-          echo "'cfn generate and pre-commit run --all-files' generated changes. Run it locally and commit the changes."
-          exit 1
-        fi
-        set -e
     - name: Run Tests
       if: contains(needs.find_modified_resources.outputs.changed_files, matrix.resource)
       run: |

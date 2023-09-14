@@ -12,29 +12,66 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v2 import ApiException
 from datadog_api_client.v2.api.downtimes_api import DowntimesApi
 from datadog_api_client.v2.model.downtime_create_request import DowntimeCreateRequest as DDDowntimeCreateRequest
-from datadog_api_client.v2.model.downtime_create_request_attributes import DowntimeCreateRequestAttributes as DDDowntimeCreateRequestAttributes
-from datadog_api_client.v2.model.downtime_create_request_data import DowntimeCreateRequestData as DDDowntimeCreateRequestData
-from datadog_api_client.v2.model.downtime_monitor_identifier import DowntimeMonitorIdentifier as DDDowntimeMonitorIdentifier
-from datadog_api_client.v2.model.downtime_monitor_identifier_id import DowntimeMonitorIdentifierId as DDDowntimeMonitorIdentifierId
-from datadog_api_client.v2.model.downtime_monitor_identifier_tags import DowntimeMonitorIdentifierTags as DDDowntimeMonitorIdentifierTags
-from datadog_api_client.v2.model.downtime_notify_end_state_actions import DowntimeNotifyEndStateActions as DDDowntimeNotifyEndStateActions
-from datadog_api_client.v2.model.downtime_notify_end_state_types import DowntimeNotifyEndStateTypes as DDDowntimeNotifyEndStateTypes
+from datadog_api_client.v2.model.downtime_create_request_attributes import (
+    DowntimeCreateRequestAttributes as DDDowntimeCreateRequestAttributes,
+)
+from datadog_api_client.v2.model.downtime_create_request_data import (
+    DowntimeCreateRequestData as DDDowntimeCreateRequestData,
+)
+from datadog_api_client.v2.model.downtime_monitor_identifier import (
+    DowntimeMonitorIdentifier as DDDowntimeMonitorIdentifier,
+)
+from datadog_api_client.v2.model.downtime_monitor_identifier_id import (
+    DowntimeMonitorIdentifierId as DDDowntimeMonitorIdentifierId,
+)
+from datadog_api_client.v2.model.downtime_monitor_identifier_tags import (
+    DowntimeMonitorIdentifierTags as DDDowntimeMonitorIdentifierTags,
+)
+from datadog_api_client.v2.model.downtime_notify_end_state_actions import (
+    DowntimeNotifyEndStateActions as DDDowntimeNotifyEndStateActions,
+)
+from datadog_api_client.v2.model.downtime_notify_end_state_types import (
+    DowntimeNotifyEndStateTypes as DDDowntimeNotifyEndStateTypes,
+)
 from datadog_api_client.v2.model.downtime_resource_type import DowntimeResourceType as DDDowntimeResourceType
-from datadog_api_client.v2.model.downtime_schedule_create_request import DowntimeScheduleCreateRequest as DDDowntimeScheduleCreateRequest
-from datadog_api_client.v2.model.downtime_schedule_one_time_create_update_request import DowntimeScheduleOneTimeCreateUpdateRequest as DDDowntimeScheduleOneTimeCreateUpdateRequest
-from datadog_api_client.v2.model.downtime_schedule_one_time_response import DowntimeScheduleOneTimeResponse as DDDowntimeScheduleOneTimeResponse
-from datadog_api_client.v2.model.downtime_schedule_recurrence_create_update_request import DowntimeScheduleRecurrenceCreateUpdateRequest as DDDowntimeScheduleRecurrenceCreateUpdateRequest
-from datadog_api_client.v2.model.downtime_schedule_recurrences_response import DowntimeScheduleRecurrencesResponse as DDDowntimeScheduleRecurrencesResponse
-from datadog_api_client.v2.model.downtime_schedule_recurrences_update_request import DowntimeScheduleRecurrencesUpdateRequest as DDDowntimeScheduleRecurrencesUpdateRequest
+from datadog_api_client.v2.model.downtime_schedule_create_request import (
+    DowntimeScheduleCreateRequest as DDDowntimeScheduleCreateRequest,
+)
+from datadog_api_client.v2.model.downtime_schedule_one_time_create_update_request import (
+    DowntimeScheduleOneTimeCreateUpdateRequest as DDDowntimeScheduleOneTimeCreateUpdateRequest,
+)
+from datadog_api_client.v2.model.downtime_schedule_one_time_response import (
+    DowntimeScheduleOneTimeResponse as DDDowntimeScheduleOneTimeResponse,
+)
+from datadog_api_client.v2.model.downtime_schedule_recurrence_create_update_request import (
+    DowntimeScheduleRecurrenceCreateUpdateRequest as DDDowntimeScheduleRecurrenceCreateUpdateRequest,
+)
+from datadog_api_client.v2.model.downtime_schedule_recurrences_response import (
+    DowntimeScheduleRecurrencesResponse as DDDowntimeScheduleRecurrencesResponse,
+)
+from datadog_api_client.v2.model.downtime_schedule_recurrences_update_request import (
+    DowntimeScheduleRecurrencesUpdateRequest as DDDowntimeScheduleRecurrencesUpdateRequest,
+)
 from datadog_api_client.v2.model.downtime_status import DowntimeStatus as DDDowntimeStatus
 from datadog_api_client.v2.model.downtime_update_request import DowntimeUpdateRequest as DDDowntimeUpdateRequest
-from datadog_api_client.v2.model.downtime_update_request_attributes import DowntimeUpdateRequestAttributes as DDDowntimeUpdateRequestAttributes
-from datadog_api_client.v2.model.downtime_update_request_data import DowntimeUpdateRequestData as DDDowntimeUpdateRequestData
+from datadog_api_client.v2.model.downtime_update_request_attributes import (
+    DowntimeUpdateRequestAttributes as DDDowntimeUpdateRequestAttributes,
+)
+from datadog_api_client.v2.model.downtime_update_request_data import (
+    DowntimeUpdateRequestData as DDDowntimeUpdateRequestData,
+)
 
 from .version import __version__
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
-from .models import MonitorIdentifier, Recurrences, ResourceHandlerRequest, ResourceModel, Schedule, TypeConfigurationModel
+from .models import (
+    MonitorIdentifier,
+    Recurrences,
+    ResourceHandlerRequest,
+    ResourceModel,
+    Schedule,
+    TypeConfigurationModel,
+)
 
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
@@ -108,7 +145,7 @@ def update_handler(
                 message=f"Error updating downtime: {e}",
                 errorCode=http_to_handler_error_code(e.status),
             )
-    
+
     return read_handler(session, request, callback_context)
 
 
@@ -162,7 +199,6 @@ def delete_handler(
     )
 
 
-
 @resource.handler(Action.READ)
 @errors_handler
 def read_handler(
@@ -192,7 +228,7 @@ def read_handler(
                 errorCode=http_to_handler_error_code(e.status),
             )
 
-         # If downtime is disabled, return a NotFound error code to indicate so
+        # If downtime is disabled, return a NotFound error code to indicate so
         if resp.data.attributes.status == DDDowntimeStatus.CANCELED:
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -202,21 +238,25 @@ def read_handler(
             )
 
         attributes = resp.data.attributes
-        
+
         model.Id = resp.data.id
         model.Scope = attributes.scope
         model.DisplayTimezone = getattr(attributes, "display_timezone", None)
         model.Message = getattr(attributes, "message", None)
         model.MuteFirstRecoveryNotification = getattr(attributes, "mute_first_recovery_notification", None)
-        model.NotifyEndStates = [str(s) for s in attributes.notify_end_states] if hasattr(attributes, "notify_end_states") else None
-        model.NotifyEndTypes = [str(s) for s in attributes.notify_end_types] if hasattr(attributes, "notify_end_types") else None
+        model.NotifyEndStates = (
+            [str(s) for s in attributes.notify_end_states] if hasattr(attributes, "notify_end_states") else None
+        )
+        model.NotifyEndTypes = (
+            [str(s) for s in attributes.notify_end_types] if hasattr(attributes, "notify_end_types") else None
+        )
 
         monitor_identifier = attributes.monitor_identifier.get_oneof_instance()
         if isinstance(monitor_identifier, DDDowntimeMonitorIdentifierId):
             model.MonitorIdentifier = MonitorIdentifier(MonitorId=monitor_identifier.monitor_id, MonitorTags=None)
         elif isinstance(monitor_identifier, DDDowntimeMonitorIdentifierTags):
             model.MonitorIdentifier = MonitorIdentifier(MonitorId=None, MonitorTags=monitor_identifier.monitor_tags)
-        
+
         if attributes.schedule:
             schedule = attributes.schedule.get_oneof_instance()
             if isinstance(schedule, DDDowntimeScheduleOneTimeResponse):
@@ -290,7 +330,7 @@ def build_downtime_create_from_model(model: ResourceModel) -> DDDowntimeCreateRe
             if model.Schedule.End is not None:
                 schedule.end = model.Schedule.End
         attributes.schedule = schedule
-    
+
     return DDDowntimeCreateRequest(
         data=DDDowntimeCreateRequestData(
             attributes=attributes,
@@ -340,7 +380,7 @@ def build_downtime_update_from_model(model: ResourceModel) -> DDDowntimeUpdateRe
             if model.Schedule.End is not None:
                 schedule.end = model.Schedule.End
         attributes.schedule = schedule
-    
+
     return DDDowntimeUpdateRequest(
         data=DDDowntimeUpdateRequestData(
             attributes=attributes,

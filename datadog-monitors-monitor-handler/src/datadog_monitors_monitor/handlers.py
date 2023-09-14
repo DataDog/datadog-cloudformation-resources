@@ -403,9 +403,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         if model.Options.NotifyAudit is not None:
             options.notify_audit = model.Options.NotifyAudit
         if model.Options.NotifyBy is not None:
-            options.notify_by = (
-                [str(notify) for notify in model.Options.NotifyBy]
-            )
+            options.notify_by = [str(notify) for notify in model.Options.NotifyBy]
         if model.Options.NotifyNoData is not None:
             options.notify_no_data = model.Options.NotifyNoData
         if model.Options.OnMissingData is not None:

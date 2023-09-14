@@ -1,1 +1,1 @@
-git+https://github.com/datadog/datadog-cloudformation-resources.git@c18fc43c9f52bc4334fc00b329080a163186ad1f#egg=datadog_cloudformation_common&subdirectory=datadog-cloudformation-common-python
+git+https://github.com/datadog/datadog-cloudformation-resources.git@datadog-cloudformation-common-python-0.0.19#egg=datadog_cloudformation_common&subdirectory=datadog-cloudformation-common-python

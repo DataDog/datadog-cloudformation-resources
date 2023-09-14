@@ -29,8 +29,8 @@ from datadog_api_client.v1.model.monitor_formula_and_function_event_query_defini
 from datadog_api_client.v1.model.monitor_formula_and_function_events_data_source import (
     MonitorFormulaAndFunctionEventsDataSource as ApiMonitorMonitorFormulaAndFunctionEventsDataSource,
 )
-from datadog_api_client.v1.model.on_missing_data_option import OnMissingDataOption
-from datadog_api_client.v1.model.monitor_options_notification_presets import MonitorOptionsNotificationPresets
+from datadog_api_client.v1.model.on_missing_data_option import OnMissingDataOption as ApiOnMissingDataOption
+from datadog_api_client.v1.model.monitor_options_notification_presets import MonitorOptionsNotificationPresets as ApiMonitorOptionsNotificationPresets
 from datadog_api_client.v1.model.monitor_formula_and_function_event_query_definition_compute import (
     MonitorFormulaAndFunctionEventQueryDefinitionCompute as ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute,
 )
@@ -143,7 +143,7 @@ def read_handler(
     options = monitor.options if hasattr(monitor, "options") else None
     if options:
         model.Options = MonitorOptions(
-            EnableSamples = options.enable_samples if hasattr(options, "enable_samples") else None,
+            EnableSamples=options.enable_samples if hasattr(options, "enable_samples") else None,
             EnableLogsSample=options.enable_logs_sample if hasattr(options, "enable_logs_sample") else None,
             EscalationMessage=options.escalation_message if hasattr(options, "escalation_message") else None,
             EvaluationDelay=options.evaluation_delay if hasattr(options, "evaluation_delay") else None,
@@ -154,9 +154,7 @@ def read_handler(
             NewHostDelay=options.new_host_delay if hasattr(options, "new_host_delay") else None,
             NoDataTimeframe=options.no_data_timeframe if hasattr(options, "no_data_timeframe") else None,
             NotifyAudit=options.notify_audit if hasattr(options, "notify_audit") else None,
-            NotifyBy=[str(notify) for notify in options.notify_by]
-            if hasattr(options,"notify_by")
-            else None,
+            NotifyBy=[str(notify) for notify in options.notify_by] if hasattr(options,"notify_by") else None,
             NotifyNoData=options.notify_no_data if hasattr(options, "notify_no_data") else None,
             NotificationPresetName=str(options.notification_preset_name) if hasattr(options, "notification_preset_name") else None,
             OnMissingData=str(options.on_missing_data) if hasattr(options, "on_missing_data") else None,
@@ -168,9 +166,7 @@ def read_handler(
             ThresholdWindows=None,
             TimeoutH=options.timeout_h if hasattr(options, "timeout_h") else None,
             RenotifyOccurrences=options.renotify_occurrences if hasattr(options, "renotify_occurrences") else None,
-            RenotifyStatuses=[str(status) for status in options.renotify_statuses]
-            if hasattr(options, "renotify_statuses")
-            else None,
+            RenotifyStatuses=[str(status) for status in options.renotify_statuses] if hasattr(options, "renotify_statuses") else None,
             MinFailureDuration=options.min_failure_duration if hasattr(options, "min_failure_duration") else None,
             NewGroupDelay=options.new_group_delay if hasattr(options, "new_group_delay") else None,
             Variables=None,
@@ -387,7 +383,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         if model.Options.Locked is not None:
             options.locked = model.Options.Locked
         if model.Options.NotificationPresetName is not None:
-            options.notification_preset_name = MonitorOptionsNotificationPresets(str(model.Options.NotificationPresetName))
+            options.notification_preset_name = ApiMonitorOptionsNotificationPresets(str(model.Options.NotificationPresetName))
         if model.Options.NotifyAudit is not None:
             options.notify_audit = model.Options.NotifyAudit
         if model.Options.NotifyBy is not None:
@@ -399,7 +395,7 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         if model.Options.NotifyNoData is not None:
             options.notify_no_data = model.Options.NotifyNoData
         if model.Options.OnMissingData is not None:
-            options.on_missing_data = OnMissingDataOption(str(model.Options.OnMissingData))
+            options.on_missing_data = ApiOnMissingDataOption(str(model.Options.OnMissingData))
         if model.Options.RequireFullWindow is not None:
             options.require_full_window = model.Options.RequireFullWindow
         if model.Options.Thresholds is not None:

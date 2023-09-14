@@ -24,6 +24,59 @@
                 }
             }
         },
+        "MonitorNotificationPresetName": {
+            "description": "Toggles the display of additional content sent in the monitor notification.",
+            "type": "string",
+            "enum": [
+                "show_all",
+                "hide_query",
+                "hide_handles",
+                "hide_all"
+            ]
+        },
+        "MonitorOnMissingData": {
+            "description": "Controls how groups or monitors are treated if an evaluation does not return any data points.\nThe default option results in different behavior depending on the monitor query type.\nFor monitors using Count queries, an empty monitor evaluation is treated as 0 and is compared to the threshold conditions.\nFor monitors using any query type other than Count, for example Gauge, Measure, or Rate, the monitor shows the last known status.\nThis option is only available for APM Trace Analytics, Audit Trail, CI, Error Tracking, Event, Logs, and RUM monitors.",
+            "type": "string",
+            "enum": [
+                "default",
+                "show_no_data",
+                "show_and_notify_no_data",
+                "resolve"
+            ]
+        },
+        "MonitorSchedulingOptions": {
+            "description": "Configuration options for scheduling.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "EvaluationWindow": {
+                    "$ref": "#/definitions/MonitorSchedulingOptionsEvaluationWindow"
+                }
+            }
+        },
+        "MonitorSchedulingOptionsEvaluationWindow": {
+            "description": "Configuration options for the evaluation window. If `hour_starts` is set, no other fields may be set. Otherwise, `day_starts` and `month_starts` must be set together.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "DayStarts": {
+                    "description": "The time of the day at which a one day cumulative evaluation window starts. Must be defined in UTC time in `HH:mm` format.",
+                    "type": "string"
+                },
+                "MonthStarts": {
+                    "description": "The day of the month at which a one month cumulative evaluation window starts.",
+                    "type": "integer",
+                    "minimum": 1,
+                    "maximum": 1
+                },
+                "HourStarts": {
+                    "description": "The minute of the hour at which a one hour cumulative evaluation window starts.",
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 59
+                }
+            }
+        },
         "MonitorThresholds": {
             "type": "object",
             "additionalProperties": false,
@@ -68,12 +121,12 @@
             "type": "object",
             "additionalProperties": false,
             "properties": {
-                "EnableSamples": {
-                    "description": "Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.",
-                    "type": "boolean"
-                },
                 "EnableLogsSample": {
                     "description": "Whether or not to include a sample of the logs",
+                    "type": "boolean"
+                },
+                "EnableSamples": {
+                    "description": "Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.",
                     "type": "boolean"
                 },
                 "EscalationMessage": {
@@ -83,6 +136,10 @@
                 "EvaluationDelay": {
                     "description": "Time in seconds to delay evaluation",
                     "type": "integer"
+                },
+                "GroupRetentionDuration": {
+                    "description": "The time span after which groups with missing data are dropped from the monitor state.\nThe minimum value is one hour, and the maximum value is 72 hours.\nExample values are: \"60m\", \"1h\", and \"2d\".\nThis option is only available for APM Trace Analytics, Audit Trail, CI, Error Tracking, Event, Logs, and RUM monitors.",
+                    "type": "string"
                 },
                 "IncludeTags": {
                     "description": "Whether or not to include triggering tags into notification title",
@@ -111,9 +168,23 @@
                     "description": "Whether or not to notify tagged users when changes are made to the monitor",
                     "type": "boolean"
                 },
+                "NotifyBy": {
+                    "description": "Controls what granularity a monitor alerts on. Only available for monitors with groupings.\nFor instance, a monitor grouped by `cluster`, `namespace`, and `pod` can be configured to only notify on each new `cluster` violating the alert conditions by setting `notify_by` to `[\"cluster\"]`.\nTags mentioned in `notify_by` must be a subset of the grouping tags in the query.\nFor example, a query grouped by `cluster` and `namespace` cannot notify on `region`.\nSetting `notify_by` to `[*]` configures the monitor to notify as a simple-alert.",
+                    "type": "array",
+                    "items": {
+                        "type": "string",
+                        "description": "A grouping tag."
+                    }
+                },
                 "NotifyNoData": {
                     "description": "Whether or not to notify when data stops reporting",
                     "type": "boolean"
+                },
+                "NotificationPresetName": {
+                    "$ref": "#/definitions/MonitorNotificationPresetName"
+                },
+                "OnMissingData": {
+                    "$ref": "#/definitions/MonitorOnMissingData"
                 },
                 "RenotifyInterval": {
                     "description": "Number of minutes after the last notification before the monitor re-notifies on the current status",
@@ -122,6 +193,9 @@
                 "RequireFullWindow": {
                     "description": "Whether or not the monitor requires a full window of data before it is evaluated",
                     "type": "boolean"
+                },
+                "SchedulingOptions": {
+                    "$ref": "#/definitions/MonitorSchedulingOptions"
                 },
                 "SyntheticsCheckID": {
                     "description": "ID of the corresponding synthetics check",

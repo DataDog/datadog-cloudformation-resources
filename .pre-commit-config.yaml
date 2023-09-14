@@ -1,0 +1,12 @@
+repos:
+- repo: https://github.com/psf/black
+  rev: 23.7.0
+  hooks:
+  - id: black
+    entry: black --fast --line-length 120 ./
+    pass_filenames: false
+- repo: https://github.com/charliermarsh/ruff-pre-commit
+  rev: v0.0.287
+  hooks:
+  - id: ruff
+    entry: ruff --fix --quiet --exit-zero --fixable I001,F401 --ignore E501 .

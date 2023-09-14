@@ -15,9 +15,9 @@
     "RenotifyInterval": 5,
     "EnableLogsSample": true,
     "SchedulingOptions": {
-			"EvaluationWindow": {
-				"HourStarts":1
-			}
+      "EvaluationWindow": {
+        "HourStarts":1
+      }
     },
     "Thresholds": {
       "Critical": 5

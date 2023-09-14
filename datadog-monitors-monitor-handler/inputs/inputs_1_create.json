@@ -15,10 +15,10 @@
     "RenotifyInterval": 0,
     "EnableLogsSample": true,
     "SchedulingOptions": {
-			"EvaluationWindow": {
-				"DayStarts": "22:00",
+      "EvaluationWindow": {
+        "DayStarts": "22:00",
         "MonthStarts":1
-			}
+      }
     },
     "Thresholds": {
       "Critical": 4

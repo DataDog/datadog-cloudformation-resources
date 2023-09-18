@@ -1,10 +1,21 @@
 # Changelog
 
+## 4.7.0 / 2023-09-18
+
+* [Added] Bump common package to `0.0.19` in monitors resource. See [#280](https://github.com/DataDog/datadog-cloudformation-resources/pull/280).
+* [Added] Add missing monitor options. See [#276](https://github.com/DataDog/datadog-cloudformation-resources/pull/276).
+* [Added] Add support for CI monitor option `EnableSamples`. See [#274](https://github.com/DataDog/datadog-cloudformation-resources/pull/274).
+* [Added] Bump datadog-api-client and cloudformation-cli-python packages. See [#268](https://github.com/DataDog/datadog-cloudformation-resources/pull/268).
+
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.7.0.zip`
+
 ## 4.6.0 / 2023-04-10
 
 * [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).
 * [Added] Bump common package in all resources. See [#255](https://github.com/DataDog/datadog-cloudformation-resources/pull/255).
 * [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).
+
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.6.0.zip`
 
 ## 4.5.0 / 2023-01-05
 

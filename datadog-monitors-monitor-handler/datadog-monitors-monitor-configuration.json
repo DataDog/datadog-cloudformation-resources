@@ -174,7 +174,8 @@
                     "items": {
                         "type": "string",
                         "description": "A grouping tag."
-                    }
+                    },
+                    "insertionOrder": false
                 },
                 "NotifyNoData": {
                     "description": "Whether or not to notify when data stops reporting",
@@ -250,7 +251,8 @@
                                 "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"
                             }
                         ]
-                    }
+                    },
+                    "insertionOrder": true
                 }
             }
         },
@@ -312,7 +314,8 @@
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"
-                    }
+                    },
+                    "insertionOrder": true
                 },
                 "Name": {
                     "description": "Name of the monitor",

@@ -179,7 +179,8 @@
           "items" : {
               "type": "string",
               "description": "A grouping tag."
-          }
+          },
+          "insertionOrder": false
         },
         "NotifyNoData": {
           "description": "Whether or not to notify when data stops reporting",
@@ -253,7 +254,8 @@
             "oneOf": [
               {"$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"}
             ]
-          }
+          },
+          "insertionOrder": true
         }
       }
     },
@@ -311,7 +313,8 @@
         "GroupBy": {
           "description": "Group by options.",
           "type": "array",
-          "items": {"$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"}
+          "items": {"$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"},
+          "insertionOrder": true
         },
         "Name": {
           "description": "Name of the monitor",
@@ -441,7 +444,8 @@
       "type": "array",
       "items": {
         "type": "string"
-      }
+      },
+      "insertionOrder": false
     },
     "Priority": {
       "description": "Integer from 1 (high) to 5 (low) indicating alert severity.",

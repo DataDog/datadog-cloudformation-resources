@@ -69,6 +69,7 @@ jobs:
           - datadog-dashboards-dashboard-handler
           - datadog-monitors-monitor-handler
           - datadog-monitors-downtime-handler
+          - datadog-monitors-downtimeschedule-handler
           - datadog-integrations-aws-handler
           - datadog-slos-slo-handler
 #         - datadog-iam-user-handler

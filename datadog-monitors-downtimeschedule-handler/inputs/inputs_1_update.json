@@ -1,0 +1,14 @@
+{
+    "DisplayTimezone": "UTC",
+    "Message": "yo random mesasge updated",
+    "MuteFirstRecoveryNotification": false,
+    "Scope": "env:(staging OR dev)",
+    "NotifyEndStates": ["warn"],
+    "NotifyEndTypes": ["expired"],
+    "MonitorIdentifier": {
+        "MonitorTags": ["cat:hatcf1234"]
+    },
+    "Schedule": {
+        "Start": "2050-01-02T03:04:05+00:00"
+    }
+}

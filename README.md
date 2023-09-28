@@ -38,7 +38,7 @@ To get started:
     }
   }
   ```
-Note: Provide `ApiURL` if using account other than US (defaults to https://api.datadoghq.com, use e.g. https://api.datadoghq.eu for EU accounts).
+   Specify the `ApiURL` if you are using a non-US account (defaults to `https://api.datadoghq.com`). For example, use `https://api.datadoghq.eu` for an EU account.
 
 7. After you have your resource configured, [create your AWS stack][3] that includes any of the activated Datadog resources.
 

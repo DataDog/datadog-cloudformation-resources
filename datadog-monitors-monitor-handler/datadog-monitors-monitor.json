@@ -528,24 +528,16 @@
   "additionalProperties": false,
   "handlers": {
     "create": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     },
     "read": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     },
     "update": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     },
     "delete": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     }
   }
 }

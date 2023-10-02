@@ -1,4 +1,6 @@
-# Datadog::Monitors::Downtime
+# Datadog::Monitors::Downtime (Deprecated)
+
+**`Datadog::Monitors::Downtime` resource has been deprecated in favor of the new `Datadog::Monitors::DowntimeSchedule` resource**
 
 This resource represents a Datadog Monitor Downtime and is used to create and manage these downtimes. More information about Downtimes can be found in the [Downtime documentation](https://docs.datadoghq.com/monitors/downtimes/).
 

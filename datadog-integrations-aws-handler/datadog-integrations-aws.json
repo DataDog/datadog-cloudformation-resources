@@ -130,14 +130,10 @@
       ]
     },
     "read": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     },
     "update": {
-      "permissions": [
-        ""
-      ]
+      "permissions": []
     },
     "delete": {
       "permissions": [

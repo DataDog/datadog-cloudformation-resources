@@ -1,7 +1,8 @@
 # Changelog
 
-## 4.7.0 / 2023-09-18
+## 4.7.0 / 2023-10-02
 
+* [Fixed] Remove empty string from permissions. See [#284](https://github.com/DataDog/datadog-cloudformation-resources/pull/284).
 * [Added] Bump common package to `0.0.19` in monitors resource. See [#280](https://github.com/DataDog/datadog-cloudformation-resources/pull/280).
 * [Added] Add missing monitor options. See [#276](https://github.com/DataDog/datadog-cloudformation-resources/pull/276).
 * [Added] Add support for CI monitor option `EnableSamples`. See [#274](https://github.com/DataDog/datadog-cloudformation-resources/pull/274).

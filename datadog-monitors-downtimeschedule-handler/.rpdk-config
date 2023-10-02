@@ -1,0 +1,11 @@
+{
+    "typeName": "Datadog::Monitors::DowntimeSchedule",
+    "language": "python39",
+    "runtime": "python3.9",
+    "entrypoint": "datadog_monitors_downtimeschedule.handlers.resource",
+    "testEntrypoint": "datadog_monitors_downtimeschedule.handlers.test_entrypoint",
+    "settings": {
+        "use_docker": true,
+        "protocolVersion": "2.0.0"
+    }
+}

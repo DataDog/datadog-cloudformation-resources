@@ -39,19 +39,15 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
 
 @dataclass
 class ResourceModel(BaseModel):
-    Creator: Optional["_Creator"]
-    Description: Optional[str]
-    Groups: Optional[Sequence[str]]
     Id: Optional[str]
-    MonitorIds: Optional[Sequence[int]]
-    Name: Optional[str]
-    Query: Optional["_Query"]
-    Tags: Optional[Sequence[str]]
-    Thresholds: Optional[Sequence["_Threshold"]]
-    Type: Optional[str]
-    Created: Optional[str]
-    Deleted: Optional[str]
-    Modified: Optional[str]
+    DisplayTimezone: Optional[str]
+    Message: Optional[str]
+    MuteFirstRecoveryNotification: Optional[bool]
+    Scope: Optional[str]
+    NotifyEndStates: Optional[Sequence[str]]
+    NotifyEndTypes: Optional[Sequence[str]]
+    MonitorIdentifier: Optional["_MonitorIdentifier"]
+    Schedule: Optional["_Schedule"]
 
     @classmethod
     def _deserialize(
@@ -63,19 +59,15 @@ class ResourceModel(BaseModel):
         dataclasses = {n: o for n, o in getmembers(sys.modules[__name__]) if isclass(o)}
         recast_object(cls, json_data, dataclasses)
         return cls(
-            Creator=Creator._deserialize(json_data.get("Creator")),
-            Description=json_data.get("Description"),
-            Groups=json_data.get("Groups"),
             Id=json_data.get("Id"),
-            MonitorIds=json_data.get("MonitorIds"),
-            Name=json_data.get("Name"),
-            Query=Query._deserialize(json_data.get("Query")),
-            Tags=json_data.get("Tags"),
-            Thresholds=deserialize_list(json_data.get("Thresholds"), Threshold),
-            Type=json_data.get("Type"),
-            Created=json_data.get("Created"),
-            Deleted=json_data.get("Deleted"),
-            Modified=json_data.get("Modified"),
+            DisplayTimezone=json_data.get("DisplayTimezone"),
+            Message=json_data.get("Message"),
+            MuteFirstRecoveryNotification=json_data.get("MuteFirstRecoveryNotification"),
+            Scope=json_data.get("Scope"),
+            NotifyEndStates=json_data.get("NotifyEndStates"),
+            NotifyEndTypes=json_data.get("NotifyEndTypes"),
+            MonitorIdentifier=MonitorIdentifier._deserialize(json_data.get("MonitorIdentifier")),
+            Schedule=Schedule._deserialize(json_data.get("Schedule")),
         )
 
 
@@ -84,77 +76,75 @@ _ResourceModel = ResourceModel
 
 
 @dataclass
-class Creator(BaseModel):
-    Name: Optional[str]
-    Handle: Optional[str]
-    Email: Optional[str]
+class MonitorIdentifier(BaseModel):
+    MonitorId: Optional[int]
+    MonitorTags: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
-        cls: Type["_Creator"],
+        cls: Type["_MonitorIdentifier"],
         json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_Creator"]:
+    ) -> Optional["_MonitorIdentifier"]:
         if not json_data:
             return None
         return cls(
-            Name=json_data.get("Name"),
-            Handle=json_data.get("Handle"),
-            Email=json_data.get("Email"),
+            MonitorId=json_data.get("MonitorId"),
+            MonitorTags=json_data.get("MonitorTags"),
         )
 
 
 # work around possible type aliasing issues when variable has same name as a model
-_Creator = Creator
+_MonitorIdentifier = MonitorIdentifier
 
 
 @dataclass
-class Query(BaseModel):
-    Numerator: Optional[str]
-    Denominator: Optional[str]
+class Schedule(BaseModel):
+    Timezone: Optional[str]
+    Recurrences: Optional[Sequence["_Recurrences"]]
+    Start: Optional[str]
+    End: Optional[str]
 
     @classmethod
     def _deserialize(
-        cls: Type["_Query"],
+        cls: Type["_Schedule"],
         json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_Query"]:
+    ) -> Optional["_Schedule"]:
         if not json_data:
             return None
         return cls(
-            Numerator=json_data.get("Numerator"),
-            Denominator=json_data.get("Denominator"),
+            Timezone=json_data.get("Timezone"),
+            Recurrences=deserialize_list(json_data.get("Recurrences"), Recurrences),
+            Start=json_data.get("Start"),
+            End=json_data.get("End"),
         )
 
 
 # work around possible type aliasing issues when variable has same name as a model
-_Query = Query
+_Schedule = Schedule
 
 
 @dataclass
-class Threshold(BaseModel):
-    Target: Optional[float]
-    TargetDisplay: Optional[str]
-    Timeframe: Optional[str]
-    Warning: Optional[float]
-    WarningDisplay: Optional[str]
+class Recurrences(BaseModel):
+    Duration: Optional[str]
+    Rrule: Optional[str]
+    Start: Optional[str]
 
     @classmethod
     def _deserialize(
-        cls: Type["_Threshold"],
+        cls: Type["_Recurrences"],
         json_data: Optional[Mapping[str, Any]],
-    ) -> Optional["_Threshold"]:
+    ) -> Optional["_Recurrences"]:
         if not json_data:
             return None
         return cls(
-            Target=json_data.get("Target"),
-            TargetDisplay=json_data.get("TargetDisplay"),
-            Timeframe=json_data.get("Timeframe"),
-            Warning=json_data.get("Warning"),
-            WarningDisplay=json_data.get("WarningDisplay"),
+            Duration=json_data.get("Duration"),
+            Rrule=json_data.get("Rrule"),
+            Start=json_data.get("Start"),
         )
 
 
 # work around possible type aliasing issues when variable has same name as a model
-_Threshold = Threshold
+_Recurrences = Recurrences
 
 
 @dataclass

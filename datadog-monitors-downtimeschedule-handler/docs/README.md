@@ -1,6 +1,6 @@
 # Datadog::Monitors::DowntimeSchedule
 
-Datadog Downtime Schedule 0.0.1
+Datadog Downtime Schedule 1.0.0
 
 ## Syntax
 

@@ -165,7 +165,7 @@
                     "type": "integer"
                 },
                 "NotifyAudit": {
-                    "description": "Whether or not to notify tagged users when changes are made to the monitor",
+                    "description": "A Boolean indicating whether tagged users is notified on changes to this monitor.",
                     "type": "boolean"
                 },
                 "NotifyBy": {

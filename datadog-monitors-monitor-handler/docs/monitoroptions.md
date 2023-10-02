@@ -180,7 +180,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 #### NotifyAudit
 
-Whether or not to notify tagged users when changes are made to the monitor
+A Boolean indicating whether tagged users is notified on changes to this monitor.
 
 _Required_: No
 

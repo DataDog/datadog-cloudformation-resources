@@ -8,8 +8,9 @@ The `Datadog/datadog-cloudformation-resources` repository contains:
 ## Prerequisites:
 
 - [CloudFormation CLI](https://github.com/aws-cloudformation/cloudformation-cli) 0.2.13
-- [cloudformation-cli-python-plugin ](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) 2.1.4
+- [cloudformation-cli-python-plugin](https://github.com/aws-cloudformation/cloudformation-cli-python-plugin) 2.1.4
 - [AWS SAM CLI](https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/serverless-sam-cli-install.html)
+- [Docker](https://www.docker.com/get-started/)
 
 ### Development Tips
 
@@ -36,18 +37,26 @@ The `Datadog/datadog-cloudformation-resources` repository contains:
 4. Run `cfn submit --set-default` to register the extension with CloudFormation and set it as the default version.
 5. Create a stack in AWS with the submitted resource.
 
-
 ### Local testing using contract tests
 
 AWS Cloudformation CLI provides tests to ensure resource type is behaving as expected during each event in the resource lifecycle.
 AWS requires all contracts tests to pass for resource to be registered.
 
 1. Install the prerequisites in [Prerequisites](#Prerequisites:).
-2. `cd` into the directory of the resource to be tested.
-3. Run `cfn generate` to generate code based on the project and resource type schema.
-4. Run `cfn submit --dry-run`. This will generate a zip file and place it in your current directory.
-5. Start a local AWS Lambda endpoint `sam local start-lambda`
-6. Run the contract tests `cfn test`
+2. Create `~/.cfn-cli/typeConfiguration.json` file and populate it with type configuration:
+```
+{
+    "DatadogCredentials":{
+        "ApiKey":"<TEST_CLIENT_API_KEY>",
+        "ApplicationKey":"<TEST_CLIENT_APP_KEY>"
+    }
+}
+```
+3. `cd` into the directory of the resource to be tested.
+4. Run `cfn generate` to generate code based on the project and resource type schema.
+5. Run `cfn submit --dry-run`. This will generate a zip file and place it in your current directory.
+6. Start a local AWS Lambda endpoint `sam local start-lambda`
+7. Run the contract tests `cfn test`
 
 ### Local testing using lifecycle events
 

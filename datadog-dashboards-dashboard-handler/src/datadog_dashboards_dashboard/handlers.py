@@ -1,7 +1,6 @@
-from ast import Tuple
 import json
 import logging
-from typing import Any, MutableMapping, Optional
+from typing import Any, MutableMapping, Optional, Tuple
 
 from cloudformation_cli_python_lib import (
     Action,
@@ -147,7 +146,6 @@ def delete_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
-    type_configuration = request.typeConfiguration
 
     dashboard_id = model.Id
 
@@ -188,7 +186,6 @@ def read_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
-    type_configuration = request.typeConfiguration
 
     dashboard_id = model.Id
 

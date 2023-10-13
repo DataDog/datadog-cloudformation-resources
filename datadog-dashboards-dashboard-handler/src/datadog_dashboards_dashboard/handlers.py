@@ -228,14 +228,17 @@ def read_handler(
 
 
 def get_auth(
-        dd_credentials: Optional[DatadogCredentials],
-        type_configuration: Optional[TypeConfigurationModel]
+    dd_credentials: Optional[DatadogCredentials], type_configuration: Optional[TypeConfigurationModel]
 ) -> Tuple[str, str, str]:
     if dd_credentials:
-        return dd_credentials.ApiKey, \
-               dd_credentials.ApplicationKey, \
-               dd_credentials.ApiURL or "https://api.datadoghq.com"
+        return (
+            dd_credentials.ApiKey,
+            dd_credentials.ApplicationKey,
+            dd_credentials.ApiURL or "https://api.datadoghq.com",
+        )
     else:
-        return type_configuration.DatadogCredentials.ApiKey, \
-               type_configuration.DatadogCredentials.ApplicationKey, \
-               type_configuration.DatadogCredentials.ApiURL or "https://api.datadoghq.com"
+        return (
+            type_configuration.DatadogCredentials.ApiKey,
+            type_configuration.DatadogCredentials.ApplicationKey,
+            type_configuration.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        )

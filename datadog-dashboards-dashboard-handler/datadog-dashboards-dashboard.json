@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::Dashboards::Dashboard",
-  "description": "Datadog Dashboard 2.1.0",
+  "description": "Datadog Dashboard 2.1.0 - backward compatible with 1.0.0",
   "typeConfiguration": {
     "properties": {
       "DatadogCredentials": {
@@ -35,6 +35,9 @@
     }
   },
   "properties": {
+    "DatadogCredentials": {
+      "$ref": "#/definitions/DatadogCredentials"
+    },
     "Id": {
       "description": "ID of the dashboard",
       "type": "string"

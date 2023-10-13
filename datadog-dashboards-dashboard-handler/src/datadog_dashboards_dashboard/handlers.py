@@ -1,3 +1,4 @@
+from ast import Tuple
 import json
 import logging
 from typing import Any, MutableMapping, Optional
@@ -15,7 +16,7 @@ from datadog_api_client.v1.api.dashboards_api import DashboardsApi
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
-from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
+from .models import DatadogCredentials, ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -36,7 +37,6 @@ def create_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
     model = request.desiredResourceState
-    type_configuration = request.typeConfiguration
 
     try:
         json_payload = json.loads(model.DashboardDefinition)
@@ -49,10 +49,11 @@ def create_handler(
             errorCode=HandlerErrorCode.InternalFailure,
         )
 
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
     with client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
+        api_key,
+        app_key,
+        api_url,
         TELEMETRY_TYPE_NAME,
         __version__,
         {"preload_content": False, "check_input_type": False},
@@ -91,7 +92,6 @@ def update_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
     model = request.desiredResourceState
-    type_configuration = request.typeConfiguration
 
     try:
         json_payload = json.loads(model.DashboardDefinition)
@@ -106,10 +106,11 @@ def update_handler(
 
     dashboard_id = model.Id
 
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
     with client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
+        api_key,
+        app_key,
+        api_url,
         TELEMETRY_TYPE_NAME,
         __version__,
         {"preload_content": False, "check_input_type": False},
@@ -150,10 +151,11 @@ def delete_handler(
 
     dashboard_id = model.Id
 
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
     with client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
+        api_key,
+        app_key,
+        api_url,
         TELEMETRY_TYPE_NAME,
         __version__,
         {"preload_content": False},
@@ -190,10 +192,11 @@ def read_handler(
 
     dashboard_id = model.Id
 
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
     with client(
-        type_configuration.DatadogCredentials.ApiKey,
-        type_configuration.DatadogCredentials.ApplicationKey,
-        type_configuration.DatadogCredentials.ApiURL,
+        api_key,
+        app_key,
+        api_url,
         TELEMETRY_TYPE_NAME,
         __version__,
         {"preload_content": False},
@@ -222,3 +225,17 @@ def read_handler(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
     )
+
+
+def get_auth(
+        dd_credentials: Optional[DatadogCredentials],
+        type_configuration: Optional[TypeConfigurationModel]
+) -> Tuple[str, str, str]:
+    if dd_credentials:
+        return dd_credentials.ApiKey, \
+               dd_credentials.ApplicationKey, \
+               dd_credentials.ApiURL or "https://api.datadoghq.com"
+    else:
+        return type_configuration.DatadogCredentials.ApiKey, \
+               type_configuration.DatadogCredentials.ApplicationKey, \
+               type_configuration.DatadogCredentials.ApiURL or "https://api.datadoghq.com"

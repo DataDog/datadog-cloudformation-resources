@@ -240,10 +240,14 @@ def delete_handler(
                     errorCode=error_code,
                 )
 
-        boto_client.delete_secret(
-            SecretId=secret_name,
-            ForceDeleteWithoutRecovery=True,
-        )
+        if session:
+            boto_client = session.client("secretsmanager")
+            boto_client.delete_secret(
+                SecretId=secret_name,
+                ForceDeleteWithoutRecovery=True,
+            )
+        else:
+            LOG.warning(f"Invalid SessionProxy. Skipping deletion of secret {secret_name}")
 
     return ProgressEvent(
         status=OperationStatus.IN_PROGRESS,

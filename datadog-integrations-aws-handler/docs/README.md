@@ -178,5 +178,5 @@ An identification value that represents this integration object. Combines the Ac
 
 #### ExternalID
 
-AWS External ID. **NOTE** This provider will not be able to detect changes made to the `external_id` field outside of Cloudformation.
+AWS External ID. **NOTE** This provider will not be able to detect changes made to the `ExternalID` field outside of Cloudformation.
 

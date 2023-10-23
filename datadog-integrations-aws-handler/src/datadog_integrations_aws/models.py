@@ -50,7 +50,7 @@ class ResourceModel(BaseModel):
     MetricsCollection: Optional[bool]
     CSPMResourceCollection: Optional[bool]
     ResourceCollection: Optional[bool]
-    ExcludedRegions: Optional[AbstractSet[str]]
+    ExcludedRegions: Optional[Sequence[str]]
     ExternalID: Optional[str]
 
     @classmethod
@@ -74,7 +74,7 @@ class ResourceModel(BaseModel):
             MetricsCollection=json_data.get("MetricsCollection"),
             CSPMResourceCollection=json_data.get("CSPMResourceCollection"),
             ResourceCollection=json_data.get("ResourceCollection"),
-            ExcludedRegions=set_or_none(json_data.get("ExcludedRegions")),
+            ExcludedRegions=json_data.get("ExcludedRegions"),
             ExternalID=json_data.get("ExternalID"),
         )
 

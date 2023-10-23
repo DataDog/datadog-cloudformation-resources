@@ -105,9 +105,14 @@
       "description": "Array of AWS regions to exclude from metrics collection.",
       "type": "array",
       "uniqueItems": true,
+      "insertionOrder": false,
       "items": {
         "type": "string"
       }
+    },
+    "ExternalID": {
+      "description": "AWS External ID. **NOTE** This provider will not be able to detect changes made to the `external_id` field outside of Cloudformation.",
+      "type": "string"
     }
   },
   "required": [],
@@ -120,7 +125,8 @@
     "/properties/AccessKeyID"
   ],
   "readOnlyProperties": [
-    "/properties/IntegrationID"
+    "/properties/IntegrationID",
+    "/properties/ExternalID"
   ],
   "additionalProperties": false,
   "handlers": {

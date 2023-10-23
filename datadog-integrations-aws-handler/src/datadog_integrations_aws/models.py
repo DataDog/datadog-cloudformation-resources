@@ -50,7 +50,8 @@ class ResourceModel(BaseModel):
     MetricsCollection: Optional[bool]
     CSPMResourceCollection: Optional[bool]
     ResourceCollection: Optional[bool]
-    ExcludedRegions: Optional[Sequence[str]]
+    ExcludedRegions: Optional[AbstractSet[str]]
+    ExternalID: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -73,7 +74,8 @@ class ResourceModel(BaseModel):
             MetricsCollection=json_data.get("MetricsCollection"),
             CSPMResourceCollection=json_data.get("CSPMResourceCollection"),
             ResourceCollection=json_data.get("ResourceCollection"),
-            ExcludedRegions=json_data.get("ExcludedRegions"),
+            ExcludedRegions=set_or_none(json_data.get("ExcludedRegions")),
+            ExternalID=json_data.get("ExternalID"),
         )
 
 

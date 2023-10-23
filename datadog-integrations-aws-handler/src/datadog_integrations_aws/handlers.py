@@ -90,14 +90,19 @@ def create_handler(
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
-    boto_client = session.client("secretsmanager")
-    boto_client.create_secret(
-        Description="The external_id associated with your Datadog AWS Integration.",
-        Name=secret_name,
-        SecretString='{"external_id":"%s"}' % response.external_id,
-    )
+
+    if session:
+        boto_client = session.client("secretsmanager")
+        boto_client.create_secret(
+            Description="The external_id associated with your Datadog AWS Integration.",
+            Name=secret_name,
+            SecretString='{"external_id":"%s"}' % response.external_id,
+        )
+    else:
+        LOG.warning("Invalid SessionProxy. Skipping secret creation with external_id.")
 
     model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
+    model.ExternalID = response.external_id
 
     return read_handler(session, request, callback_context)
 
@@ -180,18 +185,21 @@ def delete_handler(
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
-    boto_client = session.client("secretsmanager")
     callback_count = callback_context.get("callback_count", 0)
 
     if 0 < callback_count <= MAX_DELETE_SECRET_RETRIES:
-        LOG.info(f"Checking deletion of secret {secret_name}")
-        try:
-            boto_client.describe_secret(SecretId=secret_name)
-        except boto_client.exceptions.ResourceNotFoundException:
-            return ProgressEvent(
-                status=OperationStatus.SUCCESS,
-                resourceModel=None,
-            )
+        if session:
+            boto_client = session.client("secretsmanager")
+            LOG.info(f"Checking deletion of secret {secret_name}")
+            try:
+                boto_client.describe_secret(SecretId=secret_name)
+            except boto_client.exceptions.ResourceNotFoundException:
+                return ProgressEvent(
+                    status=OperationStatus.SUCCESS,
+                    resourceModel=None,
+                )
+        else:
+            LOG.warning(f"Invalid SessionProxy. Skipping checking deletion of secret {secret_name}")
     elif callback_count > MAX_DELETE_SECRET_RETRIES:
         return ProgressEvent(
             status=OperationStatus.FAILED, message=f"Error deleting AWS Account: failed to delete secret {secret_name}"

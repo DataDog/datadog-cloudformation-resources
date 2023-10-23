@@ -22,7 +22,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>" : <i>Boolean</i>,
         "<a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>" : <i>Boolean</i>,
         "<a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>" : <i>Boolean</i>,
-        "<a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>" : <i>[ String, ... ]</i>
+        "<a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>" : <i>[ String, ... ]</i>,
     }
 }
 </pre>
@@ -175,4 +175,8 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 #### IntegrationID
 
 An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.
+
+#### ExternalID
+
+AWS External ID. **NOTE** This provider will not be able to detect changes made to the `external_id` field outside of Cloudformation.
 

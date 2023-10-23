@@ -200,6 +200,10 @@ def delete_handler(
                 )
         else:
             LOG.warning(f"Invalid SessionProxy. Skipping checking deletion of secret {secret_name}")
+            return ProgressEvent(
+                status=OperationStatus.SUCCESS,
+                resourceModel=None,
+            )
     elif callback_count > MAX_DELETE_SECRET_RETRIES:
         return ProgressEvent(
             status=OperationStatus.FAILED, message=f"Error deleting AWS Account: failed to delete secret {secret_name}"

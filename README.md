@@ -48,7 +48,7 @@ For more information about available commands and workflows, see the official [A
 
 To get started:
 
-1. Create an execution role for the cloudformation resource based on the file `<RESORUCE_DIR>/resource-role.yaml`
+1. Create an execution role for the CloudFormation resource based on the file `<RESOURCE_DIR>/resource-role.yaml`
 
 1. In your terminal, use the [aws-cli tool][2] to register a Datadog resource:
 

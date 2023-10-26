@@ -48,6 +48,8 @@ For more information about available commands and workflows, see the official [A
 
 To get started:
 
+1. Create an execution role for the CloudFormation resource based on the file `<RESOURCE_DIR>/resource-role.yaml`
+
 1. In your terminal, use the [aws-cli tool][2] to register a Datadog resource:
 
     ```shell
@@ -55,10 +57,11 @@ To get started:
         --region "<REGION>" \
         --type RESOURCE \
         --type-name "<DATADOG_RESOURCE_NAME>" \
-        --schema-handler-package "<LINK_TO_S3>"
+        --schema-handler-package "<LINK_TO_S3>" \
+        --execution-role-arn "<ROLE_ARN_FROM_STEP_1>"
     ```
 
-2. View the version of the newly registered resource by running the following in your terminal:
+1. View the version of the newly registered resource by running the following in your terminal:
 
     ```shell
     aws cloudformation list-type-versions \
@@ -67,7 +70,7 @@ To get started:
     --type-name "<DATADOG_RESOURCE_NAME>"
     ```
 
-3. Set this newly registered version as the `default` by running the following in your terminal:
+1. Set this newly registered version as the `default` by running the following in your terminal:
 
     ```shell
     aws cloudformation set-type-default-version \
@@ -85,7 +88,7 @@ To get started:
       * See the [Resources Available section](#resources-available), which links to examples of the latest supported S3 links.
     * `VERSION_ID`: The underlying version of the resource as returned by the command in step `2`.
 
-4. Set the newly registered resource configuration by running the following in your terminal:
+1. Set the newly registered resource configuration by running the following in your terminal:
 
     ```shell
     aws cloudformation set-type-configuration \
@@ -94,7 +97,7 @@ To get started:
         --configuration '{"DatadogCredentials": {"ApiKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAPIKey}}", "ApplicationKey": "{{resolve:secretsmanager:MySecret:SecretString:SecretAppKey}}"}}'
     ```
 
-5. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
+1. In your AWS account, [create your AWS stack][3] that includes any of the registered Datadog resources.
 
 For more information about available commands and workflows, see the official [AWS documentation][4].
 

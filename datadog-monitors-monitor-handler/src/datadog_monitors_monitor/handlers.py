@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from typing import List, Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
@@ -81,6 +82,8 @@ from .version import __version__
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::Monitor"
 TELEMETRY_TYPE_NAME = "monitors-monitor"
+MAX_RETRY_COUNT = 5
+RETRY_SLEEP_INTERVAL = 5
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -113,9 +116,23 @@ def read_handler(
                 message="Error getting monitor: monitor does not exist",
                 errorCode=HandlerErrorCode.NotFound,
             )
-        try:
-            monitor = api_instance.get_monitor(monitor_id)
-        except ApiException as e:
+
+        retry_count = 0
+        monitor, api_exception = None
+        while retry_count < MAX_RETRY_COUNT:
+            try:
+                monitor = api_instance.get_monitor(monitor_id)
+                api_exception = None
+                break
+            except ApiException as e:
+                api_exception = e
+                sleep(RETRY_SLEEP_INTERVAL)
+                continue
+            except Exception as e:
+                api_exception = e
+                break
+
+        if api_exception is not None:
             LOG.exception("Exception when calling MonitorsApi->get_monitor: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,

@@ -118,27 +118,28 @@ def read_handler(
             )
 
         retry_count = 0
-        monitor, api_exception = None
+        monitor = api_exception = None
         while retry_count < MAX_RETRY_COUNT:
+            retry_count += 1
             try:
                 monitor = api_instance.get_monitor(monitor_id)
                 api_exception = None
                 break
             except ApiException as e:
                 api_exception = e
-                sleep(RETRY_SLEEP_INTERVAL)
-                continue
-            except Exception as e:
-                api_exception = e
-                break
+                if e.status == 404:
+                    sleep(RETRY_SLEEP_INTERVAL)
+                    continue
+                else:
+                    break
 
         if api_exception is not None:
-            LOG.exception("Exception when calling MonitorsApi->get_monitor: %s\n", e)
+            LOG.exception("Exception when calling MonitorsApi->get_monitor: %s\n", api_exception)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting monitor: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                message=f"Error getting monitor: {api_exception}",
+                errorCode=http_to_handler_error_code(api_exception.status),
             )
 
     model.Created = monitor.created.isoformat()

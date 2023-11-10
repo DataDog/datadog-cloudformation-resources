@@ -26,6 +26,8 @@ TELEMETRY_TYPE_NAME = "integrations-aws"
 DEFAULT_SECRET_NAME = "DatadogIntegrationExternalID"
 MAX_DELETE_SECRET_RETRIES = 30
 DELETE_SECRET_CALLBACK_INTERVAL = 2
+MAX_RETRY_COUNT = 5
+RETRY_SLEEP_INTERVAL = 5
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -154,7 +156,14 @@ def update_handler(
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
+            if (
+                e.status == 400
+                and "errors" in e.body
+                and (
+                    any("does not exist" in s for s in e.body["errors"])
+                    or any("not yet installed" in s for s in e.body["errors"])
+                )
+            ):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -219,7 +228,14 @@ def delete_handler(
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
-                if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
+                if (
+                    e.status == 400
+                    and "errors" in e.body
+                    and (
+                        any("does not exist" in s for s in e.body["errors"])
+                        or any("not yet installed" in s for s in e.body["errors"])
+                    )
+                ):
                     error_code = HandlerErrorCode.NotFound
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
@@ -259,46 +275,78 @@ def read_handler(
         __version__,
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
-        try:
-            if model.IntegrationID is None:
+
+        if model.IntegrationID is None:
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message="No IntegrationID set, resource never created",
+                errorCode=HandlerErrorCode.NotFound,
+            )
+
+        account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
+        kwargs = {}
+        if account_id is not None:
+            kwargs["account_id"] = account_id
+        if role_name is not None:
+            kwargs["role_name"] = role_name
+        if access_key_id is not None:
+            kwargs["access_key_id"] = access_key_id
+
+        retry_count = 0
+        aws_account = error_code = exception = None
+        while retry_count < MAX_RETRY_COUNT:
+            LOG.warning("Retry count %s, err: %s", retry_count, exception)
+            retry_count += 1
+            try:
+                aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
+                exception = None
+                error_code = None
+                break
+            except ApiException as e:
+                exception = e
+                if (
+                    e.status == 400
+                    and "errors" in e.body
+                    and (
+                        any("does not exist" in s for s in e.body["errors"])
+                        or any("not yet installed" in s for s in e.body["errors"])
+                    )
+                ):
+                    error_code = HandlerErrorCode.NotFound
+                    continue
+                else:
+                    break
+            except IndexError as e:
+                exception = e
+                error_code = HandlerErrorCode.NotFound
+                continue
+
+        if exception is not None:
+            if isinstance(exception, ApiException):
+                LOG.error(
+                    f"Account with integration ID '{model.IntegrationID}' not found. "
+                    f"Was it updated outside of AWS CloudFormation ?"
+                )
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
                     resourceModel=model,
-                    message="No IntegrationID set, resource never created",
-                    errorCode=HandlerErrorCode.NotFound,
+                    message=f"Account with integration ID '{model.IntegrationID}' not found. "
+                    f"Was it updated outside of AWS CloudFormation ?",
+                    errorCode=error_code,
                 )
-            account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
-            kwargs = {}
-            if account_id is not None:
-                kwargs["account_id"] = account_id
-            if role_name is not None:
-                kwargs["role_name"] = role_name
-            if access_key_id is not None:
-                kwargs["access_key_id"] = access_key_id
-            aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
-        except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
-            error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
-                error_code = HandlerErrorCode.NotFound
-            return ProgressEvent(
-                status=OperationStatus.FAILED,
-                resourceModel=model,
-                message=f"Error getting AWS account: {e}",
-                errorCode=error_code,
-            )
-        except IndexError:
-            LOG.error(
-                f"Account with integration ID '{model.IntegrationID}' not found. "
-                f"Was it updated outside of AWS CloudFormation ?"
-            )
-            return ProgressEvent(
-                status=OperationStatus.FAILED,
-                resourceModel=model,
-                message=f"Account with integration ID '{model.IntegrationID}' not found. "
-                f"Was it updated outside of AWS CloudFormation ?",
-                errorCode=HandlerErrorCode.NotFound,
-            )
+            if isinstance(exception, IndexError):
+                LOG.error(
+                    f"Account with integration ID '{model.IntegrationID}' not found. "
+                    f"Was it updated outside of AWS CloudFormation ?"
+                )
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=model,
+                    message=f"Account with integration ID '{model.IntegrationID}' not found. "
+                    f"Was it updated outside of AWS CloudFormation ?",
+                    errorCode=error_code,
+                )
 
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags

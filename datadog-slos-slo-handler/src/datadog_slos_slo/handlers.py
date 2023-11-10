@@ -80,12 +80,12 @@ def read_handler(
                     break
 
         if api_exception is not None:
-            LOG.error("Exception when calling SLOApi->get_slo: %s\n", e)
+            LOG.error("Exception when calling SLOApi->get_slo: %s\n", api_exception)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting SLO: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                message=f"Error getting SLO: {api_exception}",
+                errorCode=http_to_handler_error_code(api_exception.status),
             )
 
     model.Created = slo.data.created_at

@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from typing import Any, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
@@ -314,12 +315,14 @@ def read_handler(
                     )
                 ):
                     error_code = HandlerErrorCode.NotFound
+                    sleep(RETRY_SLEEP_INTERVAL)
                     continue
                 else:
                     break
             except IndexError as e:
                 exception = e
                 error_code = HandlerErrorCode.NotFound
+                sleep(RETRY_SLEEP_INTERVAL)
                 continue
 
         if exception is not None:

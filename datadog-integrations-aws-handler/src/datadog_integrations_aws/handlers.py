@@ -297,7 +297,6 @@ def read_handler(
         retry_count = 0
         aws_account = error_code = exception = None
         while retry_count < MAX_RETRY_COUNT:
-            LOG.warning("Retry count %s, err: %s", retry_count, exception)
             retry_count += 1
             try:
                 aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]

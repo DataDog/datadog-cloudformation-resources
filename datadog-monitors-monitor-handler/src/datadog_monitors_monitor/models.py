@@ -47,6 +47,7 @@ class ResourceModel(BaseModel):
     Priority: Optional[int]
     Options: Optional["_MonitorOptions"]
     Query: Optional[str]
+    ConvertQueryToLowercase: Optional[bool]
     Type: Optional[str]
     Multi: Optional[bool]
     Created: Optional[str]
@@ -72,6 +73,7 @@ class ResourceModel(BaseModel):
             Priority=json_data.get("Priority"),
             Options=MonitorOptions._deserialize(json_data.get("Options")),
             Query=json_data.get("Query"),
+            ConvertQueryToLowercase=json_data.get("ConvertQueryToLowercase"),
             Type=json_data.get("Type"),
             Multi=json_data.get("Multi"),
             Created=json_data.get("Created"),

@@ -160,6 +160,8 @@ def update_handler(
 
     monitor = ApiMonitorUpdateRequest()
     monitor.query = model.Query
+    if model.ConvertQueryToLowercase and model.Query:
+        monitor.query = model.Query.lower()
     monitor.type = ApiMonitorType(model.Type)
     if model.Message is not None:
         monitor.message = model.Message
@@ -242,7 +244,12 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    monitor = ApiMonitor(model.Query, ApiMonitorType(model.Type))
+    if model.ConvertQueryToLowercase and model.Query:
+        query = model.Query.lower()
+    else:
+        query = model.Query
+
+    monitor = ApiMonitor(query, ApiMonitorType(model.Type))
     if model.Message is not None:
         monitor.message = model.Message
     if model.Name is not None:

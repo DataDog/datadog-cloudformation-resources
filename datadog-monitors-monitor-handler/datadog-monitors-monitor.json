@@ -228,6 +228,10 @@
       "description": "The monitor query",
       "type": "string"
     },
+    "ConvertQueryToLowercase": {
+      "description": "Queries in Datadog are case-sensitive. But tags ingested into datadog are converted to lowercase. If one passes a camel case named AWS resource name into a monitor query, the query will never metch. If you set this to true, it will convert the complete query to lowercase. It defaults to false. NOTE: Enabling this may create drift for your Cloudformation Monitor Resource",
+      "type": "boolean"
+    },
     "Type": {
       "type": "string",
       "description": "The type of the monitor",
@@ -293,6 +297,9 @@
     "/properties/OverallState",
     "/properties/Creator",
     "/properties/Created"
+  ],
+  "writeOnlyProperties": [
+    "/properties/ConvertQueryToLowercase"
   ],
   "additionalProperties": false,
   "handlers": {

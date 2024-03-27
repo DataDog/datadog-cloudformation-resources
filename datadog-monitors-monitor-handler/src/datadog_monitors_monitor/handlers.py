@@ -1,5 +1,5 @@
 import logging
-from typing import Any, MutableMapping, Optional
+from typing import Any, MutableMapping, Optional, Union, Tuple
 
 from cloudformation_cli_python_lib import (
     Action,
@@ -23,7 +23,9 @@ from datadog_cloudformation_common.api_clients import v1_client
 from .models import Creator, MonitorOptions, MonitorThresholdWindows, \
     MonitorThresholds, \
     ResourceHandlerRequest, \
-    ResourceModel
+    ResourceModel, \
+    DatadogCredentials, \
+    TypeConfigurationModel
 from .version import __version__
 
 # Use this logger to forward log messages to CloudWatch Logs.
@@ -31,7 +33,7 @@ LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::Monitor"
 TELEMETRY_TYPE_NAME = "monitors-monitor"
 
-resource = Resource(TYPE_NAME, ResourceModel)
+resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -43,15 +45,11 @@ def read_handler(
 ) -> ProgressEvent:
     LOG.info("Starting %s Read Handler", TYPE_NAME)
     model = request.desiredResourceState
-    with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
-    ) as api_client:
+
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
+    with v1_client(api_key, app_key, api_url, TELEMETRY_TYPE_NAME, __version__) as api_client:
         api_instance = MonitorsApi(api_client)
-        monitor_id = model.Id
+        monitor_id = get_id(model.Id)
         try:
             monitor = api_instance.get_monitor(monitor_id)
         except ApiException as e:
@@ -115,7 +113,7 @@ def read_handler(
                 TriggerWindow=tw.trigger_window if hasattr(tw, "trigger_window") else None,
                 RecoveryWindow=tw.recovery_window if hasattr(tw, "recovery_window") else None,
             )
-    model.Id = monitor.id
+    model.Id = get_id(monitor.id)
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
@@ -145,16 +143,11 @@ def update_handler(
     if options:
         monitor.options = options
 
-    with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
-    ) as api_client:
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
+    with v1_client(api_key, app_key, api_url, TELEMETRY_TYPE_NAME, __version__) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
-            api_instance.update_monitor(model.Id, monitor)
+            api_instance.update_monitor(get_id(model.Id), monitor)
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->update_monitor: %s\n", e)
             return ProgressEvent(
@@ -173,16 +166,11 @@ def delete_handler(
     LOG.info("Starting %s Delete Handler", TYPE_NAME)
     model = request.desiredResourceState
 
-    with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
-    ) as api_client:
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
+    with v1_client(api_key, app_key, api_url, TELEMETRY_TYPE_NAME, __version__) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
-            api_instance.delete_monitor(model.Id)
+            api_instance.delete_monitor(get_id(model.Id))
         except ApiException as e:
             LOG.error("Exception when calling MonitorsApi->delete_monitor: %s\n", e)
             return ProgressEvent(
@@ -217,13 +205,8 @@ def create_handler(
     if options:
         monitor.options = options
 
-    with v1_client(
-            model.DatadogCredentials.ApiKey,
-            model.DatadogCredentials.ApplicationKey,
-            model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
-            TELEMETRY_TYPE_NAME,
-            __version__,
-    ) as api_client:
+    api_key, app_key, api_url = get_auth(model.DatadogCredentials, request.typeConfiguration)
+    with v1_client(api_key, app_key, api_url, TELEMETRY_TYPE_NAME, __version__) as api_client:
         api_instance = MonitorsApi(api_client)
         try:
             monitor_resp = api_instance.create_monitor(monitor)
@@ -233,7 +216,7 @@ def create_handler(
                 status=OperationStatus.FAILED, resourceModel=model, message=f"Error creating monitor: {e}"
             )
 
-    model.Id = monitor_resp.id
+    model.Id = get_id(monitor_resp.id)
     return read_handler(session, request, callback_context)
 
 
@@ -298,3 +281,23 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
             options.threshold_windows.recovery_window = model.Options.ThresholdWindows.RecoveryWindow
 
     return options
+
+
+def get_id(_id: Union[str, int]) -> int:
+    if isinstance(_id, str):
+        return int(float(_id))
+    return _id
+
+
+def get_auth(
+        dd_credentials: Optional[DatadogCredentials],
+        type_configuration: Optional[TypeConfigurationModel]
+) -> Tuple[str, str, str]:
+    if dd_credentials:
+        return dd_credentials.ApiKey, \
+               dd_credentials.ApplicationKey, \
+               dd_credentials.ApiURL or "https://api.datadoghq.com"
+    else:
+        return type_configuration.DatadogCredentials.ApiKey, \
+               type_configuration.DatadogCredentials.ApplicationKey, \
+               type_configuration.DatadogCredentials.ApiURL or "https://api.datadoghq.com"

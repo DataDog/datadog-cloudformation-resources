@@ -1,6 +1,6 @@
 # Datadog::Monitors::Monitor
 
-Datadog Monitor 3.0.0
+Datadog Monitor 3.1.0b2
 
 ## Syntax
 
@@ -46,7 +46,7 @@ Properties:
 
 Credentials for the Datadog API
 
-_Required_: Yes
+_Required_: No
 
 _Type_: <a href="datadogcredentials.md">DatadogCredentials</a>
 

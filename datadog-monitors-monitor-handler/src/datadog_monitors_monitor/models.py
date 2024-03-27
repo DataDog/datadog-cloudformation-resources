@@ -1,6 +1,14 @@
 # DO NOT modify this file by hand, changes will be overwritten
-import sys
 from dataclasses import dataclass
+
+from cloudformation_cli_python_lib.interface import (
+    BaseModel,
+    BaseResourceHandlerRequest,
+)
+from cloudformation_cli_python_lib.recast import recast_object
+from cloudformation_cli_python_lib.utils import deserialize_list
+
+import sys
 from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
@@ -13,13 +21,6 @@ from typing import (
     Type,
     TypeVar,
 )
-
-from cloudformation_cli_python_lib.interface import (
-    BaseModel,
-    BaseResourceHandlerRequest,
-)
-from cloudformation_cli_python_lib.recast import recast_object
-from cloudformation_cli_python_lib.utils import deserialize_list
 
 T = TypeVar("T")
 
@@ -35,13 +36,14 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
     # pylint: disable=invalid-name
     desiredResourceState: Optional["ResourceModel"]
     previousResourceState: Optional["ResourceModel"]
+    typeConfiguration: Optional["TypeConfigurationModel"]
 
 
 @dataclass
 class ResourceModel(BaseModel):
     DatadogCredentials: Optional["_DatadogCredentials"]
     Creator: Optional["_Creator"]
-    Id: Optional[int]
+    Id: Optional[Any]
     Message: Optional[str]
     Name: Optional[str]
     Tags: Optional[Sequence[str]]
@@ -229,5 +231,25 @@ class MonitorThresholdWindows(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorThresholdWindows = MonitorThresholdWindows
+
+
+@dataclass
+class TypeConfigurationModel(BaseModel):
+    DatadogCredentials: Optional["_DatadogCredentials"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_TypeConfigurationModel"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_TypeConfigurationModel"]:
+        if not json_data:
+            return None
+        return cls(
+            DatadogCredentials=DatadogCredentials._deserialize(json_data.get("DatadogCredentials")),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_TypeConfigurationModel = TypeConfigurationModel
 
 

@@ -1,6 +1,6 @@
 {
     "typeName": "Datadog::Monitors::Monitor",
-    "description": "Datadog Monitor 3.0.0",
+    "description": "Datadog Monitor 3.1.0b2",
     "typeConfiguration": {
         "properties": {
             "DatadogCredentials": {

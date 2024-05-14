@@ -256,6 +256,9 @@ def update_handler(
 
     monitor = ApiMonitorUpdateRequest()
     monitor.query = model.Query
+    if model.CloudformationOptions is not None:
+        if model.CloudformationOptions.LowercaseQuery:
+            monitor.query = model.Query.lower()
     monitor.type = ApiMonitorType(model.Type)
     if model.Message is not None:
         monitor.message = model.Message
@@ -340,7 +343,12 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    monitor = ApiMonitor(model.Query, ApiMonitorType(model.Type))
+    query = model.Query
+    if model.CloudformationOptions is not None:
+        if model.CloudformationOptions.LowercaseQuery:
+            query = query.lower()
+
+    monitor = ApiMonitor(query, ApiMonitorType(model.Type))
     if model.Message is not None:
         monitor.message = model.Message
     if model.Name is not None:

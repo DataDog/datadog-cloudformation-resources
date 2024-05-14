@@ -424,6 +424,16 @@
             ],
             "type": "object",
             "additionalProperties": false
+        },
+        "CloudformationOptions": {
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "LowercaseQuery": {
+                    "description": "Whether or not to convert monitor query to lowercase when checking for drift.",
+                    "type": "boolean"
+                }
+            }
         }
     },
     "typeName": "Datadog::Monitors::Monitor"

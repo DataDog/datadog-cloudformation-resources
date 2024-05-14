@@ -237,6 +237,9 @@ def read_handler(
             )
     model.Id = monitor.id
 
+    # Remove write only fields
+    model.CloudformationOptions = None
+
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
         resourceModel=model,

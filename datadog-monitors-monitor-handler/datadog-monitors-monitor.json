@@ -539,8 +539,11 @@
     "/properties/Creator",
     "/properties/Created"
   ],
+  "writeOnlyProperties": [
+    "/properties/CloudformationOptions"
+  ],
   "propertyTransform": {
-    "/properties/Query": ". | if .CloudformationOptions.LowercaseQuery == true then (.Query | ascii_downcase) else .Query end"
+    "/properties/Query": ".Query | ascii_downcase"
   },
   "additionalProperties": false,
   "handlers": {

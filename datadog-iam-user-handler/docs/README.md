@@ -1,6 +1,6 @@
 # Datadog::IAM::User
 
-Datadog Application User 1.2.0
+Datadog Application User 1.3.0
 
 ## Syntax
 

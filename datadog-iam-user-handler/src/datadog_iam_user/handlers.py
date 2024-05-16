@@ -9,10 +9,10 @@ from cloudformation_cli_python_lib import (
     SessionProxy,
 )
 from datadog_api_client.v1 import ApiException
-from datadog_api_client.v1.api import users_api
+from datadog_api_client.v1.api.users_api import UsersApi
 from datadog_api_client.v1.model.access_role import AccessRole
 from datadog_api_client.v1.model.user import User
-from datadog_cloudformation_common.api_clients import v1_client
+from datadog_cloudformation_common.api_clients import client
 
 from .models import ResourceHandlerRequest, ResourceModel
 from .version import __version__
@@ -36,14 +36,14 @@ def create_handler(
 
     LOG.info(f"Starting the {TYPE_NAME} Create Handler")
 
-    with v1_client(
+    with client(
         model.DatadogCredentials.ApiKey,
         model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        model.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
     ) as api_client:
-        api_instance = users_api.UsersApi(api_client)
+        api_instance = UsersApi(api_client)
         body = User(
             access_role=AccessRole(model.AccessRole),
             email=model.Email,
@@ -69,14 +69,14 @@ def update_handler(
 
     LOG.info(f"Starting the {TYPE_NAME} Update Handler")
 
-    with v1_client(
+    with client(
         model.DatadogCredentials.ApiKey,
         model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        model.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
     ) as api_client:
-        api_instance = users_api.UsersApi(api_client)
+        api_instance = UsersApi(api_client)
         body = User(
             access_role=AccessRole(model.AccessRole),
             email=model.Email,
@@ -102,14 +102,14 @@ def delete_handler(
 
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
-    with v1_client(
+    with client(
         model.DatadogCredentials.ApiKey,
         model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        model.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
     ) as api_client:
-        api_instance = users_api.UsersApi(api_client)
+        api_instance = UsersApi(api_client)
         user_handle = model.Handle
         try:
             api_instance.disable_user(user_handle)
@@ -132,14 +132,14 @@ def read_handler(
     model = request.desiredResourceState
     LOG.info(f"Starting the {TYPE_NAME} Delete Handler")
 
-    with v1_client(
+    with client(
         model.DatadogCredentials.ApiKey,
         model.DatadogCredentials.ApplicationKey,
-        model.DatadogCredentials.ApiURL or "https://api.datadoghq.com",
+        model.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
     ) as api_client:
-        api_instance = users_api.UsersApi(api_client)
+        api_instance = UsersApi(api_client)
         user_handle = model.Handle
         try:
             api_response = api_instance.get_user(user_handle)

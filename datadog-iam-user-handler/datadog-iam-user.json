@@ -19,6 +19,7 @@
                 }
             },
             "required": ["ApiKey", "ApplicationKey"],
+            "additionalProperties": false,
             "type": "object"
         },
         "AccessRole": {

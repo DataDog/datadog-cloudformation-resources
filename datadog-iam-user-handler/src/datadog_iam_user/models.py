@@ -1,6 +1,13 @@
 # DO NOT modify this file by hand, changes will be overwritten
-import sys
 from dataclasses import dataclass
+
+from cloudformation_cli_python_lib.interface import (
+    BaseModel,
+    BaseResourceHandlerRequest,
+)
+from cloudformation_cli_python_lib.recast import recast_object
+
+import sys
 from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
@@ -11,12 +18,6 @@ from typing import (
     Type,
     TypeVar,
 )
-
-from cloudformation_cli_python_lib.interface import (
-    BaseModel,
-    BaseResourceHandlerRequest,
-)
-from cloudformation_cli_python_lib.recast import recast_object
 
 T = TypeVar("T")
 
@@ -32,6 +33,7 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
     # pylint: disable=invalid-name
     desiredResourceState: Optional["ResourceModel"]
     previousResourceState: Optional["ResourceModel"]
+    typeConfiguration: Optional["TypeConfigurationModel"]
 
 
 @dataclass
@@ -90,3 +92,19 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
+
+
+@dataclass
+class TypeConfigurationModel(BaseModel):
+    @classmethod
+    def _deserialize(
+        cls: Type["_TypeConfigurationModel"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_TypeConfigurationModel"]:
+        if not json_data:
+            return None
+        return cls()
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_TypeConfigurationModel = TypeConfigurationModel

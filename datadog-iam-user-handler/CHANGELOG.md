@@ -4,10 +4,12 @@
 
 * [Added] Update common package. See [#305](https://github.com/DataDog/datadog-cloudformation-resources/pull/305).
 * [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-iam-user/datadog-iam-user-1.3.0.zip`
 
 ## 1.2.0 / 2021-02-16
 
 * [Fixed] Bump common-python dependencies in all resources. See [#117](https://github.com/DataDog/datadog-cloudformation-resources/pull/117).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-iam-user/datadog-iam-user-1.2.0.zip`
 
 ## 1.2.0b2 / 2020-11-20
 

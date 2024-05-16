@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.3.0 / 2021-02-16
+## 1.3.0 / 2024-05-16
 
 * [Added] Update common package. See [#305](https://github.com/DataDog/datadog-cloudformation-resources/pull/305).
 * [Changed] Bump python version to `3.9` in all resources. See [#252](https://github.com/DataDog/datadog-cloudformation-resources/pull/252).

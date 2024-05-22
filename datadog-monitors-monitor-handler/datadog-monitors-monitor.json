@@ -543,7 +543,7 @@
     "/properties/CloudformationOptions"
   ],
   "propertyTransform": {
-    "/properties/Query": ".Query | ascii_downcase"
+    "/properties/Query": "$lowercase(Query)"
   },
   "additionalProperties": false,
   "handlers": {

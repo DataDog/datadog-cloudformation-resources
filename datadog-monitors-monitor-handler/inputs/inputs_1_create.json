@@ -1,6 +1,6 @@
 {
   "Type": "query alert",
-  "Query": "avg(current_1mo):avg:aws.ec2.cpu{environment:foo,host:foo,FOO:bar} by {host,environment,FOO} > 4",
+  "Query": "avg(current_1mo):avg:aws.ec2.cpu{environment:foo,host:foo} by {host,environment} > 4",
   "Name": "SSH Activity on PROD",
   "Message": "@slack-datadog-testing",
   "Priority": 1,
@@ -23,8 +23,5 @@
     "Thresholds": {
       "Critical": 4
     }
-  },
-  "CloudformationOptions": {
-    "LowercaseQuery": true
   }
 }

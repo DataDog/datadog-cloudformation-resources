@@ -1,6 +1,0 @@
-{
-  "Type": "ci-tests alert",
-  "Query": "invalid query",
-  "Name": "CI tests on STAGING",
-  "Message": "@slack-datadog-testing"
-}

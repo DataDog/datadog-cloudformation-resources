@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.8.0 / 2024-05-24
+
+* [Added] Add support for lowercasing Query. See [#304](https://github.com/DataDog/datadog-cloudformation-resources/pull/304).
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.8.0.zip`
+
 ## 4.7.1 / 2023-01-05
 
 * [Added] Add retry to read call. See [#294](https://github.com/DataDog/datadog-cloudformation-resources/pull/294).

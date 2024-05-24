@@ -1,6 +1,6 @@
 # Datadog::Monitors::Monitor
 
-Datadog Monitor 4.7.1
+Datadog Monitor 4.8.0
 
 ## Syntax
 

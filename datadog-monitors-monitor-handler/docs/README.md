@@ -20,7 +20,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#query" title="Query">Query</a>" : <i>String</i>,
         "<a href="#type" title="Type">Type</a>" : <i>String</i>,
         "<a href="#multi" title="Multi">Multi</a>" : <i>Boolean</i>,
-        "<a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>" : <i>[ String, ... ]</i>
+        "<a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>" : <i>[ String, ... ]</i>,
+        "<a href="#cloudformationoptions" title="CloudformationOptions">CloudformationOptions</a>" : <i><a href="cloudformationoptions.md">CloudformationOptions</a></i>
     }
 }
 </pre>
@@ -41,6 +42,7 @@ Properties:
     <a href="#multi" title="Multi">Multi</a>: <i>Boolean</i>
     <a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>: <i>
       - String</i>
+    <a href="#cloudformationoptions" title="CloudformationOptions">CloudformationOptions</a>: <i><a href="cloudformationoptions.md">CloudformationOptions</a></i>
 </pre>
 
 ## Properties
@@ -132,6 +134,14 @@ A list of unique role identifiers to define which roles are allowed to edit the 
 _Required_: No
 
 _Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### CloudformationOptions
+
+_Required_: No
+
+_Type_: <a href="cloudformationoptions.md">CloudformationOptions</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

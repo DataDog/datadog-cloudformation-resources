@@ -53,6 +53,7 @@ class ResourceModel(BaseModel):
     Deleted: Optional[str]
     Modified: Optional[str]
     RestrictedRoles: Optional[Sequence[str]]
+    CloudformationOptions: Optional["_CloudformationOptions"]
 
     @classmethod
     def _deserialize(
@@ -78,6 +79,7 @@ class ResourceModel(BaseModel):
             Deleted=json_data.get("Deleted"),
             Modified=json_data.get("Modified"),
             RestrictedRoles=json_data.get("RestrictedRoles"),
+            CloudformationOptions=CloudformationOptions._deserialize(json_data.get("CloudformationOptions")),
         )
 
 
@@ -395,6 +397,26 @@ class Sort(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _Sort = Sort
+
+
+@dataclass
+class CloudformationOptions(BaseModel):
+    LowercaseQuery: Optional[bool]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_CloudformationOptions"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_CloudformationOptions"]:
+        if not json_data:
+            return None
+        return cls(
+            LowercaseQuery=json_data.get("LowercaseQuery"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_CloudformationOptions = CloudformationOptions
 
 
 @dataclass

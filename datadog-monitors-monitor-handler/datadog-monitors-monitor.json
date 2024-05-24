@@ -421,6 +421,16 @@
       ],
       "type": "object",
       "additionalProperties": false
+    },
+    "CloudformationOptions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "LowercaseQuery": {
+          "description": "Whether or not to convert monitor query to lowercase when checking for drift.",
+          "type": "boolean"
+        }
+      }
     }
   },
   "properties": {
@@ -507,6 +517,10 @@
       "items": {
         "type": "string"
       }
+    },
+    "CloudformationOptions": {
+      "description": "Cloudformation specific options. This is only used by the Cloudformation resource.",
+      "$ref": "#/definitions/CloudformationOptions"
     }
   },
   "required": [
@@ -525,6 +539,12 @@
     "/properties/Creator",
     "/properties/Created"
   ],
+  "writeOnlyProperties": [
+    "/properties/CloudformationOptions"
+  ],
+  "propertyTransform": {
+    "/properties/Query": "$lowercase(Query)"
+  },
   "additionalProperties": false,
   "handlers": {
     "create": {

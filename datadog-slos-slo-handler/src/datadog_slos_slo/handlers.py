@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from typing import Any, List, MutableMapping, Optional
 
 from cloudformation_cli_python_lib import (
@@ -27,6 +28,8 @@ from .version import __version__
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::SLOs::SLO"
 TELEMETRY_TYPE_NAME = "slos-slo"
+MAX_RETRY_COUNT = 5
+RETRY_SLEEP_INTERVAL = 5
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -59,16 +62,32 @@ def read_handler(
                 message="Error getting SLO: SLO does not exist",
                 errorCode=HandlerErrorCode.NotFound,
             )
-        try:
-            slo = api_instance.get_slo(slo_id)
-        except ApiException as e:
-            LOG.error("Exception when calling SLOApi->get_slo: %s\n", e)
+
+        retry_count = 0
+        slo = api_exception = None
+        while retry_count < MAX_RETRY_COUNT:
+            retry_count += 1
+            try:
+                slo = api_instance.get_slo(slo_id)
+                api_exception = None
+                break
+            except ApiException as e:
+                api_exception = e
+                if e.status == 404:
+                    sleep(RETRY_SLEEP_INTERVAL)
+                    continue
+                else:
+                    break
+
+        if api_exception is not None:
+            LOG.error("Exception when calling SLOApi->get_slo: %s\n", api_exception)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting SLO: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                message=f"Error getting SLO: {api_exception}",
+                errorCode=http_to_handler_error_code(api_exception.status),
             )
+
     model.Created = slo.data.created_at
     model.Modified = slo.data.modified_at
     model.Description = slo.data.description

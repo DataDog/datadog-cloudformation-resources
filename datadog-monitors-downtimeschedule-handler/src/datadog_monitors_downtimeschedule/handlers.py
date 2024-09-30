@@ -1,4 +1,5 @@
 import logging
+from time import sleep
 from typing import Any, MutableMapping, Optional
 from cloudformation_cli_python_lib import (
     Action,
@@ -77,6 +78,8 @@ from .models import (
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Monitors::DowntimeSchedule"
 TELEMETRY_TYPE_NAME = "monitors-downtime-schedule"
+MAX_RETRY_COUNT = 5
+RETRY_SLEEP_INTERVAL = 5
 
 resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
@@ -217,15 +220,30 @@ def read_handler(
         __version__,
     ) as api_client:
         api_instance = DowntimesApi(api_client)
-        try:
-            resp = api_instance.get_downtime(model.Id)
-        except ApiException as e:
-            LOG.exception("Exception when calling DowntimesApi->get_downtime: %s\n", e)
+
+        retry_count = 0
+        resp = api_exception = None
+        while retry_count < MAX_RETRY_COUNT:
+            retry_count += 1
+            try:
+                resp = api_instance.get_downtime(model.Id)
+                api_exception = None
+                break
+            except ApiException as e:
+                api_exception = e
+                if e.status == 404:
+                    sleep(RETRY_SLEEP_INTERVAL)
+                    continue
+                else:
+                    break
+
+        if api_exception is not None:
+            LOG.exception("Exception when calling DowntimesApi->get_downtime: %s\n", api_exception)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Error getting downtime: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                message=f"Error getting downtime: {api_exception}",
+                errorCode=http_to_handler_error_code(api_exception.status),
             )
 
         # If downtime is disabled, return a NotFound error code to indicate so

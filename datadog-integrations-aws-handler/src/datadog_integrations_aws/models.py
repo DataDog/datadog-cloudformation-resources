@@ -6,12 +6,14 @@ from cloudformation_cli_python_lib.interface import (
     BaseResourceHandlerRequest,
 )
 from cloudformation_cli_python_lib.recast import recast_object
+from cloudformation_cli_python_lib.utils import deserialize_list
 
 import sys
 from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
     Any,
+    Generic,
     Mapping,
     MutableMapping,
     Optional,
@@ -40,17 +42,23 @@ class ResourceHandlerRequest(BaseResourceHandlerRequest):
 @dataclass
 class ResourceModel(BaseModel):
     AccountID: Optional[str]
+    AWSPartition: Optional[str]
     RoleName: Optional[str]
-    AccessKeyID: Optional[str]
-    FilterTags: Optional[Sequence[str]]
-    HostTags: Optional[Sequence[str]]
-    AccountSpecificNamespaceRules: Optional[MutableMapping[str, bool]]
-    IntegrationID: Optional[str]
-    ExternalIDSecretName: Optional[str]
+    IncludedRegions: Optional[AbstractSet[str]]
+    AccountTags: Optional[Sequence[str]]
     MetricsCollection: Optional[bool]
+    AutomuteEnabled: Optional[bool]
+    CollectCloudwatchAllarms: Optional[bool]
+    CollectCustomMetrics: Optional[bool]
+    FilterTags: Optional[MutableMapping[str, str]]
+    IncludeListedNamespaces: Optional[bool]
+    FilterNamespaces: Optional[AbstractSet[str]]
+    LogForwarderLambdas: Optional[AbstractSet[str]]
+    LogForwarderSources: Optional[AbstractSet[str]]
     CSPMResourceCollection: Optional[bool]
-    ResourceCollection: Optional[bool]
-    ExcludedRegions: Optional[Sequence[str]]
+    ExtendedResourceCollection: Optional[bool]
+    ExternalIDSecretName: Optional[str]
+    UUID: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -63,17 +71,23 @@ class ResourceModel(BaseModel):
         recast_object(cls, json_data, dataclasses)
         return cls(
             AccountID=json_data.get("AccountID"),
+            AWSPartition=json_data.get("AWSPartition"),
             RoleName=json_data.get("RoleName"),
-            AccessKeyID=json_data.get("AccessKeyID"),
-            FilterTags=json_data.get("FilterTags"),
-            HostTags=json_data.get("HostTags"),
-            AccountSpecificNamespaceRules=json_data.get("AccountSpecificNamespaceRules"),
-            IntegrationID=json_data.get("IntegrationID"),
-            ExternalIDSecretName=json_data.get("ExternalIDSecretName"),
+            IncludedRegions=set_or_none(json_data.get("IncludedRegions")),
+            AccountTags=json_data.get("AccountTags"),
             MetricsCollection=json_data.get("MetricsCollection"),
+            AutomuteEnabled=json_data.get("AutomuteEnabled"),
+            CollectCloudwatchAllarms=json_data.get("CollectCloudwatchAllarms"),
+            CollectCustomMetrics=json_data.get("CollectCustomMetrics"),
+            FilterTags=json_data.get("FilterTags"),
+            IncludeListedNamespaces=json_data.get("IncludeListedNamespaces"),
+            FilterNamespaces=set_or_none(json_data.get("FilterNamespaces")),
+            LogForwarderLambdas=set_or_none(json_data.get("LogForwarderLambdas")),
+            LogForwarderSources=set_or_none(json_data.get("LogForwarderSources")),
             CSPMResourceCollection=json_data.get("CSPMResourceCollection"),
-            ResourceCollection=json_data.get("ResourceCollection"),
-            ExcludedRegions=json_data.get("ExcludedRegions"),
+            ExtendedResourceCollection=json_data.get("ExtendedResourceCollection"),
+            ExternalIDSecretName=json_data.get("ExternalIDSecretName"),
+            UUID=json_data.get("UUID"),
         )
 
 
@@ -123,3 +137,5 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
+
+

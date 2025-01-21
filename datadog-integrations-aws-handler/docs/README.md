@@ -13,16 +13,23 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "Type" : "Datadog::Integrations::AWS",
     "Properties" : {
         "<a href="#accountid" title="AccountID">AccountID</a>" : <i>String</i>,
+        "<a href="#awspartition" title="AWSPartition">AWSPartition</a>" : <i>String</i>,
         "<a href="#rolename" title="RoleName">RoleName</a>" : <i>String</i>,
-        "<a href="#accesskeyid" title="AccessKeyID">AccessKeyID</a>" : <i>String</i>,
-        "<a href="#filtertags" title="FilterTags">FilterTags</a>" : <i>[ String, ... ]</i>,
-        "<a href="#hosttags" title="HostTags">HostTags</a>" : <i>[ String, ... ]</i>,
-        "<a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>" : <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>,
-        "<a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>" : <i>String</i>,
+        "<a href="#includedregions" title="IncludedRegions">IncludedRegions</a>" : <i>[ String, ... ]</i>,
+        "<a href="#accounttags" title="AccountTags">AccountTags</a>" : <i>[ String, ... ]</i>,
         "<a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>" : <i>Boolean</i>,
+        "<a href="#automuteenabled" title="AutomuteEnabled">AutomuteEnabled</a>" : <i>Boolean</i>,
+        "<a href="#collectcloudwatchallarms" title="CollectCloudwatchAllarms">CollectCloudwatchAllarms</a>" : <i>Boolean</i>,
+        "<a href="#collectcustommetrics" title="CollectCustomMetrics">CollectCustomMetrics</a>" : <i>Boolean</i>,
+        "<a href="#filtertags" title="FilterTags">FilterTags</a>" : <i><a href="filtertags.md">FilterTags</a></i>,
+        "<a href="#includelistednamespaces" title="IncludeListedNamespaces">IncludeListedNamespaces</a>" : <i>Boolean</i>,
+        "<a href="#filternamespaces" title="FilterNamespaces">FilterNamespaces</a>" : <i>[ String, ... ]</i>,
+        "<a href="#logforwarderlambdas" title="LogForwarderLambdas">LogForwarderLambdas</a>" : <i>[ String, ... ]</i>,
+        "<a href="#logforwardersources" title="LogForwarderSources">LogForwarderSources</a>" : <i>[ String, ... ]</i>,
         "<a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>" : <i>Boolean</i>,
-        "<a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>" : <i>Boolean</i>,
-        "<a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>" : <i>[ String, ... ]</i>
+        "<a href="#extendedresourcecollection" title="ExtendedResourceCollection">ExtendedResourceCollection</a>" : <i>Boolean</i>,
+        "<a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>" : <i>String</i>,
+        "<a href="#uuid" title="UUID">UUID</a>" : <i>String</i>
     }
 }
 </pre>
@@ -33,19 +40,28 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 Type: Datadog::Integrations::AWS
 Properties:
     <a href="#accountid" title="AccountID">AccountID</a>: <i>String</i>
+    <a href="#awspartition" title="AWSPartition">AWSPartition</a>: <i>String</i>
     <a href="#rolename" title="RoleName">RoleName</a>: <i>String</i>
-    <a href="#accesskeyid" title="AccessKeyID">AccessKeyID</a>: <i>String</i>
-    <a href="#filtertags" title="FilterTags">FilterTags</a>: <i>
+    <a href="#includedregions" title="IncludedRegions">IncludedRegions</a>: <i>
       - String</i>
-    <a href="#hosttags" title="HostTags">HostTags</a>: <i>
+    <a href="#accounttags" title="AccountTags">AccountTags</a>: <i>
       - String</i>
-    <a href="#accountspecificnamespacerules" title="AccountSpecificNamespaceRules">AccountSpecificNamespaceRules</a>: <i><a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a></i>
-    <a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>: <i>String</i>
     <a href="#metricscollection" title="MetricsCollection">MetricsCollection</a>: <i>Boolean</i>
-    <a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>: <i>Boolean</i>
-    <a href="#resourcecollection" title="ResourceCollection">ResourceCollection</a>: <i>Boolean</i>
-    <a href="#excludedregions" title="ExcludedRegions">ExcludedRegions</a>: <i>
+    <a href="#automuteenabled" title="AutomuteEnabled">AutomuteEnabled</a>: <i>Boolean</i>
+    <a href="#collectcloudwatchallarms" title="CollectCloudwatchAllarms">CollectCloudwatchAllarms</a>: <i>Boolean</i>
+    <a href="#collectcustommetrics" title="CollectCustomMetrics">CollectCustomMetrics</a>: <i>Boolean</i>
+    <a href="#filtertags" title="FilterTags">FilterTags</a>: <i><a href="filtertags.md">FilterTags</a></i>
+    <a href="#includelistednamespaces" title="IncludeListedNamespaces">IncludeListedNamespaces</a>: <i>Boolean</i>
+    <a href="#filternamespaces" title="FilterNamespaces">FilterNamespaces</a>: <i>
       - String</i>
+    <a href="#logforwarderlambdas" title="LogForwarderLambdas">LogForwarderLambdas</a>: <i>
+      - String</i>
+    <a href="#logforwardersources" title="LogForwarderSources">LogForwarderSources</a>: <i>
+      - String</i>
+    <a href="#cspmresourcecollection" title="CSPMResourceCollection">CSPMResourceCollection</a>: <i>Boolean</i>
+    <a href="#extendedresourcecollection" title="ExtendedResourceCollection">ExtendedResourceCollection</a>: <i>Boolean</i>
+    <a href="#externalidsecretname" title="ExternalIDSecretName">ExternalIDSecretName</a>: <i>String</i>
+    <a href="#uuid" title="UUID">UUID</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -60,6 +76,16 @@ _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
+#### AWSPartition
+
+The AWS partition to use. Defaults to 'aws'.
+
+_Required_: No
+
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
 #### RoleName
 
 Your Datadog role delegation name.
@@ -70,19 +96,9 @@ _Type_: String
 
 _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
 
-#### AccessKeyID
+#### IncludedRegions
 
-If your AWS account is a GovCloud or China account, enter the corresponding Access Key ID.
-
-_Required_: No
-
-_Type_: String
-
-_Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-replacement)
-
-#### FilterTags
-
-The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.
+Array of AWS regions in which to collect data. If left empty, all regions will be collected
 
 _Required_: No
 
@@ -90,33 +106,13 @@ _Type_: List of String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### HostTags
+#### AccountTags
 
 Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.
 
 _Required_: No
 
 _Type_: List of String
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### AccountSpecificNamespaceRules
-
-An object (in the form {"namespace1":true/false, "namespace2":true/false}) that enables or disables metric collection for specific AWS namespaces for this AWS account only.
-
-_Required_: No
-
-_Type_: <a href="accountspecificnamespacerules.md">AccountSpecificNamespaceRules</a>
-
-_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
-
-#### ExternalIDSecretName
-
-The name of the AWS SecretsManager secret created in your account to hold this integration's `external_id`. Defaults to `DatadogIntegrationExternalID`. Cannot be referenced from created resource.
-
-_Required_: No
-
-_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -130,6 +126,86 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
+#### AutomuteEnabled
+
+Enable EC2 automute for AWS metrics
+
+_Required_: No
+
+_Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### CollectCloudwatchAllarms
+
+Enable CloudWatch alarms collection
+
+_Required_: No
+
+_Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### CollectCustomMetrics
+
+Enable custom metrics collection
+
+_Required_: No
+
+_Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### FilterTags
+
+An object (in the form {"namespace1":"key:value,key2:value:2", "namespace2": "!key:value"}) that filters the metrics collected for specific AWS namespaces based on attached tags.
+
+_Required_: No
+
+_Type_: <a href="filtertags.md">FilterTags</a>
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### IncludeListedNamespaces
+
+Whether to include or exclude the namespaces listed in the Namespaces property. Defaults to false, so the listed namespaces will be excluded.
+
+_Required_: No
+
+_Type_: Boolean
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### FilterNamespaces
+
+A list of AWS namespaces to collect metrics from. If IncludeListedNamespaces is true, only these namespaces will be collected. If false, these namespaces will be excluded.
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### LogForwarderLambdas
+
+List of Datadog Lambda Log Forwarder ARNs
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### LogForwarderSources
+
+List of AWS services that will send logs to the Datadog Lambda Log Forwarder.
+
+_Required_: No
+
+_Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
 #### CSPMResourceCollection
 
 Enable the compliance and security posture management Datadog product. This will enable collecting information on your AWS resources and providing security validation.
@@ -140,9 +216,9 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### ResourceCollection
+#### ExtendedResourceCollection
 
-Enable collecting information on your AWS resources for use in Datadog products such as Network Process Monitoring.
+Whether Datadog collects additional attributes and configuration information about the resources in your AWS account. Required for CSPMResourceCollection.
 
 _Required_: No
 
@@ -150,13 +226,23 @@ _Type_: Boolean
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
-#### ExcludedRegions
+#### ExternalIDSecretName
 
-Array of AWS regions to exclude from metrics collection.
+The name of the AWS SecretsManager secret created in your account to hold this integration's `external_id`. Defaults to `DatadogIntegrationExternalID`. Cannot be referenced from created resource.
 
 _Required_: No
 
-_Type_: List of String
+_Type_: String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### UUID
+
+The Datadog unique identifier for the integrated AWS account. Cannot be referenced from created resource.
+
+_Required_: No
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 
@@ -174,5 +260,5 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 
 #### IntegrationID
 
-An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.
+Returns the <code>IntegrationID</code> value.
 

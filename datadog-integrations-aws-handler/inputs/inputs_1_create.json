@@ -1,5 +1,4 @@
 {
-  "AccountID": "{{UniqueAWSAccountID}}",
-  "RoleName": "testCF",
-  "ExcludedRegions": ["us-east-1"]
+  "AWSAccountID": "876543210987",
+  "RoleName": "testCF"
 }

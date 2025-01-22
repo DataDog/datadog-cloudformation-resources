@@ -19,6 +19,8 @@ from datadog_cloudformation_common.utils import errors_handler, http_to_handler_
 from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
 from .version import __version__
 
+from datadog_api_client.v2.model.aws_auth_config_role import AWSAuthConfigRole
+
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"

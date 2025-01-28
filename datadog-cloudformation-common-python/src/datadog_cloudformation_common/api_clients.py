@@ -16,7 +16,8 @@ def client(
         },
         **datadog_config,
     )
-    configuration.unstable_operations.update(unstable_operations)
+    for key, value in unstable_operations.items():
+        configuration.unstable_operations[key] = value
 
     with ApiClient(configuration) as api_client:
         try:

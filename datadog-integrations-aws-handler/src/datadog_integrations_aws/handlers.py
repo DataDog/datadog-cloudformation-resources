@@ -20,7 +20,12 @@ from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationMode
 from .version import __version__
 
 from datadog_api_client.v2.model.aws_auth_config_role import AWSAuthConfigRole
+from datadog_api_client.v2.model.aws_account_create_request import AWSAccountCreateRequest
+from datadog_api_client.v2.model.aws_account_create_request_data import AWSAccountCreateRequestData
+from datadog_api_client.v2.model.aws_account_create_request_attributes import AWSAccountCreateRequestAttributes
 
+
+from datadog_api_client.v2.api.aws_integration_api import AWSIntegrationApi as V2AWSIntegrationApi
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
@@ -76,17 +81,31 @@ def create_handler(
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"create_aws_account": True},
     ) as api_client:
-        api_instance = AWSIntegrationApi(api_client)
         try:
-            response = api_instance.create_aws_account(aws_account)
-        except ApiException as e:
+            api_instance = V2AWSIntegrationApi(api_client)
+            response = api_instance.create_aws_account(
+                AWSAccountCreateRequest(
+                    data=AWSAccountCreateRequestData(
+                        attributes=AWSAccountCreateRequestAttributes(
+                            aws_account_id=str(aws_account.account_id),
+                            aws_partition="aws",
+                            auth_config=AWSAuthConfigRole(
+                                role_name=aws_account.role_name,
+                            )
+                        ),
+                        type="aws_account"
+                    )
+                )
+            )
+        except Exception as e:
             LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error creating AWS account: {e}",
-                errorCode=http_to_handler_error_code(e.status),
+                errorCode=http_to_handler_error_code(400), #TODO: Change this
             )
     if model.ExternalIDSecretName is not None:
         secret_name = model.ExternalIDSecretName

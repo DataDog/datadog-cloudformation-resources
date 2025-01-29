@@ -3,6 +3,6 @@
 # and another the rest of the directory.
 
 # All your base
-*                   @DataDog/api-clients
+*                   @datadog/api-clients @datadog/web-frameworks
 
 /README.md            @DataDog/documentation

@@ -161,7 +161,6 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
         new_xray_services = None
         if traces_desired_config.XRayServices is not None:
             xray_services_desired_config = traces_desired_config.XRayServices
-            new_xray_services = None
             if xray_services_desired_config.IncludeAll:
                 new_xray_services = XRayServicesIncludeAll(True)
             if xray_services_desired_config.IncludeOnly is not None:

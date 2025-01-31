@@ -11,21 +11,75 @@ from cloudformation_cli_python_lib import (
 )
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
-from datadog_api_client.v1.model.aws_account import AWSAccount
-from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
 from datadog_cloudformation_common.api_clients import client
-from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
+from datadog_cloudformation_common.utils import (
+    errors_handler,
+    http_to_handler_error_code,
+)
 
-from .models import ResourceHandlerRequest, ResourceModel, TypeConfigurationModel
+from .models import (
+    ResourceHandlerRequest,
+    ResourceModel,
+    TypeConfigurationModel,
+    MetricsConfig,
+    TagFilters,
+    LogsConfig,
+    ResourcesConfig,
+    LambdaForwarder,
+    AWSRegions,
+    NamespaceFilters,
+    TracesConfig,
+    XRayServices,
+    AuthConfig,
+)
 from .version import __version__
 
+from datadog_api_client.v2.model.aws_account_partition import AWSAccountPartition
+from datadog_api_client.v2.model.aws_logs_config import AWSLogsConfig
+from datadog_api_client.v2.model.aws_metrics_config import AWSMetricsConfig
+from datadog_api_client.v2.model.aws_resources_config import AWSResourcesConfig
 from datadog_api_client.v2.model.aws_auth_config_role import AWSAuthConfigRole
-from datadog_api_client.v2.model.aws_account_create_request import AWSAccountCreateRequest
-from datadog_api_client.v2.model.aws_account_create_request_data import AWSAccountCreateRequestData
-from datadog_api_client.v2.model.aws_account_create_request_attributes import AWSAccountCreateRequestAttributes
+from datadog_api_client.v2.model.aws_regions_include_only import AWSRegionsIncludeOnly
+from datadog_api_client.v2.model.aws_regions_include_all import AWSRegionsIncludeAll
+from datadog_api_client.v2.model.aws_namespace_tag_filter import AWSNamespaceTagFilter
+from datadog_api_client.v2.model.x_ray_services_include_all import XRayServicesIncludeAll
+from datadog_api_client.v2.model.x_ray_services_include_only import XRayServicesIncludeOnly
+from datadog_api_client.v2.model.aws_namespace_filters_include_only import (
+    AWSNamespaceFiltersIncludeOnly,
+)
+from datadog_api_client.v2.model.aws_namespace_filters_exclude_only import (
+    AWSNamespaceFiltersExcludeOnly,
+)
+from datadog_api_client.v2.model.aws_lambda_forwarder_config import (
+    AWSLambdaForwarderConfig,
+)
+from datadog_api_client.v2.model.aws_traces_config import AWSTracesConfig
+
+from datadog_api_client.v2.model.aws_account_create_request import (
+    AWSAccountCreateRequest,
+)
+from datadog_api_client.v2.model.aws_account_create_request_data import (
+    AWSAccountCreateRequestData,
+)
+from datadog_api_client.v2.model.aws_account_create_request_attributes import (
+    AWSAccountCreateRequestAttributes,
+)
+
+from datadog_api_client.v2.model.aws_account_update_request import (
+    AWSAccountUpdateRequest,
+)
+from datadog_api_client.v2.model.aws_account_update_request_data import (
+    AWSAccountUpdateRequestData,
+)
+from datadog_api_client.v2.model.aws_account_update_request_attributes import (
+    AWSAccountUpdateRequestAttributes,
+)
 
 
-from datadog_api_client.v2.api.aws_integration_api import AWSIntegrationApi as V2AWSIntegrationApi
+from datadog_api_client.v2.api.aws_integration_api import (
+    AWSIntegrationApi as V2AWSIntegrationApi,
+)
+
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWS"
@@ -38,29 +92,154 @@ resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
-def build_aws_account_from_model(model):
-    aws_account = AWSAccount()
-    if model.AccountID is not None:
-        aws_account.account_id = model.AccountID
-    if model.RoleName is not None:
-        aws_account.role_name = model.RoleName
-    if model.AccessKeyID is not None:
-        aws_account.access_key_id = model.AccessKeyID
-    if model.HostTags is not None:
-        aws_account.host_tags = model.HostTags
-    if model.FilterTags is not None:
-        aws_account.filter_tags = model.FilterTags
-    if model.AccountSpecificNamespaceRules is not None:
-        aws_account.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
-    if model.MetricsCollection is not None:
-        aws_account.metrics_collection_enabled = model.MetricsCollection
-    if model.CSPMResourceCollection is not None:
-        aws_account.cspm_resource_collection_enabled = model.CSPMResourceCollection
-    if model.ResourceCollection is not None:
-        aws_account.resource_collection_enabled = model.ResourceCollection
-    if model.ExcludedRegions is not None:
-        aws_account.excluded_regions = model.ExcludedRegions
-    return aws_account
+def build_api_request_from_model(api_request_data_generator, desired_state_model):
+    new_aws_regions = None
+    if desired_state_model.AWSRegions is not None:
+        desired_aws_regions = desired_state_model.AWSRegions
+        if desired_aws_regions.IncludeAll:
+            new_aws_regions = AWSRegionsIncludeAll(include_all=True)
+        if desired_aws_regions.IncludeOnly is not None:
+            new_aws_regions = AWSRegionsIncludeOnly(
+                include_only=desired_aws_regions.IncludeOnly
+            )
+
+    new_metrics_config = None
+    if desired_state_model.MetricsConfig is not None:
+        desired_metrics_config = desired_state_model.MetricsConfig
+        new_tag_filters = None
+        if desired_metrics_config.TagFilters is not None:
+            new_tag_filters = []
+            for tag_filter in desired_metrics_config.TagFilters:
+                new_tag_filters.append(
+                    AWSNamespaceTagFilter(
+                        namespace=tag_filter.Namespace, tags=tag_filter.Tags
+                    )
+                )
+
+        new_namespace_filters = None
+        if desired_metrics_config.NamespaceFilters is not None:
+            if desired_metrics_config.NamespaceFilters.IncludeOnly is not None:
+                new_namespace_filters = AWSNamespaceFiltersIncludeOnly(
+                    include_only=desired_metrics_config.NamespaceFilters.IncludeOnly
+                )
+            if desired_metrics_config.NamespaceFilters.ExcludeOnly is not None:
+                new_namespace_filters = AWSNamespaceFiltersExcludeOnly(
+                    exclude_only=desired_metrics_config.NamespaceFilters.ExcludeOnly
+                )
+
+        new_metrics_config = AWSMetricsConfig(
+            enabled=desired_metrics_config.Enabled,
+            automute_enabled=desired_metrics_config.AutomuteEnabled,
+            collect_custom_metrics=desired_metrics_config.CollectCustomMetrics,
+            collect_cloudwatch_alarms=desired_metrics_config.CollectCloudwatchAlarms,
+            tag_filters=new_tag_filters,
+            namespace_filters=new_namespace_filters,
+        )
+
+    new_logs_config = None
+    if desired_state_model.LogsConfig is not None:
+        new_lambda_forwarder_config = None
+        if desired_state_model.LogsConfig.LambdaForwarder is not None:
+            forwarder_desired_config = desired_state_model.LogsConfig.LambdaForwarder
+            new_lambda_forwarder_config = AWSLambdaForwarderConfig(
+                lambdas=forwarder_desired_config.Lambdas,
+                sources=forwarder_desired_config.Sources,
+            )
+        new_logs_config = AWSLogsConfig(lambda_forwarder=new_lambda_forwarder_config)
+
+    new_resources_config = None
+    if desired_state_model.ResourcesConfig is not None:
+        resources_desired_config = desired_state_model.ResourcesConfig
+        new_resources_config = AWSResourcesConfig(
+            cloud_security_posture_management_collection=resources_desired_config.CSPMResourceCollection,
+            extended_collection=resources_desired_config.ExtendedResourceCollection,
+        )
+
+    new_traces_config = None
+    if desired_state_model.TracesConfig is not None:
+        traces_desired_config = desired_state_model.TracesConfig
+        new_xray_services = None
+        if traces_desired_config.XRayServices is not None:
+            xray_services_desired_config = traces_desired_config.XRayServices
+            new_xray_services = None
+            if xray_services_desired_config.IncludeAll:
+                new_xray_services = XRayServicesIncludeAll(True)
+            if xray_services_desired_config.IncludeOnly is not None:
+                new_xray_services = XRayServicesIncludeOnly(xray_services_desired_config.IncludeOnly)
+        new_traces_config = AWSTracesConfig(
+            xray_services=new_xray_services,
+        )
+
+    return api_request_data_generator(
+        aws_account_id=desired_state_model.AccountID,
+        aws_partition=AWSAccountPartition(desired_state_model.AWSPartition),
+        auth_config=AWSAuthConfigRole(
+            role_name=desired_state_model.AuthConfig.RoleName,
+        ),
+        account_tags=desired_state_model.AccountTags,
+        aws_regions=new_aws_regions,
+        metrics_config=new_metrics_config,
+        logs_config=new_logs_config,
+        resources_config=new_resources_config,
+        traces_config=new_traces_config,
+    )
+
+def build_model_from_api_response(model, aws_account):
+    model.AccountTags = aws_account.account_tags
+    model.AuthConfig = AuthConfig(
+        aws_account.auth_config.role_name,
+    )
+    if aws_account.get("aws_regions"):
+        model.AWSRegions = AWSRegions(
+            aws_account.aws_regions.get("include_only"),
+            aws_account.aws_regions.get("include_all"),
+        )
+    if aws_account.get("metrics_config"):
+        model.MetricsConfig = MetricsConfig(None, None, None, None, None, None)
+        model.MetricsConfig.Enabled = aws_account.metrics_config.get("enabled")
+        model.MetricsConfig.AutomuteEnabled = aws_account.metrics_config.get(
+            "automute_enabled"
+        )
+        model.MetricsConfig.CollectCustomMetrics = aws_account.metrics_config.get(
+            "custom_metrics"
+        )
+        model.MetricsConfig.CollectCloudwatchAlarms = aws_account.metrics_config.get(
+            "collect_cloudwatch_alarms"
+        )
+        model.MetricsConfig.TagFilters = []
+        if aws_account.metrics_config.get("tag_filters"):
+            for tag_filter in aws_account.metrics_config.tag_filters:
+                filter_tags = TagFilters(tag_filter.namespace, tag_filter.tags)
+                model.MetricsConfig.TagFilters.append(filter_tags)
+        if aws_account.metrics_config.get("namespace_filters", {}):
+            model.MetricsConfig.NamespaceFilters = NamespaceFilters(
+                aws_account.metrics_config.namespace_filters.get("include_only"),
+                aws_account.metrics_config.namespace_filters.get("exclude_only"),
+            )
+
+    if aws_account.get("resources_config"):
+        model.ResourcesConfig = ResourcesConfig(
+            aws_account.resources_config.get(
+                "cloud_security_posture_management_collection"
+            ),
+            aws_account.resources_config.get("extended_collection"),
+        )
+    if aws_account.get("logs_config"):
+        model.LogsConfig = LogsConfig(None)
+        if aws_account.logs_config.get("lambda_forwarder"):
+            model.LogsConfig.LambdaForwarder = LambdaForwarder(
+                aws_account.logs_config.lambda_forwarder.get("lambdas"),
+                aws_account.logs_config.lambda_forwarder.get("sources"),
+            )
+    if aws_account.get("traces_config"):
+        model.TracesConfig = TracesConfig(None)
+        if aws_account.traces_config.get("xray_services"):
+            model.TracesConfig.XRayServices = XRayServices(
+                aws_account.traces_config.xray_services.get("include_only"),
+                aws_account.traces_config.xray_services.get("include_all"),
+            )
+
+    return model
 
 
 @resource.handler(Action.CREATE)
@@ -74,7 +253,10 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_aws_account_from_model(model)
+    aws_account = build_api_request_from_model(
+        AWSAccountCreateRequestAttributes, model
+    )
+
     with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
@@ -88,37 +270,34 @@ def create_handler(
             response = api_instance.create_aws_account(
                 AWSAccountCreateRequest(
                     data=AWSAccountCreateRequestData(
-                        attributes=AWSAccountCreateRequestAttributes(
-                            aws_account_id=str(aws_account.account_id),
-                            aws_partition="aws",
-                            auth_config=AWSAuthConfigRole(
-                                role_name=aws_account.role_name,
-                            )
-                        ),
-                        type="aws_account"
+                        attributes=aws_account, type="account"
                     )
                 )
             )
-        except Exception as e:
+        except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Error creating AWS account: {e}",
-                errorCode=http_to_handler_error_code(400), #TODO: Change this
+                errorCode=http_to_handler_error_code(e.status),
             )
     if model.ExternalIDSecretName is not None:
         secret_name = model.ExternalIDSecretName
     else:
         secret_name = DEFAULT_SECRET_NAME
+
+    external_id = response["data"]["attributes"]["auth_config"]["external_id"]
     boto_client = session.client("secretsmanager")
     boto_client.create_secret(
         Description="The external_id associated with your Datadog AWS Integration.",
         Name=secret_name,
-        SecretString='{"external_id":"%s"}' % response.external_id,
+        SecretString='{"external_id":"%s"}' % external_id,
     )
 
-    model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
+    model.IntegrationID = get_integration_id(
+        response["data"]["id"], model.AccountID, model.AuthConfig.RoleName
+    )
 
     return read_handler(session, request, callback_context)
 
@@ -134,7 +313,6 @@ def update_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_aws_account_from_model(model)
     if not model.IntegrationID:
         LOG.error("Cannot update non existent resource")
         return ProgressEvent(
@@ -143,7 +321,9 @@ def update_handler(
             message="Cannot update non existent resource",
             errorCode=HandlerErrorCode.NotFound,
         )
-    if get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID) != model.IntegrationID:
+    if not ids_match_integration_id(
+        model.IntegrationID, model.AccountID, model.AuthConfig.RoleName
+    ):
         LOG.error(
             "Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
             "Please delete it and create a new one instead."
@@ -155,27 +335,40 @@ def update_handler(
             "Please delete it and create a new one instead.",
             errorCode=HandlerErrorCode.NotUpdatable,
         )
+
+    aws_account = build_api_request_from_model(
+        AWSAccountUpdateRequestAttributes, model
+    )
+
     with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"update_aws_account": True},
     ) as api_client:
-        api_instance = AWSIntegrationApi(api_client)
         try:
-            kwargs = {}
-            if model.AccountID is not None:
-                kwargs["account_id"] = model.AccountID
-            if model.RoleName is not None:
-                kwargs["role_name"] = model.RoleName
-            if model.AccessKeyID is not None:
-                kwargs["access_key_id"] = model.AccessKeyID
-            api_instance.update_aws_account(aws_account, **kwargs)
+            uuid, _, _ = parse_integration_id(model.IntegrationID)
+            api_instance = V2AWSIntegrationApi(api_client)
+            api_instance.update_aws_account(
+                aws_account_config_id=uuid,
+                body=AWSAccountUpdateRequest(
+                    data=AWSAccountUpdateRequestData(
+                        attributes=aws_account, type="account"
+                    )
+                ),
+            )
         except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
+            LOG.exception(
+                "Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e
+            )
             error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
+            if (
+                e.status == 400
+                and "errors" in e.body
+                and any("does not exist" in s for s in e.body["errors"])
+            ):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -215,32 +408,33 @@ def delete_handler(
             )
     elif callback_count > MAX_DELETE_SECRET_RETRIES:
         return ProgressEvent(
-            status=OperationStatus.FAILED, message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
+            status=OperationStatus.FAILED,
+            message=f"Error deleting AWS Account: failed to delete secret {secret_name}",
         )
     else:
-        kwargs = {}
-        if model.AccountID is not None:
-            kwargs["account_id"] = model.AccountID
-        if model.RoleName is not None:
-            kwargs["role_name"] = model.RoleName
-        if model.AccessKeyID is not None:
-            kwargs["access_key_id"] = model.AccessKeyID
-        delete_request = AWSAccountDeleteRequest(**kwargs)
-
         with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            unstable_operations={"delete_aws_account": True},
         ) as api_client:
-            api_instance = AWSIntegrationApi(api_client)
             try:
-                api_instance.delete_aws_account(delete_request)
+                api_instance = V2AWSIntegrationApi(api_client)
+                uuid, _, _ = parse_integration_id(model.IntegrationID)
+                api_instance.delete_aws_account(uuid)
             except ApiException as e:
-                LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
+                LOG.exception(
+                    "Exception when calling AWSIntegrationApi->delete_aws_account: %s\n",
+                    e,
+                )
                 error_code = http_to_handler_error_code(e.status)
-                if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
+                if (
+                    e.status == 400
+                    and "errors" in e.body
+                    and any("does not exist" in s for s in e.body["errors"])
+                ):
                     error_code = HandlerErrorCode.NotFound
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
@@ -278,8 +472,9 @@ def read_handler(
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"list_aws_accounts": True},
     ) as api_client:
-        api_instance = AWSIntegrationApi(api_client)
+        api_instance = V2AWSIntegrationApi(api_client)
         try:
             if model.IntegrationID is None:
                 return ProgressEvent(
@@ -288,19 +483,20 @@ def read_handler(
                     message="No IntegrationID set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
-            account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
-            kwargs = {}
-            if account_id is not None:
-                kwargs["account_id"] = account_id
-            if role_name is not None:
-                kwargs["role_name"] = role_name
-            if access_key_id is not None:
-                kwargs["access_key_id"] = access_key_id
-            aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
+            _, account_id, _ = parse_integration_id(model.IntegrationID)
+            aws_account = api_instance.list_aws_accounts(
+                aws_account_id=str(account_id)
+            )["data"][0]["attributes"]
         except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            LOG.exception(
+                "Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e
+            )
             error_code = http_to_handler_error_code(e.status)
-            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
+            if (
+                e.status == 400
+                and "errors" in e.body
+                and any("does not exist" in s for s in e.body["errors"])
+            ):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -321,13 +517,7 @@ def read_handler(
                 errorCode=HandlerErrorCode.NotFound,
             )
 
-    model.HostTags = aws_account.host_tags
-    model.FilterTags = aws_account.filter_tags
-    model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules
-    model.ExcludedRegions = aws_account.excluded_regions
-    model.MetricsCollection = aws_account.metrics_collection_enabled
-    model.CSPMResourceCollection = aws_account.cspm_resource_collection_enabled
-    model.ResourceCollection = aws_account.resource_collection_enabled
+    model = build_model_from_api_response(model, aws_account)
 
     return ProgressEvent(
         status=OperationStatus.SUCCESS,
@@ -335,8 +525,13 @@ def read_handler(
     )
 
 
-def get_integration_id(account_id, role_name, access_key_id):
-    return f"{account_id}:{role_name}:{access_key_id}"
+def get_integration_id(uuid, account_id, role_name):
+    return f"{uuid}:{account_id}:{role_name}"
+
+
+def ids_match_integration_id(integration_id, account_id, role_name):
+    old_account_id, old_role_name = integration_id.split(":")[1:]
+    return account_id == old_account_id and role_name == old_role_name
 
 
 def parse_integration_id(integration_id):

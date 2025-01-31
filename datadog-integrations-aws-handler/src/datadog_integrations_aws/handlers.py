@@ -42,8 +42,12 @@ from datadog_api_client.v2.model.aws_auth_config_role import AWSAuthConfigRole
 from datadog_api_client.v2.model.aws_regions_include_only import AWSRegionsIncludeOnly
 from datadog_api_client.v2.model.aws_regions_include_all import AWSRegionsIncludeAll
 from datadog_api_client.v2.model.aws_namespace_tag_filter import AWSNamespaceTagFilter
-from datadog_api_client.v2.model.x_ray_services_include_all import XRayServicesIncludeAll
-from datadog_api_client.v2.model.x_ray_services_include_only import XRayServicesIncludeOnly
+from datadog_api_client.v2.model.x_ray_services_include_all import (
+    XRayServicesIncludeAll,
+)
+from datadog_api_client.v2.model.x_ray_services_include_only import (
+    XRayServicesIncludeOnly,
+)
 from datadog_api_client.v2.model.aws_namespace_filters_include_only import (
     AWSNamespaceFiltersIncludeOnly,
 )
@@ -164,7 +168,9 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
             if xray_services_desired_config.IncludeAll:
                 new_xray_services = XRayServicesIncludeAll(True)
             if xray_services_desired_config.IncludeOnly is not None:
-                new_xray_services = XRayServicesIncludeOnly(xray_services_desired_config.IncludeOnly)
+                new_xray_services = XRayServicesIncludeOnly(
+                    xray_services_desired_config.IncludeOnly
+                )
         new_traces_config = AWSTracesConfig(
             xray_services=new_xray_services,
         )
@@ -182,6 +188,7 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
         resources_config=new_resources_config,
         traces_config=new_traces_config,
     )
+
 
 def build_model_from_api_response(model, aws_account):
     model.AccountTags = aws_account.account_tags
@@ -252,9 +259,7 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_api_request_from_model(
-        AWSAccountCreateRequestAttributes, model
-    )
+    aws_account = build_api_request_from_model(AWSAccountCreateRequestAttributes, model)
 
     with client(
         type_configuration.DatadogCredentials.ApiKey,
@@ -274,7 +279,9 @@ def create_handler(
                 )
             )
         except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
+            LOG.exception(
+                "Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e
+            )
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -335,9 +342,7 @@ def update_handler(
             errorCode=HandlerErrorCode.NotUpdatable,
         )
 
-    aws_account = build_api_request_from_model(
-        AWSAccountUpdateRequestAttributes, model
-    )
+    aws_account = build_api_request_from_model(AWSAccountUpdateRequestAttributes, model)
 
     with client(
         type_configuration.DatadogCredentials.ApiKey,

@@ -16,41 +16,6 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  # pre-commit:
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - uses: actions/checkout@v3
-  #       with:
-  #         fetch-depth: 0
-  #     - uses: actions/setup-python@v4
-  #       with:
-  #         python-version: '3.9'
-  #     - name: Install pre-commit
-  #       run: python -m pip install pre-commit
-  #     - uses: actions/cache@v3
-  #       with:
-  #       path: ~/.cache/pre-commit
-  #       key: pre-commit|${{ env.PY }}|${{ hashFiles('.pre-commit-config.yaml') }}
-  #     - id: pre_commit
-  #       name: Run pre-commit
-  #       if: github.event.action != 'closed' && github.event.pull_request.merged != true
-  #       run: |
-  #         pre-commit run --from-ref "${FROM_REF}" --to-ref "${TO_REF}" --show-diff-on-failure --color=always
-  #       env:
-  #         FROM_REF: ${{ github.event.pull_request.base.sha }}
-  #         TO_REF: ${{ github.event.pull_request.head.sha }}
-  #     - name: Commit changes
-  #       if: ${{ failure() }}
-  #       run: |-
-  #         git add -A
-  #         git config user.name "${GIT_AUTHOR_NAME}"
-  #         git config user.email "${GIT_AUTHOR_EMAIL}"
-  #         git commit -m "pre-commit fixes"
-  #         git push origin "HEAD:${HEAD_REF}"
-  #         exit 1
-  #       env:
-  #         HEAD_REF: ${{ github.event.pull_request.head.ref }}
-
   find_modified_resources:
     # needs: pre-commit
     runs-on: ubuntu-latest
@@ -58,7 +23,9 @@ jobs:
     - uses: actions/checkout@v3
     - name: Get changed files
       id: changed_files
-      uses: tj-actions/changed-files@ce4b8e3cba2220de8132ac9721ff754efd6bb7d7
+      run: |
+        CHANGED_FILES=$(git diff --name-only origin/$GITHUB_BASE_REF...${{ github.sha }})
+        echo "all_changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
     outputs:
       changed_files: ${{ steps.changed_files.outputs.all_changed_files }}
 

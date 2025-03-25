@@ -26,7 +26,7 @@ jobs:
     - name: Get changed files
       id: changed_files
       run: |
-        CHANGED_FILES=$(git diff --name-only origin/$GITHUB_BASE_REF...$GITHUB_SHA)
+        CHANGED_FILES=$(git diff --name-only origin/$GITHUB_BASE_REF...$GITHUB_SHA | tr '\n' ' ')
         echo "all_changed_files=$CHANGED_FILES" >> $GITHUB_OUTPUT
     outputs:
       changed_files: ${{ steps.changed_files.outputs.all_changed_files }}

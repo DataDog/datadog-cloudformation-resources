@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::Integrations::AWSAccount",
-  "description": "Datadog AWS Integration 2.4.0",
+  "description": "Datadog AWS Account Integration 0.0.1",
   "typeConfiguration": {
     "properties": {
       "DatadogCredentials": {

@@ -86,8 +86,8 @@ from datadog_api_client.v2.api.aws_integration_api import (
 # Use this logger to forward log messages to CloudWatch Logs.
 LOG = logging.getLogger(__name__)
 TYPE_NAME = "Datadog::Integrations::AWSAccount"
-TELEMETRY_TYPE_NAME = "integrations-aws"
-DEFAULT_SECRET_NAME = "DatadogIntegrationExternalID"
+TELEMETRY_TYPE_NAME = "integrations-awsaccount"
+DEFAULT_SECRET_NAME = "DatadogAWSAccountIntegrationExternalID"
 MAX_DELETE_SECRET_RETRIES = 30
 DELETE_SECRET_CALLBACK_INTERVAL = 2
 

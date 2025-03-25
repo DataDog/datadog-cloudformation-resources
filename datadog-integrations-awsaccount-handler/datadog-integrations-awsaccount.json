@@ -67,6 +67,7 @@
         "IncludeOnly": {
           "description": "Array of AWS regions to include from metrics collection.",
           "type": "array",
+          "insertionOrder": false,
           "uniqueItems": true,
           "items": {
             "type": "string"
@@ -106,6 +107,8 @@
         "TagFilters":{
           "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
           "type": "array",
+          "insertionOrder": false,
+          "uniqueItems": true,
           "items": {
             "type": "object",
             "additionalProperties": false,
@@ -115,6 +118,8 @@
               },
               "Tags": {
                 "type": "array",
+                "insertionOrder": false,
+                "uniqueItems": true,
                 "items": {
                   "type": "string"
                 }
@@ -129,6 +134,7 @@
             "IncludeOnly": {
               "description": "Array of AWS namespaces to include from metrics collection. Only one of IncludeOnlyNamespaces or ExcludeNamespaces can be set.",
               "type": "array",
+              "insertionOrder": false,
               "uniqueItems": true,
               "items": {
                 "type": "string"
@@ -137,6 +143,7 @@
             "ExcludeOnly": {
               "description": "Array of AWS namespaces to exclude from metrics collection. Only one of IncludeOnlyNamespaces or ExcludeNamespaces can be set.",
               "type": "array",
+              "insertionOrder": false,
               "uniqueItems": true,
               "items": {
                 "type": "string"
@@ -149,6 +156,8 @@
     "AccountTags": {
       "description": "Array of tags (in the form key:value) to add to all hosts and metrics reporting through this integration.",
       "type": "array",
+      "insertionOrder": false,
+      "uniqueItems": true,
       "items": {
         "type": "string"
       }
@@ -183,6 +192,7 @@
             "Lambdas": {
               "description": "List of Datadog Lambda Log Forwarder ARNs",
               "type": "array",
+              "insertionOrder": false,
               "uniqueItems": true,
               "items": {
                 "type": "string"
@@ -191,6 +201,7 @@
             "Sources": {
               "description": "List of AWS services that will send logs to the Datadog Lambda Log Forwarder.",
               "type": "array",
+              "insertionOrder": false,
               "uniqueItems": true,
               "items": {
                 "type": "string"
@@ -213,6 +224,7 @@
             "IncludeOnly": {
               "description": "Array of services to collect traces for.",
               "type": "array",
+              "insertionOrder": false,
               "uniqueItems": true,
               "items": {
                 "type": "string"

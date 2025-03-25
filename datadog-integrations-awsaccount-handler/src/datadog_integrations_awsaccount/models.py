@@ -6,6 +6,7 @@ from cloudformation_cli_python_lib.interface import (
     BaseResourceHandlerRequest,
 )
 from cloudformation_cli_python_lib.recast import recast_object
+from cloudformation_cli_python_lib.utils import deserialize_list
 
 import sys
 from inspect import getmembers, isclass
@@ -43,7 +44,7 @@ class ResourceModel(BaseModel):
     AuthConfig: Optional["_AuthConfig"]
     AWSRegions: Optional["_AWSRegions"]
     MetricsConfig: Optional["_MetricsConfig"]
-    AccountTags: Optional[AbstractSet[str]]
+    AccountTags: Optional[Sequence[str]]
     ResourcesConfig: Optional["_ResourcesConfig"]
     LogsConfig: Optional["_LogsConfig"]
     TracesConfig: Optional["_TracesConfig"]
@@ -65,7 +66,7 @@ class ResourceModel(BaseModel):
             AuthConfig=AuthConfig._deserialize(json_data.get("AuthConfig")),
             AWSRegions=AWSRegions._deserialize(json_data.get("AWSRegions")),
             MetricsConfig=MetricsConfig._deserialize(json_data.get("MetricsConfig")),
-            AccountTags=set_or_none(json_data.get("AccountTags")),
+            AccountTags=json_data.get("AccountTags"),
             ResourcesConfig=ResourcesConfig._deserialize(json_data.get("ResourcesConfig")),
             LogsConfig=LogsConfig._deserialize(json_data.get("LogsConfig")),
             TracesConfig=TracesConfig._deserialize(json_data.get("TracesConfig")),
@@ -100,7 +101,7 @@ _AuthConfig = AuthConfig
 
 @dataclass
 class AWSRegions(BaseModel):
-    IncludeOnly: Optional[AbstractSet[str]]
+    IncludeOnly: Optional[Sequence[str]]
     IncludeAll: Optional[bool]
 
     @classmethod
@@ -111,7 +112,7 @@ class AWSRegions(BaseModel):
         if not json_data:
             return None
         return cls(
-            IncludeOnly=set_or_none(json_data.get("IncludeOnly")),
+            IncludeOnly=json_data.get("IncludeOnly"),
             IncludeAll=json_data.get("IncludeAll"),
         )
 
@@ -126,7 +127,7 @@ class MetricsConfig(BaseModel):
     AutomuteEnabled: Optional[bool]
     CollectCloudwatchAlarms: Optional[bool]
     CollectCustomMetrics: Optional[bool]
-    TagFilters: Optional[AbstractSet["_TagFilters"]]
+    TagFilters: Optional[Sequence["_TagFilters"]]
     NamespaceFilters: Optional["_NamespaceFilters"]
 
     @classmethod
@@ -141,7 +142,7 @@ class MetricsConfig(BaseModel):
             AutomuteEnabled=json_data.get("AutomuteEnabled"),
             CollectCloudwatchAlarms=json_data.get("CollectCloudwatchAlarms"),
             CollectCustomMetrics=json_data.get("CollectCustomMetrics"),
-            TagFilters=set_or_none(json_data.get("TagFilters")),
+            TagFilters=deserialize_list(json_data.get("TagFilters"), TagFilters),
             NamespaceFilters=NamespaceFilters._deserialize(json_data.get("NamespaceFilters")),
         )
 
@@ -153,7 +154,7 @@ _MetricsConfig = MetricsConfig
 @dataclass
 class TagFilters(BaseModel):
     Namespace: Optional[str]
-    Tags: Optional[AbstractSet[str]]
+    Tags: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -164,7 +165,7 @@ class TagFilters(BaseModel):
             return None
         return cls(
             Namespace=json_data.get("Namespace"),
-            Tags=set_or_none(json_data.get("Tags")),
+            Tags=json_data.get("Tags"),
         )
 
 
@@ -174,8 +175,8 @@ _TagFilters = TagFilters
 
 @dataclass
 class NamespaceFilters(BaseModel):
-    IncludeOnly: Optional[AbstractSet[str]]
-    ExcludeOnly: Optional[AbstractSet[str]]
+    IncludeOnly: Optional[Sequence[str]]
+    ExcludeOnly: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -185,8 +186,8 @@ class NamespaceFilters(BaseModel):
         if not json_data:
             return None
         return cls(
-            IncludeOnly=set_or_none(json_data.get("IncludeOnly")),
-            ExcludeOnly=set_or_none(json_data.get("ExcludeOnly")),
+            IncludeOnly=json_data.get("IncludeOnly"),
+            ExcludeOnly=json_data.get("ExcludeOnly"),
         )
 
 
@@ -238,8 +239,8 @@ _LogsConfig = LogsConfig
 
 @dataclass
 class LambdaForwarder(BaseModel):
-    Lambdas: Optional[AbstractSet[str]]
-    Sources: Optional[AbstractSet[str]]
+    Lambdas: Optional[Sequence[str]]
+    Sources: Optional[Sequence[str]]
 
     @classmethod
     def _deserialize(
@@ -249,8 +250,8 @@ class LambdaForwarder(BaseModel):
         if not json_data:
             return None
         return cls(
-            Lambdas=set_or_none(json_data.get("Lambdas")),
-            Sources=set_or_none(json_data.get("Sources")),
+            Lambdas=json_data.get("Lambdas"),
+            Sources=json_data.get("Sources"),
         )
 
 
@@ -280,7 +281,7 @@ _TracesConfig = TracesConfig
 
 @dataclass
 class XRayServices(BaseModel):
-    IncludeOnly: Optional[AbstractSet[str]]
+    IncludeOnly: Optional[Sequence[str]]
     IncludeAll: Optional[bool]
 
     @classmethod
@@ -291,7 +292,7 @@ class XRayServices(BaseModel):
         if not json_data:
             return None
         return cls(
-            IncludeOnly=set_or_none(json_data.get("IncludeOnly")),
+            IncludeOnly=json_data.get("IncludeOnly"),
             IncludeAll=json_data.get("IncludeAll"),
         )
 

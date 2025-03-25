@@ -1,5 +1,12 @@
 {
   "AccountID": "{{UniqueAWSAccountID}}",
-  "RoleName": "testCF",
-  "ExcludedRegions": ["us-east-1"]
+  "AuthConfig": {
+    "RoleName": "DatadogAWSIntegrationRole"
+  },
+  "AWSPartition": "aws",
+  "AWSRegions": {
+    "IncludeOnly": [
+      "us-east-1"
+    ]
+  }
 }

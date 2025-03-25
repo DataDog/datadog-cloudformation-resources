@@ -1,9 +1,13 @@
 {
   "AccountID": "{{UniqueAWSAccountID}}",
-  "RoleName": "testCF",
-  "FilterTags": ["foo:bar"],
-  "ExcludedRegions": ["us-east-1", "us-west-2"],
-  "MetricsCollection": false,
-  "CSPMResourceCollection": true,
-  "ResourceCollection": true
+  "AuthConfig": {
+    "RoleName": "DatadogAWSIntegrationRole"
+  },
+  "AWSPartition": "aws",
+  "AWSRegions": {
+    "IncludeOnly": [
+      "us-east-1",
+      "us-west-1"
+    ]
+  }
 }

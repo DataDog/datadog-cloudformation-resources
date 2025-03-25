@@ -42,6 +42,7 @@ jobs:
           - datadog-monitors-downtime-handler
           - datadog-monitors-downtimeschedule-handler
           - datadog-integrations-aws-handler
+          - datadog-integrations-awsaccount-handler
           - datadog-slos-slo-handler
 #         - datadog-iam-user-handler
     runs-on: ubuntu-latest

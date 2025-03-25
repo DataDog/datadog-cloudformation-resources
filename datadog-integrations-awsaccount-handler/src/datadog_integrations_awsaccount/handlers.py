@@ -10,7 +10,6 @@ from cloudformation_cli_python_lib import (
     HandlerErrorCode,
 )
 from datadog_api_client.v1 import ApiException
-from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import (
     errors_handler,
@@ -103,9 +102,7 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
         if desired_aws_regions.IncludeAll:
             new_aws_regions = AWSRegionsIncludeAll(include_all=True)
         if desired_aws_regions.IncludeOnly is not None:
-            new_aws_regions = AWSRegionsIncludeOnly(
-                include_only=desired_aws_regions.IncludeOnly
-            )
+            new_aws_regions = AWSRegionsIncludeOnly(include_only=desired_aws_regions.IncludeOnly)
 
     new_metrics_config = None
     if desired_state_model.MetricsConfig is not None:
@@ -114,11 +111,7 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
         if desired_metrics_config.TagFilters is not None:
             new_tag_filters = []
             for tag_filter in desired_metrics_config.TagFilters:
-                new_tag_filters.append(
-                    AWSNamespaceTagFilter(
-                        namespace=tag_filter.Namespace, tags=tag_filter.Tags
-                    )
-                )
+                new_tag_filters.append(AWSNamespaceTagFilter(namespace=tag_filter.Namespace, tags=tag_filter.Tags))
 
         new_namespace_filters = None
         if desired_metrics_config.NamespaceFilters is not None:
@@ -168,9 +161,7 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
             if xray_services_desired_config.IncludeAll:
                 new_xray_services = XRayServicesIncludeAll(True)
             if xray_services_desired_config.IncludeOnly is not None:
-                new_xray_services = XRayServicesIncludeOnly(
-                    xray_services_desired_config.IncludeOnly
-                )
+                new_xray_services = XRayServicesIncludeOnly(xray_services_desired_config.IncludeOnly)
         new_traces_config = AWSTracesConfig(
             xray_services=new_xray_services,
         )
@@ -203,15 +194,9 @@ def build_model_from_api_response(model, aws_account):
     if aws_account.get("metrics_config"):
         model.MetricsConfig = MetricsConfig(None, None, None, None, None, None)
         model.MetricsConfig.Enabled = aws_account.metrics_config.get("enabled")
-        model.MetricsConfig.AutomuteEnabled = aws_account.metrics_config.get(
-            "automute_enabled"
-        )
-        model.MetricsConfig.CollectCustomMetrics = aws_account.metrics_config.get(
-            "custom_metrics"
-        )
-        model.MetricsConfig.CollectCloudwatchAlarms = aws_account.metrics_config.get(
-            "collect_cloudwatch_alarms"
-        )
+        model.MetricsConfig.AutomuteEnabled = aws_account.metrics_config.get("automute_enabled")
+        model.MetricsConfig.CollectCustomMetrics = aws_account.metrics_config.get("custom_metrics")
+        model.MetricsConfig.CollectCloudwatchAlarms = aws_account.metrics_config.get("collect_cloudwatch_alarms")
         model.MetricsConfig.TagFilters = []
         if aws_account.metrics_config.get("tag_filters"):
             for tag_filter in aws_account.metrics_config.tag_filters:
@@ -225,9 +210,7 @@ def build_model_from_api_response(model, aws_account):
 
     if aws_account.get("resources_config"):
         model.ResourcesConfig = ResourcesConfig(
-            aws_account.resources_config.get(
-                "cloud_security_posture_management_collection"
-            ),
+            aws_account.resources_config.get("cloud_security_posture_management_collection"),
             aws_account.resources_config.get("extended_collection"),
         )
     if aws_account.get("logs_config"):
@@ -272,16 +255,10 @@ def create_handler(
         try:
             api_instance = V2AWSIntegrationApi(api_client)
             response = api_instance.create_aws_account(
-                AWSAccountCreateRequest(
-                    data=AWSAccountCreateRequestData(
-                        attributes=aws_account, type="account"
-                    )
-                )
+                AWSAccountCreateRequest(data=AWSAccountCreateRequestData(attributes=aws_account, type="account"))
             )
         except ApiException as e:
-            LOG.exception(
-                "Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e
-            )
+            LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
@@ -301,9 +278,7 @@ def create_handler(
         SecretString='{"external_id":"%s"}' % external_id,
     )
 
-    model.IntegrationID = get_integration_id(
-        response["data"]["id"], model.AccountID, model.AuthConfig.RoleName
-    )
+    model.IntegrationID = get_integration_id(response["data"]["id"], model.AccountID, model.AuthConfig.RoleName)
 
     return read_handler(session, request, callback_context)
 
@@ -327,9 +302,7 @@ def update_handler(
             message="Cannot update non existent resource",
             errorCode=HandlerErrorCode.NotFound,
         )
-    if not ids_match_integration_id(
-        model.IntegrationID, model.AccountID, model.AuthConfig.RoleName
-    ):
+    if not ids_match_integration_id(model.IntegrationID, model.AccountID, model.AuthConfig.RoleName):
         LOG.error(
             "Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
             "Please delete it and create a new one instead."
@@ -357,22 +330,12 @@ def update_handler(
             api_instance = V2AWSIntegrationApi(api_client)
             api_instance.update_aws_account(
                 aws_account_config_id=uuid,
-                body=AWSAccountUpdateRequest(
-                    data=AWSAccountUpdateRequestData(
-                        attributes=aws_account, type="account"
-                    )
-                ),
+                body=AWSAccountUpdateRequest(data=AWSAccountUpdateRequestData(attributes=aws_account, type="account")),
             )
         except ApiException as e:
-            LOG.exception(
-                "Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e
-            )
+            LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
-            if (
-                e.status == 400
-                and "errors" in e.body
-                and any("does not exist" in s for s in e.body["errors"])
-            ):
+            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,
@@ -434,11 +397,7 @@ def delete_handler(
                     e,
                 )
                 error_code = http_to_handler_error_code(e.status)
-                if (
-                    e.status == 400
-                    and "errors" in e.body
-                    and any("does not exist" in s for s in e.body["errors"])
-                ):
+                if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
                     error_code = HandlerErrorCode.NotFound
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
@@ -488,19 +447,11 @@ def read_handler(
                     errorCode=HandlerErrorCode.NotFound,
                 )
             _, account_id, _ = parse_integration_id(model.IntegrationID)
-            aws_account = api_instance.list_aws_accounts(
-                aws_account_id=str(account_id)
-            )["data"][0]["attributes"]
+            aws_account = api_instance.list_aws_accounts(aws_account_id=str(account_id))["data"][0]["attributes"]
         except ApiException as e:
-            LOG.exception(
-                "Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e
-            )
+            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
-            if (
-                e.status == 400
-                and "errors" in e.body
-                and any("does not exist" in s for s in e.body["errors"])
-            ):
+            if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
                 error_code = HandlerErrorCode.NotFound
             return ProgressEvent(
                 status=OperationStatus.FAILED,

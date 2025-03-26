@@ -48,7 +48,7 @@ class ResourceModel(BaseModel):
     ResourcesConfig: Optional["_ResourcesConfig"]
     LogsConfig: Optional["_LogsConfig"]
     TracesConfig: Optional["_TracesConfig"]
-    IntegrationID: Optional[str]
+    Id: Optional[str]
     ExternalIDSecretName: Optional[str]
 
     @classmethod
@@ -70,7 +70,7 @@ class ResourceModel(BaseModel):
             ResourcesConfig=ResourcesConfig._deserialize(json_data.get("ResourcesConfig")),
             LogsConfig=LogsConfig._deserialize(json_data.get("LogsConfig")),
             TracesConfig=TracesConfig._deserialize(json_data.get("TracesConfig")),
-            IntegrationID=json_data.get("IntegrationID"),
+            Id=json_data.get("Id"),
             ExternalIDSecretName=json_data.get("ExternalIDSecretName"),
         )
 

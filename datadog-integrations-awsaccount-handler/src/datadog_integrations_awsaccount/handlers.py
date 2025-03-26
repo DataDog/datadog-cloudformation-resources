@@ -278,7 +278,7 @@ def create_handler(
         SecretString='{"external_id":"%s"}' % external_id,
     )
 
-    model.IntegrationID = get_integration_id(response["data"]["id"], model.AccountID, model.AuthConfig.RoleName)
+    model.Id = response["data"]["id"]
 
     return read_handler(session, request, callback_context)
 
@@ -294,25 +294,13 @@ def update_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    if not model.IntegrationID:
+    if not model.Id:
         LOG.error("Cannot update non existent resource")
         return ProgressEvent(
             status=OperationStatus.FAILED,
             resourceModel=model,
             message="Cannot update non existent resource",
             errorCode=HandlerErrorCode.NotFound,
-        )
-    if not ids_match_integration_id(model.IntegrationID, model.AccountID, model.AuthConfig.RoleName):
-        LOG.error(
-            "Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-            "Please delete it and create a new one instead."
-        )
-        return ProgressEvent(
-            status=OperationStatus.FAILED,
-            resourceModel=model,
-            message="Cannot update `account_id`, `role_name` or `access_key_id` using this resource. "
-            "Please delete it and create a new one instead.",
-            errorCode=HandlerErrorCode.NotUpdatable,
         )
 
     aws_account = build_api_request_from_model(AWSAccountUpdateRequestAttributes, model)
@@ -326,10 +314,9 @@ def update_handler(
         unstable_operations={"update_aws_account": True},
     ) as api_client:
         try:
-            uuid, _, _ = parse_integration_id(model.IntegrationID)
             api_instance = V2AWSIntegrationApi(api_client)
             api_instance.update_aws_account(
-                aws_account_config_id=uuid,
+                aws_account_config_id=model.Id,
                 body=AWSAccountUpdateRequest(data=AWSAccountUpdateRequestData(attributes=aws_account, type="account")),
             )
         except ApiException as e:
@@ -389,8 +376,7 @@ def delete_handler(
         ) as api_client:
             try:
                 api_instance = V2AWSIntegrationApi(api_client)
-                uuid, _, _ = parse_integration_id(model.IntegrationID)
-                api_instance.delete_aws_account(uuid)
+                api_instance.delete_aws_account(model.Id)
             except ApiException as e:
                 LOG.exception(
                     "Exception when calling AWSIntegrationApi->delete_aws_account: %s\n",
@@ -435,21 +421,20 @@ def read_handler(
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
-        unstable_operations={"list_aws_accounts": True},
+        unstable_operations={"get_aws_account": True},
     ) as api_client:
         api_instance = V2AWSIntegrationApi(api_client)
         try:
-            if model.IntegrationID is None:
+            if model.Id is None:
                 return ProgressEvent(
                     status=OperationStatus.FAILED,
                     resourceModel=model,
-                    message="No IntegrationID set, resource never created",
+                    message="No Id set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
-            _, account_id, _ = parse_integration_id(model.IntegrationID)
-            aws_account = api_instance.list_aws_accounts(aws_account_id=str(account_id))["data"][0]["attributes"]
+            aws_account = api_instance.get_aws_account(aws_account_config_id=model.Id)["data"]["attributes"]
         except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->get_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
             if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
                 error_code = HandlerErrorCode.NotFound
@@ -460,15 +445,11 @@ def read_handler(
                 errorCode=error_code,
             )
         except IndexError:
-            LOG.error(
-                f"Account with integration ID '{model.IntegrationID}' not found. "
-                f"Was it updated outside of AWS CloudFormation ?"
-            )
+            LOG.error(f"Account with ID '{model.Id}' not found. " f"Was it updated outside of AWS CloudFormation ?")
             return ProgressEvent(
                 status=OperationStatus.FAILED,
                 resourceModel=model,
-                message=f"Account with integration ID '{model.IntegrationID}' not found. "
-                f"Was it updated outside of AWS CloudFormation ?",
+                message=f"Account with ID '{model.Id}' not found. " f"Was it updated outside of AWS CloudFormation ?",
                 errorCode=HandlerErrorCode.NotFound,
             )
 
@@ -478,23 +459,3 @@ def read_handler(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
     )
-
-
-def get_integration_id(uuid, account_id, role_name):
-    return f"{uuid}:{account_id}:{role_name}"
-
-
-def ids_match_integration_id(integration_id, account_id, role_name):
-    old_account_id, old_role_name = integration_id.split(":")[1:]
-    return account_id == old_account_id and role_name == old_role_name
-
-
-def parse_integration_id(integration_id):
-    ret = []
-    parts = integration_id.split(":")
-    for part in parts:
-        if part != "None":
-            ret.append(part)
-        else:
-            ret.append(None)
-    return ret

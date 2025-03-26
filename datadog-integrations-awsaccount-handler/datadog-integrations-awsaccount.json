@@ -238,8 +238,8 @@
         }
       }
     },
-    "IntegrationID": {
-      "description": "An identification value that represents this integration object. Combines the AccountID and RoleName. This shouldn't be set in a stack.",
+    "Id": {
+      "description": "Unique Datadog ID of the AWS Account Integration Config. To get the config ID for an account, use the [List all AWS integrations](https://docs.datadoghq.com/api/latest/aws-integration/#list-all-aws-integrations) endpoint and query by AWS Account ID.",
       "type": "string"
     },
     "ExternalIDSecretName": {
@@ -249,14 +249,14 @@
   },
   "required": [],
   "primaryIdentifier": [
-    "/properties/IntegrationID"
+    "/properties/Id"
   ],
   "createOnlyProperties": [
     "/properties/AccountID",
     "/properties/AuthConfig/RoleName"
   ],
   "readOnlyProperties": [
-    "/properties/IntegrationID"
+    "/properties/Id"
   ],
   "additionalProperties": false,
   "handlers": {

@@ -6,17 +6,18 @@ This resource represents the Datadog AWS Integration, and is used to create and 
 
 ```
 Resources:
-  DatadogTestAWSAccount:
-    Type: 'Datadog::Integrations::AWSAccount'
+  DatadogAWSIntegration:
+    Type: Datadog::Integrations::AWSAccount
     Properties:
-      AccountID: 123456
-      RoleName: DatadogAWSAcctRoleName
-      FilterTags: ["filter:thisTag"]
-      HostTags: ["env:staging", "account:123456"]
-      AccountSpecificNamespaceRules: {"api_gateway": true, "route53": false}
+      AccountID: 123456789101
+      AWSPartition: aws
+      AuthConfig:
+        RoleName: DatadogAWSAcctRoleName
+      ResourcesConfig:
+        CSPMResourceCollection: true
 ```
 
-**Note** The AccountID, RoleName, and AccessKeyID cannot be updated. To update these fields, you must delete and recreate the stack.
+**Note** The AccountID, and RoleName, cannot be updated. To update these fields, you must delete and recreate the stack.
 
 ## Property Reference:
 

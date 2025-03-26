@@ -162,5 +162,5 @@ For more information about using the `Fn::GetAtt` intrinsic function, see [Fn::G
 
 #### IntegrationID
 
-An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.
+An identification value that represents this integration object. Combines the AccountID and RoleName. This shouldn't be set in a stack.
 

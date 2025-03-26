@@ -239,7 +239,7 @@
       }
     },
     "IntegrationID": {
-      "description": "An identification value that represents this integration object. Combines the AccountID, RoleName, and AccessKeyID. This shouldn't be set in a stack.",
+      "description": "An identification value that represents this integration object. Combines the AccountID and RoleName. This shouldn't be set in a stack.",
       "type": "string"
     },
     "ExternalIDSecretName": {

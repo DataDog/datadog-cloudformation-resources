@@ -1,0 +1,12 @@
+{
+  "AccountID": "{{UniqueAWSAccountID}}",
+  "AuthConfig": {
+    "RoleName": "DatadogAWSIntegrationRole"
+  },
+  "AWSPartition": "aws",
+  "AWSRegions": {
+    "IncludeOnly": [
+      "us-east-1"
+    ]
+  }
+}

@@ -6,7 +6,13 @@ from datadog_api_client import ApiClient, Configuration
 
 @contextmanager
 def client(
-    api_key: str, app_key: str, api_url: str, resource_name: str, resource_version: str, datadog_config: dict = {}, unstable_operations: dict = {}
+    api_key: str,
+    app_key: str,
+    api_url: str,
+    resource_name: str,
+    resource_version: str,
+    datadog_config: dict = {},
+    unstable_operations: dict = {},
 ) -> ApiClient:
     configuration = Configuration(
         host=api_url or "https://api.datadoghq.com",

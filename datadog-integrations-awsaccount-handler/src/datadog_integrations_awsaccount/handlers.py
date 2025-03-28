@@ -291,6 +291,7 @@ def update_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
+    previousState = request.previousResourceState
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
@@ -301,6 +302,22 @@ def update_handler(
             resourceModel=model,
             message="Cannot update non existent resource",
             errorCode=HandlerErrorCode.NotFound,
+        )
+
+    # Check if createOnly fields are being updated
+    if previousState.AccountID != model.AccountID:
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message="Cannot update `AccountID`. Please delete it and create a new one instead.",
+            errorCode=HandlerErrorCode.NotUpdatable,
+        )
+    if previousState.AuthConfig.RoleName != model.AuthConfig.RoleName:
+        return ProgressEvent(
+            status=OperationStatus.FAILED,
+            resourceModel=model,
+            message="Cannot update `AuthConfig.RoleName`. Please delete it and create a new one instead.",
+            errorCode=HandlerErrorCode.NotUpdatable,
         )
 
     aws_account = build_api_request_from_model(AWSAccountUpdateRequestAttributes, model)

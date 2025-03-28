@@ -60,7 +60,7 @@ _Update requires_: [Replacement](https://docs.aws.amazon.com/AWSCloudFormation/l
 
 The AWS partition to use. This should be set to 'aws' for commercial accounts, 'aws-us-gov' for GovCloud accounts, and 'aws-cn' for China accounts.
 
-_Required_: No
+_Required_: Yes
 
 _Type_: String
 
@@ -72,7 +72,7 @@ _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormati
 
 The configuration for the AWS role delegation.
 
-_Required_: No
+_Required_: Yes
 
 _Type_: <a href="authconfig.md">AuthConfig</a>
 

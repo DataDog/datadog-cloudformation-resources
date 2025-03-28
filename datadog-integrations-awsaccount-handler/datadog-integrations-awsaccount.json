@@ -57,7 +57,10 @@
           "description": "Your Datadog role delegation name.",
           "type": "string"
         }
-      }
+      },
+      "required": [
+        "RoleName"
+      ]
     },
     "AWSRegions": {
       "description": "The configuration for which regions to collect data from.",
@@ -247,7 +250,10 @@
       "type": "string"
     }
   },
-  "required": [],
+  "required": [
+    "AuthConfig",
+    "AWSPartition"
+  ],
   "primaryIdentifier": [
     "/properties/Id"
   ],

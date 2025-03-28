@@ -1,6 +1,6 @@
 # Datadog::Integrations::AWSAccount
 
-Datadog AWS Account Integration 0.0.1
+Datadog AWS Account Integration 1.0.0
 
 ## Syntax
 

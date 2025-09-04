@@ -9,10 +9,14 @@ from cloudformation_cli_python_lib import (
     SessionProxy,
     HandlerErrorCode,
 )
-from datadog_api_client.v1 import ApiException
-from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
-from datadog_api_client.v1.model.aws_account import AWSAccount
-from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
+from datadog_api_client.v2 import ApiException
+from datadog_api_client.v2.api.aws_integration_api import AWSIntegrationApi
+from datadog_api_client.v2.model.aws_account_create_request import AWSAccountCreateRequest
+from datadog_api_client.v2.model.aws_account_create_request_data import AWSAccountCreateRequestData
+from datadog_api_client.v2.model.aws_account_create_request_attributes import AWSAccountCreateRequestAttributes
+from datadog_api_client.v2.model.aws_account_update_request import AWSAccountUpdateRequest
+from datadog_api_client.v2.model.aws_account_update_request_data import AWSAccountUpdateRequestData
+from datadog_api_client.v2.model.aws_account_update_request_attributes import AWSAccountUpdateRequestAttributes
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
@@ -32,28 +36,28 @@ test_entrypoint = resource.test_entrypoint
 
 
 def build_aws_account_from_model(model):
-    aws_account = AWSAccount()
+    aws_account_attrs = AWSAccountCreateRequestAttributes()
     if model.AccountID is not None:
-        aws_account.account_id = model.AccountID
+        aws_account_attrs.account_id = model.AccountID
     if model.RoleName is not None:
-        aws_account.role_name = model.RoleName
+        aws_account_attrs.role_name = model.RoleName
     if model.AccessKeyID is not None:
-        aws_account.access_key_id = model.AccessKeyID
+        aws_account_attrs.access_key_id = model.AccessKeyID
     if model.HostTags is not None:
-        aws_account.host_tags = model.HostTags
+        aws_account_attrs.host_tags = model.HostTags
     if model.FilterTags is not None:
-        aws_account.filter_tags = model.FilterTags
+        aws_account_attrs.filter_tags = model.FilterTags
     if model.AccountSpecificNamespaceRules is not None:
-        aws_account.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
+        aws_account_attrs.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
     if model.MetricsCollection is not None:
-        aws_account.metrics_collection_enabled = model.MetricsCollection
+        aws_account_attrs.metrics_collection_enabled = model.MetricsCollection
     if model.CSPMResourceCollection is not None:
-        aws_account.cspm_resource_collection_enabled = model.CSPMResourceCollection
+        aws_account_attrs.cspm_resource_collection_enabled = model.CSPMResourceCollection
     if model.ResourceCollection is not None:
-        aws_account.resource_collection_enabled = model.ResourceCollection
+        aws_account_attrs.resource_collection_enabled = model.ResourceCollection
     if model.ExcludedRegions is not None:
-        aws_account.excluded_regions = model.ExcludedRegions
-    return aws_account
+        aws_account_attrs.excluded_regions = model.ExcludedRegions
+    return aws_account_attrs
 
 
 @resource.handler(Action.CREATE)
@@ -67,17 +71,25 @@ def create_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_aws_account_from_model(model)
+    aws_account_attrs = build_aws_account_from_model(model)
     with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"create_aws_account": True},
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            response = api_instance.create_aws_account(aws_account)
+            response = api_instance.create_aws_account(
+                AWSAccountCreateRequest(
+                    data=AWSAccountCreateRequestData(
+                        attributes=aws_account_attrs,
+                        type="account"
+                    )
+                )
+            )
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->create_aws_account: %s\n", e)
             return ProgressEvent(
@@ -91,13 +103,15 @@ def create_handler(
     else:
         secret_name = DEFAULT_SECRET_NAME
     boto_client = session.client("secretsmanager")
+    external_id = response["data"]["attributes"]["auth_config"]["external_id"]
     boto_client.create_secret(
         Description="The external_id associated with your Datadog AWS Integration.",
         Name=secret_name,
-        SecretString='{"external_id":"%s"}' % response.external_id,
+        SecretString='{"external_id":"%s"}' % external_id,
     )
 
-    model.IntegrationID = get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)
+    # Store the account ID from the response as IntegrationID
+    model.IntegrationID = response["data"]["id"]
 
     return read_handler(session, request, callback_context)
 
@@ -113,7 +127,6 @@ def update_handler(
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
-    aws_account = build_aws_account_from_model(model)
     if not model.IntegrationID:
         LOG.error("Cannot update non existent resource")
         return ProgressEvent(
@@ -134,23 +147,42 @@ def update_handler(
             "Please delete it and create a new one instead.",
             errorCode=HandlerErrorCode.NotUpdatable,
         )
+    
+    aws_account_attrs = AWSAccountUpdateRequestAttributes()
+    if model.HostTags is not None:
+        aws_account_attrs.host_tags = model.HostTags
+    if model.FilterTags is not None:
+        aws_account_attrs.filter_tags = model.FilterTags
+    if model.AccountSpecificNamespaceRules is not None:
+        aws_account_attrs.account_specific_namespace_rules = model.AccountSpecificNamespaceRules
+    if model.MetricsCollection is not None:
+        aws_account_attrs.metrics_collection_enabled = model.MetricsCollection
+    if model.CSPMResourceCollection is not None:
+        aws_account_attrs.cspm_resource_collection_enabled = model.CSPMResourceCollection
+    if model.ResourceCollection is not None:
+        aws_account_attrs.resource_collection_enabled = model.ResourceCollection
+    if model.ExcludedRegions is not None:
+        aws_account_attrs.excluded_regions = model.ExcludedRegions
+
     with client(
         type_configuration.DatadogCredentials.ApiKey,
         type_configuration.DatadogCredentials.ApplicationKey,
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"update_aws_account": True},
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
-            kwargs = {}
-            if model.AccountID is not None:
-                kwargs["account_id"] = model.AccountID
-            if model.RoleName is not None:
-                kwargs["role_name"] = model.RoleName
-            if model.AccessKeyID is not None:
-                kwargs["access_key_id"] = model.AccessKeyID
-            api_instance.update_aws_account(aws_account, **kwargs)
+            api_instance.update_aws_account(
+                model.IntegrationID,
+                AWSAccountUpdateRequest(
+                    data=AWSAccountUpdateRequestData(
+                        attributes=aws_account_attrs,
+                        type="account"
+                    )
+                )
+            )
         except ApiException as e:
             LOG.exception("Exception when calling AWSIntegrationApi->update_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
@@ -197,25 +229,17 @@ def delete_handler(
             status=OperationStatus.FAILED, message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
         )
     else:
-        kwargs = {}
-        if model.AccountID is not None:
-            kwargs["account_id"] = model.AccountID
-        if model.RoleName is not None:
-            kwargs["role_name"] = model.RoleName
-        if model.AccessKeyID is not None:
-            kwargs["access_key_id"] = model.AccessKeyID
-        delete_request = AWSAccountDeleteRequest(**kwargs)
-
         with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
             type_configuration.DatadogCredentials.ApiURL,
             TELEMETRY_TYPE_NAME,
             __version__,
+            unstable_operations={"delete_aws_account": True},
         ) as api_client:
             api_instance = AWSIntegrationApi(api_client)
             try:
-                api_instance.delete_aws_account(delete_request)
+                api_instance.delete_aws_account(model.IntegrationID)
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
@@ -257,6 +281,7 @@ def read_handler(
         type_configuration.DatadogCredentials.ApiURL,
         TELEMETRY_TYPE_NAME,
         __version__,
+        unstable_operations={"get_aws_account": True},
     ) as api_client:
         api_instance = AWSIntegrationApi(api_client)
         try:
@@ -267,17 +292,9 @@ def read_handler(
                     message="No IntegrationID set, resource never created",
                     errorCode=HandlerErrorCode.NotFound,
                 )
-            account_id, role_name, access_key_id = parse_integration_id(model.IntegrationID)
-            kwargs = {}
-            if account_id is not None:
-                kwargs["account_id"] = account_id
-            if role_name is not None:
-                kwargs["role_name"] = role_name
-            if access_key_id is not None:
-                kwargs["access_key_id"] = access_key_id
-            aws_account = api_instance.list_aws_accounts(**kwargs).accounts[0]
+            aws_account = api_instance.get_aws_account(aws_account_config_id=model.IntegrationID)["data"]["attributes"]
         except ApiException as e:
-            LOG.exception("Exception when calling AWSIntegrationApi->list_aws_accounts: %s\n", e)
+            LOG.exception("Exception when calling AWSIntegrationApi->get_aws_account: %s\n", e)
             error_code = http_to_handler_error_code(e.status)
             if e.status == 400 and "errors" in e.body and any("does not exist" in s for s in e.body["errors"]):
                 error_code = HandlerErrorCode.NotFound
@@ -287,7 +304,7 @@ def read_handler(
                 message=f"Error getting AWS account: {e}",
                 errorCode=error_code,
             )
-        except IndexError:
+        except (IndexError, KeyError):
             LOG.error(
                 f"Account with integration ID '{model.IntegrationID}' not found. "
                 f"Was it updated outside of AWS CloudFormation ?"

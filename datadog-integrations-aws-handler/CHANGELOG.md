@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.5.0 / 2025-11-24
+
+**DEPRECATION NOTICE**: This resource is deprecated in favor of `Datadog::Integrations::AWSAccount` which uses the v2 API. Please migrate to the new resource for continued support and new features.
+
+* [Changed] Bump datadog-cloudformation-common-python to 0.0.21 (includes v2 SDK). See [#316](https://github.com/DataDog/datadog-cloudformation-resources/pull/316) and [#323](https://github.com/DataDog/datadog-cloudformation-resources/pull/323).
+* [Changed] Mark resource as deprecated, recommend migration to Datadog::Integrations::AWSAccount.
+
 ## 2.4.0 / 2023-04-10
 
 * [Added] Add errors handler to all resources. See [#258](https://github.com/DataDog/datadog-cloudformation-resources/pull/258).

@@ -64,6 +64,10 @@ def create_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Create Handler", TYPE_NAME)
+    LOG.warning(
+        "DEPRECATION WARNING: Datadog::Integrations::AWS is deprecated. "
+        "Please migrate to Datadog::Integrations::AWSAccount which uses the v2 API."
+    )
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 
@@ -110,6 +114,10 @@ def update_handler(
     callback_context: MutableMapping[str, Any],
 ) -> ProgressEvent:
     LOG.info("Starting %s Update Handler", TYPE_NAME)
+    LOG.warning(
+        "DEPRECATION WARNING: Datadog::Integrations::AWS is deprecated. "
+        "Please migrate to Datadog::Integrations::AWSAccount which uses the v2 API."
+    )
     model = request.desiredResourceState
     type_configuration = request.typeConfiguration
 

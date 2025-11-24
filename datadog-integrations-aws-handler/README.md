@@ -1,4 +1,6 @@
-# Datadog::Integrations::AWS
+# Datadog::Integrations::AWS (Deprecated)
+
+**Please use the new [`Datadog::Integrations::AWSAccount`](../datadog-integrations-awsaccount-handler/README.md) resource instead**
 
 This resource represents the Datadog AWS Integration, and is used to create and manage this integration. More information about the Datadog AWS Integration can be found in the [AWS Integration documentation](https://docs.datadoghq.com/integrations/amazon_web_services/).
 

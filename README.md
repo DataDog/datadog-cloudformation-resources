@@ -108,7 +108,8 @@ The following Datadog resources can be registered within your AWS account. Refer
 | Resource                | Name                                  | Description                                             | Folder                              | S3 Package Links              |
 |---------------------------|---------------------------------------|---------------------------------------------------------|-------------------------------------|-------------------------------|
 | Dashboard                 | `Datadog::Dashboards::Dashboard`      | [Create, update, and delete Datadog dashboards][5]      | `datadog-dashboards-dashboard`      | [Schema Handler Versions][6]  |
-| Datadog-AWS integration   | `Datadog::Integrations::AWS`          | [Manage your Datadog-Amazon Web Service integration][7] | `datadog-integrations-aws`          | [Schema Handler Versions][8]  |
+| Datadog-AWS integration (**Deprecated**)   | `Datadog::Integrations::AWS`          | [Manage your Datadog-Amazon Web Service integration][7] | `datadog-integrations-aws`          | [Schema Handler Versions][8]  |
+| Datadog-AWS Account integration   | `Datadog::Integrations::AWSAccount`          | [Manage your Datadog-Amazon Web Service integration (v2 API)][23] | `datadog-integrations-awsaccount`          | [Schema Handler Versions][24]  |
 | Monitor                   | `Datadog::Monitors::Monitor`          | [Create, update, and delete Datadog monitors][9]        | `datadog-monitors-monitor`          | [Schema Handler Versions][10] |
 | Downtime (**Deprecated**) | `Datadog::Monitors::Downtime`         | [Enable or disable downtimes for your monitors][11]     | `datadog-monitors-downtime`         | [Schema Handler Versions][12] |
 | Downtime Schedule         | `Datadog::Monitors::DowntimeSchedule` | [Schedule Datadog downtimes][21]                        | `datadog-monitors-downtimeschedule` | [Schema Handler Versions][22] |
@@ -166,3 +167,5 @@ Need help? Contact [Datadog support][15].
 [20]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-slos-slo-handler/CHANGELOG.md
 [21]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-monitors-downtimeschedule-handler
 [22]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-monitors-downtimeschedule-handler/CHANGELOG.md
+[23]: https://github.com/DataDog/datadog-cloudformation-resources/tree/master/datadog-integrations-awsaccount-handler
+[24]: https://github.com/DataDog/datadog-cloudformation-resources/blob/master/datadog-integrations-awsaccount-handler/CHANGELOG.md

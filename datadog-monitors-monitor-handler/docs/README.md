@@ -113,7 +113,7 @@ _Required_: Yes
 
 _Type_: String
 
-_Allowed Values_: <code>audit alert</code> | <code>composite</code> | <code>event alert</code> | <code>event-v2 alert</code> | <code>log alert</code> | <code>metric alert</code> | <code>process alert</code> | <code>query alert</code> | <code>service check</code> | <code>synthetics alert</code> | <code>trace-analytics alert</code> | <code>slo alert</code> | <code>rum alert</code> | <code>ci-pipelines alert</code> | <code>error-tracking alert</code> | <code>ci-tests alert</code>
+_Allowed Values_: <code>audit alert</code> | <code>composite</code> | <code>event alert</code> | <code>event-v2 alert</code> | <code>log alert</code> | <code>metric alert</code> | <code>process alert</code> | <code>query alert</code> | <code>service check</code> | <code>synthetics alert</code> | <code>trace-analytics alert</code> | <code>slo alert</code> | <code>rum alert</code> | <code>ci-pipelines alert</code> | <code>error-tracking alert</code> | <code>ci-tests alert</code> | <code>database-monitoring alert</code> | <code>network-performance alert</code> | <code>cost alert</code> | <code>data-quality alert</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

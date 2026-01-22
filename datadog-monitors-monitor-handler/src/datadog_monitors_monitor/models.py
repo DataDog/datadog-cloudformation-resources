@@ -139,7 +139,7 @@ class MonitorOptions(BaseModel):
     RenotifyStatuses: Optional[Sequence[str]]
     MinFailureDuration: Optional[int]
     NewGroupDelay: Optional[int]
-    Variables: Optional[Sequence["_MonitorFormulaAndFunctionEventQueryDefinition"]]
+    Variables: Optional[Sequence[Any]]
 
     @classmethod
     def _deserialize(
@@ -175,7 +175,7 @@ class MonitorOptions(BaseModel):
             RenotifyStatuses=json_data.get("RenotifyStatuses"),
             MinFailureDuration=json_data.get("MinFailureDuration"),
             NewGroupDelay=json_data.get("NewGroupDelay"),
-            Variables=deserialize_list(json_data.get("Variables"), MonitorFormulaAndFunctionEventQueryDefinition),
+            Variables=json_data.get("Variables"),
         )
 
 
@@ -397,6 +397,70 @@ class Sort(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _Sort = Sort
+
+
+@dataclass
+class MonitorFormulaAndFunctionDataQualityQueryDefinition(BaseModel):
+    Name: Optional[str]
+    DataSource: Optional[str]
+    SchemaVersion: Optional[str]
+    Measure: Optional[str]
+    Filter: Optional[str]
+    Scope: Optional[str]
+    GroupBy: Optional[Sequence[str]]
+    MonitorOptions: Optional["_MonitorFormulaAndFunctionDataQualityMonitorOptions"]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorFormulaAndFunctionDataQualityQueryDefinition"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorFormulaAndFunctionDataQualityQueryDefinition"]:
+        if not json_data:
+            return None
+        return cls(
+            Name=json_data.get("Name"),
+            DataSource=json_data.get("DataSource"),
+            SchemaVersion=json_data.get("SchemaVersion"),
+            Measure=json_data.get("Measure"),
+            Filter=json_data.get("Filter"),
+            Scope=json_data.get("Scope"),
+            GroupBy=json_data.get("GroupBy"),
+            MonitorOptions=MonitorFormulaAndFunctionDataQualityMonitorOptions._deserialize(
+                json_data.get("MonitorOptions")
+            ),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorFormulaAndFunctionDataQualityQueryDefinition = MonitorFormulaAndFunctionDataQualityQueryDefinition
+
+
+@dataclass
+class MonitorFormulaAndFunctionDataQualityMonitorOptions(BaseModel):
+    CustomSql: Optional[str]
+    CustomWhere: Optional[str]
+    GroupByColumns: Optional[Sequence[str]]
+    CrontabOverride: Optional[str]
+    ModelTypeOverride: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorFormulaAndFunctionDataQualityMonitorOptions"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorFormulaAndFunctionDataQualityMonitorOptions"]:
+        if not json_data:
+            return None
+        return cls(
+            CustomSql=json_data.get("CustomSql"),
+            CustomWhere=json_data.get("CustomWhere"),
+            GroupByColumns=json_data.get("GroupByColumns"),
+            CrontabOverride=json_data.get("CrontabOverride"),
+            ModelTypeOverride=json_data.get("ModelTypeOverride"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorFormulaAndFunctionDataQualityMonitorOptions = MonitorFormulaAndFunctionDataQualityMonitorOptions
 
 
 @dataclass

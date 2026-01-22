@@ -135,8 +135,28 @@ def update_handler(
         __version__,
     ) as api_client:
         api_instance = DowntimesApi(api_client)
+
+        # Check if the downtime exists and is not cancelled before updating
         try:
-            resp = api_instance.update_downtime(model.Id, downtime)
+            resp = api_instance.get_downtime(model.Id)
+            if resp.data.attributes.status == DDDowntimeStatus.CANCELED:
+                return ProgressEvent(
+                    status=OperationStatus.FAILED,
+                    resourceModel=model,
+                    message=f"Downtime {model.Id} is canceled and cannot be updated",
+                    errorCode=HandlerErrorCode.NotFound,
+                )
+        except ApiException as e:
+            LOG.exception("Exception when calling DowntimesApi->get_downtime: %s\n", e)
+            return ProgressEvent(
+                status=OperationStatus.FAILED,
+                resourceModel=model,
+                message=f"Error getting downtime: {e}",
+                errorCode=http_to_handler_error_code(e.status),
+            )
+
+        try:
+            api_instance.update_downtime(model.Id, downtime)
         except ApiException as e:
             LOG.exception("Exception when calling DowntimesApi->update_downtime: %s\n", e)
             return ProgressEvent(

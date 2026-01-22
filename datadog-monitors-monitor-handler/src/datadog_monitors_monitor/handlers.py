@@ -57,6 +57,27 @@ from datadog_api_client.v1.model.monitor_formula_and_function_query_definition i
     MonitorFormulaAndFunctionQueryDefinition as ApiMonitorMonitorFormulaAndFunctionQueryDefinition,
 )
 
+# Data Quality Query imports (available after API client is updated)
+try:
+    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_query_definition import (
+        MonitorFormulaAndFunctionDataQualityQueryDefinition as ApiMonitorFormulaAndFunctionDataQualityQueryDefinition,
+    )
+    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_data_source import (
+        MonitorFormulaAndFunctionDataQualityDataSource as ApiMonitorFormulaAndFunctionDataQualityDataSource,
+    )
+
+    # Note: Measure is now a plain string (not an enum) to allow extensibility
+    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_monitor_options import (
+        MonitorFormulaAndFunctionDataQualityMonitorOptions as ApiMonitorFormulaAndFunctionDataQualityMonitorOptions,
+    )
+    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_model_type_override import (
+        MonitorFormulaAndFunctionDataQualityModelTypeOverride as ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride,
+    )
+
+    HAS_DATA_QUALITY_SUPPORT = True
+except ImportError:
+    HAS_DATA_QUALITY_SUPPORT = False
+
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
@@ -71,6 +92,8 @@ from .models import (
     ResourceModel,
     MonitorFormulaAndFunctionEventQueryDefinition,
     MonitorFormulaAndFunctionEventQueryGroupBy,
+    MonitorFormulaAndFunctionDataQualityQueryDefinition,
+    MonitorFormulaAndFunctionDataQualityMonitorOptions,
     Sort,
     Compute,
     Search,
@@ -516,6 +539,40 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 
                             datadog_variable.group_by.append(datadog_group)
                     options.variables.append(datadog_variable)
+                elif HAS_DATA_QUALITY_SUPPORT and isinstance(
+                    variable, MonitorFormulaAndFunctionDataQualityQueryDefinition
+                ):
+                    datadog_variable = ApiMonitorFormulaAndFunctionDataQualityQueryDefinition(
+                        data_source=ApiMonitorFormulaAndFunctionDataQualityDataSource(variable.DataSource),
+                        name=variable.Name,
+                        measure=variable.Measure,  # Plain string - not an enum to allow extensibility
+                        filter=variable.Filter,
+                    )
+                    # Optional fields
+                    if variable.SchemaVersion is not None:
+                        datadog_variable.schema_version = variable.SchemaVersion
+                    if variable.Scope is not None:
+                        datadog_variable.scope = variable.Scope
+                    if variable.GroupBy is not None:
+                        datadog_variable.group_by = variable.GroupBy
+                    # Monitor options
+                    if variable.MonitorOptions is not None:
+                        datadog_variable.monitor_options = ApiMonitorFormulaAndFunctionDataQualityMonitorOptions()
+                        if variable.MonitorOptions.CustomSql is not None:
+                            datadog_variable.monitor_options.custom_sql = variable.MonitorOptions.CustomSql
+                        if variable.MonitorOptions.CustomWhere is not None:
+                            datadog_variable.monitor_options.custom_where = variable.MonitorOptions.CustomWhere
+                        if variable.MonitorOptions.GroupByColumns is not None:
+                            datadog_variable.monitor_options.group_by_columns = variable.MonitorOptions.GroupByColumns
+                        if variable.MonitorOptions.CrontabOverride is not None:
+                            datadog_variable.monitor_options.crontab_override = variable.MonitorOptions.CrontabOverride
+                        if variable.MonitorOptions.ModelTypeOverride is not None:
+                            datadog_variable.monitor_options.model_type_override = (
+                                ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride(
+                                    variable.MonitorOptions.ModelTypeOverride
+                                )
+                            )
+                    options.variables.append(datadog_variable)
 
     return options
 
@@ -523,7 +580,8 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryDefinition]):
     cf_variables = []
     for variable in variables:
-        if type(variable.get_oneof_instance()) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
+        oneof_instance = variable.get_oneof_instance()
+        if type(oneof_instance) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
             cf_variable = MonitorFormulaAndFunctionEventQueryDefinition(
                 DataSource=variable.data_source.value,
                 Name=variable.name,
@@ -553,4 +611,33 @@ def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryD
                         )
                     cf_variable.GroupBy.append(cf_group)
             cf_variables.append(cf_variable)
+        elif HAS_DATA_QUALITY_SUPPORT:
+            try:
+                if type(oneof_instance) == ApiMonitorFormulaAndFunctionDataQualityQueryDefinition:
+                    cf_monitor_options = None
+                    if hasattr(variable, "monitor_options") and variable.monitor_options is not None:
+                        opts = variable.monitor_options
+                        cf_monitor_options = MonitorFormulaAndFunctionDataQualityMonitorOptions(
+                            CustomSql=opts.custom_sql if hasattr(opts, "custom_sql") else None,
+                            CustomWhere=opts.custom_where if hasattr(opts, "custom_where") else None,
+                            GroupByColumns=opts.group_by_columns if hasattr(opts, "group_by_columns") else None,
+                            CrontabOverride=opts.crontab_override if hasattr(opts, "crontab_override") else None,
+                            ModelTypeOverride=opts.model_type_override.value
+                            if hasattr(opts, "model_type_override") and opts.model_type_override
+                            else None,
+                        )
+                    cf_variable = MonitorFormulaAndFunctionDataQualityQueryDefinition(
+                        DataSource=variable.data_source.value if hasattr(variable, "data_source") else None,
+                        Name=variable.name if hasattr(variable, "name") else None,
+                        Measure=variable.measure if hasattr(variable, "measure") else None,
+                        Filter=variable.filter if hasattr(variable, "filter") else None,
+                        Scope=variable.scope if hasattr(variable, "scope") else None,
+                        SchemaVersion=variable.schema_version if hasattr(variable, "schema_version") else None,
+                        GroupBy=variable.group_by if hasattr(variable, "group_by") else None,
+                        MonitorOptions=cf_monitor_options,
+                    )
+                    cf_variables.append(cf_variable)
+            except Exception:
+                # Skip if data quality types are not fully supported
+                pass
     return cf_variables

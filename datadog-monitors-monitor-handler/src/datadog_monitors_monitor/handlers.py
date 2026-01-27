@@ -57,26 +57,21 @@ from datadog_api_client.v1.model.monitor_formula_and_function_query_definition i
     MonitorFormulaAndFunctionQueryDefinition as ApiMonitorMonitorFormulaAndFunctionQueryDefinition,
 )
 
-# Data Quality Query imports (available after API client is updated)
-try:
-    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_query_definition import (
-        MonitorFormulaAndFunctionDataQualityQueryDefinition as ApiMonitorFormulaAndFunctionDataQualityQueryDefinition,
-    )
-    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_data_source import (
-        MonitorFormulaAndFunctionDataQualityDataSource as ApiMonitorFormulaAndFunctionDataQualityDataSource,
-    )
+# Data Quality Query imports
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_query_definition import (
+    MonitorFormulaAndFunctionDataQualityQueryDefinition as ApiMonitorFormulaAndFunctionDataQualityQueryDefinition,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_data_source import (
+    MonitorFormulaAndFunctionDataQualityDataSource as ApiMonitorFormulaAndFunctionDataQualityDataSource,
+)
 
-    # Note: Measure is now a plain string (not an enum) to allow extensibility
-    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_monitor_options import (
-        MonitorFormulaAndFunctionDataQualityMonitorOptions as ApiMonitorFormulaAndFunctionDataQualityMonitorOptions,
-    )
-    from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_model_type_override import (
-        MonitorFormulaAndFunctionDataQualityModelTypeOverride as ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride,
-    )
-
-    HAS_DATA_QUALITY_SUPPORT = True
-except ImportError:
-    HAS_DATA_QUALITY_SUPPORT = False
+# Note: Measure is now a plain string (not an enum) to allow extensibility
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_monitor_options import (
+    MonitorFormulaAndFunctionDataQualityMonitorOptions as ApiMonitorFormulaAndFunctionDataQualityMonitorOptions,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_model_type_override import (
+    MonitorFormulaAndFunctionDataQualityModelTypeOverride as ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride,
+)
 
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
@@ -447,10 +442,10 @@ def build_api_variable_from_model(variable):
 
     # Determine type based on data source or presence of specific fields
     # Event query types have DataSource like "rum", "logs", "spans", etc.
-    # Data quality queries have DataSource "data_quality" and require "Measure" and "Filter"
-    is_data_quality = data_source == "data_quality" or (measure is not None and filter_val is not None)
+    # Data quality queries have DataSource "data_quality_metrics" and require "Measure" and "Filter"
+    is_data_quality = data_source == "data_quality_metrics" or (measure is not None and filter_val is not None)
 
-    if is_data_quality and HAS_DATA_QUALITY_SUPPORT:
+    if is_data_quality:
         datadog_variable = ApiMonitorFormulaAndFunctionDataQualityQueryDefinition(
             data_source=ApiMonitorFormulaAndFunctionDataQualityDataSource(data_source),
             name=name,
@@ -690,7 +685,7 @@ def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryD
                         )
                     cf_variable.GroupBy.append(cf_group)
             cf_variables.append(cf_variable)
-        elif HAS_DATA_QUALITY_SUPPORT:
+        else:
             try:
                 if type(oneof_instance) == ApiMonitorFormulaAndFunctionDataQualityQueryDefinition:
                     cf_monitor_options = None

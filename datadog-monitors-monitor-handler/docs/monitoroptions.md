@@ -34,7 +34,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
     "<a href="#renotifystatuses" title="RenotifyStatuses">RenotifyStatuses</a>" : <i>[ String, ... ]</i>,
     "<a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>" : <i>Integer</i>,
     "<a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>" : <i>Integer</i>,
-    "<a href="#variables" title="Variables">Variables</a>" : <i>[ <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>, ... ]</i>
+    "<a href="#variables" title="Variables">Variables</a>" : <i>[ <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>, <a href="monitorformulaandfunctiondataqualityquerydefinition.md">MonitorFormulaAndFunctionDataQualityQueryDefinition</a>, ... ]</i>
 }
 </pre>
 
@@ -70,7 +70,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <a href="#minfailureduration" title="MinFailureDuration">MinFailureDuration</a>: <i>Integer</i>
 <a href="#newgroupdelay" title="NewGroupDelay">NewGroupDelay</a>: <i>Integer</i>
 <a href="#variables" title="Variables">Variables</a>: <i>
-      - <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a></i>
+      - <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>, <a href="monitorformulaandfunctiondataqualityquerydefinition.md">MonitorFormulaAndFunctionDataQualityQueryDefinition</a></i>
 </pre>
 
 ## Properties
@@ -352,7 +352,7 @@ List of requests that can be used in the monitor query.
 
 _Required_: No
 
-_Type_: List of <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>
+_Type_: List of <a href="monitorformulaandfunctioneventquerydefinition.md">MonitorFormulaAndFunctionEventQueryDefinition</a>, <a href="monitorformulaandfunctiondataqualityquerydefinition.md">MonitorFormulaAndFunctionDataQualityQueryDefinition</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

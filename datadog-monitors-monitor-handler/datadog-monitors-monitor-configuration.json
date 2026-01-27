@@ -249,6 +249,9 @@
                         "oneOf": [
                             {
                                 "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"
+                            },
+                            {
+                                "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityQueryDefinition"
                             }
                         ]
                     },
@@ -434,6 +437,106 @@
                     "type": "boolean"
                 }
             }
+        },
+        "MonitorFormulaAndFunctionDataQualityQueryDefinition": {
+            "description": "A formula and functions data quality query.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "Name": {
+                    "description": "The name of the query for use in formulas.",
+                    "type": "string"
+                },
+                "DataSource": {
+                    "description": "Data source for data quality queries.",
+                    "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityDataSource"
+                },
+                "SchemaVersion": {
+                    "description": "Schema version for the data quality query.",
+                    "type": "string"
+                },
+                "Measure": {
+                    "description": "The measure to query.",
+                    "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityMeasure"
+                },
+                "Filter": {
+                    "description": "Filter expression used to match on data entities. Uses Aastra query syntax.",
+                    "type": "string"
+                },
+                "Scope": {
+                    "description": "Optional scoping expression to further filter metrics.",
+                    "type": "string"
+                },
+                "GroupBy": {
+                    "description": "Optional grouping fields for aggregation.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "insertionOrder": false
+                },
+                "MonitorOptions": {
+                    "description": "Monitor configuration options.",
+                    "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityMonitorOptions"
+                }
+            },
+            "required": [
+                "Name",
+                "DataSource",
+                "Measure",
+                "Filter"
+            ]
+        },
+        "MonitorFormulaAndFunctionDataQualityDataSource": {
+            "description": "Data source for data quality queries.",
+            "type": "string",
+            "enum": [
+                "data_quality_metrics"
+            ]
+        },
+        "MonitorFormulaAndFunctionDataQualityMeasure": {
+            "description": "The data quality measure to query. Common values include bytes, cardinality, custom, freshness, max, mean, min, nullness, percent_negative, percent_zero, row_count, stddev, sum, uniqueness. Additional values may be supported.",
+            "type": "string"
+        },
+        "MonitorFormulaAndFunctionDataQualityMonitorOptions": {
+            "description": "Monitor configuration options for data quality queries.",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "CustomSql": {
+                    "description": "Custom SQL query for the monitor.",
+                    "type": "string"
+                },
+                "CustomWhere": {
+                    "description": "Custom WHERE clause for the query.",
+                    "type": "string"
+                },
+                "GroupByColumns": {
+                    "description": "Columns to group results by.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    },
+                    "insertionOrder": false
+                },
+                "CrontabOverride": {
+                    "description": "Crontab expression to override the default schedule.",
+                    "type": "string"
+                },
+                "ModelTypeOverride": {
+                    "description": "Override for the model type.",
+                    "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityModelTypeOverride"
+                }
+            }
+        },
+        "MonitorFormulaAndFunctionDataQualityModelTypeOverride": {
+            "description": "Override for the model type used in anomaly detection.",
+            "type": "string",
+            "enum": [
+                "freshness",
+                "percentage",
+                "any"
+            ]
         }
     },
     "typeName": "Datadog::Monitors::Monitor"

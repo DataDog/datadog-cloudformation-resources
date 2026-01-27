@@ -48,6 +48,7 @@ def errors_handler(f) -> Callable:
                 status=OperationStatus.FAILED,
                 resourceModel=model,
                 message=f"Exception when calling {f.__name__}: {e}",
+                errorCode=HandlerErrorCode.GeneralServiceException,
             )
 
     return decorated

@@ -28,58 +28,57 @@
         }
       }
     },
-    "MonitorNotificationPresetName":{
+    "MonitorNotificationPresetName": {
       "description": "Toggles the display of additional content sent in the monitor notification.",
       "type": "string",
       "enum": [
-              "show_all",
-              "hide_query",
-              "hide_handles",
-              "hide_all"
+        "show_all",
+        "hide_query",
+        "hide_handles",
+        "hide_all"
       ]
     },
-    "MonitorOnMissingData":{
+    "MonitorOnMissingData": {
       "description": "Controls how groups or monitors are treated if an evaluation does not return any data points.\nThe default option results in different behavior depending on the monitor query type.\nFor monitors using Count queries, an empty monitor evaluation is treated as 0 and is compared to the threshold conditions.\nFor monitors using any query type other than Count, for example Gauge, Measure, or Rate, the monitor shows the last known status.\nThis option is only available for APM Trace Analytics, Audit Trail, CI, Error Tracking, Event, Logs, and RUM monitors.",
       "type": "string",
       "enum": [
-              "default",
-              "show_no_data",
-              "show_and_notify_no_data",
-              "resolve"
+        "default",
+        "show_no_data",
+        "show_and_notify_no_data",
+        "resolve"
       ]
     },
-    "MonitorSchedulingOptions":{
+    "MonitorSchedulingOptions": {
       "description": "Configuration options for scheduling.",
       "type": "object",
       "additionalProperties": false,
       "properties": {
-          "EvaluationWindow":{
-              "$ref":"#/definitions/MonitorSchedulingOptionsEvaluationWindow"
-          }
+        "EvaluationWindow": {
+          "$ref": "#/definitions/MonitorSchedulingOptionsEvaluationWindow"
+        }
       }
     },
-    "MonitorSchedulingOptionsEvaluationWindow":{
+    "MonitorSchedulingOptionsEvaluationWindow": {
       "description": "Configuration options for the evaluation window. If `hour_starts` is set, no other fields may be set. Otherwise, `day_starts` and `month_starts` must be set together.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
-          "DayStarts":{
-              "description": "The time of the day at which a one day cumulative evaluation window starts. Must be defined in UTC time in `HH:mm` format.",
-              "type": "string"
-          },
-          "MonthStarts":{
-              "description": "The day of the month at which a one month cumulative evaluation window starts.",
-              "type": "integer",
-              "minimum": 1,
-              "maximum": 1
-
-          },
-          "HourStarts":{
-              "description": "The minute of the hour at which a one hour cumulative evaluation window starts.",
-              "type": "integer",
-              "minimum": 0,
-              "maximum": 59
-          }
+      "properties": {
+        "DayStarts": {
+          "description": "The time of the day at which a one day cumulative evaluation window starts. Must be defined in UTC time in `HH:mm` format.",
+          "type": "string"
+        },
+        "MonthStarts": {
+          "description": "The day of the month at which a one month cumulative evaluation window starts.",
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 1
+        },
+        "HourStarts": {
+          "description": "The minute of the hour at which a one hour cumulative evaluation window starts.",
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 59
+        }
       }
     },
     "MonitorThresholds": {
@@ -130,9 +129,9 @@
           "description": "Whether or not to include a sample of the logs",
           "type": "boolean"
         },
-        "EnableSamples":{
-          "description":"Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.",
-          "type":"boolean"
+        "EnableSamples": {
+          "description": "Whether or not to send a list of samples when the monitor triggers. This is only used by CI Test and Pipeline monitors.",
+          "type": "boolean"
         },
         "EscalationMessage": {
           "description": "Message to include with a re-notification when renotify_interval is set",
@@ -142,7 +141,7 @@
           "description": "Time in seconds to delay evaluation",
           "type": "integer"
         },
-        "GroupRetentionDuration":{
+        "GroupRetentionDuration": {
           "description": "The time span after which groups with missing data are dropped from the monitor state.\nThe minimum value is one hour, and the maximum value is 72 hours.\nExample values are: \"60m\", \"1h\", and \"2d\".\nThis option is only available for APM Trace Analytics, Audit Trail, CI, Error Tracking, Event, Logs, and RUM monitors.",
           "type": "string"
         },
@@ -173,12 +172,12 @@
           "description": "A Boolean indicating whether tagged users is notified on changes to this monitor.",
           "type": "boolean"
         },
-        "NotifyBy":{
+        "NotifyBy": {
           "description": "Controls what granularity a monitor alerts on. Only available for monitors with groupings.\nFor instance, a monitor grouped by `cluster`, `namespace`, and `pod` can be configured to only notify on each new `cluster` violating the alert conditions by setting `notify_by` to `[\"cluster\"]`.\nTags mentioned in `notify_by` must be a subset of the grouping tags in the query.\nFor example, a query grouped by `cluster` and `namespace` cannot notify on `region`.\nSetting `notify_by` to `[*]` configures the monitor to notify as a simple-alert.",
-          "type":"array",
-          "items" : {
-              "type": "string",
-              "description": "A grouping tag."
+          "type": "array",
+          "items": {
+            "type": "string",
+            "description": "A grouping tag."
           },
           "insertionOrder": false
         },
@@ -186,10 +185,10 @@
           "description": "Whether or not to notify when data stops reporting",
           "type": "boolean"
         },
-        "NotificationPresetName":{
+        "NotificationPresetName": {
           "$ref": "#/definitions/MonitorNotificationPresetName"
         },
-        "OnMissingData":{
+        "OnMissingData": {
           "$ref": "#/definitions/MonitorOnMissingData"
         },
         "RenotifyInterval": {
@@ -200,7 +199,7 @@
           "description": "Whether or not the monitor requires a full window of data before it is evaluated",
           "type": "boolean"
         },
-        "SchedulingOptions":{
+        "SchedulingOptions": {
           "$ref": "#/definitions/MonitorSchedulingOptions"
         },
         "SyntheticsCheckID": {
@@ -224,12 +223,12 @@
           "type": "integer"
         },
         "RenotifyStatuses": {
-          "description":"The types of monitor statuses for which re-notification messages are sent.",
+          "description": "The types of monitor statuses for which re-notification messages are sent.",
           "type": "array",
           "insertionOrder": false,
           "items": {
             "type": "string",
-            "enum":  [
+            "enum": [
               "alert",
               "no data",
               "warn"
@@ -252,7 +251,12 @@
           "type": "array",
           "items": {
             "oneOf": [
-              {"$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"}
+              {
+                "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryDefinition"
+              },
+              {
+                "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityQueryDefinition"
+              }
             ]
           },
           "insertionOrder": true
@@ -295,7 +299,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "Aggregation": {"$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"},
+            "Aggregation": {
+              "$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"
+            },
             "Interval": {
               "description": "A time interval in milliseconds.",
               "type": "integer",
@@ -313,7 +319,9 @@
         "GroupBy": {
           "description": "Group by options.",
           "type": "array",
-          "items": {"$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"},
+          "items": {
+            "$ref": "#/definitions/MonitorFormulaAndFunctionEventQueryGroupBy"
+          },
           "insertionOrder": true
         },
         "Name": {
@@ -374,7 +382,9 @@
           "type": "object",
           "additionalProperties": false,
           "properties": {
-            "Aggregation": {"$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"},
+            "Aggregation": {
+              "$ref": "#/definitions/MonitorFormulaAndFunctionEventAggregation"
+            },
             "Metric": {
               "description": "Options for sorting group by results.",
               "type": "string"
@@ -431,6 +441,106 @@
           "type": "boolean"
         }
       }
+    },
+    "MonitorFormulaAndFunctionDataQualityQueryDefinition": {
+      "description": "A formula and functions data quality query.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Name": {
+          "description": "The name of the query for use in formulas.",
+          "type": "string"
+        },
+        "DataSource": {
+          "description": "Data source for data quality queries.",
+          "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityDataSource"
+        },
+        "SchemaVersion": {
+          "description": "Schema version for the data quality query.",
+          "type": "string"
+        },
+        "Measure": {
+          "description": "The measure to query.",
+          "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityMeasure"
+        },
+        "Filter": {
+          "description": "Filter expression used to match on data entities. Uses Aastra query syntax.",
+          "type": "string"
+        },
+        "Scope": {
+          "description": "Optional scoping expression to further filter metrics.",
+          "type": "string"
+        },
+        "GroupBy": {
+          "description": "Optional grouping fields for aggregation.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "insertionOrder": false
+        },
+        "MonitorOptions": {
+          "description": "Monitor configuration options.",
+          "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityMonitorOptions"
+        }
+      },
+      "required": [
+        "Name",
+        "DataSource",
+        "Measure",
+        "Filter"
+      ]
+    },
+    "MonitorFormulaAndFunctionDataQualityDataSource": {
+      "description": "Data source for data quality queries.",
+      "type": "string",
+      "enum": [
+        "data_quality_metrics"
+      ]
+    },
+    "MonitorFormulaAndFunctionDataQualityMeasure": {
+      "description": "The data quality measure to query. Common values include bytes, cardinality, custom, freshness, max, mean, min, nullness, percent_negative, percent_zero, row_count, stddev, sum, uniqueness. Additional values may be supported.",
+      "type": "string"
+    },
+    "MonitorFormulaAndFunctionDataQualityMonitorOptions": {
+      "description": "Monitor configuration options for data quality queries.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "CustomSql": {
+          "description": "Custom SQL query for the monitor.",
+          "type": "string"
+        },
+        "CustomWhere": {
+          "description": "Custom WHERE clause for the query.",
+          "type": "string"
+        },
+        "GroupByColumns": {
+          "description": "Columns to group results by.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "insertionOrder": false
+        },
+        "CrontabOverride": {
+          "description": "Crontab expression to override the default schedule.",
+          "type": "string"
+        },
+        "ModelTypeOverride": {
+          "description": "Override for the model type.",
+          "$ref": "#/definitions/MonitorFormulaAndFunctionDataQualityModelTypeOverride"
+        }
+      }
+    },
+    "MonitorFormulaAndFunctionDataQualityModelTypeOverride": {
+      "description": "Override for the model type used in anomaly detection.",
+      "type": "string",
+      "enum": [
+        "freshness",
+        "percentage",
+        "any"
+      ]
     }
   },
   "properties": {
@@ -488,7 +598,11 @@
         "rum alert",
         "ci-pipelines alert",
         "error-tracking alert",
-        "ci-tests alert"
+        "ci-tests alert",
+        "database-monitoring alert",
+        "network-performance alert",
+        "cost alert",
+        "data-quality alert"
       ]
     },
     "Multi": {

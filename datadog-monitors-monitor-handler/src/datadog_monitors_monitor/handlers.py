@@ -57,6 +57,22 @@ from datadog_api_client.v1.model.monitor_formula_and_function_query_definition i
     MonitorFormulaAndFunctionQueryDefinition as ApiMonitorMonitorFormulaAndFunctionQueryDefinition,
 )
 
+# Data Quality Query imports
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_query_definition import (
+    MonitorFormulaAndFunctionDataQualityQueryDefinition as ApiMonitorFormulaAndFunctionDataQualityQueryDefinition,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_data_source import (
+    MonitorFormulaAndFunctionDataQualityDataSource as ApiMonitorFormulaAndFunctionDataQualityDataSource,
+)
+
+# Note: Measure is now a plain string (not an enum) to allow extensibility
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_monitor_options import (
+    MonitorFormulaAndFunctionDataQualityMonitorOptions as ApiMonitorFormulaAndFunctionDataQualityMonitorOptions,
+)
+from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_model_type_override import (
+    MonitorFormulaAndFunctionDataQualityModelTypeOverride as ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride,
+)
+
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
@@ -71,6 +87,8 @@ from .models import (
     ResourceModel,
     MonitorFormulaAndFunctionEventQueryDefinition,
     MonitorFormulaAndFunctionEventQueryGroupBy,
+    MonitorFormulaAndFunctionDataQualityQueryDefinition,
+    MonitorFormulaAndFunctionDataQualityMonitorOptions,
     Sort,
     Compute,
     Search,
@@ -389,6 +407,156 @@ def create_handler(
     return read_handler(session, request, callback_context)
 
 
+def build_api_variable_from_model(variable):
+    """
+    Convert a variable (dict or model instance) to the appropriate Datadog API variable type.
+    Variables can come in as raw dicts from CloudFormation deserialization or as model instances.
+    """
+    # Normalize: if it's a dict, extract values using dict access; otherwise use attribute access
+    if isinstance(variable, dict):
+        data_source = variable.get("DataSource")
+        name = variable.get("Name")
+        compute = variable.get("Compute")
+        search = variable.get("Search")
+        indexes = variable.get("Indexes")
+        group_by = variable.get("GroupBy")
+        # Data quality specific fields
+        measure = variable.get("Measure")
+        filter_val = variable.get("Filter")
+        schema_version = variable.get("SchemaVersion")
+        scope = variable.get("Scope")
+        monitor_options = variable.get("MonitorOptions")
+    else:
+        data_source = getattr(variable, "DataSource", None)
+        name = getattr(variable, "Name", None)
+        compute = getattr(variable, "Compute", None)
+        search = getattr(variable, "Search", None)
+        indexes = getattr(variable, "Indexes", None)
+        group_by = getattr(variable, "GroupBy", None)
+        # Data quality specific fields
+        measure = getattr(variable, "Measure", None)
+        filter_val = getattr(variable, "Filter", None)
+        schema_version = getattr(variable, "SchemaVersion", None)
+        scope = getattr(variable, "Scope", None)
+        monitor_options = getattr(variable, "MonitorOptions", None)
+
+    # Determine type based on data source or presence of specific fields
+    # Event query types have DataSource like "rum", "logs", "spans", etc.
+    # Data quality queries have DataSource "data_quality_metrics" and require "Measure" and "Filter"
+    is_data_quality = data_source == "data_quality_metrics" or (measure is not None and filter_val is not None)
+
+    if is_data_quality:
+        datadog_variable = ApiMonitorFormulaAndFunctionDataQualityQueryDefinition(
+            data_source=ApiMonitorFormulaAndFunctionDataQualityDataSource(data_source),
+            name=name,
+            measure=measure,
+            filter=filter_val,
+        )
+        if schema_version is not None:
+            datadog_variable.schema_version = schema_version
+        if scope is not None:
+            datadog_variable.scope = scope
+        if group_by is not None:
+            datadog_variable.group_by = group_by
+        if monitor_options is not None:
+            datadog_variable.monitor_options = ApiMonitorFormulaAndFunctionDataQualityMonitorOptions()
+            if isinstance(monitor_options, dict):
+                custom_sql = monitor_options.get("CustomSql")
+                custom_where = monitor_options.get("CustomWhere")
+                group_by_columns = monitor_options.get("GroupByColumns")
+                crontab_override = monitor_options.get("CrontabOverride")
+                model_type_override = monitor_options.get("ModelTypeOverride")
+            else:
+                custom_sql = getattr(monitor_options, "CustomSql", None)
+                custom_where = getattr(monitor_options, "CustomWhere", None)
+                group_by_columns = getattr(monitor_options, "GroupByColumns", None)
+                crontab_override = getattr(monitor_options, "CrontabOverride", None)
+                model_type_override = getattr(monitor_options, "ModelTypeOverride", None)
+
+            if custom_sql is not None:
+                datadog_variable.monitor_options.custom_sql = custom_sql
+            if custom_where is not None:
+                datadog_variable.monitor_options.custom_where = custom_where
+            if group_by_columns is not None:
+                datadog_variable.monitor_options.group_by_columns = group_by_columns
+            if crontab_override is not None:
+                datadog_variable.monitor_options.crontab_override = crontab_override
+            if model_type_override is not None:
+                datadog_variable.monitor_options.model_type_override = (
+                    ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride(model_type_override)
+                )
+        return datadog_variable
+    elif compute is not None:
+        # Event query type (has Compute field)
+        if isinstance(compute, dict):
+            aggregation = compute.get("Aggregation")
+            interval = compute.get("Interval")
+            metric = compute.get("Metric")
+        else:
+            aggregation = getattr(compute, "Aggregation", None)
+            interval = getattr(compute, "Interval", None)
+            metric = getattr(compute, "Metric", None)
+
+        datadog_variable = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition(
+            data_source=ApiMonitorMonitorFormulaAndFunctionEventsDataSource(data_source),
+            name=name,
+            compute=ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute(
+                aggregation=ApiMonitorMonitorFormulaAndFunctionEventAggregation(aggregation),
+            ),
+        )
+        if interval is not None:
+            datadog_variable.compute.interval = interval
+        if metric is not None:
+            datadog_variable.compute.metric = metric
+
+        if search is not None:
+            if isinstance(search, dict):
+                query = search.get("Query")
+            else:
+                query = getattr(search, "Query", None)
+            datadog_variable.search = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionSearch(query=query)
+
+        if indexes is not None:
+            datadog_variable.indexes = indexes
+
+        datadog_variable.group_by = []
+        if group_by is not None:
+            for group in group_by:
+                if isinstance(group, dict):
+                    facet = group.get("Facet")
+                    sort = group.get("Sort")
+                    limit = group.get("Limit")
+                else:
+                    facet = getattr(group, "Facet", None)
+                    sort = getattr(group, "Sort", None)
+                    limit = getattr(group, "Limit", None)
+
+                datadog_group = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy(facet)
+                if sort is not None:
+                    if isinstance(sort, dict):
+                        sort_agg = sort.get("Aggregation")
+                        sort_metric = sort.get("Metric")
+                        sort_order = sort.get("Order")
+                    else:
+                        sort_agg = getattr(sort, "Aggregation", None)
+                        sort_metric = getattr(sort, "Metric", None)
+                        sort_order = getattr(sort, "Order", None)
+
+                    datadog_group.sort = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort(sort_agg)
+                    if sort_metric is not None:
+                        datadog_group.sort.metric = sort_metric
+                    if sort_order is not None:
+                        datadog_group.sort.order = ApiMonitorQuerySortOrder(sort_order)
+                if limit is not None:
+                    datadog_group.limit = limit
+                datadog_variable.group_by.append(datadog_group)
+        return datadog_variable
+
+    # Unknown variable type
+    LOG.warning("Unknown variable type, skipping: %s", variable)
+    return None
+
+
 def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
     options = None
     if model.Options:
@@ -476,45 +644,8 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
         if model.Options.Variables is not None:
             options.variables = []
             for variable in model.Options.Variables:
-                if isinstance(variable, MonitorFormulaAndFunctionEventQueryDefinition):
-                    datadog_variable = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition(
-                        data_source=ApiMonitorMonitorFormulaAndFunctionEventsDataSource(variable.DataSource),
-                        name=variable.Name,
-                        compute=ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionCompute(
-                            aggregation=ApiMonitorMonitorFormulaAndFunctionEventAggregation(
-                                variable.Compute.Aggregation
-                            ),
-                        ),
-                    )
-                    # Optional fields
-                    if variable.Compute.Interval is not None:
-                        datadog_variable.compute.interval = variable.Compute.Interval
-                    if variable.Compute.Metric is not None:
-                        datadog_variable.compute.metric = variable.Compute.Metric
-
-                    if variable.Search is not None:
-                        datadog_variable.search = ApiMonitorMonitorFormulaAndFunctionEventQueryDefinitionSearch(
-                            query=variable.Search.Query,
-                        )
-                    if variable.Indexes is not None:
-                        datadog_variable.indexes = variable.Indexes
-
-                    datadog_variable.group_by = []
-                    if variable.GroupBy is not None:
-                        for group in variable.GroupBy:
-                            datadog_group = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBy(group.Facet)
-                            if group.Sort is not None:
-                                datadog_group.sort = ApiMonitorMonitorFormulaAndFunctionEventQueryGroupBySort(
-                                    group.Sort.Aggregation
-                                )
-                                if group.Sort.Metric is not None:
-                                    datadog_group.sort.metric = group.Sort.Metric
-                                if group.Sort.Order is not None:
-                                    datadog_group.sort.order = ApiMonitorQuerySortOrder(group.Sort.Order)
-                            if group.Limit is not None:
-                                datadog_group.limit = group.Limit
-
-                            datadog_variable.group_by.append(datadog_group)
+                datadog_variable = build_api_variable_from_model(variable)
+                if datadog_variable is not None:
                     options.variables.append(datadog_variable)
 
     return options
@@ -523,7 +654,8 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
 def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryDefinition]):
     cf_variables = []
     for variable in variables:
-        if type(variable.get_oneof_instance()) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
+        oneof_instance = variable.get_oneof_instance()
+        if type(oneof_instance) == ApiMonitorMonitorFormulaAndFunctionEventQueryDefinition:
             cf_variable = MonitorFormulaAndFunctionEventQueryDefinition(
                 DataSource=variable.data_source.value,
                 Name=variable.name,
@@ -553,4 +685,33 @@ def build_cf_variables(variables: List[ApiMonitorMonitorFormulaAndFunctionQueryD
                         )
                     cf_variable.GroupBy.append(cf_group)
             cf_variables.append(cf_variable)
+        else:
+            try:
+                if type(oneof_instance) == ApiMonitorFormulaAndFunctionDataQualityQueryDefinition:
+                    cf_monitor_options = None
+                    if hasattr(variable, "monitor_options") and variable.monitor_options is not None:
+                        opts = variable.monitor_options
+                        cf_monitor_options = MonitorFormulaAndFunctionDataQualityMonitorOptions(
+                            CustomSql=opts.custom_sql if hasattr(opts, "custom_sql") else None,
+                            CustomWhere=opts.custom_where if hasattr(opts, "custom_where") else None,
+                            GroupByColumns=opts.group_by_columns if hasattr(opts, "group_by_columns") else None,
+                            CrontabOverride=opts.crontab_override if hasattr(opts, "crontab_override") else None,
+                            ModelTypeOverride=opts.model_type_override.value
+                            if hasattr(opts, "model_type_override") and opts.model_type_override
+                            else None,
+                        )
+                    cf_variable = MonitorFormulaAndFunctionDataQualityQueryDefinition(
+                        DataSource=variable.data_source.value if hasattr(variable, "data_source") else None,
+                        Name=variable.name if hasattr(variable, "name") else None,
+                        Measure=variable.measure if hasattr(variable, "measure") else None,
+                        Filter=variable.filter if hasattr(variable, "filter") else None,
+                        Scope=variable.scope if hasattr(variable, "scope") else None,
+                        SchemaVersion=variable.schema_version if hasattr(variable, "schema_version") else None,
+                        GroupBy=variable.group_by if hasattr(variable, "group_by") else None,
+                        MonitorOptions=cf_monitor_options,
+                    )
+                    cf_variables.append(cf_variable)
+            except Exception:
+                # Skip if data quality types are not fully supported
+                pass
     return cf_variables

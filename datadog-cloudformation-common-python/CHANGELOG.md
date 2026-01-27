@@ -1,3 +1,7 @@
+## datadog-cloudformation-common-python-0.0.22 / 2026-01-27
+
+* [Added] Bump datadog-api-client to 2.50.0.
+
 ## datadog-cloudformation-common-python-0.0.21 / 2025-03-25
 
 * [Added] Bump datadog-api-client and build requirement versions. See [#323](https://github.com/DataDog/datadog-cloudformation-resources/pull/323).

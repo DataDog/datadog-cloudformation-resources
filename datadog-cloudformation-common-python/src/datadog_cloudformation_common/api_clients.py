@@ -1,7 +1,14 @@
 from contextlib import contextmanager
 import pkg_resources
 
+import urllib3
 from datadog_api_client import ApiClient, Configuration
+from urllib3.util.retry import Retry
+
+CONNECT_RETRY_COUNT = 5
+CONNECT_RETRY_BACKOFF = 1.0
+CONNECT_TIMEOUT_SECONDS = 10
+READ_TIMEOUT_SECONDS = 60
 
 
 @contextmanager
@@ -21,6 +28,19 @@ def client(
             "appKeyAuth": app_key,
         },
         **datadog_config,
+    )
+    configuration.retries = Retry(
+        total=CONNECT_RETRY_COUNT,
+        connect=CONNECT_RETRY_COUNT,
+        read=False,
+        redirect=False,
+        backoff_factor=CONNECT_RETRY_BACKOFF,
+        raise_on_status=False,
+        allowed_methods=frozenset(["GET", "PUT", "POST", "DELETE", "PATCH"]),
+    )
+    configuration.timeout = urllib3.Timeout(
+        connect=CONNECT_TIMEOUT_SECONDS,
+        read=READ_TIMEOUT_SECONDS,
     )
     for key, value in unstable_operations.items():
         configuration.unstable_operations[key] = value

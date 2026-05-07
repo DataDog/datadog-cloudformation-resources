@@ -31,6 +31,24 @@ jobs:
     outputs:
       changed_files: ${{ steps.changed_files.outputs.all_changed_files }}
 
+  unit_test_common_python:
+    needs: find_modified_resources
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false && contains(needs.find_modified_resources.outputs.changed_files, 'datadog-cloudformation-common-python')
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+    - name: Install Python
+      uses: actions/setup-python@8d9ed9ac5c53483de85588cdf95a591a75ab9f55
+      with:
+        python-version: 3.9
+    - name: Install Deps
+      run: pip install --disable-pip-version-check -e ./datadog-cloudformation-common-python[test]
+    - name: Run Unit Tests
+      run: |
+        cd datadog-cloudformation-common-python
+        pytest tests/ -v
+
   test:
     needs: find_modified_resources
     strategy:

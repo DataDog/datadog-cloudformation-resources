@@ -42,3 +42,22 @@ rpdk.log
 */sam-tests/*
 
 **/*.egg-info/
+
+# Python
+**/__pycache__/
+**/*.py[cod]
+**/*$py.class
+**/.pytest_cache/
+**/.mypy_cache/
+**/.ruff_cache/
+**/.coverage
+**/.coverage.*
+**/htmlcov/
+**/coverage.xml
+**/.tox/
+**/.nox/
+**/dist/
+**/*.egg
+.venv/
+.python-version
+.venv/

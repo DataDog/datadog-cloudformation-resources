@@ -3,6 +3,18 @@ import pkg_resources
 
 from datadog_api_client import ApiClient, Configuration
 
+DEFAULT_API_URL = "https://api.datadoghq.com"
+
+# Defaults for the upstream datadog-api-client retry behavior. Caller-supplied
+# datadog_config overrides any of these. See:
+# https://github.com/DataDog/datadog-api-client-python/blob/2.50.0/src/datadog_api_client/configuration.py
+DEFAULT_RETRY_KWARGS = {
+    "enable_retry": True,
+    "max_retries": 4,
+    "retry_backoff_factor": 2,
+    "request_timeout": (15, 60),
+}
+
 
 @contextmanager
 def client(
@@ -14,14 +26,16 @@ def client(
     datadog_config: dict = {},
     unstable_operations: dict = {},
 ) -> ApiClient:
-    configuration = Configuration(
-        host=api_url or "https://api.datadoghq.com",
-        api_key={
+    config_kwargs = {
+        "host": api_url or DEFAULT_API_URL,
+        "api_key": {
             "apiKeyAuth": api_key,
             "appKeyAuth": app_key,
         },
+        **DEFAULT_RETRY_KWARGS,
         **datadog_config,
-    )
+    }
+    configuration = Configuration(**config_kwargs)
     for key, value in unstable_operations.items():
         configuration.unstable_operations[key] = value
 

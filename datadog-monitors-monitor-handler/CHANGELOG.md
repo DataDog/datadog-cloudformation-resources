@@ -1,10 +1,14 @@
 # Changelog
 
+## 4.10.0 / 2026-05-12
+
+* [Added] Bump common package for improved retry support. See [341](https://github.com/DataDog/datadog-cloudformation-resources/pull/341)
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.10.0.zip`
+
 ## 4.9.0 / 2026-01-28
 
 * [Added] Add `data-quality` alert monitor type support. See [#331](https://github.com/DataDog/datadog-cloudformation-resources/pull/331).
 * Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.9.0.zip`
-
 
 ## 4.8.0 / 2024-05-24
 

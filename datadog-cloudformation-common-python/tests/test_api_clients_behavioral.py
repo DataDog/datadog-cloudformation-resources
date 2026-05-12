@@ -45,9 +45,7 @@ def _client(httpserver: HTTPServer, **datadog_overrides):
 def test_retries_on_503_then_succeeds(httpserver: HTTPServer):
     httpserver.expect_ordered_request("/api/v1/validate").respond_with_data("oops", status=503)
     httpserver.expect_ordered_request("/api/v1/validate").respond_with_data("oops", status=503)
-    httpserver.expect_ordered_request("/api/v1/validate").respond_with_json(
-        {"valid": True}, status=200
-    )
+    httpserver.expect_ordered_request("/api/v1/validate").respond_with_json({"valid": True}, status=200)
 
     with _client(httpserver) as api_client:
         AuthenticationApi(api_client).validate()
@@ -60,9 +58,7 @@ def test_retries_on_429_honors_x_ratelimit_reset(httpserver: HTTPServer):
     httpserver.expect_ordered_request("/api/v1/validate").respond_with_data(
         "rate limited", status=429, headers={"X-Ratelimit-Reset": "1"}
     )
-    httpserver.expect_ordered_request("/api/v1/validate").respond_with_json(
-        {"valid": True}, status=200
-    )
+    httpserver.expect_ordered_request("/api/v1/validate").respond_with_json({"valid": True}, status=200)
 
     # Use the production retry path so ClientRetry.get_retry_after is exercised.
     start = time.monotonic()
@@ -93,9 +89,7 @@ def test_no_retry_when_disabled(httpserver: HTTPServer):
 def test_exhausts_retries_then_raises(httpserver: HTTPServer):
     # 5 attempts (1 initial + 4 retries) all 503 -> request raises
     for _ in range(5):
-        httpserver.expect_ordered_request("/api/v1/validate").respond_with_data(
-            "oops", status=503
-        )
+        httpserver.expect_ordered_request("/api/v1/validate").respond_with_data("oops", status=503)
 
     with pytest.raises(Exception):
         with _client(httpserver) as api_client:

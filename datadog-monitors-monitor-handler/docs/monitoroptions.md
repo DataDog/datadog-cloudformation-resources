@@ -220,7 +220,7 @@ _Required_: No
 
 _Type_: String
 
-_Allowed Values_: <code>show_all</code> | <code>hide_query</code> | <code>hide_handles</code> | <code>hide_all</code>
+_Allowed Values_: <code>show_all</code> | <code>hide_query</code> | <code>hide_handles</code> | <code>hide_all</code> | <code>hide_query_and_handles</code> | <code>show_only_snapshot</code> | <code>hide_handles_and_footer</code>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

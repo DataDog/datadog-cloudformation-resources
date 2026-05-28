@@ -1,4 +1,8 @@
-## datadog-cloudformation-common-python-0.0.23 / 2026-06-11
+## datadog-cloudformation-common-python-0.0.24 / 2026-05-28
+
+* [Added] Bump datadog-api-client to 2.55.0.
+
+## datadog-cloudformation-common-python-0.0.23 / 2026-05-11
 
 * [Added] Add retry support in the common api client. See [341](https://github.com/DataDog/datadog-cloudformation-resources/pull/341)
 

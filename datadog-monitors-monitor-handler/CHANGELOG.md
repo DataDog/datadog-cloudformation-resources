@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.11.1 / 2026-08-06
+
+* [Fixed] Coerce `Options.Variables` `GroupBy[].Limit` and `Compute.Interval` to int to fix formula-based monitor create/update failures. See [350](https://github.com/DataDog/datadog-cloudformation-resources/pull/350)
+* Link to Resource: `s3://datadog-cloudformation-resources/datadog-monitors-monitor/datadog-monitors-monitor-4.11.1.zip`
+
 ## 4.11.0 / 2026-05-28
 
 * [Added] Bump common package to 0.0.24.

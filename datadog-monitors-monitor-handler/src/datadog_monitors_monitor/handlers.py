@@ -107,6 +107,24 @@ resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
+def _coerce_int(value):
+    """Best-effort coercion of a value to int.
+
+    Values nested under Options.Variables are typed as Any in the generated model, so
+    cloudformation-cli-python-lib's recast_object skips them and leaves integer fields as
+    strings (e.g. "100"). datadog-api-client validates types strictly and rejects a str for
+    an int field, so numeric fields must be coerced back before they reach the API model.
+    """
+    if value is None or isinstance(value, bool):
+        return value
+    if isinstance(value, int):
+        return value
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return value
+
+
 @resource.handler(Action.READ)
 @errors_handler
 def read_handler(
@@ -505,7 +523,7 @@ def build_api_variable_from_model(variable):
             ),
         )
         if interval is not None:
-            datadog_variable.compute.interval = interval
+            datadog_variable.compute.interval = _coerce_int(interval)
         if metric is not None:
             datadog_variable.compute.metric = metric
 
@@ -548,7 +566,7 @@ def build_api_variable_from_model(variable):
                     if sort_order is not None:
                         datadog_group.sort.order = ApiMonitorQuerySortOrder(sort_order)
                 if limit is not None:
-                    datadog_group.limit = limit
+                    datadog_group.limit = _coerce_int(limit)
                 datadog_variable.group_by.append(datadog_group)
         return datadog_variable
 

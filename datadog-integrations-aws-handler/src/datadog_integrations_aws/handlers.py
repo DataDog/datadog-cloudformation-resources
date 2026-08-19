@@ -12,7 +12,7 @@ from cloudformation_cli_python_lib import (
 from datadog_api_client.v1 import ApiException
 from datadog_api_client.v1.api.aws_integration_api import AWSIntegrationApi
 from datadog_api_client.v1.model.aws_account import AWSAccount
-from datadog_api_client.v1.model.aws_account_delete_request import AWSAccountDeleteRequest
+from datadog_api_client.v2.api.aws_integration_api import AWSIntegrationApi as V2AWSIntegrationApi
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
 
@@ -197,15 +197,6 @@ def delete_handler(
             status=OperationStatus.FAILED, message=f"Error deleting AWS Account: failed to delete secret {secret_name}"
         )
     else:
-        kwargs = {}
-        if model.AccountID is not None:
-            kwargs["account_id"] = model.AccountID
-        if model.RoleName is not None:
-            kwargs["role_name"] = model.RoleName
-        if model.AccessKeyID is not None:
-            kwargs["access_key_id"] = model.AccessKeyID
-        delete_request = AWSAccountDeleteRequest(**kwargs)
-
         with client(
             type_configuration.DatadogCredentials.ApiKey,
             type_configuration.DatadogCredentials.ApplicationKey,
@@ -213,9 +204,24 @@ def delete_handler(
             TELEMETRY_TYPE_NAME,
             __version__,
         ) as api_client:
-            api_instance = AWSIntegrationApi(api_client)
+            api_instance = V2AWSIntegrationApi(api_client)
             try:
-                api_instance.delete_aws_account(delete_request)
+                account_config_id = find_aws_account_config_id(
+                    api_instance, model.AccountID, model.RoleName, model.AccessKeyID
+                )
+                if account_config_id is None:
+                    LOG.error(
+                        "Account with integration ID '%s' not found, nothing to delete",
+                        get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID),
+                    )
+                    return ProgressEvent(
+                        status=OperationStatus.FAILED,
+                        resourceModel=model,
+                        message=f"Error deleting AWS account: account with integration ID "
+                        f"'{get_integration_id(model.AccountID, model.RoleName, model.AccessKeyID)}' not found",
+                        errorCode=HandlerErrorCode.NotFound,
+                    )
+                api_instance.delete_aws_account(account_config_id)
             except ApiException as e:
                 LOG.exception("Exception when calling AWSIntegrationApi->delete_aws_account: %s\n", e)
                 error_code = http_to_handler_error_code(e.status)
@@ -312,6 +318,24 @@ def read_handler(
         status=OperationStatus.SUCCESS,
         resourceModel=model,
     )
+
+
+def find_aws_account_config_id(api_instance, account_id, role_name, access_key_id):
+    """Resolve a v1 account identity to its v2 `aws_account_config_id`.
+
+    The v1 API addressed accounts by account ID plus role name or access key ID, while the
+    v2 API addresses them by an opaque config ID. A single AWS account may hold several
+    configs, so the auth identity is what disambiguates them.
+    """
+    accounts = api_instance.list_aws_accounts(aws_account_id=account_id).get("data", [])
+    for account in accounts:
+        auth_config = account.get("attributes", {}).get("auth_config", {})
+        if access_key_id is not None:
+            if auth_config.get("access_key_id") == access_key_id:
+                return account.get("id")
+        elif auth_config.get("role_name") == role_name:
+            return account.get("id")
+    return None
 
 
 def get_integration_id(account_id, role_name, access_key_id):

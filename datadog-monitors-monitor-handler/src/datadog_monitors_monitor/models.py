@@ -53,6 +53,7 @@ class ResourceModel(BaseModel):
     Deleted: Optional[str]
     Modified: Optional[str]
     RestrictedRoles: Optional[Sequence[str]]
+    Assets: Optional[Sequence["_MonitorAsset"]]
     CloudformationOptions: Optional["_CloudformationOptions"]
 
     @classmethod
@@ -79,6 +80,7 @@ class ResourceModel(BaseModel):
             Deleted=json_data.get("Deleted"),
             Modified=json_data.get("Modified"),
             RestrictedRoles=json_data.get("RestrictedRoles"),
+            Assets=deserialize_list(json_data.get("Assets"), MonitorAsset),
             CloudformationOptions=CloudformationOptions._deserialize(json_data.get("CloudformationOptions")),
         )
 
@@ -461,6 +463,34 @@ class MonitorFormulaAndFunctionDataQualityMonitorOptions(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _MonitorFormulaAndFunctionDataQualityMonitorOptions = MonitorFormulaAndFunctionDataQualityMonitorOptions
+
+
+@dataclass
+class MonitorAsset(BaseModel):
+    Category: Optional[str]
+    Name: Optional[str]
+    Url: Optional[str]
+    ResourceKey: Optional[str]
+    ResourceType: Optional[str]
+
+    @classmethod
+    def _deserialize(
+        cls: Type["_MonitorAsset"],
+        json_data: Optional[Mapping[str, Any]],
+    ) -> Optional["_MonitorAsset"]:
+        if not json_data:
+            return None
+        return cls(
+            Category=json_data.get("Category"),
+            Name=json_data.get("Name"),
+            Url=json_data.get("Url"),
+            ResourceKey=json_data.get("ResourceKey"),
+            ResourceType=json_data.get("ResourceType"),
+        )
+
+
+# work around possible type aliasing issues when variable has same name as a model
+_MonitorAsset = MonitorAsset
 
 
 @dataclass

@@ -13,7 +13,9 @@ from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
     Any,
+    Generic,
     Mapping,
+    MutableMapping,
     Optional,
     Sequence,
     Type,
@@ -427,9 +429,7 @@ class MonitorFormulaAndFunctionDataQualityQueryDefinition(BaseModel):
             Filter=json_data.get("Filter"),
             Scope=json_data.get("Scope"),
             GroupBy=json_data.get("GroupBy"),
-            MonitorOptions=MonitorFormulaAndFunctionDataQualityMonitorOptions._deserialize(
-                json_data.get("MonitorOptions")
-            ),
+            MonitorOptions=MonitorFormulaAndFunctionDataQualityMonitorOptions._deserialize(json_data.get("MonitorOptions")),
         )
 
 
@@ -555,3 +555,5 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
+
+

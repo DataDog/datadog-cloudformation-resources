@@ -19,6 +19,15 @@ Resources:
           OK: 90
         NotifyNoData: true
         EvaluationDelay: 60
+      Assets:
+        - Category: runbook
+          Name: External Runbook
+          Url: https://example.com/runbooks/cpu-troubleshooting
+        - Category: runbook
+          Name: Datadog Notebook Runbook
+          Url: /notebook/12345/cpu-troubleshooting
+          ResourceType: notebook
+          ResourceKey: "12345"
 ```
 
 ## Property Reference:

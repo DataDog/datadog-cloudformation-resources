@@ -72,6 +72,11 @@ from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_monit
 from datadog_api_client.v1.model.monitor_formula_and_function_data_quality_model_type_override import (
     MonitorFormulaAndFunctionDataQualityModelTypeOverride as ApiMonitorFormulaAndFunctionDataQualityModelTypeOverride,
 )
+from datadog_api_client.v1.model.monitor_asset import MonitorAsset as ApiMonitorAsset
+from datadog_api_client.v1.model.monitor_asset_category import MonitorAssetCategory as ApiMonitorAssetCategory
+from datadog_api_client.v1.model.monitor_asset_resource_type import (
+    MonitorAssetResourceType as ApiMonitorAssetResourceType,
+)
 
 from datadog_cloudformation_common.api_clients import client
 from datadog_cloudformation_common.utils import errors_handler, http_to_handler_error_code
@@ -89,6 +94,7 @@ from .models import (
     MonitorFormulaAndFunctionEventQueryGroupBy,
     MonitorFormulaAndFunctionDataQualityQueryDefinition,
     MonitorFormulaAndFunctionDataQualityMonitorOptions,
+    MonitorAsset,
     Sort,
     Compute,
     Search,
@@ -187,6 +193,8 @@ def read_handler(
     model.Query = monitor.query
     model.Multi = monitor.multi
     model.RestrictedRoles = monitor.restricted_roles
+    if hasattr(monitor, "assets") and monitor.assets:
+        model.Assets = build_cf_assets_from_api(monitor.assets)
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (
@@ -309,6 +317,9 @@ def update_handler(
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
         monitor.restricted_roles = model.RestrictedRoles
+    assets = build_api_assets_from_model(model.Assets)
+    if assets is not None:
+        monitor.assets = assets
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
@@ -398,6 +409,9 @@ def create_handler(
         monitor.priority = model.Priority
     if model.RestrictedRoles is not None:
         monitor.restricted_roles = model.RestrictedRoles
+    assets = build_api_assets_from_model(model.Assets)
+    if assets is not None:
+        monitor.assets = assets
     options = build_monitor_options_from_model(model)
     if options:
         monitor.options = options
@@ -423,6 +437,49 @@ def create_handler(
 
     model.Id = monitor_resp.id
     return read_handler(session, request, callback_context)
+
+
+def build_api_assets_from_model(assets: Optional[List[MonitorAsset]]) -> Optional[List[ApiMonitorAsset]]:
+    if assets is None:
+        return None
+
+    api_assets = []
+    for asset in assets:
+        api_asset = ApiMonitorAsset(
+            category=ApiMonitorAssetCategory(asset.Category),
+            name=asset.Name,
+            url=asset.Url,
+        )
+        if asset.ResourceKey is not None:
+            api_asset.resource_key = asset.ResourceKey
+        if asset.ResourceType is not None:
+            api_asset.resource_type = ApiMonitorAssetResourceType(asset.ResourceType)
+        api_assets.append(api_asset)
+    return api_assets
+
+
+def build_cf_assets_from_api(assets: Optional[List[ApiMonitorAsset]]) -> Optional[List[MonitorAsset]]:
+    if not assets:
+        return None
+
+    cf_assets = []
+    for asset in assets:
+        resource_type = None
+        if hasattr(asset, "resource_type") and asset.resource_type is not None:
+            resource_type = (
+                asset.resource_type.value if hasattr(asset.resource_type, "value") else str(asset.resource_type)
+            )
+        category = asset.category.value if hasattr(asset.category, "value") else str(asset.category)
+        cf_assets.append(
+            MonitorAsset(
+                Category=category,
+                Name=asset.name,
+                Url=asset.url,
+                ResourceKey=asset.resource_key if hasattr(asset, "resource_key") else None,
+                ResourceType=resource_type,
+            )
+        )
+    return cf_assets
 
 
 def build_api_variable_from_model(variable):

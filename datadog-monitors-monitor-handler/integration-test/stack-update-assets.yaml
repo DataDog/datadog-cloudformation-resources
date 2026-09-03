@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Integration test - update monitor assets (add/remove runbooks)
+
+Parameters:
+  NotebookId:
+    Type: String
+    Description: Existing Datadog notebook ID
+
+Resources:
+  UpdateAssetsMonitor:
+    Type: Datadog::Monitors::Monitor
+    Properties:
+      Type: query alert
+      Query: avg(last_5m):avg:system.load.1{*} > 10
+      Name: CFN Integration Test - Asset Updates
+      Message: Integration test for add/remove runbook assets
+      Options:
+        Thresholds:
+          Critical: 10
+      Assets:
+        - Category: runbook
+          Name: External Runbook v2
+          Url: https://example.com/runbooks/load-troubleshooting
+        - Category: runbook
+          Name: Notebook Runbook v2
+          Url: !Sub /notebook/${NotebookId}/load-runbook
+          ResourceType: notebook
+          ResourceKey: !Ref NotebookId
+
+Outputs:
+  MonitorId:
+    Value: !GetAtt UpdateAssetsMonitor.Id

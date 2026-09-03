@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Integration test - monitor with external runbook URL asset
+
+Resources:
+  ExternalRunbookMonitor:
+    Type: Datadog::Monitors::Monitor
+    Properties:
+      Type: query alert
+      Query: avg(last_5m):avg:system.cpu.user{*} > 100
+      Name: CFN Integration Test - External Runbook
+      Message: Integration test monitor with external runbook asset
+      Options:
+        Thresholds:
+          Critical: 100
+      Assets:
+        - Category: runbook
+          Name: Helix Wiki Runbook
+          Url: https://example.com/runbooks/cpu-troubleshooting
+
+Outputs:
+  MonitorId:
+    Value: !GetAtt ExternalRunbookMonitor.Id

@@ -3,6 +3,8 @@
 ## 4.12.0 / TBD
 
 * [Added] Add support for monitor `Assets` (runbooks) on create, update, and read. See [#TBD](https://github.com/DataDog/datadog-cloudformation-resources/pull/TBD)
+* [Fixed] Read monitor with `with_assets=true` so runbook assets are returned on stack read/drift detection.
+* [Fixed] Preserve explicit empty `Assets` lists on deserialize so updates can remove all runbook assets.
 
 ## 4.11.1 / 2026-08-06
 

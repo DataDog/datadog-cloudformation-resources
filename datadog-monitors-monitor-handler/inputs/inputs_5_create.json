@@ -1,0 +1,20 @@
+{
+  "Type": "query alert",
+  "Query": "avg(last_5m):avg:system.cpu.user{*} > 100",
+  "Name": "CFN Contract Test - Notebook Runbook Asset",
+  "Message": "Contract test for monitor Assets (notebook runbook)",
+  "Options": {
+    "Thresholds": {
+      "Critical": 100
+    }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "Datadog Notebook Runbook",
+      "Url": "/notebook/15414666/cpu-troubleshooting",
+      "ResourceType": "notebook",
+      "ResourceKey": "15414666"
+    }
+  ]
+}

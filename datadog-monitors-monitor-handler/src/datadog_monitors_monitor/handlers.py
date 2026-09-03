@@ -164,7 +164,7 @@ def read_handler(
         while retry_count < MAX_RETRY_COUNT:
             retry_count += 1
             try:
-                monitor = api_instance.get_monitor(monitor_id)
+                monitor = api_instance.get_monitor(monitor_id, with_assets=True)
                 api_exception = None
                 break
             except ApiException as e:
@@ -193,8 +193,8 @@ def read_handler(
     model.Query = monitor.query
     model.Multi = monitor.multi
     model.RestrictedRoles = monitor.restricted_roles
-    if hasattr(monitor, "assets") and monitor.assets:
-        model.Assets = build_cf_assets_from_api(monitor.assets)
+    if hasattr(monitor, "assets"):
+        model.Assets = build_cf_assets_from_api(monitor.assets) or []
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (

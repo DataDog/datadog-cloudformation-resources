@@ -1,0 +1,18 @@
+{
+  "Type": "query alert",
+  "Query": "avg(last_5m):avg:system.cpu.user{*} > 100",
+  "Name": "CFN Contract Test - External Runbook Asset",
+  "Message": "Contract test for monitor Assets (external URL runbook)",
+  "Options": {
+    "Thresholds": {
+      "Critical": 100
+    }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "External Runbook",
+      "Url": "https://example.com/runbooks/cpu-troubleshooting"
+    }
+  ]
+}

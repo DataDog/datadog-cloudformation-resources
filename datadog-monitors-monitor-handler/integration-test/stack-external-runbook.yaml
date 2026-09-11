@@ -14,7 +14,7 @@ Resources:
           Critical: 100
       Assets:
         - Category: runbook
-          Name: Helix Wiki Runbook
+          Name: External Runbook
           Url: https://example.com/runbooks/cpu-troubleshooting
 
 Outputs:

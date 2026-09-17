@@ -109,7 +109,24 @@ TELEMETRY_TYPE_NAME = "monitors-monitor"
 MAX_RETRY_COUNT = 5
 RETRY_SLEEP_INTERVAL = 5
 
-resource = Resource(TYPE_NAME, ResourceModel, TypeConfigurationModel)
+
+class MonitorResourceModel(ResourceModel):
+    """ResourceModel that keeps an explicitly empty ``Assets`` list.
+
+    The generated model routes ``Assets`` through ``deserialize_list``, which maps ``[]``
+    to ``None``. That would make ``Assets: []`` (drop every asset) indistinguishable from
+    omitting ``Assets`` (leave the monitor's assets untouched).
+    """
+
+    @classmethod
+    def _deserialize(cls, json_data):
+        model = super()._deserialize(json_data)
+        if model is not None and json_data.get("Assets") == []:
+            model.Assets = []
+        return model
+
+
+resource = Resource(TYPE_NAME, MonitorResourceModel, TypeConfigurationModel)
 test_entrypoint = resource.test_entrypoint
 
 
@@ -193,8 +210,7 @@ def read_handler(
     model.Query = monitor.query
     model.Multi = monitor.multi
     model.RestrictedRoles = monitor.restricted_roles
-    if hasattr(monitor, "assets"):
-        model.Assets = build_cf_assets_from_api(monitor.assets) or []
+    model.Assets = build_cf_assets_from_api(getattr(monitor, "assets", None))
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (

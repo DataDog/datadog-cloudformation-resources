@@ -22,5 +22,14 @@
     "Thresholds": {
       "Critical": 5
     }
-  }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "Datadog Runbook updated",
+      "Url": "/notebook/5678",
+      "ResourceType": "notebook",
+      "ResourceKey": "5678"
+    }
+  ]
 }

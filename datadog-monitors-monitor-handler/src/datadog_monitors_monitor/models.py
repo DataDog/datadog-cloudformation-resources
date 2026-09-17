@@ -13,9 +13,7 @@ from inspect import getmembers, isclass
 from typing import (
     AbstractSet,
     Any,
-    Generic,
     Mapping,
-    MutableMapping,
     Optional,
     Sequence,
     Type,
@@ -23,14 +21,6 @@ from typing import (
 )
 
 T = TypeVar("T")
-
-
-def _deserialize_assets(json_assets: Optional[Sequence[Any]]) -> Optional[Sequence["_MonitorAsset"]]:
-    # deserialize_list treats [] as unset (None). Preserve explicit empty lists so
-    # updates can remove all runbook assets.
-    if json_assets is not None and len(json_assets) == 0:
-        return []
-    return deserialize_list(json_assets, MonitorAsset)
 
 
 def set_or_none(value: Optional[Sequence[T]]) -> Optional[AbstractSet[T]]:
@@ -90,7 +80,7 @@ class ResourceModel(BaseModel):
             Deleted=json_data.get("Deleted"),
             Modified=json_data.get("Modified"),
             RestrictedRoles=json_data.get("RestrictedRoles"),
-            Assets=_deserialize_assets(json_data.get("Assets")),
+            Assets=deserialize_list(json_data.get("Assets"), MonitorAsset),
             CloudformationOptions=CloudformationOptions._deserialize(json_data.get("CloudformationOptions")),
         )
 
@@ -437,7 +427,9 @@ class MonitorFormulaAndFunctionDataQualityQueryDefinition(BaseModel):
             Filter=json_data.get("Filter"),
             Scope=json_data.get("Scope"),
             GroupBy=json_data.get("GroupBy"),
-            MonitorOptions=MonitorFormulaAndFunctionDataQualityMonitorOptions._deserialize(json_data.get("MonitorOptions")),
+            MonitorOptions=MonitorFormulaAndFunctionDataQualityMonitorOptions._deserialize(
+                json_data.get("MonitorOptions")
+            ),
         )
 
 
@@ -563,5 +555,3 @@ class DatadogCredentials(BaseModel):
 
 # work around possible type aliasing issues when variable has same name as a model
 _DatadogCredentials = DatadogCredentials
-
-

@@ -14,5 +14,12 @@
     "Thresholds": {
       "Critical": 1000000
     }
-  }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "RUM Runbook",
+      "Url": "https://example.com/runbooks/rum-traffic"
+    }
+  ]
 }

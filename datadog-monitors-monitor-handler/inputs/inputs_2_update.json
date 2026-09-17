@@ -14,5 +14,19 @@
     "Thresholds": {
       "Critical": 5000000
     }
-  }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "RUM Runbook updated",
+      "Url": "https://example.com/runbooks/rum-traffic-updated"
+    },
+    {
+      "Category": "runbook",
+      "Name": "RUM Notebook Runbook",
+      "Url": "/notebook/1234",
+      "ResourceType": "notebook",
+      "ResourceKey": "1234"
+    }
+  ]
 }

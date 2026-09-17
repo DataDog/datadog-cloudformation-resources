@@ -1,1 +1,0 @@
-../datadog-cloudformation-common-python

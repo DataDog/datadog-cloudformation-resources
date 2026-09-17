@@ -249,6 +249,7 @@ def read_handler(
                         if hasattr(evaluation_window, "month_starts")
                         else None,
                         HourStarts=evaluation_window.hour_starts if hasattr(evaluation_window, "hour_starts") else None,
+                        Timezone=evaluation_window.timezone if hasattr(evaluation_window, "timezone") else None,
                     )
                 )
 
@@ -652,6 +653,10 @@ def build_monitor_options_from_model(model: ResourceModel) -> ApiMonitorOptions:
                 if model.Options.SchedulingOptions.EvaluationWindow.MonthStarts is not None:
                     options.scheduling_options.evaluation_window.month_starts = (
                         model.Options.SchedulingOptions.EvaluationWindow.MonthStarts
+                    )
+                if model.Options.SchedulingOptions.EvaluationWindow.Timezone is not None:
+                    options.scheduling_options.evaluation_window.timezone = (
+                        model.Options.SchedulingOptions.EvaluationWindow.Timezone
                     )
 
         if model.Options.ThresholdWindows is not None:

@@ -208,6 +208,7 @@ class MonitorSchedulingOptionsEvaluationWindow(BaseModel):
     DayStarts: Optional[str]
     MonthStarts: Optional[int]
     HourStarts: Optional[int]
+    Timezone: Optional[str]
 
     @classmethod
     def _deserialize(
@@ -220,6 +221,7 @@ class MonitorSchedulingOptionsEvaluationWindow(BaseModel):
             DayStarts=json_data.get("DayStarts"),
             MonthStarts=json_data.get("MonthStarts"),
             HourStarts=json_data.get("HourStarts"),
+            Timezone=json_data.get("Timezone"),
         )
 
 

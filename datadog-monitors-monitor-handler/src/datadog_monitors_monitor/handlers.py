@@ -210,7 +210,7 @@ def read_handler(
     model.Query = monitor.query
     model.Multi = monitor.multi
     model.RestrictedRoles = monitor.restricted_roles
-    model.Assets = build_cf_assets_from_api(getattr(monitor, "assets", None))
+    model.Assets = build_cf_assets_from_api(getattr(monitor, "assets", None)) or []
     if monitor.deleted:
         model.Deleted = monitor.deleted.isoformat()
     if not (

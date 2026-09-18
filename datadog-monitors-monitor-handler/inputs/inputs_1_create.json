@@ -23,5 +23,19 @@
     "Thresholds": {
       "Critical": 4
     }
-  }
+  },
+  "Assets": [
+    {
+      "Category": "runbook",
+      "Name": "Datadog Runbook",
+      "Url": "/notebook/1234",
+      "ResourceType": "notebook",
+      "ResourceKey": "1234"
+    },
+    {
+      "Category": "runbook",
+      "Name": "External Runbook",
+      "Url": "https://example.com/runbooks/ssh-activity"
+    }
+  ]
 }

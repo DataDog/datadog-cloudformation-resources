@@ -445,6 +445,44 @@
         }
       }
     },
+    "MonitorAsset": {
+      "description": "A monitor asset (for example, a runbook) tied to a monitor to help users take action on alerts.",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "Category": {
+          "description": "Indicates the type of asset this entity represents on a monitor.",
+          "type": "string",
+          "enum": [
+            "runbook"
+          ]
+        },
+        "Name": {
+          "description": "Name for the monitor asset.",
+          "type": "string"
+        },
+        "Url": {
+          "description": "URL link for the asset. For internal resource types (notebooks), provide a relative path. For external links, provide the full URL.",
+          "type": "string"
+        },
+        "ResourceKey": {
+          "description": "Identifier of the internal Datadog resource that this asset represents (for example, a notebook ID). IDs should be passed as strings.",
+          "type": "string"
+        },
+        "ResourceType": {
+          "description": "Type of internal Datadog resource associated with a monitor asset.",
+          "type": "string",
+          "enum": [
+            "notebook"
+          ]
+        }
+      },
+      "required": [
+        "Category",
+        "Name",
+        "Url"
+      ]
+    },
     "MonitorFormulaAndFunctionDataQualityQueryDefinition": {
       "description": "A formula and functions data quality query.",
       "type": "object",
@@ -634,6 +672,14 @@
       "items": {
         "type": "string"
       }
+    },
+    "Assets": {
+      "description": "List of monitor assets (for example, runbooks) tied to this monitor.",
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/MonitorAsset"
+      },
+      "insertionOrder": true
     },
     "CloudformationOptions": {
       "description": "Cloudformation specific options. This is only used by the Cloudformation resource.",

@@ -21,6 +21,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
         "<a href="#type" title="Type">Type</a>" : <i>String</i>,
         "<a href="#multi" title="Multi">Multi</a>" : <i>Boolean</i>,
         "<a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>" : <i>[ String, ... ]</i>,
+        "<a href="#assets" title="Assets">Assets</a>" : <i>[ <a href="monitorasset.md">MonitorAsset</a>, ... ]</i>,
         "<a href="#cloudformationoptions" title="CloudformationOptions">CloudformationOptions</a>" : <i><a href="cloudformationoptions.md">CloudformationOptions</a></i>
     }
 }
@@ -42,6 +43,8 @@ Properties:
     <a href="#multi" title="Multi">Multi</a>: <i>Boolean</i>
     <a href="#restrictedroles" title="RestrictedRoles">RestrictedRoles</a>: <i>
       - String</i>
+    <a href="#assets" title="Assets">Assets</a>: <i>
+      - <a href="monitorasset.md">MonitorAsset</a></i>
     <a href="#cloudformationoptions" title="CloudformationOptions">CloudformationOptions</a>: <i><a href="cloudformationoptions.md">CloudformationOptions</a></i>
 </pre>
 
@@ -134,6 +137,16 @@ A list of unique role identifiers to define which roles are allowed to edit the 
 _Required_: No
 
 _Type_: List of String
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Assets
+
+List of monitor assets (for example, runbooks) tied to this monitor.
+
+_Required_: No
+
+_Type_: List of <a href="monitorasset.md">MonitorAsset</a>
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

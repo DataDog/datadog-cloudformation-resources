@@ -17,7 +17,8 @@
     "SchedulingOptions": {
       "EvaluationWindow": {
         "DayStarts": "22:00",
-        "MonthStarts":1
+        "MonthStarts":1,
+        "Timezone": "America/New_York"
       }
     },
     "Thresholds": {

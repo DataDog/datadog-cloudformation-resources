@@ -77,6 +77,10 @@
                     "type": "integer",
                     "minimum": 0,
                     "maximum": 59
+                },
+                "Timezone": {
+                    "description": "The timezone for the cumulative evaluation window start time.",
+                    "type": "string"
                 }
             }
         },

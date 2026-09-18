@@ -12,7 +12,8 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 {
     "<a href="#daystarts" title="DayStarts">DayStarts</a>" : <i>String</i>,
     "<a href="#monthstarts" title="MonthStarts">MonthStarts</a>" : <i>Integer</i>,
-    "<a href="#hourstarts" title="HourStarts">HourStarts</a>" : <i>Integer</i>
+    "<a href="#hourstarts" title="HourStarts">HourStarts</a>" : <i>Integer</i>,
+    "<a href="#timezone" title="Timezone">Timezone</a>" : <i>String</i>
 }
 </pre>
 
@@ -22,6 +23,7 @@ To declare this entity in your AWS CloudFormation template, use the following sy
 <a href="#daystarts" title="DayStarts">DayStarts</a>: <i>String</i>
 <a href="#monthstarts" title="MonthStarts">MonthStarts</a>: <i>Integer</i>
 <a href="#hourstarts" title="HourStarts">HourStarts</a>: <i>Integer</i>
+<a href="#timezone" title="Timezone">Timezone</a>: <i>String</i>
 </pre>
 
 ## Properties
@@ -53,6 +55,16 @@ The minute of the hour at which a one hour cumulative evaluation window starts.
 _Required_: No
 
 _Type_: Integer
+
+_Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
+
+#### Timezone
+
+The timezone for the cumulative evaluation window start time.
+
+_Required_: No
+
+_Type_: String
 
 _Update requires_: [No interruption](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-update-behaviors.html#update-no-interrupt)
 

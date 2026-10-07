@@ -183,7 +183,8 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
 
 def build_model_from_api_response(model, aws_account):
     model.AccountID = aws_account.aws_account_id
-    model.AWSPartition = aws_account.get("aws_partition")
+    if aws_account.get("aws_partition"):
+        model.AWSPartition = aws_account.aws_partition.value
     model.ExternalIDSecretName = None
     model.AccountTags = aws_account.account_tags
     model.AuthConfig = AuthConfig(

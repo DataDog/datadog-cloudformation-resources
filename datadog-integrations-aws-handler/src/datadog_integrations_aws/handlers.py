@@ -300,10 +300,6 @@ def read_handler(
                 errorCode=HandlerErrorCode.NotFound,
             )
 
-    model.AccountID = aws_account.get("account_id")
-    model.RoleName = aws_account.get("role_name")
-    model.AccessKeyID = aws_account.get("access_key_id")
-    model.ExternalIDSecretName = None
     model.HostTags = aws_account.host_tags
     model.FilterTags = aws_account.filter_tags
     model.AccountSpecificNamespaceRules = aws_account.account_specific_namespace_rules

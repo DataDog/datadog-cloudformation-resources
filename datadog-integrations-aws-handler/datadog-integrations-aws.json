@@ -122,6 +122,9 @@
   "readOnlyProperties": [
     "/properties/IntegrationID"
   ],
+  "writeOnlyProperties": [
+    "/properties/ExternalIDSecretName"
+  ],
   "additionalProperties": false,
   "handlers": {
     "create": {

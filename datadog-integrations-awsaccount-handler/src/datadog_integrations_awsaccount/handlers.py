@@ -182,6 +182,10 @@ def build_api_request_from_model(api_request_data_generator, desired_state_model
 
 
 def build_model_from_api_response(model, aws_account):
+    model.AccountID = aws_account.aws_account_id
+    if aws_account.get("aws_partition"):
+        model.AWSPartition = aws_account.aws_partition.value
+    model.ExternalIDSecretName = None
     model.AccountTags = aws_account.account_tags
     model.AuthConfig = AuthConfig(
         aws_account.auth_config.role_name,
@@ -195,7 +199,7 @@ def build_model_from_api_response(model, aws_account):
         model.MetricsConfig = MetricsConfig(None, None, None, None, None, None)
         model.MetricsConfig.Enabled = aws_account.metrics_config.get("enabled")
         model.MetricsConfig.AutomuteEnabled = aws_account.metrics_config.get("automute_enabled")
-        model.MetricsConfig.CollectCustomMetrics = aws_account.metrics_config.get("custom_metrics")
+        model.MetricsConfig.CollectCustomMetrics = aws_account.metrics_config.get("collect_custom_metrics")
         model.MetricsConfig.CollectCloudwatchAlarms = aws_account.metrics_config.get("collect_cloudwatch_alarms")
         model.MetricsConfig.TagFilters = []
         if aws_account.metrics_config.get("tag_filters"):

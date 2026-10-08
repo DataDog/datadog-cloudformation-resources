@@ -264,6 +264,9 @@
   "readOnlyProperties": [
     "/properties/Id"
   ],
+  "writeOnlyProperties": [
+    "/properties/ExternalIDSecretName"
+  ],
   "additionalProperties": false,
   "handlers": {
     "create": {

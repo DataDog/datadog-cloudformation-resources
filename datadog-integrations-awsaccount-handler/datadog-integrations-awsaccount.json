@@ -1,6 +1,6 @@
 {
   "typeName": "Datadog::Integrations::AWSAccount",
-  "description": "Datadog AWS Account Integration 1.0.0",
+  "description": "Datadog AWS Account Integration 1.1.0",
   "typeConfiguration": {
     "properties": {
       "DatadogCredentials": {
@@ -52,7 +52,7 @@
       "description": "The configuration for the AWS role delegation.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "RoleName": {
           "description": "Your Datadog role delegation name.",
           "type": "string"
@@ -66,7 +66,7 @@
       "description": "The configuration for which regions to collect data from.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "IncludeOnly": {
           "description": "Array of AWS regions to include from metrics collection.",
           "type": "array",
@@ -86,7 +86,7 @@
       "description": "The configuration for ingesting AWS Metrics into Datadog.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "Enabled": {
           "description": "Enable the infrastructure monitoring Datadog product for this AWS Account. This will enable collecting all AWS metrics in your account.",
           "type": "boolean",
@@ -107,7 +107,7 @@
           "type": "boolean",
           "default": false
         },
-        "TagFilters":{
+        "TagFilters": {
           "description": "The array of EC2 tags (in the form key:value) defines a filter that Datadog uses when collecting metrics from EC2.",
           "type": "array",
           "insertionOrder": true,
@@ -130,7 +130,7 @@
             }
           }
         },
-        "NamespaceFilters":{
+        "NamespaceFilters": {
           "type": "object",
           "additionalProperties": false,
           "properties": {
@@ -169,7 +169,7 @@
       "description": "The configuration for ingesting AWS Resources into Datadog.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "CSPMResourceCollection": {
           "description": "Enable the compliance and security posture management Datadog product. This will enable collecting information on your AWS resources and providing security validation.",
           "type": "boolean",
@@ -186,12 +186,12 @@
       "description": "The configuration for ingesting AWS Logs into Datadog.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "LambdaForwarder": {
           "description": "The configuration for Lambda Log Forwarders.",
           "type": "object",
           "additionalProperties": false,
-          "properties":{
+          "properties": {
             "Lambdas": {
               "description": "List of Datadog Lambda Log Forwarder ARNs",
               "type": "array",
@@ -218,12 +218,12 @@
       "description": "The configuration for ingesting AWS Traces into Datadog.",
       "type": "object",
       "additionalProperties": false,
-      "properties":{
+      "properties": {
         "XRayServices": {
           "description": "The services to collect X-Ray traces from.",
           "type": "object",
           "additionalProperties": false,
-          "properties":{
+          "properties": {
             "IncludeOnly": {
               "description": "Array of services to collect traces for.",
               "type": "array",
